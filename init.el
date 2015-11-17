@@ -316,9 +316,6 @@
 (eval-after-load "smex"
   '(smex-initialize))
 
-;; magit
-;; (setq magit-last-seen-setup-instructions "1.4.0")
-
 ;; wgrep-ag
 (autoload 'wgrep-ag-setup "wgrep-ag")
 (add-hook 'ag-mode-hook 'wgrep-ag-setup)
