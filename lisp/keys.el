@@ -20,6 +20,7 @@
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
+(global-set-key (kbd "<f1> x") 'which-key-show-top-level)
 (global-set-key (kbd "C-c t") 'transpose-paragraphs)
 ;; FIX subword-mode-map remaping
 ;;(global-set-key (kbd "C-T") 'transpose-words) ;; original transpose-words is remaped to

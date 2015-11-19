@@ -334,8 +334,19 @@
 ;; which-key
 (eval-after-load "which-key"
   '(progn
-     (which-key-mode)
-     (setq which-key-popup-type 'minibuffer)))
+     ;;(setq which-key-popup-type 'side-window)
+     (setq which-key-side-window-location 'bottom)
+     (which-key-mode)))
+
+;; aggressive-indent-mode
+(eval-after-load "aggressive-indent"
+  '(global-aggressive-indent-mode))
+
+;; diff-hl
+(eval-after-load "diff-hl"
+  '(progn
+     (global-diff-hl-mode)
+     (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)))
 
 ;; magit
 (setq magit-popup-use-prefix-argument 'default)
