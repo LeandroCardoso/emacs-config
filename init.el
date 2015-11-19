@@ -320,6 +320,12 @@
 (autoload 'wgrep-ag-setup "wgrep-ag")
 (add-hook 'ag-mode-hook 'wgrep-ag-setup)
 
+;; which-key
+(eval-after-load "which-key"
+  '(progn
+     (which-key-mode)
+     (setq which-key-popup-type 'minibuffer))
+
 ;; Faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)
