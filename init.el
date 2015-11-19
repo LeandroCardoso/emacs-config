@@ -326,6 +326,9 @@
      (which-key-mode)
      (setq which-key-popup-type 'minibuffer))
 
+;; desktop
+(add-hook 'desktop-after-read-hook 'set-frame-name-from-desktop)
+
 ;; Faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)

@@ -155,3 +155,9 @@ With prefix P, create local abbrev. Otherwise it will be global."
   "Put the current directory in the ido working directory list"
   (interactive)
   (push default-directory ido-work-directory-list))
+
+(defun set-frame-name-from-desktop ()
+  "Set the name of the selected frame to the desktop directory. See `set-frame-name'"
+  (interactive)
+  (set-frame-name
+   (concat "emacs | " (file-name-nondirectory (directory-file-name desktop-dirname)))))
