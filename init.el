@@ -320,6 +320,8 @@
      ))
 
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (ido-mode t)
 
 (eval-after-load "smex"
