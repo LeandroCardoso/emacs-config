@@ -5,7 +5,7 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-(setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars)))
+(setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars) (alpha . 97)))
 (setq default-frame-alist initial-frame-alist)
 
 
@@ -18,7 +18,6 @@
                 transpose-frame
                 company
                 smex
-                seethru
                 company
                 which-key
                 aggressive-indent
@@ -183,9 +182,6 @@
   (unless (eq (server-running-p) t)
     (server-start)
     (message "Server started")))
-
-(eval-after-load "seethru"
-  '(seethru 97))
 
 
 ;; Spell
