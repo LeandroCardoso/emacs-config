@@ -1,6 +1,7 @@
 (set-frame-font "Consolas 10" t t)
 
 (setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
+(setq auto-save-file-name-transforms '((".*" "c:/DBDProj/auto-save/" t)))
 
 (setenv "PATH" "c:\\Windows\\System32")
 
@@ -12,8 +13,8 @@
 (setq url-proxy-services '(("http" . "localhost:3128")
                            ("https" . "localhost:3128")))
 
-;; ;; this is required by cygwin, but it is normally a worst choice
-;; (setq magit-process-connection-type nil)
+;; this is more efficient
+(setq magit-process-connection-type nil)
 
 (setenv "DICPATH" "c:\\msys32\\local\\dicts")
 (setenv "DICTIONARY" "en_US")
