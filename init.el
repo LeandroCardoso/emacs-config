@@ -20,7 +20,9 @@
                 smex
                 seethru
                 company
-                which-key))
+                which-key
+                aggressive-indent
+                diff-hl))
   (require mode nil t))
 
 
