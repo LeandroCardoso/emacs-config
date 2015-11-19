@@ -11,7 +11,16 @@
 
 ;; initialize packages
 (package-initialize)
-(dolist (mode '(goto-chg wgrep woman yasnippet transpose-frame company smex seethru company))
+(dolist (mode '(goto-chg
+                wgrep
+                woman
+                yasnippet
+                transpose-frame
+                company
+                smex
+                seethru
+                company
+                which-key))
   (require mode nil t))
 
 
@@ -324,7 +333,10 @@
 (eval-after-load "which-key"
   '(progn
      (which-key-mode)
-     (setq which-key-popup-type 'minibuffer))
+     (setq which-key-popup-type 'minibuffer)))
+
+;; magit
+(setq magit-popup-use-prefix-argument 'default)
 
 ;; desktop
 (add-hook 'desktop-after-read-hook 'set-frame-name-from-desktop)
