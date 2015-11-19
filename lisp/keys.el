@@ -11,14 +11,15 @@
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 (global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-M-g") 'ag) ;; it used to be rgrep
+(global-set-key (kbd "C-c g") 'ag) ;; it used to be rgrep
 (global-set-key (kbd "C-z") 'idomenu)
 (global-set-key (kbd "C-.") 'goto-last-change)
 (global-set-key (kbd "C-,") 'goto-last-change-reverse)
-(global-set-key (kbd "C-x [") 'shrink-window) ;; default is backward-page
-(global-set-key (kbd "C-x ]") 'enlarge-window) ;; default is forward-page
+(global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
+(global-set-key (kbd "C-c =") 'enlarge-window) ;; default is forward-page
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 (global-set-key (kbd "C-c a") 'align-regexp)
+(global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
 (global-set-key (kbd "C-c t") 'transpose-paragraphs)
 ;; FIX subword-mode-map remaping
 ;;(global-set-key (kbd "C-T") 'transpose-words) ;; original transpose-words is remaped to
