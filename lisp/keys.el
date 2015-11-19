@@ -16,7 +16,7 @@
 (global-set-key (kbd "C-.") 'goto-last-change)
 (global-set-key (kbd "C-,") 'goto-last-change-reverse)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
-(global-set-key (kbd "C-c =") 'enlarge-window) ;; default is forward-page
+(global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
