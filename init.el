@@ -361,6 +361,16 @@
 (set-face-attribute 'italic nil :underline t)
 (set-face-attribute 'woman-bold nil :inherit '(Man-overstrike))
 (set-face-attribute 'woman-italic nil :inherit '(Man-underline))
+;; the variable height fonts are annoyed
+(dolist (face '(org-level-1
+                org-level-2
+                org-level-3
+                org-level-4
+                org-level-5
+                org-level-6
+                org-level-7
+                org-level-8))
+  (set-face-attribute face nil :height 'unspecified))
 
 ;; My functions
 (load "functions")
