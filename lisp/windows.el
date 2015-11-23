@@ -348,11 +348,9 @@ TAG comment becomes buffer local."
     "USERPROMPT"
     "VERSION"
     "VERTICAL"
-    "XFSFIELD"
-    "XFSFORM"
-    "XFSSUBFORM"
     )
-  '(("BEGIN\\|END" . 'font-lock-type-face))
+  '(("BEGIN\\|END" . 'font-lock-type-face)
+    ("XFSFORM\\|XFSSUBFORM\\|XFSFIELD" . 'font-lock-function-name-face))
   '("\\Form.*\.txt$") ;; auto mode list
   nil ;; function list
   )
