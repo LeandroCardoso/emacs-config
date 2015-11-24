@@ -30,6 +30,11 @@
 (setq default-frame-alist initial-frame-alist)
 (setq window-system-default-frame-alist '((x . ((alpha . 97)))))
 
+;; My functions
+(load "functions")
+
+(set-custom-frame-title)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -347,7 +352,8 @@
 (setq magit-popup-use-prefix-argument 'default)
 
 ;; desktop
-(add-hook 'desktop-after-read-hook 'set-frame-name-from-desktop)
+(add-hook 'desktop-after-read-hook 'set-custom-frame-title)
+(add-hook 'desktop-save-hook 'set-custom-frame-title)
 
 ;; Faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
@@ -365,9 +371,6 @@
                    org-level-7
                    org-level-8))
      (set-face-attribute face nil :height 'unspecified)))
-
-;; My functions
-(load "functions")
 
 ;; MS Windows and diebold hacks
 (when (eq system-type 'windows-nt)
