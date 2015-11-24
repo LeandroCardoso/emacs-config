@@ -285,10 +285,11 @@
 ;; (when (require 'solarized nil t)
 ;;   (load-theme 'solarized-dark t))
 ;; (load-theme 'zenburn t)
-(setq monokai-use-variable-pitch nil)
-(load-theme 'monokai t)
-(set-face-attribute 'cursor nil :background (face-foreground 'mode-line-buffer-id))
-(set-face-attribute 'fringe nil :foreground "dark slate gray") ;; dim gray is also a good option
+(when (require 'monokai nil t)
+  (setq monokai-use-variable-pitch nil)
+  (load-theme 'monokai t)
+  (set-face-attribute 'cursor nil :background (face-foreground 'mode-line-buffer-id))
+  (set-face-attribute 'fringe nil :foreground "dark slate gray")) ;; dim gray is also a good option
 
 ;; Auto Complete
 ;; (eval-after-load "auto-complete"
