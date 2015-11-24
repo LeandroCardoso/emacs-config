@@ -5,10 +5,6 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-(setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars) (alpha . 97)))
-(setq default-frame-alist initial-frame-alist)
-
-
 ;; initialize packages
 (package-initialize)
 (dolist (mode '(goto-chg
@@ -24,6 +20,15 @@
                 diff-hl))
   (require mode nil t))
 
+;; Theme
+(setq monokai-use-variable-pitch nil)
+(load-theme 'monokai t)
+(set-face-attribute 'cursor nil :background (face-foreground 'mode-line-buffer-id))
+(set-face-attribute 'fringe nil :foreground "dark slate gray") ;; dim gray is also a good option
+
+(setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars)))
+(setq default-frame-alist initial-frame-alist)
+(setq window-system-default-frame-alist '((x . ((alpha . 97)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -281,15 +286,6 @@
   (set-face-attribute 'sml/filename nil :inherit '(sml/global mode-line-buffer-id) :weight 'bold)
   (smart-mode-line-enable))
 
-;; Theme
-;; (when (require 'solarized nil t)
-;;   (load-theme 'solarized-dark t))
-;; (load-theme 'zenburn t)
-(setq monokai-use-variable-pitch nil)
-(load-theme 'monokai t)
-(set-face-attribute 'cursor nil :background (face-foreground 'mode-line-buffer-id))
-(set-face-attribute 'fringe nil :foreground "dark slate gray") ;; dim gray is also a good option
-
 ;; Auto Complete
 ;; (eval-after-load "auto-complete"
 ;;   '(progn
@@ -343,6 +339,7 @@
 ;; diff-hl
 (eval-after-load "diff-hl"
   '(progn
+     (setq diff-hl-draw-borders nil)
      (global-diff-hl-mode)
      (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)))
 
