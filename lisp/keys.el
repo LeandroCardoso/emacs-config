@@ -21,6 +21,20 @@
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
 (global-set-key (kbd "<f1> x") 'which-key-show-top-level)
+(global-set-key (kbd "C-c m") 'woman)
+
+;; unset compose-mail keys to use it with magit
+(global-unset-key (kbd "C-x m")) ;; compose-mail
+(global-unset-key (kbd "C-x 4 m")) ;; compose-mail-other-window
+(global-unset-key (kbd "C-x 5 m")) ;; compose-mail-other-frame
+;; magit
+(global-set-key (kbd "C-x m m") 'magit-dispatch-popup)
+(global-set-key (kbd "C-x m f") 'magit-file-popup)
+(global-set-key (kbd "C-x m s") 'magit-status)
+(global-set-key (kbd "C-x m i") 'magit-init)
+(global-set-key (kbd "C-x m c") 'magit-clone)
+
+
 (global-set-key (kbd "C-c t") 'transpose-paragraphs)
 ;; FIX subword-mode-map remaping
 ;;(global-set-key (kbd "C-T") 'transpose-words) ;; original transpose-words is remaped to
