@@ -16,6 +16,11 @@
 ;; this is more efficient
 (setq magit-process-connection-type nil)
 
+;; flycheck
+;; launch external process is slow in Windows, so we don't want to use the new-line option
+(setq flycheck-check-syntax-automatically '(save idle-change mode-enable))
+
+;; spell
 (setenv "DICPATH" "c:\\msys32\\local\\dicts")
 (setenv "DICTIONARY" "en_US")
 

@@ -182,7 +182,7 @@
 
 ;; Font
 (when (eq system-type 'gnu/linux)
-  (set-default-font "Source Code Pro-10.5" t t)
+  (set-frame-font "Source Code Pro-10.5" t t)
   (set-face-attribute 'default nil :family "Source Code Pro" :height 105)) ;; hack to work with emacsclient)
 
 
@@ -304,13 +304,13 @@
 (eval-after-load "company"
   '(progn
      (add-hook 'c-mode-common-hook
-               '(lambda ()
-                  (add-to-list (make-local-variable 'company-backends)
-                               '(company-dabbrev-code :with company-yasnippet))))
+               (lambda ()
+                 (add-to-list (make-local-variable 'company-backends)
+                              '(company-dabbrev-code :with company-yasnippet))))
      (add-hook 'nxml-mode-hook
-               '(lambda ()
-                  (add-to-list (make-local-variable 'company-backends)
-                               '(company-dabbrev :with company-yasnippet))))
+               (lambda ()
+                 (add-to-list (make-local-variable 'company-backends)
+                              '(company-dabbrev :with company-yasnippet))))
      ))
 
 
@@ -350,7 +350,10 @@
 (add-hook 'desktop-after-read-hook 'set-custom-frame-title)
 (add-hook 'desktop-save-hook 'set-custom-frame-title)
 
-;; Faces
+;; flycheck
+(add-hook 'after-init-hook 'global-flycheck-mode)
+
+;; faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)
 (set-face-attribute 'woman-bold nil :inherit '(Man-overstrike))
