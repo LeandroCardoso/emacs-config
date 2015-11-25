@@ -14,7 +14,6 @@
                 transpose-frame
                 company
                 smex
-                company
                 which-key
                 aggressive-indent
                 diff-hl))
@@ -304,10 +303,6 @@
 ;; TODO delete semantic from c-mode and c++-mode and enable ispell to text-mode and org-mode
 (eval-after-load "company"
   '(progn
-     (add-hook 'org-mode-hook
-               '(lambda ()
-                  (set (make-local-variable 'company-frontends)
-                       '(company-preview-if-just-one-frontend company-echo-frontend))))
      (add-hook 'c-mode-common-hook
                '(lambda ()
                   (add-to-list (make-local-variable 'company-backends)
