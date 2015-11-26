@@ -28,11 +28,17 @@
 (global-unset-key (kbd "C-x 4 m")) ;; compose-mail-other-window
 (global-unset-key (kbd "C-x 5 m")) ;; compose-mail-other-frame
 ;; magit
-(global-set-key (kbd "C-x m m") 'magit-dispatch-popup)
-(global-set-key (kbd "C-x m f") 'magit-file-popup)
-(global-set-key (kbd "C-x m s") 'magit-status)
-(global-set-key (kbd "C-x m i") 'magit-init)
-(global-set-key (kbd "C-x m c") 'magit-clone)
+(defvar magit-global-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "m" 'magit-dispatch-popup)
+    (define-key map "f" 'magit-file-popup)
+    (define-key map "s" 'magit-status)
+    (define-key map "i" 'magit-init)
+    (define-key map "c" 'magit-clone)
+    map)
+  "keymap for global magit commands")
+(defalias 'magit-global-keymap magit-global-keymap)
+(global-set-key (kbd "C-x m") 'magit-global-keymap)
 
 
 (global-set-key (kbd "C-c t") 'transpose-paragraphs)
