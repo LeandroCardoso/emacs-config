@@ -317,6 +317,10 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (ido-mode t)
+(ido-ubiquitous-mode t)
+;; Enable ido in dired commands
+(put 'dired-do-copy   'ido nil)
+(put 'dired-do-rename 'ido nil)
 
 (eval-after-load "smex"
   '(smex-initialize))
@@ -352,6 +356,7 @@
 
 ;; flycheck
 (add-hook 'after-init-hook 'global-flycheck-mode)
+(setq flycheck-completion-system 'ido)
 
 ;; faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
