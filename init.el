@@ -15,7 +15,6 @@
                 company
                 smex
                 which-key
-                aggressive-indent
                 diff-hl))
   (require mode nil t))
 
@@ -337,8 +336,8 @@
      (which-key-mode)))
 
 ;; aggressive-indent-mode
-(eval-after-load "aggressive-indent"
-  '(global-aggressive-indent-mode))
+;; (eval-after-load "aggressive-indent"
+;;   '(global-aggressive-indent-mode))
 
 ;; diff-hl
 (eval-after-load "diff-hl"
