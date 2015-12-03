@@ -334,6 +334,8 @@
   '(progn
      ;;(setq which-key-popup-type 'side-window)
      (setq which-key-side-window-location 'bottom)
+     (setq which-key-idle-delay 0.5)
+     (setq which-key-max-description-length 50)
      (which-key-mode)))
 
 ;; aggressive-indent-mode
