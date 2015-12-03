@@ -29,6 +29,11 @@
 
 (setenv "GTAGSFORCECPP")
 
+;; projectile
+(eval-after-load "projectile"
+  '(add-to-list 'projectile-project-root-files-bottom-up ".tfignore"))
+
+
 ;; MS VS
 (require 'find-file)
 (add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))

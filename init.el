@@ -15,7 +15,8 @@
                 company
                 smex
                 which-key
-                diff-hl))
+                diff-hl
+                projectile))
   (require mode nil t))
 
 ;; Theme
@@ -356,6 +357,10 @@
 ;; flycheck
 (add-hook 'after-init-hook 'global-flycheck-mode)
 (setq flycheck-completion-system 'ido)
+
+;; projectile
+(eval-after-load "projectile"
+  '(projectile-global-mode))
 
 ;; faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
