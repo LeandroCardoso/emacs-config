@@ -27,6 +27,7 @@
 (global-unset-key (kbd "C-x m")) ;; compose-mail
 (global-unset-key (kbd "C-x 4 m")) ;; compose-mail-other-window
 (global-unset-key (kbd "C-x 5 m")) ;; compose-mail-other-frame
+
 ;; magit
 (defvar magit-global-keymap
   (let ((map (make-sparse-keymap)))
@@ -36,7 +37,7 @@
     (define-key map "i" 'magit-init)
     (define-key map "c" 'magit-clone)
     map)
-  "keymap for global magit commands")
+  "Keymap for global magit commands")
 (defalias 'magit-global-keymap magit-global-keymap)
 (global-set-key (kbd "C-x m") 'magit-global-keymap)
 
@@ -54,11 +55,20 @@
 (global-set-key (kbd "M-<down>") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-up-line)
 
-;; whitespace
-(global-set-key (kbd "C-c w") 'whitespace-cleanup-region)
-(global-set-key (kbd "C-c W") 'whitespace-cleanup)
-(global-set-key (kbd "C-c M-w") 'whitespace-mode)
-(global-set-key (kbd "C-c M-W") 'whitespace-newline-mode)
+;; whitespace map
+(defvar whitespace-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "w" 'whitespace-mode)
+    (define-key map "n" 'whitespace-newline-mode)
+    (define-key map "W" 'whitespace-toggle-options)
+    (define-key map "C" 'whitespace-cleanup)
+    (define-key map "c" 'whitespace-cleanup-region)
+    (define-key map "t" 'delete-trailing-whitespace)
+    (define-key map "r" 'delete-whitespace-rectangle)
+    map)
+  "Keymap for whitespace commands")
+(defalias 'whitespace-keymap whitespace-keymap)
+(global-set-key (kbd "C-c w") 'whitespace-keymap)
 
 ;; smex
 (eval-after-load "smex"
