@@ -362,7 +362,9 @@
 
 ;; projectile
 (eval-after-load "projectile"
-  '(projectile-global-mode))
+  '(progn
+     (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+     (projectile-global-mode)))
 
 ;; faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))

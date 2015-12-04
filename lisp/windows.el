@@ -31,7 +31,15 @@
 
 ;; projectile
 (eval-after-load "projectile"
-  '(add-to-list 'projectile-project-root-files-bottom-up ".tfignore"))
+  '(progn
+     (add-to-list 'projectile-project-root-files-bottom-up ".tfignore") ; tfs
+     (add-to-list 'projectile-project-root-files-bottom-up "view.dat")  ; clearcase
+     (dolist (item '("Release" "Debug"))
+       (add-to-list 'projectile-globally-ignored-directories item))
+     (dolist (item '("sdf" "suo" "log" "exp" "map"))
+             (add-to-list 'projectile-globally-ignored-file-suffixes item))
+     (when (executable-find "find") ; use external find if we have it
+       (setq projectile-indexing-method 'alien))))
 
 
 ;; MS VS
@@ -94,6 +102,32 @@
   (interactive)
   (let ((explicit-shell-file-name "bash"))
     (call-interactively 'shell)))
+
+(defun msvs-set-compile-command ()
+  "TODO"
+  (interactive)
+  (setq compile-command
+        (if (projectile-project-p)
+            (cond
+             ((string-match-p "Odyssey" (projectile-project-root)) ; odyssey tfs
+              (concat "build.cmd 12 Release Build "
+                      (convert-standard-filename (projectile-project-root))
+                      "Src\\"))
+             ((string-match-p "Opteva" (projectile-project-root)) ; opteva tf
+              (concat "build.cmd 10 Release Build "
+                      (convert-standard-filename (projectile-project-root))
+                      "Src\\"))
+             ((file-exists-p (concat (projectile-project-root) "view.dat"))
+              "build.cmd 12 Release Build") ; opteva clearcase
+             (t "build.cmd 12 Release Build") ; undefined with project
+             )
+          "build.cmd 12 Release Build")) ; undefined without project
+  (when (projectile-project-p)
+    (require 'files-x)
+    (create-dir-local-file (projectile-project-root))
+    (modify-dir-local-variable nil 'compile-command compile-command 'add-or-replace)
+    (save-buffer)))
+
 
 (defun xfs-start (&optional ARG)
   "Start the Diebold XFS windows service.

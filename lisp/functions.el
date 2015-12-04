@@ -46,14 +46,14 @@ Position the cursor at its beginning, according to the current mode."
   "Duplicate the active region or current line
 With optinal arg, duplicate arg times"
   (interactive "*p")
-  (if (use-region-p)
-      (setq buffer (buffer-substring (region-beginning) (region-end)))
-    (setq buffer (buffer-substring (point-at-bol) (point-at-eol))))
-  (save-excursion
-    (end-of-line)
-    (dotimes (i arg)
-      (insert "\n")
-      (insert buffer)))
+  (let ((buffer (if (use-region-p)
+                    (buffer-substring (region-beginning) (region-end))
+                  (buffer-substring (point-at-bol) (point-at-eol)))))
+    (save-excursion
+      (end-of-line)
+      (dotimes (i arg)
+        (insert "\n")
+        (insert buffer))))
   ;; line-move-1 keeps the cursor at the original position
   (line-move-1 (or arg 1)))
 
@@ -78,13 +78,13 @@ bottom of the buffer stack."
   (switch-to-buffer
    (if (<= arg 1) (other-buffer (current-buffer))
      (nth arg
-	  (apply 'nconc
-		 (mapcar
-		  (lambda (buf)
-		    (if (= ?\  (string-to-char (buffer-name buf)))
-			nil
-		      (list buf)))
-		  (buffer-list)))))))
+      (apply 'nconc
+         (mapcar
+          (lambda (buf)
+            (if (= ?\  (string-to-char (buffer-name buf)))
+            nil
+              (list buf)))
+          (buffer-list)))))))
 
 
 (defun smart-dot-comma ()
@@ -97,11 +97,11 @@ bottom of the buffer stack."
 (defun mktags (DIR)
   "Create a TAGS file at the given directory for c++ files"
   (interactive "DRoot directory: ")
-  (setq old-def-dir default-directory)
-  (cd-absolute DIR)
-  (message (concat "Creating TAGS at " DIR))
-  (call-process "ctags" nil "*Messages*" nil "-e" "-R" "--extra=+q" "--languages=c++")
-  (cd-absolute old-def-dir))
+  (let ((old-def-dir default-directory)
+        (cd-absolute DIR)
+        (message (concat "Creating TAGS at " DIR))
+        (call-process "ctags" nil "*Messages*" nil "-e" "-R" "--extra=+q" "--languages=c++")
+        (cd-absolute old-def-dir))))
 
 
 (defun force-backup-buffer ()
@@ -161,3 +161,10 @@ With prefix P, create local abbrev. Otherwise it will be global."
         (list "emacs"
               (when (boundp 'desktop-dirname)
                 (list " / " (file-name-nondirectory (directory-file-name desktop-dirname)))))))
+
+(defun create-dir-local-file (DIRECTORY)
+  "Create the `dir-locals-file in the DIRECTORY if it does not exist yet."
+  (let ((full-dir-locals-file (concat DIRECTORY dir-locals-file)))
+    (when (not (file-exists-p full-dir-locals-file))
+      ;;(with-temp-file full-dir-locals-file)))
+      (write-region "" nil full-dir-locals-file))))
