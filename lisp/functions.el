@@ -97,11 +97,11 @@ bottom of the buffer stack."
 (defun mktags (DIR)
   "Create a TAGS file at the given directory for c++ files"
   (interactive "DRoot directory: ")
-  (let ((old-def-dir default-directory)
+  (let ((old-def-dir default-directory))
         (cd-absolute DIR)
         (message (concat "Creating TAGS at " DIR))
         (call-process "ctags" nil "*Messages*" nil "-e" "-R" "--extra=+q" "--languages=c++")
-        (cd-absolute old-def-dir))))
+        (cd-absolute old-def-dir)))
 
 
 (defun force-backup-buffer ()
