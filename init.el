@@ -356,8 +356,8 @@
 (add-hook 'desktop-save-hook 'set-custom-frame-title)
 
 ;; flycheck
-(add-hook 'after-init-hook 'global-flycheck-mode)
-(setq flycheck-completion-system 'ido)
+;; (add-hook 'after-init-hook 'global-flycheck-mode)
+;; (setq flycheck-completion-system 'ido)
 
 ;; projectile
 (eval-after-load "projectile"

@@ -21,6 +21,7 @@
 (setq flycheck-check-syntax-automatically '(save idle-change mode-enable))
 
 ;; spell
+(setq ispell-dictionary "en_US")
 (setenv "DICPATH" "c:\\msys32\\local\\dicts")
 (setenv "DICTIONARY" "en_US")
 
