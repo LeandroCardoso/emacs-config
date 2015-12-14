@@ -32,8 +32,6 @@
 ;; My functions
 (load "functions")
 
-(set-custom-frame-title)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -82,6 +80,7 @@
  '(emacs-lisp-mode-hook (quote (turn-on-eldoc-mode)))
  '(ff-case-fold-search t)
  '(fill-column 100)
+ '(frame-resize-pixelwise t)
  '(global-auto-revert-mode t)
  '(global-company-mode t)
  '(global-font-lock-mode t nil (font-lock))
@@ -188,7 +187,7 @@
 
 ;; Start the emacs server needed by the emacsclient
 (when (require 'server nil t)
-  (unless (eq (server-running-p) t)
+  (unless (server-running-p)
     (server-start)
     (message "Server started")))
 
