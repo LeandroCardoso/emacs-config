@@ -359,6 +359,12 @@
 ;; (add-hook 'after-init-hook 'global-flycheck-mode)
 ;; (setq flycheck-completion-system 'ido)
 
+;; gtags
+;; (add-hook 'c-mode-common-hook
+;;           (lambda ()
+;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+;;               (ggtags-mode 1))))
+
 ;; projectile
 (eval-after-load "projectile"
   '(progn

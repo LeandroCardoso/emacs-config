@@ -1,5 +1,10 @@
 (set-frame-font "Consolas 10" t t)
 
+;; Hack to maximize frame in Windows
+(add-hook 'after-make-frame-functions
+          '(lambda(FRAME)
+             (modify-frame-parameters FRAME '((fullscreen . maximized)))))
+
 (setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
 (setq auto-save-file-name-transforms '((".*" "c:/DBDProj/auto-save/" t)))
 
@@ -28,7 +33,11 @@
 ;; this is a very recommended setup
 (setq w32-pipe-read-delay 0)
 
-(setenv "GTAGSFORCECPP")
+;; gtags
+(setq ggtags-highlight-tag nil) ;; this is slow in windows
+(setenv "GTAGSFORCECPP" "1")
+(setenv "GTAGSLIBPATH" (concat "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include:"
+                               "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include"))
 
 ;; projectile
 (eval-after-load "projectile"
