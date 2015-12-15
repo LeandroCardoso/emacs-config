@@ -1,10 +1,5 @@
 (set-frame-font "Consolas 10" t t)
 
-;; Hack to maximize frame in Windows
-(add-hook 'after-make-frame-functions
-          '(lambda(FRAME)
-             (modify-frame-parameters FRAME '((fullscreen . maximized)))))
-
 (setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
 (setq auto-save-file-name-transforms '((".*" "c:/DBDProj/auto-save/" t)))
 
@@ -38,6 +33,19 @@
 (setenv "GTAGSFORCECPP" "1")
 (setenv "GTAGSLIBPATH" (concat "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include:"
                                "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include"))
+
+;; Hack to maximize frame in Windows
+(add-hook 'after-make-frame-functions
+          (lambda(FRAME)
+            (modify-frame-parameters FRAME '((fullscreen . maximized)))))
+
+;; Copy binaries to the pen drive after a successful compilation
+(add-hook 'compilation-finish-functions
+          (lambda (BUFFER STATUS)
+            (when (with-current-buffer BUFFER
+                    (save-excursion
+                      (not (ignore-errors (compilation-next-error 1 nil (point-min))))))
+              (msvs-copy-bin-to-drive))))
 
 ;; projectile
 (eval-after-load "projectile"
@@ -85,7 +93,7 @@
 (add-hook 'nxml-mode-hook 'my-xml-hook)
 
 ;; Variables
-(setq mydrive "F:/")
+(setq mydrive "e:/")
 
 
 ;; Functions
@@ -116,28 +124,63 @@
 (defun msvs-set-compile-command ()
   "TODO"
   (interactive)
-  (setq compile-command
-        (if (projectile-project-p)
-            (cond
-             ((string-match-p "Odyssey" (projectile-project-root)) ; odyssey tfs
+  (if (projectile-project-p)
+      (cond
+       ;; tfs odyssey
+       ((string-match-p "Odyssey" (projectile-project-root))
+        (setq compile-command
               (concat "build.cmd 12 Release Build "
                       (convert-standard-filename (projectile-project-root))
                       "Src\\"))
-             ((string-match-p "Opteva" (projectile-project-root)) ; opteva tf
+        (setq compilation-directory-output
+              (concat (projectile-project-root) "Src/bin/Release/")))
+       ;; tfs opteva
+       ((string-match-p "Opteva" (projectile-project-root))
+        (setq compile-command
               (concat "build.cmd 10 Release Build "
                       (convert-standard-filename (projectile-project-root))
                       "Src\\"))
-             ((file-exists-p (concat (projectile-project-root) "view.dat"))
-              "build.cmd 12 Release Build") ; opteva clearcase
-             (t "build.cmd 12 Release Build") ; undefined with project
-             )
-          "build.cmd 12 Release Build")) ; undefined without project
+        (setq compilation-directory-output
+              (concat (projectile-project-root) "Src/bin/Release/")))
+       ;; clearcase opteva
+       ((file-exists-p (concat (projectile-project-root) "view.dat"))
+        (setq compile-command "build.cmd 12 Release Build")
+        (setq compilation-directory-output
+              (concat (projectile-project-root) "XFSOPT_SRC/Src/Src/bin/Release/")))
+       ;; undefined with project
+       (t
+        (setq compile-command "build.cmd 12 Release Build")
+        (setq compilation-directory-output
+              (concat (projectile-project-root) "Release/"))))
+    ;; undefined without project
+    (setq compile-command "build.cmd 12 Release Build")
+    (setq compilation-directory-output "Release/"))
   (when (projectile-project-p)
     (require 'files-x)
     (create-dir-local-file (projectile-project-root))
     (modify-dir-local-variable nil 'compile-command compile-command 'add-or-replace)
+    (modify-dir-local-variable nil
+                               'compilation-directory-output
+                               compilation-directory-output
+                               'add-or-replace)
     (save-buffer)))
 
+(defun msvs-copy-bin-to-drive ()
+  "Copy binary files to pen-drive.
+Use projectile project name directory when it exists."
+  (interactive)
+  (when (and (boundp 'mydrive)
+             (file-directory-p mydrive)
+             (boundp 'compilation-directory-output)
+             (file-directory-p compilation-directory-output))
+    (let ((dest-dir
+           (concat mydrive (if (projectile-project-p) (projectile-project-name) "bin") "/")))
+      (unless (file-directory-p dest-dir)
+        (make-directory dest-dir))
+      (dolist (FILE (directory-files compilation-directory-output t "\\(dll\\|exe\\|pdb\\)$"))
+        (when (file-newer-than-file-p FILE (concat dest-dir (file-name-nondirectory FILE)))
+          (message "Copying %s to %s" FILE dest-dir)
+          (copy-file FILE dest-dir t))))))
 
 (defun xfs-start (&optional ARG)
   "Start the Diebold XFS windows service.
@@ -310,7 +353,6 @@ Copy .pdb files from DIR to TARGET_DIR if a .dll or .exe with the same base name
           (directory-install proj_bin "C:\\Program Files\\Diebold\\AgilisXFS\\bin")
           (xfs-start))
       (directory-install proj_bin "C:\\Program Files\\Diebold\\AgilisXFS\\bin"))))
-
 
 (defun project-copy-bin-to-drive ()
   "Copy binary files to pen-drive"
