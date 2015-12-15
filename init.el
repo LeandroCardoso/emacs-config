@@ -160,6 +160,7 @@
  '(solarized-use-variable-pitch nil)
  '(split-height-threshold 60)
  '(split-width-threshold 200)
+ '(split-window-preferred-function (quote split-window-sensibly-horizontally))
  '(sql-input-ring-file-name "~/.emacs.d/sql-history")
  '(tab-width 4)
  '(truncate-lines nil)
