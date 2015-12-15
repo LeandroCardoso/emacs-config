@@ -168,3 +168,29 @@ With prefix P, create local abbrev. Otherwise it will be global."
     (when (not (file-exists-p full-dir-locals-file))
       ;;(with-temp-file full-dir-locals-file)))
       (write-region "" nil full-dir-locals-file))))
+
+
+(defun split-window-sensibly-horizontally (&optional window)
+  "Split WINDOW in a way suitable for `display-buffer'.
+WINDOW defaults to the currently selected window.
+
+Replacement for `split-window-sensibly', but perfers
+`split-width-threshold' over `split-height-threshold'."
+  (let ((window (or window (selected-window))))
+    (or (and (window-splittable-p window t)
+	     ;; Split window vertically.
+	     (with-selected-window window
+	       (split-window-right)))
+	(and (window-splittable-p window)
+	     ;; Split window horizontally.
+	     (with-selected-window window
+	       (split-window-below)))
+	(and (eq window (frame-root-window (window-frame window)))
+	     (not (window-minibuffer-p window))
+	     ;; If WINDOW is the only window on its frame and is not the
+	     ;; minibuffer window, try to split it vertically disregarding
+	     ;; the value of `split-height-threshold'.
+	     (let ((split-height-threshold 0))
+	       (when (window-splittable-p window)
+		 (with-selected-window window
+		   (split-window-below))))))))
