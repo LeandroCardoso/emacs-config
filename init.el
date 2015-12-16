@@ -372,6 +372,10 @@
      (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
      (projectile-global-mode)))
 
+;; make local variables not annoying
+(setq enable-local-variables :all)
+
+
 ;; faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)

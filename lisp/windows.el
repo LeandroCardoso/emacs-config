@@ -42,10 +42,8 @@
 ;; Copy binaries to the pen drive after a successful compilation
 (add-hook 'compilation-finish-functions
           (lambda (BUFFER STATUS)
-            (when (with-current-buffer BUFFER
-                    (save-excursion
-                      (not (ignore-errors (compilation-next-error 1 nil (point-min))))))
-              (msvs-copy-bin-to-drive))))
+            (hack-dir-local-variables-non-file-buffer)
+            (msvs-copy-bin-to-drive)))
 
 ;; projectile
 (eval-after-load "projectile"
@@ -121,6 +119,8 @@
   (let ((explicit-shell-file-name "bash"))
     (call-interactively 'shell)))
 
+(make-variable-buffer-local 'compilation-directory-output)
+
 (defun msvs-set-compile-command ()
   "TODO"
   (interactive)
@@ -166,21 +166,25 @@
     (save-buffer)))
 
 (defun msvs-copy-bin-to-drive ()
-  "Copy binary files to pen-drive.
-Use projectile project name directory when it exists."
+  "Copy compilated binary files in `compilation-directory-output' set by `msvs-set-compile-command'
+to the pen-drive defined by `mydrive'.
+Use projectile project name directory as destination directory when it exists."
   (interactive)
-  (when (and (boundp 'mydrive)
+  (when (and (stringp mydrive)
              (file-directory-p mydrive)
-             (boundp 'compilation-directory-output)
+             (stringp compilation-directory-output)
              (file-directory-p compilation-directory-output))
     (let ((dest-dir
-           (concat mydrive (if (projectile-project-p) (projectile-project-name) "bin") "/")))
+           (concat mydrive (if (projectile-project-p) (projectile-project-name) "bin") "/"))
+          (files-copied 0))
       (unless (file-directory-p dest-dir)
         (make-directory dest-dir))
       (dolist (FILE (directory-files compilation-directory-output t "\\(dll\\|exe\\|pdb\\)$"))
         (when (file-newer-than-file-p FILE (concat dest-dir (file-name-nondirectory FILE)))
           (message "Copying %s to %s" FILE dest-dir)
-          (copy-file FILE dest-dir t))))))
+          (copy-file FILE dest-dir t)
+          (setq files-copied (1+ files-copied))))
+      (message "%d files Copied from %s to %s." files-copied compilation-directory-output dest-dir))))
 
 (defun xfs-start (&optional ARG)
   "Start the Diebold XFS windows service.
@@ -395,8 +399,8 @@ TAG comment becomes buffer local."
 
 
 ;; keybindings
-(global-set-key (kbd "<f5>") 'xfs-install)
-(global-set-key (kbd "C-c 1") 'insert-tag-comment)
+(global-set-key (kbd "<f5>") 'msvs-copy-bin-to-drive)
+(global-set-key (kbd "M-<f5>") 'msvs-set-compile-command)
 
 ;; Modes
 (define-generic-mode
