@@ -61,6 +61,11 @@
 ;; MS VS
 (require 'find-file)
 (add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))
+(add-to-list 'auto-mode-alist '("\\.proj\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.vcxproj\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.vcxproj\\.filters\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.props\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.targets\\'" . nxml-mode))
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include" t)
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include" t)
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include\\*" t)

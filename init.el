@@ -204,6 +204,7 @@
 (add-to-list 'auto-mode-alist '("\\.cmd\\'" . dos-mode))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.rc\\'" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
 (eval-after-load "csharp"
   '(add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode)))
 
@@ -284,7 +285,6 @@
   (setq sml/pos-minor-modes-separator "]")
   (setq sml/pre-modes-separator "[")
   (setq sml/shorten-mode-string "")
-  (setq sml/shorten-modes nil)
   (setq sml/show-file-name nil)
   (setq sml/vc-mode-show-backend t)
   (set-face-attribute 'sml/filename nil :inherit '(sml/global mode-line-buffer-id) :weight 'bold)
