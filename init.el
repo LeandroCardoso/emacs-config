@@ -1,5 +1,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
+(let ((default-directory  "~/.emacs.d/packages"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 ;; No need to waste precious desktop space with useless GUI
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -16,7 +19,9 @@
                 smex
                 which-key
                 diff-hl
-                projectile))
+                projectile
+                vc-clearcase
+                ucm))
   (require mode nil t))
 
 ;; Theme
@@ -52,14 +57,6 @@
     ("." "include" "*" "../*" "/usr/include" "/usr/local/include/*")))
  '(column-number-mode t)
  '(comment-column 0)
- '(company-dabbrev-code-ignore-case t)
- '(company-dabbrev-downcase nil)
- '(company-dabbrev-ignore-case t)
- '(company-dabbrev-time-limit 0.03)
- '(company-etags-ignore-case t)
- '(company-idle-delay 0)
- '(company-show-numbers t)
- '(company-transformers (quote (company-sort-by-occurrence)))
  '(compilation-scroll-output (quote first-error))
  '(confirm-kill-emacs (quote y-or-n-p))
  '(cursor-type (quote bar))
@@ -82,7 +79,6 @@
  '(fill-column 100)
  '(frame-resize-pixelwise t)
  '(global-auto-revert-mode t)
- '(global-company-mode t)
  '(global-font-lock-mode t nil (font-lock))
  '(global-hl-line-mode t)
  '(global-subword-mode t)
@@ -147,11 +143,6 @@
  '(org-src-fontify-natively t)
  '(org-startup-folded nil)
  '(org-startup-truncated nil)
- '(semantic-default-submodes
-   (quote
-    (global-semantic-highlight-func-mode global-semantic-idle-scheduler-mode global-semanticdb-minor-mode global-semantic-idle-summary-mode global-semantic-idle-local-symbol-highlight-mode)))
- '(semantic-imenu-summary-function (quote semantic-format-tag-name))
- '(semantic-mode t)
  '(shift-select-mode nil)
  '(show-paren-mode t nil (paren))
  '(size-indication-mode t)
@@ -191,6 +182,18 @@
   (unless (server-running-p)
     (server-start)
     (message "Server started")))
+
+
+;; Semantic
+(setq semantic-default-submodes '(global-semantic-highlight-func-mode
+                                  global-semantic-idle-local-symbol-highlight-mode
+                                  global-semantic-idle-scheduler-mode
+                                  global-semantic-idle-summary-mode
+                                  global-semanticdb-minor-mode))
+(setq semantic-imenu-summary-function 'semantic-format-tag-name)
+(setq semantic-idle-work-parse-neighboring-files-flag t)
+(setq semantic-idle-work-update-headers-flag t)
+(semantic-mode)
 
 
 ;; Spell
@@ -299,19 +302,40 @@
 ;;      (setq-default ac-sources ac-sources)
 ;;      (add-hook 'c-mode-common-hook (lambda() (add-to-list 'ac-sources 'ac-source-semantic)))))
 
-;; Company
-;; TODO delete semantic from c-mode and c++-mode and enable ispell to text-mode and org-mode
+;; company
 (eval-after-load "company"
   '(progn
      (add-hook 'c-mode-common-hook
                (lambda ()
                  (add-to-list (make-local-variable 'company-backends)
-                              '(company-dabbrev-code :with company-yasnippet))))
+                              '(company-semantic :with company-yasnippet :with company-keywords))))
      (add-hook 'nxml-mode-hook
                (lambda ()
                  (add-to-list (make-local-variable 'company-backends)
-                              '(company-dabbrev :with company-yasnippet))))
+                              '(company-nxml :with company-dabbrev))))
      ))
+
+(setq company-dabbrev-downcase nil)
+(setq company-dabbrev-ignore-case t)
+;; (setq company-dabbrev-time-limit 0.05)
+
+(setq company-dabbrev-code-everywhere t)
+(setq company-dabbrev-code-ignore-case t)
+;; (setq company-dabbrev-code-time-limit 0.05)
+
+(setq company-auto-complete t)
+;; TODO add c++ keywords to company-keywords-alist
+;; (setq company-idle-delay 0.5)
+;; (setq company-minimum-prefix-length 3)
+(setq company-show-numbers t)
+(setq company-transformers '(company-sort-by-backend-importance company-sort-by-occurrence))
+(global-company-mode)
+;; TODO key-bindings
+;; semantic-ia-fast-jump
+;; semantic-ia-describe-class
+;; semanticdb-cleanup-cache-files
+;; semantic-decoration-all-include-summary
+;; semantic-analyze-proto-impl-toggle
 
 
 (defalias 'yes-or-no-p 'y-or-n-p)
