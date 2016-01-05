@@ -159,8 +159,8 @@ With prefix P, create local abbrev. Otherwise it will be global."
 (defun set-custom-frame-title ()
   (setq frame-title-format
         (list "emacs"
-              (when (stringp 'desktop-dirname)
-                (list " / " (file-name-nondirectory (directory-file-name desktop-dirname)))))))
+              (when (boundp 'desktop-dirname)
+                (list " - " (file-name-nondirectory (directory-file-name desktop-dirname)))))))
 
 (defun create-dir-local-file (DIRECTORY)
   "Create the `dir-locals-file in the DIRECTORY if it does not exist yet."
