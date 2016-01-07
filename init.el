@@ -1,8 +1,5 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
-(let ((default-directory  "~/.emacs.d/packages"))
-  (normal-top-level-add-subdirs-to-load-path))
-
 ;; No need to waste precious desktop space with useless GUI
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -19,9 +16,7 @@
                 smex
                 which-key
                 diff-hl
-                projectile
-                vc-clearcase
-                ucm))
+                projectile))
   (require mode nil t))
 
 ;; Theme
@@ -149,9 +144,6 @@
  '(smex-save-file "~/.emacs.d/.smex-items")
  '(solarized-use-more-italic t)
  '(solarized-use-variable-pitch nil)
- '(split-height-threshold 60)
- '(split-width-threshold 200)
- '(split-window-preferred-function (quote split-window-sensibly-horizontally))
  '(sql-input-ring-file-name "~/.emacs.d/sql-history")
  '(tab-width 4)
  '(truncate-lines nil)
@@ -251,6 +243,11 @@
 (ad-activate 'find-tag-other-window)
 (ad-activate 'find-tag-other-frame)
 
+;; split window
+(setq split-height-threshold nil)
+(setq split-width-threshold 200)
+(setq split-window-preferred-function 'split-window-sensibly-horizontally)
+
 ;; yasnippet needs this
 (eval-after-load "yasnippet"
   '(yas-reload-all))
@@ -308,7 +305,7 @@
      (add-hook 'c-mode-common-hook
                (lambda ()
                  (add-to-list (make-local-variable 'company-backends)
-                              '(company-semantic :with company-yasnippet :with company-keywords))))
+                              '(company-semantic :with company-yasnippet company-keywords))))
      (add-hook 'nxml-mode-hook
                (lambda ()
                  (add-to-list (make-local-variable 'company-backends)
@@ -324,11 +321,13 @@
 ;; (setq company-dabbrev-code-time-limit 0.05)
 
 (setq company-auto-complete t)
+(setq company-auto-complete-chars "([{.-")
 ;; TODO add c++ keywords to company-keywords-alist
-;; (setq company-idle-delay 0.5)
+;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
+(setq company-idle-delay 0.3)
 ;; (setq company-minimum-prefix-length 3)
 (setq company-show-numbers t)
-(setq company-transformers '(company-sort-by-backend-importance company-sort-by-occurrence))
+(setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
 (global-company-mode)
 ;; TODO key-bindings
 ;; semantic-ia-fast-jump

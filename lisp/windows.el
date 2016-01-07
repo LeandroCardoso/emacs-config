@@ -52,7 +52,7 @@
      (add-to-list 'projectile-project-root-files-bottom-up "view.dat")  ; clearcase
      (dolist (item '("Release" "Debug"))
        (add-to-list 'projectile-globally-ignored-directories item))
-     (dolist (item '("sdf" "suo" "log" "exp" "map"))
+     (dolist (item '("sdf" "suo" "log" "exp" "map" "obj"))
              (add-to-list 'projectile-globally-ignored-file-suffixes item))
      (when (executable-find "find") ; use external find if we have it
        (setq projectile-indexing-method 'alien))))
@@ -78,7 +78,9 @@
        #'(lambda (directory) (locate-dominating-file directory "view.dat"))
        #'(lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
 
+(semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c-mode)
 (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c++-mode)
+(semantic-add-system-include "C:/Program Files/Microsoft Visual Studio 12.0/VC/include" 'c-mode)
 (semantic-add-system-include "C:/Program Files/Microsoft Visual Studio 12.0/VC/include" 'c++-mode)
 
 ;; An ungly hack to idenfity c++ extensionless files as c++. Thanks ISO c++.
@@ -115,21 +117,38 @@
 
 ;; Functions
 
-;; TODO use thing-at-point as default query string
 (defun msdn-search (QUERY)
   "Query MSDN for the QUERY string parameter"
-  (interactive "sQuery string: ")
+  (interactive (list (read-string (concat "MSDN (" (word-at-point) "): ")
+                                  nil
+                                  'msdn-search-history
+                                  (word-at-point)
+                                  nil)))
   (browse-url
    (concat "https://duckduckgo.com/?q=!ducky+"
            QUERY
            "+site:msdn.microsoft.com")))
 
-;; TODO use thing-at-point as default query string
 (defun cppreference (QUERY)
-  "Query MSDN for the QUERY string parameter"
-  (interactive "sQuery string: ")
+  "Query cppreference for the QUERY string parameter"
+  (interactive (list (read-string (concat "cppreference (" (word-at-point) "): ")
+                                  nil
+                                  'cppreference-search-history
+                                  (word-at-point)
+                                  nil)))
   (browse-url
    (concat "https://duckduckgo.com/?q=!cppr+"
+           QUERY)))
+
+(defun google (QUERY)
+  "Query google for the QUERY string parameter"
+  (interactive (list (read-string (concat "google (" (word-at-point) "): ")
+                                  nil
+                                  'google-search-history
+                                  (word-at-point)
+                                  nil)))
+  (browse-url
+   (concat "https://www.google.com/search?q="
            QUERY)))
 
 (defun shell-bash ()
@@ -138,7 +157,7 @@
   (let ((explicit-shell-file-name "bash"))
     (call-interactively 'shell)))
 
-(make-variable-buffer-local 'compilation-directory-output)
+;; (make-variable-buffer-local 'compilation-directory-output)
 
 (defun msvs-set-compile-command ()
   "TODO"
@@ -258,38 +277,11 @@ Use projectile project name directory as destination directory when it exists."
 
 ;; TODO save in .dir-locals.el
 ;; add-dir-local-variable
-
 (defun project-set-directory (ROOT_DIR BIN_DIR)
   "Set project directories"
-  (setq proj_root ROOT_DIR)
-  (set-variable 'proj_bin (concat ROOT_DIR BIN_DIR))
   (require 'find-file)
   (add-to-list 'cc-search-directories (concat ROOT_DIR "/*/*/*/*/*/*") t)
-  (add-to-list 'tags-table-list (concat ROOT_DIR "/TAGS"))
-  (setq company-clang-arguments (concat "-I. -I" ROOT_DIR "/*/*/*")))
-
-
-(defun opteva-cc-set-project (DIR)
-  "Set Opteva ClearCase project directories"
-  (interactive "DOpteva project root source dir: ")
-  (setq compile-command "build.cmd 10 Release Build")
-  (project-set-directory DIR "/XFSOPT_SRC/Src/Src/bin/Release/"))
-
-
-(defun opteva-tfs-set-project (DIR)
-  "Set Opteava TFS project directories"
-  (interactive "DOpteva project solution source dir: ")
-  (setq compile-command
-        (concat "build.cmd 10 Release Build " (convert-standard-filename DIR)))
-  (project-set-directory DIR "bin/Release/"))
-
-
-(defun odyssey-set-project (DIR)
-  "Set Odyssey project directories"
-  (interactive "DOdyssey project solution source dir: ")
-  (setq compile-command
-        (concat "build.cmd 12 Release Build " (convert-standard-filename DIR)))
-  (project-set-directory DIR "/bin/Release/"))
+  (add-to-list 'tags-table-list (concat ROOT_DIR "/TAGS")))
 
 
 (defun directory-backup (DIR)
@@ -376,17 +368,6 @@ Copy .pdb files from DIR to TARGET_DIR if a .dll or .exe with the same base name
           (directory-install proj_bin "C:\\Program Files\\Diebold\\AgilisXFS\\bin")
           (xfs-start))
       (directory-install proj_bin "C:\\Program Files\\Diebold\\AgilisXFS\\bin"))))
-
-(defun project-copy-bin-to-drive ()
-  "Copy binary files to pen-drive"
-  (interactive)
-  (if (or (not (boundp 'proj_bin)) (not mydrive))
-      (error "Project not set. Use odyssey-set-project or opteva-set-project")
-    (progn
-      (when (file-exists-p mydrive)
-        (when (file-exists-p (concat mydrive "/Release")) (delete-directory (concat mydrive "/Release") t))
-        (copy-directory proj_bin mydrive)))))
-
 
 (defun insert-tag-comment (&optional ARG)
   "Insert a comment in the form (TAG) using the TAG set by `set-tag-comment'.
