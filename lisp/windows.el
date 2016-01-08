@@ -119,10 +119,10 @@
 
 (defun msdn-search (QUERY)
   "Query MSDN for the QUERY string parameter"
-  (interactive (list (read-string (concat "MSDN (" (word-at-point) "): ")
+  (interactive (list (read-string (concat "MSDN (" (thing-at-point 'symbol t) "): ")
                                   nil
                                   'msdn-search-history
-                                  (word-at-point)
+                                  (thing-at-point 'symbol t)
                                   nil)))
   (browse-url
    (concat "https://duckduckgo.com/?q=!ducky+"
@@ -131,10 +131,10 @@
 
 (defun cppreference (QUERY)
   "Query cppreference for the QUERY string parameter"
-  (interactive (list (read-string (concat "cppreference (" (word-at-point) "): ")
+  (interactive (list (read-string (concat "cppreference (" (thing-at-point 'symbol t) "): ")
                                   nil
                                   'cppreference-search-history
-                                  (word-at-point)
+                                  (thing-at-point 'symbol t)
                                   nil)))
   (browse-url
    (concat "https://duckduckgo.com/?q=!cppr+"
@@ -142,10 +142,10 @@
 
 (defun google (QUERY)
   "Query google for the QUERY string parameter"
-  (interactive (list (read-string (concat "google (" (word-at-point) "): ")
+  (interactive (list (read-string (concat "google (" (thing-at-point 'symbol t) "): ")
                                   nil
                                   'google-search-history
-                                  (word-at-point)
+                                  (thing-at-point 'symbol t)
                                   nil)))
   (browse-url
    (concat "https://www.google.com/search?q="
