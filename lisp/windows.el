@@ -73,6 +73,10 @@
 ;; CEDET
 (setq semanticdb-project-root-functions
       (list
+       #'(lambda (directory)
+           (when (featurep 'projectile)
+             (let ((default-directory directory))
+               (projectile-project-root))))
        #'(lambda (directory) (locate-dominating-file directory ".git"))
        #'(lambda (directory) (locate-dominating-file directory ".tfignore"))
        #'(lambda (directory) (locate-dominating-file directory "view.dat"))
