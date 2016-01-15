@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Readme <update-group> section
+# key: updategroup
+# binding: direct-keybinding
+# --
+<update-group version="$1">
+	$0
+</update-group>

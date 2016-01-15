@@ -1,0 +1,13 @@
+
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Readme <update> section
+# key: update
+# binding: direct-keybinding
+# --
+<update id="$1" type="${2:$$(yas-choose-value '("feature" "firmware" "fix"))}">
+	<summary>$0</summary>
+    <details>
+    </details>
+    <solution>
+    </solution>
+</update>
