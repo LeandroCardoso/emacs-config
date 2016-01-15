@@ -304,12 +304,12 @@
   '(progn
      (add-hook 'c-mode-common-hook
                (lambda ()
-                 (add-to-list (make-local-variable 'company-backends)
-                              '(company-semantic :with company-yasnippet company-keywords))))
+                 (make-local-variable 'company-backends)
+                 (push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
      (add-hook 'nxml-mode-hook
                (lambda ()
-                 (add-to-list (make-local-variable 'company-backends)
-                              '(company-nxml :with company-dabbrev))))
+                 (make-local-variable 'company-backends)
+                 (push '(company-nxml company-dabbrev company-yasnippet) company-backends)))
      ))
 
 (setq company-dabbrev-downcase nil)
@@ -357,7 +357,7 @@
   '(progn
      ;;(setq which-key-popup-type 'side-window)
      (setq which-key-side-window-location 'bottom)
-     (setq which-key-idle-delay 0.5)
+     ;; (setq which-key-idle-delay 1.0)
      (setq which-key-max-description-length 50)
      (which-key-mode)))
 
@@ -369,8 +369,9 @@
 (eval-after-load "diff-hl"
   '(progn
      (setq diff-hl-draw-borders nil)
-     (global-diff-hl-mode)
-     (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)))
+     ;; (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
+     ;; (global-diff-hl-mode)
+     ))
 
 ;; magit
 (setq magit-popup-use-prefix-argument 'default)
