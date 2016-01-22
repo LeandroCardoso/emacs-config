@@ -15,6 +15,7 @@
 
 ;; this is more efficient
 (setq magit-process-connection-type nil)
+(setq magit-refresh-status-buffer nil)
 
 ;; flycheck
 ;; launch external process is slow in Windows, so we don't want to use the new-line option
@@ -104,8 +105,8 @@
                "*.h *.hpp *.hxx *.c *.cpp *.cxx *.sln *.vcxproj *.vcxproj.filters *.msbuild")
              t)
 
-(add-to-list 'tags-table-list "c:/DBDProj/TAGS.MS-SDK")
-(add-to-list 'tags-table-list "c:/DBDProj/TAGS.VC")
+;; (add-to-list 'tags-table-list "c:/DBDProj/TAGS.MS-SDK")
+;; (add-to-list 'tags-table-list "c:/DBDProj/TAGS.VC")
 
 
 ;; Hooks
