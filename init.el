@@ -324,7 +324,7 @@
 (setq company-auto-complete-chars "([{.-")
 ;; TODO add c++ keywords to company-keywords-alist
 ;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
-(setq company-idle-delay 0.3)
+;; (setq company-idle-delay 0.5)
 ;; (setq company-minimum-prefix-length 3)
 (setq company-show-numbers t)
 (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
