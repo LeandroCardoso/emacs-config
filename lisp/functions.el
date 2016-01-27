@@ -28,6 +28,12 @@ Position the cursor at its beginning, according to the current mode."
     (newline-and-indent))
 
 
+(defun toggle-indent-tabs-mode ()
+  "Toggle the value of `indent-tabs-mode'."
+  (interactive)
+  (message "indent-tabs-mode: %S" (setq indent-tabs-mode (not indent-tabs-mode))))
+
+
 (defun indent-buffer ()
   "Indent the currently visited buffer."
   (interactive)
