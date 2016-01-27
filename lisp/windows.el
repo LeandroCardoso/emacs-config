@@ -222,7 +222,7 @@ Use projectile project name directory as destination directory when it exists."
           (files-copied 0))
       (unless (file-directory-p dest-dir)
         (make-directory dest-dir))
-      (dolist (FILE (directory-files compilation-directory-output t "\\(dll\\|exe\\|pdb\\)$"))
+      (dolist (FILE (directory-files compilation-directory-output t "\\(dll\\|exe\\|msi\\|pdb\\)$"))
         (when (file-newer-than-file-p FILE (concat dest-dir (file-name-nondirectory FILE)))
           (message "Copying %s to %s" FILE dest-dir)
           (copy-file FILE dest-dir t)
