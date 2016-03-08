@@ -15,8 +15,7 @@
                 company
                 smex
                 which-key
-                diff-hl
-                projectile))
+                diff-hl))
   (require mode nil t))
 
 ;; Theme
@@ -185,6 +184,12 @@
 (setq semantic-imenu-summary-function 'semantic-format-tag-name)
 (setq semantic-idle-work-parse-neighboring-files-flag t)
 (setq semantic-idle-work-update-headers-flag t)
+(setq semanticdb-project-root-functions
+      (list
+       #'(lambda (directory) (locate-dominating-file directory ".git"))
+       #'(lambda (directory) (locate-dominating-file directory ".tfignore"))
+       #'(lambda (directory) (locate-dominating-file directory "view.dat"))
+       #'(lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
 (semantic-mode)
 
 
@@ -288,6 +293,10 @@
   (setq sml/show-file-name nil)
   (setq sml/vc-mode-show-backend t)
   (set-face-attribute 'sml/filename nil :inherit '(sml/global mode-line-buffer-id) :weight 'bold)
+  (add-to-list 'sml/replacer-regexp-list '(".*" (lambda (str)
+                                                  (if (project-name)
+                                                      (concat ":" (project-name) ":")
+                                                    (match-string 0 str)))) t)
   (smart-mode-line-enable))
 
 ;; Auto Complete
@@ -305,7 +314,8 @@
      (add-hook 'c-mode-common-hook
                (lambda ()
                  (make-local-variable 'company-backends)
-                 (push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
+                 ;;(push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
+                 (push '(company-dabbrev-code :with company-yasnippet company-keywords) company-backends)))
      (add-hook 'nxml-mode-hook
                (lambda ()
                  (make-local-variable 'company-backends)
@@ -324,8 +334,8 @@
 (setq company-auto-complete-chars "([{.-")
 ;; TODO add c++ keywords to company-keywords-alist
 ;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
-;; (setq company-idle-delay 0.5)
-;; (setq company-minimum-prefix-length 3)
+(setq company-idle-delay 0.1)
+(setq company-minimum-prefix-length 3)
 (setq company-show-numbers t)
 (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
 (global-company-mode)
@@ -389,12 +399,6 @@
 ;;           (lambda ()
 ;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
 ;;               (ggtags-mode 1))))
-
-;; projectile
-(eval-after-load "projectile"
-  '(progn
-     (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
-     (projectile-global-mode)))
 
 ;; make local variables not annoying
 (setq enable-local-variables :all)

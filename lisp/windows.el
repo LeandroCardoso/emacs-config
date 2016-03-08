@@ -46,18 +46,6 @@
             (hack-dir-local-variables-non-file-buffer)
             (msvs-copy-bin-to-drive)))
 
-;; projectile
-(eval-after-load "projectile"
-  '(progn
-     (add-to-list 'projectile-project-root-files-bottom-up ".tfignore") ; tfs
-     (add-to-list 'projectile-project-root-files-bottom-up "view.dat")  ; clearcase
-     (dolist (item '("Release" "Debug"))
-       (add-to-list 'projectile-globally-ignored-directories item))
-     (dolist (item '("sdf" "suo" "log" "exp" "map" "obj"))
-             (add-to-list 'projectile-globally-ignored-file-suffixes item))
-     (when (executable-find "find") ; use external find if we have it
-       (setq projectile-indexing-method 'alien))))
-
 
 ;; MS VS
 (require 'find-file)
@@ -70,18 +58,6 @@
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include" t)
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include" t)
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include\\*" t)
-
-;; CEDET
-(setq semanticdb-project-root-functions
-      (list
-       #'(lambda (directory)
-           (when (featurep 'projectile)
-             (let ((default-directory directory))
-               (projectile-project-root))))
-       #'(lambda (directory) (locate-dominating-file directory ".git"))
-       #'(lambda (directory) (locate-dominating-file directory ".tfignore"))
-       #'(lambda (directory) (locate-dominating-file directory "view.dat"))
-       #'(lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
 
 (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c-mode)
 (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c++-mode)
@@ -164,61 +140,68 @@
 
 ;; (make-variable-buffer-local 'compilation-directory-output)
 
+
 (defun msvs-set-compile-command ()
   "TODO"
   (interactive)
-  (if (projectile-project-p)
-      (cond
-       ;; tfs odyssey
-       ((string-match-p "Odyssey" (projectile-project-root))
-        (setq compile-command
-              (concat "build.cmd 12 Release Build "
-                      (convert-standard-filename (projectile-project-root))
-                      "Src\\"))
-        (setq compilation-directory-output
-              (concat (projectile-project-root) "Src/bin/Release/")))
-       ;; tfs opteva
-       ((string-match-p "Opteva" (projectile-project-root))
-        (setq compile-command
-              (concat "build.cmd 10 Release Build "
-                      (convert-standard-filename (projectile-project-root))
-                      "Src\\"))
-        (setq compilation-directory-output
-              (concat (projectile-project-root) "Src/bin/Release/")))
-       ;; clearcase opteva
-       ((file-exists-p (concat (projectile-project-root) "view.dat"))
-        (setq compile-command "build.cmd 12 Release Build")
-        (setq compilation-directory-output
-              (concat (projectile-project-root) "XFSOPT_SRC/Src/Src/bin/Release/")))
-       ;; undefined with project
-       (t
-        (setq compile-command "build.cmd 12 Release Build")
-        (setq compilation-directory-output
-              (concat (projectile-project-root) "Release/"))))
-    ;; undefined without project
-    (setq compile-command "build.cmd 12 Release Build")
-    (setq compilation-directory-output "Release/"))
-  (when (projectile-project-p)
-    (require 'files-x)
-    (create-dir-local-file (projectile-project-root))
-    (modify-dir-local-variable nil 'compile-command compile-command 'add-or-replace)
-    (modify-dir-local-variable nil
-                               'compilation-directory-output
-                               compilation-directory-output
-                               'add-or-replace)
-    (save-buffer)))
+  (let ((project-root-dir (project-root)))
+        (if (stringp project-root-dir)
+            (progn
+              (message "Project Root:%s" project-root-dir)
+              (cond
+               ;; tfs odyssey
+               ((string-match-p "Odyssey" project-root-dir)
+                (setq compile-command
+                      (concat "build.cmd 12 Release Build "
+                              (convert-standard-filename project-root-dir)
+                              "Src\\"))
+                (setq compilation-directory-output
+                      (concat project-root-dir "Src/bin/Release/")))
+               ;; tfs opteva
+               ((string-match-p "Opteva" project-root-dir)
+                (setq compile-command
+                      (concat "build.cmd 10 Release Build "
+                              (convert-standard-filename project-root-dir)
+                              "Src\\"))
+                (setq compilation-directory-output
+                      (concat project-root-dir "Src/bin/Release/")))
+               ;; clearcase opteva
+               ((file-exists-p (concat project-root-dir "view.dat"))
+                (setq compile-command "build.cmd 10 Release Build")
+                (setq compilation-directory-output
+                      (concat project-root-dir "XFSOPT_SRC/Src/Src/bin/Release/")))
+               ;; undefined with project
+               (t
+                (setq compile-command "build.cmd 12 Release Build")
+                (setq compilation-directory-output
+                      (concat project-root-dir "Release/"))))
+              (require 'files-x)
+              (create-dir-local-file project-root-dir)
+              (modify-dir-local-variable nil 'compile-command compile-command 'add-or-replace)
+              (modify-dir-local-variable nil
+                                         'compilation-directory-output
+                                         compilation-directory-output
+                                         'add-or-replace)
+              (save-buffer))
+          ;; undefined without project
+          (setq compile-command "build.cmd 12 Release Build")
+          (setq compilation-directory-output "Release/"))))
 
 (defun msvs-copy-bin-to-drive ()
   "Copy compilated binary files in `compilation-directory-output' set by `msvs-set-compile-command'
 to the pen-drive defined by `mydrive'.
-Use projectile project name directory as destination directory when it exists."
+Use project name directory as destination directory when it exists."
   (interactive)
   (when (and (stringp mydrive)
              (file-directory-p mydrive)
              (stringp compilation-directory-output)
              (file-directory-p compilation-directory-output))
-    (let ((dest-dir
-           (concat mydrive (if (projectile-project-p) (projectile-project-name) "bin") "/"))
+    (let* ((project-root-dir (project-root))
+          (dest-dir
+           (concat mydrive
+                   (if (stringp project-root-dir)
+                       (file-name-nondirectory (directory-file-name project-root-dir)) "bin")
+                   "/"))
           (files-copied 0))
       (unless (file-directory-p dest-dir)
         (make-directory dest-dir))

@@ -200,3 +200,14 @@ Replacement for `split-window-sensibly', but perfers
 	       (when (window-splittable-p window)
 		 (with-selected-window window
 		   (split-window-below))))))))
+
+(defun project-root ()
+  "Find the project root directory using the `semanticdb-project-root-functions'"
+  (run-hook-with-args-until-success 'semanticdb-project-root-functions default-directory))
+
+(defun project-name ()
+  "Return the project name using the `project-root' to find the current project-am."
+  (let ((project-root-dir (project-root)))
+        (if project-root-dir
+            (file-name-nondirectory (directory-file-name (project-root)))
+          nil)))
