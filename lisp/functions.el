@@ -211,3 +211,30 @@ Replacement for `split-window-sensibly', but perfers
         (if project-root-dir
             (file-name-nondirectory (directory-file-name (project-root)))
           nil)))
+
+(defun project-files ()
+  "List relevant files in `project-root' directory."
+  (interactive)
+  (let ((find-cmd (concat "find " (convert-standard-filename (project-root)) " -iname '*.cpp' -o -iname '*.h'")))
+    (message "Finding project files...")
+    (split-string (shell-command-to-string find-cmd) "[\r\n]+" t)))
+
+(defun semanticdb-analyze-project-files ()
+  "Scan all project files for semantic tags.
+`global-semanticdb-minor-mode' should already be on."
+  (interactive)
+  (let ((recentf-exclude (list ".*")) ; don't want scanned files in recentf list
+        (files (project-files))
+        (file))
+    (message "Visiting files...")
+    (while files
+      (setq file (car files)
+            files (cdr files))
+      (unless (find-buffer-visiting file)
+        (message "Visiting %s" file)
+        (let ((buf (find-file-noselect file))
+              (tags))
+          (setq tags (semantic-fetch-tags))
+          (kill-buffer buf)))))
+  (semanticdb-save-all-db)
+  (message "Finished analyzing files."))
