@@ -119,7 +119,7 @@
                                   nil)))
   (browse-url
    (concat "https://duckduckgo.com/?q=!cppr+"
-           QUERY)))
+           (url-hexify-string QUERY))))
 
 (defun google (QUERY)
   "Query google for the QUERY string parameter"
@@ -130,7 +130,7 @@
                                   nil)))
   (browse-url
    (concat "https://www.google.com/search?q="
-           QUERY)))
+           (url-hexify-string QUERY))))
 
 (defun shell-bash ()
   "Run bash in shell mode."
