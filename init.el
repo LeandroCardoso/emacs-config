@@ -15,7 +15,8 @@
                 company
                 smex
                 which-key
-                diff-hl))
+                diff-hl
+                flx-ido))
   (require mode nil t))
 
 ;; Theme
@@ -95,16 +96,6 @@
      (mark " "
            (name 30 -1)
            " " filename))))
- '(ido-create-new-buffer (quote always))
- '(ido-decorations
-   (quote
-    (" { " " }" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
- '(ido-default-buffer-method (quote selected-window))
- '(ido-everywhere t)
- '(ido-ubiquitous-mode nil)
- '(ido-use-filename-at-point (quote guess))
- '(ido-use-url-at-point t)
- '(ido-use-virtual-buffers (quote auto))
  '(imenu-auto-rescan t)
  '(imenu-max-items 200)
  '(imenu-sort-function (quote imenu--sort-by-name))
@@ -347,11 +338,29 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; ido
 (ido-mode t)
+(ido-everywhere t)
 (ido-ubiquitous-mode t)
+(flx-ido-mode t)
+;; ido set
+(setq ido-create-new-buffer 'always)
+(setq ido-decorations
+      '(" { " " }" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]"))
+(setq ido-default-buffer-method 'selected-window)
+(setq ido-show-dot-for-dired t)
+(setq ido-use-filename-at-point 'guess)
+(setq ido-use-url-at-point t)
+(setq ido-use-virtual-buffers 'auto)
+;; flx-ido
+(setq ido-enable-flex-matching t)
+;; disable ido faces to see flx highlights.
+;; (setq ido-use-faces t)
+
 ;; Enable ido in dired commands
 (put 'dired-do-copy   'ido nil)
 (put 'dired-do-rename 'ido nil)
+
 
 (eval-after-load "smex"
   '(smex-initialize))
