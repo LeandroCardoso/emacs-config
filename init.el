@@ -407,8 +407,9 @@
 ;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
 ;;               (ggtags-mode 1))))
 
-;; make local variables not annoying
-;; (setq enable-local-variables :all)
+;; Make local variables not annoying when loading .dir-locals.el. This is not recommended and I
+;; should find a better to avoid the warning.
+(setq enable-local-variables :all)
 
 ;; minibuffer
 ;; enable eldoc for minubuffer evaluation

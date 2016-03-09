@@ -12,7 +12,8 @@
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-c g") 'ag) ;; it used to be rgrep
-(global-set-key (kbd "C-z") 'idomenu)
+;;(global-set-key (kbd "C-z") 'idomenu)
+(global-set-key (kbd "C-z") 'imenu-anywhere) ;; experimental instead of idomenu
 (global-set-key (kbd "C-.") 'goto-last-change)
 (global-set-key (kbd "C-,") 'goto-last-change-reverse)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
