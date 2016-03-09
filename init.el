@@ -330,9 +330,6 @@
 (setq company-dabbrev-code-everywhere t)
 (setq company-dabbrev-code-ignore-case t)
 ;; (setq company-dabbrev-code-time-limit 0.05)
-
-(setq company-auto-complete t)
-(setq company-auto-complete-chars "([{.-")
 ;; TODO add c++ keywords to company-keywords-alist
 ;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
 (setq company-idle-delay 0.1)
