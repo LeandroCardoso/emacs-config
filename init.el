@@ -405,6 +405,8 @@
 ;; enable eldoc for minubuffer evaluation
 (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
 
+(setq tab-always-indent 'complete)
+
 ;; faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)
