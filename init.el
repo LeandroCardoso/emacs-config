@@ -138,7 +138,6 @@
  '(org-startup-folded nil)
  '(org-startup-truncated nil)
  '(shift-select-mode nil)
- '(show-paren-mode t nil (paren))
  '(size-indication-mode t)
  '(smex-save-file "~/.emacs.d/.smex-items")
  '(solarized-use-more-italic t)
@@ -164,8 +163,8 @@
 
 ;; Font
 (when (eq system-type 'gnu/linux)
-  (set-frame-font "Source Code Pro-10.5" t t)
-  (set-face-attribute 'default nil :family "Source Code Pro" :height 105)) ;; hack to work with emacsclient)
+  (set-frame-font "Source Code Pro-11" t t)
+  (set-face-attribute 'default nil :family "Source Code Pro" :height 110)) ;; hack to work with emacsclient)
 
 
 ;; Start the emacs server needed by the emacsclient
@@ -252,6 +251,8 @@
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
+
+(show-paren-mode)
 
 ;; yasnippet needs this
 (eval-after-load "yasnippet"
