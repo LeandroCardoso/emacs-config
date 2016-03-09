@@ -402,8 +402,11 @@
 ;;               (ggtags-mode 1))))
 
 ;; make local variables not annoying
-(setq enable-local-variables :all)
+;; (setq enable-local-variables :all)
 
+;; minibuffer
+;; enable eldoc for minubuffer evaluation
+(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
 
 ;; faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
