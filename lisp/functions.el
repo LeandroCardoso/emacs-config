@@ -223,18 +223,14 @@ Replacement for `split-window-sensibly', but perfers
   "Scan all project files for semantic tags.
 `global-semanticdb-minor-mode' should already be on."
   (interactive)
-  (let ((recentf-exclude (list ".*")) ; don't want scanned files in recentf list
-        (files (project-files))
-        (file))
-    (message "Visiting files...")
-    (while files
-      (setq file (car files)
-            files (cdr files))
+  (let* ((count 0)
+         (files (project-files))
+         (report (make-progress-reporter "Analysing files..." 0 (length files))))
+    (dolist (file files)
       (unless (find-buffer-visiting file)
-        (message "Visiting %s" file)
-        (let ((buf (find-file-noselect file))
-              (tags))
-          (setq tags (semantic-fetch-tags))
-          (kill-buffer buf)))))
-  (semanticdb-save-all-db)
-  (message "Finished analyzing files."))
+        (let ((buf (find-file-noselect file)))
+          (semantic-fetch-tags)
+          (kill-buffer buf)))
+      (progress-reporter-update report (setq count (1+ count))))
+    (semanticdb-save-all-db)
+    (progress-reporter-done report)))
