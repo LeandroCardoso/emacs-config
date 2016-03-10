@@ -171,7 +171,6 @@
                                   global-semantic-idle-scheduler-mode
                                   global-semantic-idle-summary-mode
                                   global-semanticdb-minor-mode))
-(setq semantic-imenu-summary-function 'semantic-format-tag-name)
 (setq semantic-idle-work-parse-neighboring-files-flag t)
 (setq semantic-idle-work-update-headers-flag t)
 (setq semanticdb-project-root-functions
@@ -180,6 +179,13 @@
        #'(lambda (directory) (locate-dominating-file directory ".tfignore"))
        #'(lambda (directory) (locate-dominating-file directory "view.dat"))
        #'(lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
+;; semantic imenu
+(setq semantic-imenu-adopt-external-members nil) ;; put class members on t he first imenu level
+(setq semantic-imenu-bucketize-file nil) ;; don't use buckets
+;; (setq semantic-imenu-expand-type-members nil)
+;; (setq semantic-imenu-index-directory t) ;; index the entire directory for tags
+(setq semantic-imenu-summary-function 'semantic-format-tag-canonical-name) ;; see semantic-format-tag-functions
+
 (semantic-mode)
 
 
@@ -348,14 +354,14 @@
 (setq ido-decorations
       '(" { " " }" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]"))
 (setq ido-default-buffer-method 'selected-window)
+(setq ido-enable-flex-matching t)
 (setq ido-show-dot-for-dired t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-use-url-at-point t)
 (setq ido-use-virtual-buffers 'auto)
 ;; flx-ido
-(setq ido-enable-flex-matching t)
 ;; disable ido faces to see flx highlights.
-;; (setq ido-use-faces t)
+;; (setq ido-use-faces nil)
 
 ;; Enable ido in dired commands
 (put 'dired-do-copy   'ido nil)

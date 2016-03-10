@@ -59,12 +59,14 @@
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include" t)
 (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include\\*" t)
 
+(require 'semantic)
 (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c-mode)
 (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c++-mode)
 (semantic-add-system-include "C:/Program Files/Microsoft Visual Studio 12.0/VC/include" 'c-mode)
 (semantic-add-system-include "C:/Program Files/Microsoft Visual Studio 12.0/VC/include" 'c++-mode)
 
-;; An ungly hack to idenfity c++ extensionless files as c++. Thanks ISO c++.
+;; An ungly hack to idenfity c++ extensionless files as c++ file. Thanks ISO c++, a file without
+;; extension was a great idea!
 (add-to-list 'auto-mode-alist '("[Ii]nclude" . c++-mode) t)
 
 (setenv "PATH"
