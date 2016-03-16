@@ -16,7 +16,8 @@
                 smex
                 which-key
                 diff-hl
-                flx-ido))
+                flx-ido
+                fic-mode))
   (require mode nil t))
 
 ;; Theme
@@ -398,6 +399,10 @@
 
 ;; magit
 (setq magit-popup-use-prefix-argument 'default)
+
+;; fic
+(eval-after-load "fic-mode"
+  (add-hook 'prog-mode-hook 'fic-mode))
 
 ;; desktop
 (add-hook 'desktop-after-read-hook 'set-custom-frame-title)
