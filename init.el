@@ -1,4 +1,9 @@
+;; Load all *.el files sorted by name at ~/.emacs.d/lisp. Sub-directories and files starting with
+;; underline are ignored.
 (add-to-list 'load-path "~/.emacs.d/lisp")
+(setq load-prefer-newer t)
+;; (mapc 'load (mapcar 'file-name-base (directory-files "~/.emacs.d/lisp" nil "^[^_].*\\.el$")))
+
 
 ;; No need to waste precious desktop space with useless GUI
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
