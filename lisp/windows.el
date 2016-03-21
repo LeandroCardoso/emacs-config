@@ -1,3 +1,5 @@
+(when (eq system-type 'windows-nt)
+
 (set-frame-font "Consolas 10" t t)
 
 (setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
@@ -444,3 +446,4 @@ TAG comment becomes buffer local."
   '("\\Form.*\.txt$") ;; auto mode list
   nil ;; function list
   )
+)

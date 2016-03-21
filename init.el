@@ -1,8 +1,9 @@
 ;; Load all *.el files sorted by name at ~/.emacs.d/lisp. Sub-directories and files starting with
-;; underline are ignored.
+;; underline are ignored. If a compiled elisp file exist and it is not outdated, then load it
+;; instead of the non-compiled one.
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (setq load-prefer-newer t)
-;; (mapc 'load (mapcar 'file-name-base (directory-files "~/.emacs.d/lisp" nil "^[^_].*\\.el$")))
+(mapc 'load (mapcar 'file-name-base (directory-files "~/.emacs.d/lisp" nil "^[^_].*\\.el$")))
 
 
 ;; No need to waste precious desktop space with useless GUI
@@ -36,7 +37,7 @@
 (setq window-system-default-frame-alist '((x . ((alpha . 97)))))
 
 ;; My functions
-(load "functions")
+;;(load "functions")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -451,12 +452,12 @@
      (set-face-attribute face nil :height 'unspecified)))
 
 ;; MS Windows and diebold hacks
-(when (eq system-type 'windows-nt)
-  (load "w32-service")
-  (load "windows"))
+;; (when (eq system-type 'windows-nt)
+;;   (load "w32-service")
+;;   (load "windows"))
 
-;; My keybindings
-(load "keys")
+;; ;; My keybindings
+;; (load "keys")
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
