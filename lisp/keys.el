@@ -20,27 +20,7 @@
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
-(global-set-key (kbd "<f1> x") 'which-key-show-top-level)
 (global-set-key (kbd "C-c m") 'woman)
-
-;; unset compose-mail keys to use it with magit
-(global-unset-key (kbd "C-x m")) ;; compose-mail
-(global-unset-key (kbd "C-x 4 m")) ;; compose-mail-other-window
-(global-unset-key (kbd "C-x 5 m")) ;; compose-mail-other-frame
-
-;; magit
-(defvar magit-global-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "m" 'magit-dispatch-popup)
-    (define-key map "f" 'magit-file-popup)
-    (define-key map "s" 'magit-status)
-    (define-key map "i" 'magit-init)
-    (define-key map "c" 'magit-clone)
-    map)
-  "Keymap for global magit commands")
-(defalias 'magit-global-keymap magit-global-keymap)
-(global-set-key (kbd "C-x m") 'magit-global-keymap)
-
 
 (global-set-key (kbd "C-c t") 'transpose-paragraphs)
 ;; FIX subword-mode-map remaping
@@ -82,12 +62,6 @@
 (defalias 'org-out-keymap org-out-keymap)
 (global-set-key (kbd "C-c o") 'org-out-keymap)
 
-;; smex
-(eval-after-load "smex"
-  '(progn
-     (global-set-key (kbd "M-x") 'smex)
-     (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-     (global-set-key (kbd "C-c M-x") 'execute-extended-command))) ;; old M-x
 
 ;; ESC key toogle the minibuffer
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
@@ -126,12 +100,6 @@
 (eval-after-load "wdired"
   '(define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename-i))
 
-(eval-after-load "yasnippet"
-  '(progn
-     (define-key yas-minor-mode-map (kbd "<tab>") nil)
-     (define-key yas-minor-mode-map (kbd "TAB") nil)
-     (define-key yas-minor-mode-map (kbd "C-S-<tab>") 'yas-expand)
-     ))
 
 ;; company
 (eval-after-load "company"

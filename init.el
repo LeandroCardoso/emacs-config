@@ -1,43 +1,26 @@
-;; Load all *.el files sorted by name at ~/.emacs.d/lisp. Sub-directories and files starting with
-;; underline are ignored. If a compiled elisp file exist and it is not outdated, then load it
-;; instead of the non-compiled one.
-(add-to-list 'load-path "~/.emacs.d/lisp")
-(setq load-prefer-newer t)
-(mapc 'load (mapcar 'file-name-base (directory-files "~/.emacs.d/lisp" nil "^[^_].*\\.el$")))
-
-
-;; No need to waste precious desktop space with useless GUI
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
-;; initialize packages
+;; packages
+(setq package-enable-at-startup nil)
 (package-initialize)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
 (dolist (mode '(goto-chg
                 wgrep
                 woman
-                yasnippet
                 transpose-frame
                 company
-                smex
-                which-key
-                diff-hl
-                flx-ido
-                fic-mode))
+                diff-hl))
   (require mode nil t))
 
-;; Theme
-(setq monokai-use-variable-pitch nil)
-(load-theme 'monokai t)
-(set-face-attribute 'cursor nil :background (face-foreground 'mode-line-buffer-id))
-(set-face-attribute 'fringe nil :foreground "dark slate gray") ;; dim gray is also a good option
-
-(setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars)))
-(setq default-frame-alist initial-frame-alist)
-(setq window-system-default-frame-alist '((x . ((alpha . 97)))))
-
-;; My functions
-;;(load "functions")
+;; Load all *.el files sorted by name at ~/.emacs.d/lisp. Sub-directories and files starting with
+;; underline are ignored. If a compiled elisp file exist and it is not outdated, then load it
+;; instead of the non-compiled one.
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(setq load-prefer-newer t)
+(mapc 'load (mapcar 'file-name-base
+                    (directory-files (expand-file-name "lisp"
+                                                       user-emacs-directory)
+                                     nil
+                                     "^[^_].*\\.el$")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -52,11 +35,6 @@
  '(blink-cursor-mode nil)
  '(bs-alternative-configuration "files")
  '(bs-default-configuration "all-intern-last")
- '(c-basic-offset 4)
- '(c-offsets-alist (quote ((substatement-open . 0) (case-label . +))))
- '(cc-search-directories
-   (quote
-    ("." "include" "*" "../*" "/usr/include" "/usr/local/include/*")))
  '(column-number-mode t)
  '(comment-column 0)
  '(compilation-scroll-output (quote first-error))
@@ -76,7 +54,6 @@
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(electric-pair-inhibit-predicate (quote electric-pair-conservative-inhibit))
  '(electric-pair-mode t)
- '(emacs-lisp-mode-hook (quote (turn-on-eldoc-mode)))
  '(ff-case-fold-search t)
  '(fill-column 100)
  '(frame-resize-pixelwise t)
@@ -87,9 +64,6 @@
  '(grep-find-template "find -L . <X> -type f <F> -exec grep <C> -nH -e <R> {} +")
  '(hi-lock-mode t t (hi-lock))
  '(highlight-nonselected-windows t)
- '(hippie-expand-try-functions-list
-   (quote
-    (yas-hippie-try-expand try-expand-all-abbrevs try-expand-dabbrev try-expand-dabbrev-visible try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-expand-line)))
  '(ibuffer-display-summary nil)
  '(ibuffer-formats
    (quote
@@ -114,7 +88,6 @@
  '(kept-new-versions 9)
  '(kept-old-versions 0)
  '(kill-ring-max 300)
- '(lisp-interaction-mode-hook (quote (turn-on-eldoc-mode)))
  '(mouse-avoidance-banish-position
    (quote
     ((frame-or-window . frame)
@@ -137,7 +110,6 @@
  '(org-startup-truncated nil)
  '(shift-select-mode nil)
  '(size-indication-mode t)
- '(smex-save-file "~/.emacs.d/.smex-items")
  '(solarized-use-more-italic t)
  '(solarized-use-variable-pitch nil)
  '(sql-input-ring-file-name "~/.emacs.d/sql-history")
@@ -154,22 +126,7 @@
  '(winner-mode t)
  '(woman-fill-frame t)
  '(woman-use-symbol-font t)
- '(yas-prompt-functions
-   (quote
-    (yas-ido-prompt yas-dropdown-prompt yas-completing-prompt yas-no-prompt))))
-
-
-;; Font
-(when (eq system-type 'gnu/linux)
-  (set-frame-font "Source Code Pro-11" t t)
-  (set-face-attribute 'default nil :family "Source Code Pro" :height 110)) ;; hack to work with emacsclient)
-
-
-;; Start the emacs server needed by the emacsclient
-(when (require 'server nil t)
-  (unless (server-running-p)
-    (server-start)
-    (message "Server started")))
+)
 
 
 ;; Semantic
@@ -182,10 +139,10 @@
 (setq semantic-idle-work-update-headers-flag t)
 (setq semanticdb-project-root-functions
       (list
-       #'(lambda (directory) (locate-dominating-file directory ".git"))
-       #'(lambda (directory) (locate-dominating-file directory ".tfignore"))
-       #'(lambda (directory) (locate-dominating-file directory "view.dat"))
-       #'(lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
+       (lambda (directory) (locate-dominating-file directory ".git"))
+       (lambda (directory) (locate-dominating-file directory ".tfignore"))
+       (lambda (directory) (locate-dominating-file directory "view.dat"))
+       (lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
 ;; semantic imenu
 (setq semantic-imenu-adopt-external-members nil) ;; put class members on t he first imenu level
 (setq semantic-imenu-bucketize-file nil) ;; don't use buckets
@@ -215,16 +172,6 @@
 ;; (add-hook 'text-mode-hook 'ispell-minor-mode)
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
-(defun my-elisp-hook()
-  (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially)
-  (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol)
-  (add-to-list 'hippie-expand-try-functions-list 'try-expand-list))
-(add-hook 'emacs-list-mode-hook 'my-elisp-hook)
-
-(eval-after-load "yasnippet"
-  '(progn
-     (add-hook 'prog-mode-hook 'yas-minor-mode)
-     (add-hook 'text-mode-hook 'yas-minor-mode)))
 
 ;; (add-hook 'text-mode-hook 'orgstruct-mode)
 ;; (add-hook 'text-mode-hook 'orgtbl-mode)
@@ -258,10 +205,6 @@
 
 (show-paren-mode)
 
-;; yasnippet needs this
-(eval-after-load "yasnippet"
-  '(yas-reload-all))
-
 ;; List variables
 (eval-after-load "grep"
   '(progn
@@ -277,32 +220,9 @@
      (add-to-list 'grep-files-aliases '("c" . "*.c *.cpp *.cxx"))
      (add-to-list 'grep-files-aliases '("ch" . "*.h *.hpp *.hxx *.c *.cpp *.cxx"))))
 
-;; packages
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
-;; enable windmove - CTRL is only modifier not used by org-mode
-(windmove-default-keybindings 'ctrl)
-
-;; enable abbrev-mode by default
+;;; enable abbrev-mode by default
 (setq-default abbrev-mode t)
 
-;; sml - it needs to be loaded after the custom variables
-(when (require 'smart-mode-line nil t)
-  (setq sml/theme nil)
-  (setq sml/col-number "%c")
-  (setq sml/name-width 30)
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/pos-minor-modes-separator "]")
-  (setq sml/pre-modes-separator "[")
-  (setq sml/shorten-mode-string "")
-  (setq sml/show-file-name nil)
-  (setq sml/vc-mode-show-backend t)
-  (set-face-attribute 'sml/filename nil :inherit '(sml/global mode-line-buffer-id) :weight 'bold)
-  (add-to-list 'sml/replacer-regexp-list '(".*" (lambda (str)
-                                                  (if (project-name)
-                                                      (concat ":" (project-name) ":")
-                                                    (match-string 0 str)))) t)
-  (smart-mode-line-enable))
 
 ;; Auto Complete
 ;; (eval-after-load "auto-complete"
@@ -351,45 +271,9 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; ido
-(ido-mode t)
-(ido-everywhere t)
-(ido-ubiquitous-mode t)
-(flx-ido-mode t)
-;; ido set
-(setq ido-create-new-buffer 'always)
-(setq ido-decorations
-      '(" { " " }" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]"))
-(setq ido-default-buffer-method 'selected-window)
-(setq ido-enable-flex-matching t)
-(setq ido-show-dot-for-dired t)
-(setq ido-use-filename-at-point 'guess)
-(setq ido-use-url-at-point t)
-(setq ido-use-virtual-buffers 'auto)
-;; flx-ido
-;; disable ido faces to see flx highlights.
-;; (setq ido-use-faces nil)
-
-;; Enable ido in dired commands
-(put 'dired-do-copy   'ido nil)
-(put 'dired-do-rename 'ido nil)
-
-
-(eval-after-load "smex"
-  '(smex-initialize))
-
 ;; wgrep-ag
 (autoload 'wgrep-ag-setup "wgrep-ag")
 (add-hook 'ag-mode-hook 'wgrep-ag-setup)
-
-;; which-key
-(eval-after-load "which-key"
-  '(progn
-     ;;(setq which-key-popup-type 'side-window)
-     (setq which-key-side-window-location 'bottom)
-     ;; (setq which-key-idle-delay 1.0)
-     (setq which-key-max-description-length 50)
-     (which-key-mode)))
 
 ;; aggressive-indent-mode
 ;; (eval-after-load "aggressive-indent"
@@ -402,13 +286,6 @@
      ;; (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
      ;; (global-diff-hl-mode)
      ))
-
-;; magit
-(setq magit-popup-use-prefix-argument 'default)
-
-;; fic
-(eval-after-load "fic-mode"
-  (add-hook 'prog-mode-hook 'fic-mode))
 
 ;; desktop
 (add-hook 'desktop-after-read-hook 'set-custom-frame-title)
@@ -434,11 +311,6 @@
 
 (setq tab-always-indent 'complete)
 
-;; faces
-(set-face-attribute 'bold-italic nil :inherit '(bold italic))
-(set-face-attribute 'italic nil :underline t)
-(set-face-attribute 'woman-bold nil :inherit '(Man-overstrike))
-(set-face-attribute 'woman-italic nil :inherit '(Man-underline))
 ;; the variable height fonts are annoyed
 (eval-after-load "org"
   '(dolist (face '(org-level-1
@@ -450,14 +322,6 @@
                    org-level-7
                    org-level-8))
      (set-face-attribute face nil :height 'unspecified)))
-
-;; MS Windows and diebold hacks
-;; (when (eq system-type 'windows-nt)
-;;   (load "w32-service")
-;;   (load "windows"))
-
-;; ;; My keybindings
-;; (load "keys")
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

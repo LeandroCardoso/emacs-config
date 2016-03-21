@@ -1,7 +1,5 @@
 (when (eq system-type 'windows-nt)
 
-(set-frame-font "Consolas 10" t t)
-
 (setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
 (setq auto-save-file-name-transforms '((".*" "c:/DBDProj/auto-save/" t)))
 
@@ -15,9 +13,6 @@
 (setq url-proxy-services '(("http" . "localhost:3128")
                            ("https" . "localhost:3128")))
 
-;; this is more efficient
-(setq magit-process-connection-type nil)
-(setq magit-refresh-status-buffer nil)
 
 ;; flycheck
 ;; launch external process is slow in Windows, so we don't want to use the new-line option
