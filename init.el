@@ -7,7 +7,6 @@
                 wgrep
                 woman
                 transpose-frame
-                company
                 diff-hl))
   (require mode nil t))
 
@@ -233,34 +232,6 @@
 ;;      (setq-default ac-sources ac-sources)
 ;;      (add-hook 'c-mode-common-hook (lambda() (add-to-list 'ac-sources 'ac-source-semantic)))))
 
-;; company
-(eval-after-load "company"
-  '(progn
-     (add-hook 'c-mode-common-hook
-               (lambda ()
-                 (make-local-variable 'company-backends)
-                 ;;(push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
-                 (push '(company-dabbrev-code :with company-yasnippet company-keywords) company-backends)))
-     (add-hook 'nxml-mode-hook
-               (lambda ()
-                 (make-local-variable 'company-backends)
-                 (push '(company-nxml company-dabbrev company-yasnippet) company-backends)))
-     ))
-
-(setq company-dabbrev-downcase nil)
-(setq company-dabbrev-ignore-case t)
-;; (setq company-dabbrev-time-limit 0.05)
-
-(setq company-dabbrev-code-everywhere t)
-(setq company-dabbrev-code-ignore-case t)
-;; (setq company-dabbrev-code-time-limit 0.05)
-;; TODO add c++ keywords to company-keywords-alist
-;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
-(setq company-idle-delay 0.1)
-(setq company-minimum-prefix-length 3)
-(setq company-show-numbers t)
-(setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
-(global-company-mode)
 ;; TODO key-bindings
 ;; semantic-ia-fast-jump
 ;; semantic-ia-describe-class

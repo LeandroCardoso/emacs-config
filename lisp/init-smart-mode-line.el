@@ -9,6 +9,7 @@
   (setq sml/show-file-name nil)
   (setq sml/vc-mode-show-backend t)
   (set-face-attribute 'sml/filename nil :inherit '(sml/global mode-line-buffer-id) :weight 'bold)
+  ;; TODO (require 'project)
   (add-to-list 'sml/replacer-regexp-list '(".*" (lambda (str)
                                                   (if (project-name)
                                                       (concat ":" (project-name) ":")

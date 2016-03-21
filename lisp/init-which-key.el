@@ -1,7 +1,4 @@
 (when (require 'which-key nil t)
-  ;;(setq which-key-popup-type 'side-window)
-  (setq which-key-side-window-location 'bottom)
-  ;; (setq which-key-idle-delay 1.0)
   (setq which-key-max-description-length 50)
   (global-set-key (kbd "<f1> x") 'which-key-show-top-level)
   (which-key-mode))

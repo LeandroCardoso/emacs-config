@@ -1,7 +1,7 @@
 (when (eq system-type 'windows-nt)
 
-(setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
-(setq auto-save-file-name-transforms '((".*" "c:/DBDProj/auto-save/" t)))
+;; (setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save/" t)))
 
 (setenv "PATH" "c:\\Windows\\System32")
 

@@ -5,6 +5,8 @@
   (ido-ubiquitous-mode t))
 
 (when (require 'flx-ido nil t)
+  ;; disable ido faces to see flx highlights.
+  ;; (setq ido-use-faces nil)
   (flx-ido-mode t))
 
 (setq ido-create-new-buffer 'always)
@@ -16,10 +18,6 @@
 (setq ido-use-filename-at-point 'guess)
 (setq ido-use-url-at-point t)
 (setq ido-use-virtual-buffers 'auto)
-
-;; flx-ido
-;; disable ido faces to see flx highlights.
-;; (setq ido-use-faces nil)
 
 ;; Enable ido in dired commands
 (put 'dired-do-copy   'ido nil)

@@ -99,12 +99,3 @@
 
 (eval-after-load "wdired"
   '(define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename-i))
-
-
-;; company
-(eval-after-load "company"
-  '(progn
-     (define-key company-mode-map (kbd "<C-tab>") 'company-complete-common-or-cycle)
-     ;;(define-key company-active-map (kbd "<tab>") 'company-select-next)
-     (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-     (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
