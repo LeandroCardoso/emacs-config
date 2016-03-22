@@ -1,7 +1,5 @@
 (when (eq system-type 'windows-nt)
 
-;; (setq backup-directory-alist '(("." . "c:/DBDProj/backup")))
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save/" t)))
 
 (setenv "PATH" "c:\\Windows\\System32")
 
@@ -74,15 +72,8 @@
    "C:\\Program Files\\Microsoft Visual Studio 12.0\\Common7\\IDE;"
    (getenv "PATH")))
 
-(add-to-list 'grep-files-aliases '("proj" . "*.sln *.vcxproj *.vcxproj.filters *.msbuild") t)
-(add-to-list 'grep-files-aliases
-             '("chproj" .
-               "*.h *.hpp *.hxx *.c *.cpp *.cxx *.sln *.vcxproj *.vcxproj.filters *.msbuild")
-             t)
-
 ;; (add-to-list 'tags-table-list "c:/DBDProj/TAGS.MS-SDK")
 ;; (add-to-list 'tags-table-list "c:/DBDProj/TAGS.VC")
-
 
 ;; Hooks
 (defun my-xml-hook ()
@@ -388,57 +379,4 @@ TAG comment becomes buffer local."
 ;; keybindings
 (global-set-key (kbd "<f5>") 'msvs-copy-bin-to-drive)
 (global-set-key (kbd "M-<f5>") 'msvs-set-compile-command)
-
-;; Modes
-(define-generic-mode
-    'xfs-form-mode ;; name
-  '("//") ;; comments list
-  '( ;; keywords list
-    "ACCESS"
-    "ALIGNMENT"
-    "BARCODE"
-    "CASE"
-    "CLASS"
-    "COERCIVITY"
-    "COLOR"
-    "COMMENT"
-    "COPYRIGHT"
-    "CPI"
-    "FOLLOWS"
-    "FONT"
-    "FOOTER"
-    "FORMAT"
-    "HEADER"
-    "HORIZONTAL"
-    "INDEX"
-    "INITIALVALUE"
-    "KEYS"
-    "LANGUAGE"
-    "LPI"
-    "ORIENTATION"
-    "OVERFLOW"
-    "POINTSIZE"
-    "POSITION"
-    "POSITIONONX"
-    "POSITIONONY"
-    "PRINTAREA"
-    "RESTRICTED"
-    "RGBCOLOR"
-    "SCALING"
-    "SIDE"
-    "SIZE"
-    "SKEW"
-    "STYLE"
-    "TITLE"
-    "TYPE"
-    "UNIT"
-    "USERPROMPT"
-    "VERSION"
-    "VERTICAL"
-    )
-  '(("BEGIN\\|END" . 'font-lock-type-face)
-    ("XFSFORM\\|XFSSUBFORM\\|XFSFIELD" . 'font-lock-function-name-face))
-  '("\\Form.*\.txt$") ;; auto mode list
-  nil ;; function list
-  )
 )

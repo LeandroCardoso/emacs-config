@@ -4,53 +4,25 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (dolist (mode '(goto-chg
-                wgrep
-                woman
-                transpose-frame
-                diff-hl))
+                transpose-frame))
   (require mode nil t))
 
-;; Load all *.el files sorted by name at ~/.emacs.d/lisp. Sub-directories and files starting with
-;; underline are ignored. If a compiled elisp file exist and it is not outdated, then load it
-;; instead of the non-compiled one.
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(setq load-prefer-newer t)
-(mapc 'load (mapcar 'file-name-base
-                    (directory-files (expand-file-name "lisp"
-                                                       user-emacs-directory)
-                                     nil
-                                     "^[^_].*\\.el$")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ag-highlight-search t)
  '(ansi-color-for-comint-mode t)
  '(auto-compression-mode t nil (jka-compr))
- '(backup-by-copying t)
- '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
- '(blink-cursor-mode nil)
  '(bs-alternative-configuration "files")
  '(bs-default-configuration "all-intern-last")
  '(column-number-mode t)
  '(comment-column 0)
  '(compilation-scroll-output (quote first-error))
- '(confirm-kill-emacs (quote y-or-n-p))
- '(cursor-type (quote bar))
  '(custom-buffer-done-kill t)
  '(custom-raised-buttons nil)
- '(delete-old-versions t)
  '(delete-selection-mode t nil (delsel))
- '(desktop-path (quote ("." "~/.emacs.d/" "~")))
- '(desktop-save (quote ask-if-exists))
- '(desktop-save-mode t nil (desktop))
- '(diff-mode-hook (quote (diff-make-unified)))
- '(ediff-custom-diff-options "-c -w")
- '(ediff-diff-options "--binary -w")
- '(ediff-split-window-function (quote split-window-horizontally))
- '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(electric-pair-inhibit-predicate (quote electric-pair-conservative-inhibit))
  '(electric-pair-mode t)
  '(ff-case-fold-search t)
@@ -60,7 +32,6 @@
  '(global-font-lock-mode t nil (font-lock))
  '(global-hl-line-mode t)
  '(global-subword-mode t)
- '(grep-find-template "find -L . <X> -type f <F> -exec grep <C> -nH -e <R> {} +")
  '(hi-lock-mode t t (hi-lock))
  '(highlight-nonselected-windows t)
  '(ibuffer-display-summary nil)
@@ -84,8 +55,6 @@
  '(ispell-query-replace-choices t)
  '(ispell-silently-savep t)
  '(jit-lock-stealth-time 1)
- '(kept-new-versions 9)
- '(kept-old-versions 0)
  '(kill-ring-max 300)
  '(mouse-avoidance-banish-position
    (quote
@@ -99,14 +68,6 @@
  '(normal-erase-is-backspace nil)
  '(nxml-child-indent 4)
  '(nxml-slash-auto-complete-flag t)
- '(org-M-RET-may-split-line nil)
- '(org-adapt-indentation nil)
- '(org-completion-use-ido t)
- '(org-ellipsis (quote org-ellipsis))
- '(org-imenu-depth 10)
- '(org-src-fontify-natively t)
- '(org-startup-folded nil)
- '(org-startup-truncated nil)
  '(shift-select-mode nil)
  '(size-indication-mode t)
  '(solarized-use-more-italic t)
@@ -119,14 +80,22 @@
  '(undo-strong-limit 12000000)
  '(vc-command-messages t)
  '(vc-follow-symlinks t)
- '(version-control t)
  '(which-function-mode t nil (which-func))
  '(whitespace-line-column nil)
  '(winner-mode t)
- '(woman-fill-frame t)
- '(woman-use-symbol-font t)
 )
 
+
+;; Load all *.el files sorted by name at ~/.emacs.d/lisp. Sub-directories and files starting with
+;; underline are ignored. If a compiled elisp file exist and it is not outdated, then load it
+;; instead of the non-compiled one.
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(setq load-prefer-newer t)
+(mapc 'load (mapcar 'file-name-base
+                    (directory-files (expand-file-name "lisp"
+                                                       user-emacs-directory)
+                                     nil
+                                     "^[^_].*\\.el$")))
 
 ;; Semantic
 (setq semantic-default-submodes '(global-semantic-highlight-func-mode
@@ -172,9 +141,6 @@
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 
-;; (add-hook 'text-mode-hook 'orgstruct-mode)
-;; (add-hook 'text-mode-hook 'orgtbl-mode)
-
 ;; FIXME reposition should be before the pulse
 ;;(add-hook 'imenu-after-jump-hook 'reposition-window)
 
@@ -197,40 +163,11 @@
 (ad-activate 'find-tag-other-window)
 (ad-activate 'find-tag-other-frame)
 
-;; split window
-(setq split-height-threshold nil)
-(setq split-width-threshold 200)
-(setq split-window-preferred-function 'split-window-sensibly-horizontally)
-
 (show-paren-mode)
-
-;; List variables
-(eval-after-load "grep"
-  '(progn
-     ;; delete the default c/c++ aliases
-     (assq-delete-all (car(assoc "ch" grep-files-aliases)) grep-files-aliases)
-     (assq-delete-all (car(assoc "c" grep-files-aliases)) grep-files-aliases)
-     (assq-delete-all (car(assoc "cc" grep-files-aliases)) grep-files-aliases)
-     (assq-delete-all (car(assoc "cchh" grep-files-aliases)) grep-files-aliases)
-     (assq-delete-all (car(assoc "hh" grep-files-aliases)) grep-files-aliases)
-     (assq-delete-all (car(assoc "h" grep-files-aliases)) grep-files-aliases)
-     ;; add my aliases
-     (add-to-list 'grep-files-aliases '("h" . "*.h *.hpp *.hxx"))
-     (add-to-list 'grep-files-aliases '("c" . "*.c *.cpp *.cxx"))
-     (add-to-list 'grep-files-aliases '("ch" . "*.h *.hpp *.hxx *.c *.cpp *.cxx"))))
 
 ;;; enable abbrev-mode by default
 (setq-default abbrev-mode t)
 
-
-;; Auto Complete
-;; (eval-after-load "auto-complete"
-;;   '(progn
-;;      (ac-config-default)
-;;      ;;(ac-set-trigger-key "TAB")
-;;      (add-to-list 'ac-sources 'ac-source-words-in-all-buffer t)
-;;      (setq-default ac-sources ac-sources)
-;;      (add-hook 'c-mode-common-hook (lambda() (add-to-list 'ac-sources 'ac-source-semantic)))))
 
 ;; TODO key-bindings
 ;; semantic-ia-fast-jump
@@ -242,25 +179,9 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; wgrep-ag
-(autoload 'wgrep-ag-setup "wgrep-ag")
-(add-hook 'ag-mode-hook 'wgrep-ag-setup)
-
 ;; aggressive-indent-mode
 ;; (eval-after-load "aggressive-indent"
 ;;   '(global-aggressive-indent-mode))
-
-;; diff-hl
-(eval-after-load "diff-hl"
-  '(progn
-     (setq diff-hl-draw-borders nil)
-     ;; (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
-     ;; (global-diff-hl-mode)
-     ))
-
-;; desktop
-(add-hook 'desktop-after-read-hook 'set-custom-frame-title)
-(add-hook 'desktop-save-hook 'set-custom-frame-title)
 
 ;; flycheck
 ;; (add-hook 'after-init-hook 'global-flycheck-mode)
@@ -282,17 +203,6 @@
 
 (setq tab-always-indent 'complete)
 
-;; the variable height fonts are annoyed
-(eval-after-load "org"
-  '(dolist (face '(org-level-1
-                   org-level-2
-                   org-level-3
-                   org-level-4
-                   org-level-5
-                   org-level-6
-                   org-level-7
-                   org-level-8))
-     (set-face-attribute face nil :height 'unspecified)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

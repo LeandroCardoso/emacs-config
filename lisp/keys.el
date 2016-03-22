@@ -11,7 +11,6 @@
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 (global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-c g") 'ag) ;; it used to be rgrep
 (global-set-key (kbd "C-z") 'idomenu)
 (global-set-key (kbd "C-.") 'goto-last-change)
 (global-set-key (kbd "C-,") 'goto-last-change-reverse)
@@ -20,7 +19,6 @@
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
-(global-set-key (kbd "C-c m") 'woman)
 
 (global-set-key (kbd "C-c t") 'transpose-paragraphs)
 ;; FIX subword-mode-map remaping
@@ -51,18 +49,6 @@
 (global-set-key (kbd "C-c w") 'whitespace-keymap)
 
 
-;; org-mode outside org-mode
-(defvar org-out-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "l" 'org-store-link)
-    (define-key map "t" 'orgtbl-mode)
-    (define-key map "s" 'orgstruct-mode)
-    map)
-  "Keymap for org-mode commands outside org-mode")
-(defalias 'org-out-keymap org-out-keymap)
-(global-set-key (kbd "C-c o") 'org-out-keymap)
-
-
 ;; ESC key toogle the minibuffer
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
 (define-key isearch-mode-map (kbd "<escape>") 'isearch-abort) ;; isearch
@@ -90,12 +76,6 @@
      (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename-i)
      (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
      (define-key dired-mode-map (kbd "<backtab>") 'dired-previous-line)))
-
-(eval-after-load "ediff-mult"
-  '(add-hook 'ediff-meta-buffer-keymap-setup-hook
-             (lambda ()
-               (define-key ediff-meta-buffer-map (kbd "<tab>") 'ediff-next-meta-item)
-               (define-key ediff-meta-buffer-map (kbd "<backtab>") 'ediff-previous-meta-item))))
 
 (eval-after-load "wdired"
   '(define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename-i))

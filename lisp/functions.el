@@ -1,4 +1,3 @@
-(require 'woman)
 (require 'info)
 
 (defun add-unix-root-dir (DIRNAME)
@@ -162,11 +161,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
   (interactive)
   (push default-directory ido-work-directory-list))
 
-(defun set-custom-frame-title ()
-  (setq frame-title-format
-        (list "emacs"
-              (when (boundp 'desktop-dirname)
-                (list " - " (file-name-nondirectory (directory-file-name desktop-dirname)))))))
 
 (defun create-dir-local-file (DIRECTORY)
   "Create the `dir-locals-file in the DIRECTORY if it does not exist yet."
@@ -175,31 +169,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
       ;;(with-temp-file full-dir-locals-file)))
       (write-region "" nil full-dir-locals-file))))
 
-
-(defun split-window-sensibly-horizontally (&optional window)
-  "Split WINDOW in a way suitable for `display-buffer'.
-WINDOW defaults to the currently selected window.
-
-Replacement for `split-window-sensibly', but perfers
-`split-width-threshold' over `split-height-threshold'."
-  (let ((window (or window (selected-window))))
-    (or (and (window-splittable-p window t)
-	     ;; Split window vertically.
-	     (with-selected-window window
-	       (split-window-right)))
-	(and (window-splittable-p window)
-	     ;; Split window horizontally.
-	     (with-selected-window window
-	       (split-window-below)))
-	(and (eq window (frame-root-window (window-frame window)))
-	     (not (window-minibuffer-p window))
-	     ;; If WINDOW is the only window on its frame and is not the
-	     ;; minibuffer window, try to split it vertically disregarding
-	     ;; the value of `split-height-threshold'.
-	     (let ((split-height-threshold 0))
-	       (when (window-splittable-p window)
-		 (with-selected-window window
-		   (split-window-below))))))))
 
 (defun project-root ()
   "Find the project root directory using the `semanticdb-project-root-functions'"

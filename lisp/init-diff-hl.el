@@ -1,0 +1,5 @@
+(when (require 'diff-hl nil t)
+  (setq diff-hl-draw-borders nil)
+  (unless (eq system-type 'windows-nt)
+    (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
+    (global-diff-hl-mode)))
