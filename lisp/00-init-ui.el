@@ -24,30 +24,16 @@ Replacement for `split-window-sensibly', but perfers
 		 (with-selected-window window
 		   (split-window-below))))))))
 
-
 ;; No need to waste precious desktop space with useless GUI
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
-;; Frame
-(setq initial-frame-alist '((fullscreen . maximized) (cursor-type . bar)))
-(setq default-frame-alist initial-frame-alist)
-(setq window-system-default-frame-alist '((x . ((alpha . 97)))))
-
-;; Cursor
-(setq blink-cursor-mode nil)
 
 ;; Font
 (cond ((eq system-type 'gnu/linux)
        (set-frame-font "Source Code Pro-11" t t))
       ((eq system-type 'windows-nt)
        (set-frame-font "Consolas 10" t t)))
-
-;; Window
-(setq split-height-threshold nil)
-(setq split-width-threshold 200)
-(setq split-window-preferred-function 'split-window-sensibly-horizontally)
 
 ;; Theme
 (when (require 'monokai-theme nil t)
@@ -56,7 +42,19 @@ Replacement for `split-window-sensibly', but perfers
   (set-face-attribute 'cursor nil :background (face-foreground 'mode-line-buffer-id))
   (set-face-attribute 'fringe nil :foreground "dark slate gray")) ;; dim gray is also a good option
 
-;; Faces
+;; faces.el - must be after the theme
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)
 
+;; frame.el - some settings like cursor-type must be set after the theme
+(setq initial-frame-alist '((fullscreen . maximized) (cursor-type . bar)))
+(setq default-frame-alist initial-frame-alist)
+(setq window-system-default-frame-alist '((x . ((alpha . 97)))))
+;; disable cursor blink
+(blink-cursor-mode -1)
+
+
+;; window.el
+(setq split-height-threshold nil)
+(setq split-width-threshold 200)
+(setq split-window-preferred-function 'split-window-sensibly-horizontally)

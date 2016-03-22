@@ -177,6 +177,15 @@
           (setq compile-command "build.cmd 12 Release Build")
           (setq compilation-directory-output "Release/"))))
 
+(defun odyssey-set-project ()
+  "TODO"
+  (interactive)
+  (setq semantic-dependency-include-path
+        (mapcar (lambda (STR) (concat (project-root) STR))
+                '("Src/Sdk/AMI/Inc" "Src/Sdk/XFS/Inc" "Src/Common/*" "Src/Common/ClassHandlers"))))
+
+
+
 (defun msvs-copy-bin-to-drive ()
   "Copy compilated binary files in `compilation-directory-output' set by `msvs-set-compile-command'
 to the pen-drive defined by `mydrive'.

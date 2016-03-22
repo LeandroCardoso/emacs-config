@@ -1,4 +1,5 @@
-(when (require 'magit nil t)
+;;(when (require 'magit nil t)
+(with-eval-after-load "magit"
   (setq magit-popup-use-prefix-argument 'default)
 
   (when (eq system-type 'windows-nt)

@@ -1,8 +1,11 @@
-(defun my-cc-init-hook ()
-  (setq-default c-basic-offset 4)
-  ;; find-file
-  (setq cc-search-directories '("." "include" "*" "../*" "/usr/include" "/usr/local/include/*")))
+(setq-default c-basic-offset 4)
 
+;; find-file
+(setq cc-search-directories '("." "include" "*" "../*" "/usr/include" "/usr/local/include/*"))
+
+;; hooks
+
+(defun my-cc-init-hook ())
 (add-hook 'c-initialization-hook 'my-cc-init-hook)
 
 ;; TODO proper style customization
