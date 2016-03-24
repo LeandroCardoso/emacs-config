@@ -66,10 +66,6 @@
 
 ;; mode specific maps
 
-;; occur
-(define-key occur-mode-map (kbd "<tab>") 'occur-next)
-(define-key occur-mode-map (kbd "<backtab>") 'occur-prev)
-
 (eval-after-load "dired"
   '(progn
      (define-key dired-mode-map (kbd "C-c b") 'browse-url-of-dired-file)
