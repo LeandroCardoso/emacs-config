@@ -12,8 +12,6 @@
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-z") 'idomenu)
-(global-set-key (kbd "C-.") 'goto-last-change)
-(global-set-key (kbd "C-,") 'goto-last-change-reverse)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
 (global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
@@ -53,15 +51,10 @@
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
 (define-key isearch-mode-map (kbd "<escape>") 'isearch-abort) ;; isearch
 (define-key minibuffer-local-map (kbd "<escape>") 'abort-recursive-edit)
-(global-set-key (kbd "<escape>") 'smex) ;; everywhere else
 
 ;; prog-mode-maps seems to be bugged
 ;;(define-key prog-mode-map (kbd "<f9>") 'compile)
 (global-set-key (kbd "<f9>") 'compile)
-
-;; transpose-frame
-(global-set-key (kbd "C-x |") 'rotate-frame-clockwise)
-(global-set-key (kbd "C-x \\") 'rotate-frame)
 
 
 ;; mode specific maps
