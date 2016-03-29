@@ -11,7 +11,6 @@
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 (global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-z") 'idomenu)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
 (global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
@@ -30,22 +29,6 @@
 (global-set-key (kbd "M-p") 'scroll-down-line)
 (global-set-key (kbd "M-<down>") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-up-line)
-
-;; whitespace map
-(defvar whitespace-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "w" 'whitespace-mode)
-    (define-key map "n" 'whitespace-newline-mode)
-    (define-key map "W" 'whitespace-toggle-options)
-    (define-key map "C" 'whitespace-cleanup)
-    (define-key map "c" 'whitespace-cleanup-region)
-    (define-key map "t" 'delete-trailing-whitespace)
-    (define-key map "r" 'delete-whitespace-rectangle)
-    map)
-  "Keymap for whitespace commands")
-(defalias 'whitespace-keymap whitespace-keymap)
-(global-set-key (kbd "C-c w") 'whitespace-keymap)
-
 
 ;; ESC key toogle the minibuffer
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit

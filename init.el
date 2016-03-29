@@ -76,7 +76,6 @@
  '(vc-command-messages t)
  '(vc-follow-symlinks t)
  '(which-function-mode t nil (which-func))
- '(whitespace-line-column nil)
  '(winner-mode t)
 )
 
