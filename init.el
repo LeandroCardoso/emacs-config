@@ -9,10 +9,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-for-comint-mode t)
- '(auto-compression-mode t nil (jka-compr))
  '(bs-alternative-configuration "files")
  '(bs-default-configuration "all-intern-last")
- '(column-number-mode t)
  '(comment-column 0)
  '(compilation-scroll-output (quote first-error))
  '(custom-buffer-done-kill t)
@@ -42,15 +40,11 @@
      (mark " "
            (name 30 -1)
            " " filename))))
- '(imenu-auto-rescan t)
- '(imenu-max-items 200)
- '(imenu-sort-function (quote imenu--sort-by-name))
  '(indent-tabs-mode nil)
  '(initial-scratch-message nil)
  '(ispell-query-replace-choices t)
  '(ispell-silently-savep t)
  '(jit-lock-stealth-time 1)
- '(kill-ring-max 300)
  '(mouse-avoidance-banish-position
    (quote
     ((frame-or-window . frame)
@@ -59,14 +53,8 @@
      (top-or-bottom . top)
      (top-or-bottom-pos . 0))))
  '(mouse-avoidance-mode (quote banish) nil (avoid))
- '(next-error-highlight (quote fringe-arrow))
- '(normal-erase-is-backspace nil)
  '(nxml-child-indent 4)
  '(nxml-slash-auto-complete-flag t)
- '(shift-select-mode nil)
- '(size-indication-mode t)
- '(solarized-use-more-italic t)
- '(solarized-use-variable-pitch nil)
  '(sql-input-ring-file-name "~/.emacs.d/sql-history")
  '(tab-width 4)
  '(truncate-lines nil)
