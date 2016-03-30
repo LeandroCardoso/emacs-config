@@ -176,10 +176,15 @@ With prefix P, create local abbrev. Otherwise it will be global."
 
 (defun project-name ()
   "Return the project name using the `project-root' to find the current project-am."
-  (let ((project-root-dir (project-root)))
-        (if project-root-dir
-            (file-name-nondirectory (directory-file-name (project-root)))
-          nil)))
+  (let ((project-root (project-root)))
+    (when project-root
+      (file-name-nondirectory (directory-file-name project-root))
+      )))
+
+(defun project-p ()
+  "Return t when we are in a project.
+See `project-root'"
+  (stringp (project-root)))
 
 (defun project-files ()
   "List relevant files in `project-root' directory."

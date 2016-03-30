@@ -53,8 +53,18 @@ Replacement for `split-window-sensibly', but perfers
 ;; disable cursor blink
 (blink-cursor-mode -1)
 
-
 ;; window.el
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
+
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-x M-o") 'other-frame)
+(global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
+(global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
+
+;; scroll
+(global-set-key (kbd "M-<up>") 'scroll-down-line)
+(global-set-key (kbd "M-p") 'scroll-down-line)
+(global-set-key (kbd "M-<down>") 'scroll-up-line)
+(global-set-key (kbd "M-n") 'scroll-up-line)

@@ -1,6 +1,4 @@
 (global-set-key (kbd "C-M-o") 'ff-find-other-file) ;; default is split-line
-(global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "C-x M-o") 'other-frame)
 (global-set-key (kbd "M-/") 'hippie-expand) ;; default is dabbrev-expand
 (global-set-key (kbd "M-?") 'tags-search)
 (global-set-key (kbd "C-x C-b") 'ibuffer) ;; default is list-buffers
@@ -11,8 +9,6 @@
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 (global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
-(global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
@@ -23,12 +19,6 @@
                                                   ;; subword-transpose
 (global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-;") 'smart-dot-comma)
-
-;; scroll
-(global-set-key (kbd "M-<up>") 'scroll-down-line)
-(global-set-key (kbd "M-p") 'scroll-down-line)
-(global-set-key (kbd "M-<down>") 'scroll-up-line)
-(global-set-key (kbd "M-n") 'scroll-up-line)
 
 ;; ESC key toogle the minibuffer
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit

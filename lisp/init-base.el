@@ -1,0 +1,7 @@
+(setq fill-column 100)
+(setq frame-resize-pixelwise t)
+(setq indent-tabs-mode nil)
+(setq tab-width 4)
+(setq truncate-partial-width-windows nil)
+(setq undo-limit 800000)
+(setq undo-strong-limit undo-limit)

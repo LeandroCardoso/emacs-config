@@ -123,10 +123,20 @@
            (url-hexify-string QUERY))))
 
 (defun shell-bash ()
-  "Run bash in shell mode."
+  "Run `shell' with bash"
   (interactive)
-  (let ((explicit-shell-file-name "bash"))
+  (let ((explicit-shell-file-name (executable-find "bash"))
+	(shell-file-name "bash"))
+    (setenv "SHELL" shell-file-name)
     (call-interactively 'shell)))
+
+(defun term-bash ()
+  "Run `term' with bash"
+  (interactive)
+  (let ((explicit-shell-file-name (executable-find "bash"))
+	(shell-file-name "bash"))
+    (setenv "SHELL" shell-file-name)
+    (call-interactively 'term)))
 
 ;; (make-variable-buffer-local 'compilation-directory-output)
 
