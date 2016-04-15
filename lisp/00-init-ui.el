@@ -53,6 +53,14 @@ Replacement for `split-window-sensibly', but perfers
 ;; disable cursor blink
 (blink-cursor-mode -1)
 
+;; fullscreen and scroll bars are bugged when a new frame is created. The following code workaround
+;; these bugs.
+(defun set-frame-settings (FRAME)
+  (sleep-for 0.1) ; I need this sleep to fullscreen works properly in Windows
+  (modify-frame-parameters FRAME '((vertical-scroll-bars . nil) (fullscreen . maximized))))
+
+(setq after-make-frame-functions 'set-frame-settings)
+
 ;; window.el
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
