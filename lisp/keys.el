@@ -5,7 +5,7 @@
 (global-set-key (kbd "C-x 4 C-b") 'ibuffer-other-window)
 (global-set-key (kbd "RET") 'newline-and-indent) ;; default is newline
 (global-set-key (kbd "M-RET") 'smart-newline-and-indent) ;; ALT ENTER
-(global-set-key (kbd "C-M-<delete>") 'backward-kill-sexp)
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 (global-set-key (kbd "C-c r") 'revert-buffer)
