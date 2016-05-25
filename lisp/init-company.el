@@ -13,7 +13,7 @@
   (add-hook 'prog-mode-hook 'company-mode-on)
   (add-hook 'text-mode-hook 'company-mode-on)
 
-  (setq company-idle-delay 0.1)
+  (setq company-idle-delay 0.3)
   (setq company-minimum-prefix-length 3)
   (setq company-show-numbers t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
