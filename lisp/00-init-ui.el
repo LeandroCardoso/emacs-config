@@ -25,9 +25,9 @@ Replacement for `split-window-sensibly', but perfers
 		   (split-window-below))))))))
 
 ;; No need to waste precious desktop space with useless GUI
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 ;; Font
 (cond ((eq system-type 'gnu/linux)
