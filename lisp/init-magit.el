@@ -4,7 +4,9 @@
   (when (eq system-type 'windows-nt)
     (setq w32-pipe-read-delay 0)
     (setq magit-process-connection-type nil)
-    (setq magit-refresh-status-buffer nil)))
+    (setq magit-refresh-status-buffer nil)
+    (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+    (remove-hook 'server-switch-hook 'magit-commit-diff)))
 
   ;; unset compose-mail keys to use it with magit
   (global-unset-key (kbd "C-x m"))   ;; compose-mail
