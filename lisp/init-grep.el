@@ -15,6 +15,8 @@
   ;; MSVS
   (add-to-list 'grep-files-aliases '("msvs" . "*.sln *.vcxproj *.vcxproj.filters *.msbuild"))
   (add-to-list 'grep-files-aliases
-               '("msvsch" . "*.h *.hpp *.hxx *.c *.cpp *.cxx *.sln *.vcxproj *.vcxproj.filters *.msbuild")))
+               '("msvsch" . "*.h *.hpp *.hxx *.c *.cpp *.cxx *.sln *.vcxproj *.vcxproj.filters *.msbuild"))
+
+  (global-set-key (kbd "C-c g") 'rgrep))
 
 (when (require 'wgrep nil t))
