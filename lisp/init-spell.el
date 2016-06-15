@@ -17,7 +17,13 @@
 ;; flyspell
 (setq flyspell-issue-welcome-flag nil)
 (setq flyspell-persistent-highlight nil) ;; make flyspell less annoying
+(setq flyspell-use-meta-tab nil)
 
+;; Redefine flyspell-mode-map, I hate the default keybindings.
+(setq flyspell-mode-map (make-sparse-keymap))
+(define-key flyspell-mode-map (kbd "C-$") 'flyspell-auto-correct-word) ;; C-$ is similar to M-$.
+
+;; enable flyspell
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
