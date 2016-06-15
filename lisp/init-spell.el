@@ -5,10 +5,14 @@
 (setq ispell-query-replace-choices t)
 (setq ispell-silently-savep t)
 
-;; use custom user dictionary in windows
 (when (eq system-type 'windows-nt)
+  ;; 'look' is not automatically used because we have a custom unix path in windows.
+  (setq ispell-look-p t)
+  ;; use custom user dictionary in windows
+  (setq ispell-complete-word-dict (expand-file-name "~/dict/en_US.txt"))
   (setenv "DICPATH" (expand-file-name "~/dict"))
   (setenv "DICTIONARY" "en_US"))
+
 
 ;; flyspell
 (setq flyspell-issue-welcome-flag nil)
