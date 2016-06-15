@@ -34,8 +34,6 @@
            (name 30 -1)
            " " filename))))
  '(initial-scratch-message nil)
- '(ispell-query-replace-choices t)
- '(ispell-silently-savep t)
  '(jit-lock-stealth-time 1)
  '(mouse-avoidance-banish-position
    (quote
@@ -90,9 +88,6 @@
 (semantic-mode)
 
 
-;; Spell
-(setq ispell-program-name "hunspell")
-
 ;; pulse
 (setq pulse-command-advice-flag t)
 
@@ -104,10 +99,6 @@
 (add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
 (eval-after-load "csharp"
   '(add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode)))
-
-;; Hooks
-;; (add-hook 'text-mode-hook 'ispell-minor-mode)
-;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 
 ;; FIXME reposition should be before the pulse

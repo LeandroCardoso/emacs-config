@@ -16,11 +16,6 @@
 ;; launch external process is slow in Windows, so we don't want to use the new-line option
 (setq flycheck-check-syntax-automatically '(save idle-change mode-enable))
 
-;; spell
-(setq ispell-dictionary "en_US")
-(setenv "DICPATH" "c:\\msys32\\local\\dicts")
-(setenv "DICTIONARY" "en_US")
-
 ;; this is a very recommended setup
 (setq w32-pipe-read-delay 0)
 
