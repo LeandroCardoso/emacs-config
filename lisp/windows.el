@@ -147,7 +147,7 @@
                ;; tfs odyssey
                ((string-match-p "Odyssey" project-root-dir)
                 (setq compile-command
-                      (concat "build.cmd 12 Release Build "
+                      (concat "build.cmd Release Build "
                               (convert-standard-filename project-root-dir)
                               "Src\\"))
                 (setq compilation-directory-output
@@ -155,19 +155,19 @@
                ;; tfs opteva
                ((string-match-p "Opteva" project-root-dir)
                 (setq compile-command
-                      (concat "build.cmd 10 Release Build "
+                      (concat "build.cmd Release Build "
                               (convert-standard-filename project-root-dir)
                               "Src\\"))
                 (setq compilation-directory-output
                       (concat project-root-dir "Src/bin/Release/")))
                ;; clearcase opteva
                ((file-exists-p (concat project-root-dir "view.dat"))
-                (setq compile-command "build.cmd 10 Release Build")
+                (setq compile-command "build.cmd Release Build")
                 (setq compilation-directory-output
                       (concat project-root-dir "XFSOPT_SRC/Src/Src/bin/Release/")))
                ;; undefined with project
                (t
-                (setq compile-command "build.cmd 12 Release Build")
+                (setq compile-command "build.cmd Release Build")
                 (setq compilation-directory-output
                       (concat project-root-dir "Release/"))))
               (require 'files-x)
@@ -179,7 +179,7 @@
                                          'add-or-replace)
               (save-buffer))
           ;; undefined without project
-          (setq compile-command "build.cmd 12 Release Build")
+          (setq compile-command "build.cmd Release Build")
           (setq compilation-directory-output "Release/"))))
 
 (defun odyssey-set-project ()
