@@ -1,4 +1,5 @@
-;; Disable variable fonts because they are f*cking annoying
+;; Disable variable fonts because they are f*cking annoying, specially with pop-ups like the one
+;; created by `company-mode'.
 (with-eval-after-load "org"
   (dolist (face '(org-level-1
                   org-level-2
@@ -22,7 +23,7 @@
 (setq org-src-window-setup 'current-window); show edit buffer in the current window
 (setq org-startup-folded nil) ; open org files in unfolded mode
 (setq org-startup-truncated nil) ; don't set `truncate-lines', this break long tables
-(setq org-tags-column (- fill-column)) ; align tags at the right margin
+(setq org-tags-column (- fill-column)) ; align tags at the right margin. See `set-org-tags-right-column'
 (setq org-tags-sort-function 'string<) ; align tags using alphabetic order
 
 ;; org-mode outside org-mode
@@ -35,3 +36,11 @@
   "Keymap for org-mode commands outside org-mode")
 (defalias 'org-out-keymap org-out-keymap)
 (global-set-key (kbd "C-c o") 'org-out-keymap)
+
+
+;; `set-fill-column' is advised to also set org-tags-column
+(defun set-org-tags-right-column (ARG)
+  "Set `org-tags-column' to the negative value of the specified argument."
+  (setq org-tags-column (- ARG)))
+
+(advice-add 'set-fill-column :after #'set-org-tags-right-column)
