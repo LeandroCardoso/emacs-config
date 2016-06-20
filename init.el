@@ -20,19 +20,6 @@
  '(global-subword-mode t)
  '(hi-lock-mode t t (hi-lock))
  '(highlight-nonselected-windows t)
- '(ibuffer-display-summary nil)
- '(ibuffer-formats
-   (quote
-    ((mark modified read-only " "
-           (name 30 30 :left :elide)
-           " "
-           (size 6 -1 :right)
-           " "
-           (mode 16 16 :left :elide)
-           " " filename-and-process)
-     (mark " "
-           (name 30 -1)
-           " " filename))))
  '(initial-scratch-message nil)
  '(jit-lock-stealth-time 1)
  '(mouse-avoidance-banish-position

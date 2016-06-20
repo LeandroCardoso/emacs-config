@@ -1,8 +1,6 @@
 (global-set-key (kbd "C-M-o") 'ff-find-other-file) ;; default is split-line
 (global-set-key (kbd "M-/") 'hippie-expand) ;; default is dabbrev-expand
 (global-set-key (kbd "M-?") 'tags-search)
-(global-set-key (kbd "C-x C-b") 'ibuffer) ;; default is list-buffers
-(global-set-key (kbd "C-x 4 C-b") 'ibuffer-other-window)
 (global-set-key (kbd "RET") 'newline-and-indent) ;; default is newline
 (global-set-key (kbd "M-RET") 'smart-newline-and-indent) ;; ALT ENTER
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
