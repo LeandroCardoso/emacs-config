@@ -44,3 +44,6 @@
   (setq org-tags-column (- ARG)))
 
 (advice-add 'set-fill-column :after #'set-org-tags-right-column)
+
+
+(add-hook 'org-mode-hook 'auto-fill-mode)
