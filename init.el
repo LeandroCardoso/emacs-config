@@ -12,7 +12,6 @@
  '(custom-raised-buttons nil)
  '(delete-selection-mode t nil (delsel))
  '(ff-case-fold-search t)
- '(global-auto-revert-mode t)
  '(global-font-lock-mode t nil (font-lock))
  '(global-hl-line-mode t)
  '(global-subword-mode t)
