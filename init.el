@@ -12,13 +12,11 @@
  '(custom-raised-buttons nil)
  '(delete-selection-mode t nil (delsel))
  '(ff-case-fold-search t)
- '(global-font-lock-mode t nil (font-lock))
  '(global-hl-line-mode t)
  '(global-subword-mode t)
  '(hi-lock-mode t t (hi-lock))
  '(highlight-nonselected-windows t)
  '(initial-scratch-message nil)
- '(jit-lock-stealth-time 1)
  '(mouse-avoidance-banish-position
    (quote
     ((frame-or-window . frame)
