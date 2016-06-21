@@ -14,7 +14,6 @@
  '(ff-case-fold-search t)
  '(global-hl-line-mode t)
  '(global-subword-mode t)
- '(hi-lock-mode t t (hi-lock))
  '(highlight-nonselected-windows t)
  '(initial-scratch-message nil)
  '(mouse-avoidance-banish-position
