@@ -16,14 +16,6 @@
  '(global-subword-mode t)
  '(highlight-nonselected-windows t)
  '(initial-scratch-message nil)
- '(mouse-avoidance-banish-position
-   (quote
-    ((frame-or-window . frame)
-     (side . right)
-     (side-pos . 0)
-     (top-or-bottom . top)
-     (top-or-bottom-pos . 0))))
- '(mouse-avoidance-mode (quote banish) nil (avoid))
  '(nxml-child-indent 4)
  '(nxml-slash-auto-complete-flag t)
  '(sql-input-ring-file-name "~/.emacs.d/sql-history")
