@@ -16,8 +16,6 @@
  '(global-subword-mode t)
  '(highlight-nonselected-windows t)
  '(initial-scratch-message nil)
- '(nxml-child-indent 4)
- '(nxml-slash-auto-complete-flag t)
  '(sql-input-ring-file-name "~/.emacs.d/sql-history")
  '(vc-command-messages t)
  '(vc-follow-symlinks t)
