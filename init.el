@@ -61,8 +61,6 @@
 (setq pulse-command-advice-flag t)
 
 ;; auto modes
-(add-to-list 'auto-mode-alist '("\\.bat\\'" . dos-mode))
-(add-to-list 'auto-mode-alist '("\\.cmd\\'" . dos-mode))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.rc\\'" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
