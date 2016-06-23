@@ -17,8 +17,6 @@
  '(highlight-nonselected-windows t)
  '(initial-scratch-message nil)
  '(sql-input-ring-file-name "~/.emacs.d/sql-history")
- '(vc-command-messages t)
- '(vc-follow-symlinks t)
  '(which-function-mode t nil (which-func))
  '(winner-mode t)
 )
