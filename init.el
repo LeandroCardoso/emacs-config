@@ -14,7 +14,6 @@
  '(global-subword-mode t)
  '(highlight-nonselected-windows t)
  '(initial-scratch-message nil)
- '(sql-input-ring-file-name "~/.emacs.d/sql-history")
  '(which-function-mode t nil (which-func))
  '(winner-mode t)
 )
