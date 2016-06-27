@@ -15,7 +15,6 @@
  '(highlight-nonselected-windows t)
  '(initial-scratch-message nil)
  '(which-function-mode t nil (which-func))
- '(winner-mode t)
 )
 
 
