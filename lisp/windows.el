@@ -7,10 +7,6 @@
 (add-unix-root-dir "c:\\msys32\\mingw32")
 (add-unix-root-dir "c:\\msys32")
 
-;; proxy
-(setq url-proxy-services '(("http" . "localhost:3128")
-                           ("https" . "localhost:3128")))
-
 
 ;; flycheck
 ;; launch external process is slow in Windows, so we don't want to use the new-line option
@@ -29,25 +25,6 @@
 (add-hook 'after-make-frame-functions
           (lambda(FRAME)
             (modify-frame-parameters FRAME '((fullscreen . maximized)))))
-
-;; Copy binaries to the pen drive after a successful compilation
-(add-hook 'compilation-finish-functions
-          (lambda (BUFFER STATUS)
-            (hack-dir-local-variables-non-file-buffer)
-            (msvs-copy-bin-to-drive)))
-
-
-;; MS VS
-(require 'find-file)
-(add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))
-(add-to-list 'auto-mode-alist '("\\.proj\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.vcxproj\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.vcxproj\\.filters\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.props\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.targets\\'" . nxml-mode))
-(add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include" t)
-(add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include" t)
-(add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include\\*" t)
 
 (require 'semantic)
 (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c-mode)

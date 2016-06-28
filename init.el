@@ -8,13 +8,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(delete-selection-mode t nil (delsel))
- '(ff-case-fold-search t)
- '(global-hl-line-mode t)
- '(global-subword-mode t)
- '(highlight-nonselected-windows t)
- '(initial-scratch-message nil)
- '(which-function-mode t nil (which-func))
 )
 
 
@@ -58,8 +51,6 @@
 
 ;; auto modes
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.rc\\'" . c-mode))
-(add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
 (eval-after-load "csharp"
   '(add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode)))
 
