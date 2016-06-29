@@ -45,6 +45,8 @@
 
 (semantic-mode)
 
+;; dired
+(setq dired-dwim-target t)
 
 ;; pulse
 (setq pulse-command-advice-flag t)
