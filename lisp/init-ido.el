@@ -9,11 +9,13 @@
   ;; (setq ido-use-faces nil)
   (flx-ido-mode t))
 
+(setq ido-auto-merge-work-directories-length -1)
 (setq ido-create-new-buffer 'always)
 (setq ido-decorations
-      '(" { " " }" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]"))
+      '(" { " " }" " | " " | +" "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]"))
 (setq ido-default-buffer-method 'selected-window)
 (setq ido-enable-flex-matching t)
+(setq ido-rotate-file-list-default t)
 (setq ido-show-dot-for-dired t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-use-url-at-point t)
