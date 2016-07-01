@@ -6,3 +6,7 @@
 (setq normal-erase-is-backspace nil)
 (setq shift-select-mode nil)
 (setq size-indication-mode t)
+
+(global-set-key (kbd "RET") 'newline-and-indent) ;; default is newline
+(global-set-key (kbd "C-c k") 'kill-whole-line)
+(global-set-key (kbd "C-M-|") 'delete-indentation)

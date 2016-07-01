@@ -1,12 +1,8 @@
-(global-set-key (kbd "C-M-o") 'ff-find-other-file) ;; default is split-line
 (global-set-key (kbd "M-/") 'hippie-expand) ;; default is dabbrev-expand
 (global-set-key (kbd "M-?") 'tags-search)
-(global-set-key (kbd "RET") 'newline-and-indent) ;; default is newline
 (global-set-key (kbd "M-RET") 'smart-newline-and-indent) ;; ALT ENTER
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
-(global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
-(global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1
@@ -15,7 +11,6 @@
 ;; FIX subword-mode-map remaping
 ;;(global-set-key (kbd "C-T") 'transpose-words) ;; original transpose-words is remaped to
                                                   ;; subword-transpose
-(global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-;") 'smart-dot-comma)
 
 ;; ESC key toogle the minibuffer
