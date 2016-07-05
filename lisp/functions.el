@@ -118,14 +118,6 @@ See `backup-buffer'"
   (setq buffer-backed-up nil))
 
 
-(defun dired-move-to-filename-i ()
-  "Move to the beginning of the filename on the current line.
-Return the position of the beginning of the filename, or nil if none found.
-This is the interactive version of `dired-move-to-filename'"
-  (interactive)
-  (dired-move-to-filename))
-
-
 ;; TODO dowcase, uppercase and capitalize, optinal arg
 (defun smart-downcase ()
   ""
