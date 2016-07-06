@@ -30,10 +30,13 @@ Replacement for `split-window-sensibly', but perfers
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 ;; Font
-(cond ((eq system-type 'gnu/linux)
-       (set-frame-font "Source Code Pro-11" t t))
-      ((eq system-type 'windows-nt)
-       (set-frame-font "Consolas 10" t t)))
+(let ((font (cond
+             ((eq system-type 'gnu/linux) '("Source Code Pro" . "11"))
+             ((eq system-type 'windows-nt) '("Consolas" . "10")))))
+  (if (member (car font) (font-family-list))
+      (set-frame-font (concat (car font) " " (cdr font)) t t)
+    (message "Warning: Font %s does not exist" (car font))))
+
 
 ;; Theme
 (when (require 'monokai-theme nil t)
