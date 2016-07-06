@@ -76,8 +76,6 @@
 (ad-activate 'find-tag-other-window)
 (ad-activate 'find-tag-other-frame)
 
-(show-paren-mode)
-
 ;;; enable abbrev-mode by default
 (setq-default abbrev-mode t)
 
