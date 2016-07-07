@@ -1,5 +1,3 @@
-(setq grep-find-template "find -L . <X> -type f <F> -exec grep <C> -nH -e <R> {} +")
-
 (with-eval-after-load "grep"
   ;; delete the default c/c++ aliases
   (assq-delete-all (car(assoc "ch" grep-files-aliases)) grep-files-aliases)
@@ -13,10 +11,13 @@
   (add-to-list 'grep-files-aliases '("c" . "*.c *.cpp *.cxx"))
   (add-to-list 'grep-files-aliases '("ch" . "*.h *.hpp *.hxx *.c *.cpp *.cxx"))
   ;; MSVS
-  (add-to-list 'grep-files-aliases '("msvs" . "*.sln *.vcxproj *.vcxproj.filters *.msbuild"))
-  (add-to-list 'grep-files-aliases
-               '("msvsch" . "*.h *.hpp *.hxx *.c *.cpp *.cxx *.sln *.vcxproj *.vcxproj.filters *.msbuild"))
+  (add-to-list 'grep-files-aliases '("msvs" . "*.sln *.vcxproj *.vcxproj.filters *.props *.targets"))
+
+  (grep-apply-setting 'grep-command "grep -I -nH ")
+  (grep-apply-setting 'grep-find-command '("find -L . -type f -exec grep -I -nH  {} +" . 37))
+  (grep-apply-setting 'grep-find-template "find -L . <X> -type f <F> -exec grep <C> -I -nH -e <R> {} +")
 
   (global-set-key (kbd "C-c g") 'rgrep))
 
-(when (require 'wgrep nil t))
+
+(require 'wgrep nil t)
