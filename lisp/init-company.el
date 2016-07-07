@@ -9,10 +9,9 @@
               (make-local-variable 'company-backends)
               (push '(company-nxml company-dabbrev company-yasnippet) company-backends)))
 
-  ;; Enable company mode in all prog-mode and text-mode derived modes.
-  (add-hook 'prog-mode-hook 'company-mode-on)
-  (add-hook 'text-mode-hook 'company-mode-on)
-
+  ;; Enable company mode in all modes, except problematic ones.
+  ;;(setq company-global-modes '(not ))
+  
   (setq company-idle-delay 0.3)
   (setq company-minimum-prefix-length 3)
   (setq company-show-numbers t)
@@ -32,10 +31,12 @@
   ;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
 
   ;; keymap
-  (define-key company-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
+  ;; (define-key company-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key company-mode-map (kbd "<C-tab>") 'company-complete)
   ;; (define-key company-mode-map (kbd "<C-tab>") 'company-complete-common-or-cycle)
   
   ;; (define-key company-active-map (kbd "<tab>") 'company-select-next)
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-  (define-key company-active-map (kbd "<backtab>") 'company-select-previous))
+  (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
+
+  (global-company-mode))
