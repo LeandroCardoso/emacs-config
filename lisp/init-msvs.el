@@ -21,9 +21,10 @@
 (defun directory-parent (DIR &optional NUMBER)
   "Return the parent directory of `DIR'.
 With `NUMBER', return the `NUMBER' parent directory of `DIR'."
-  (if (or (null NUMBER) (= NUMBER 1) (= NUMBER 0))
-      (file-name-directory (directory-file-name DIR))
-    (directory-parent (file-name-directory (directory-file-name DIR)) (1- NUMBER))))
+  (when DIR
+    (if (or (null NUMBER) (= NUMBER 1) (= NUMBER 0))
+        (file-name-directory (directory-file-name DIR))
+      (directory-parent (file-name-directory (directory-file-name DIR)) (1- NUMBER)))))
 
 
 (defun msvs-root-dir ()
