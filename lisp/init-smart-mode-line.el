@@ -19,6 +19,14 @@
 
   ;; (setq rm-whitelist (mapconcat 'identity '("company-.*") "\\|"))
 
-  (setq rm-blacklist '(" yas" " ," " company" " Abbrev" " Fill" " ElDoc"))
+  (setq rm-blacklist '(
+                       " ,"    ;subword
+                       " Abbrev"
+                       " ElDoc"
+                       " Fill" ;auto-fill
+                       " company"
+                       " yas"  ;yasnippet
+                       " ²"    ;superword
+                       ))
   
   (smart-mode-line-enable))
