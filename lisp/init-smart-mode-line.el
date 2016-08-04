@@ -17,6 +17,8 @@
                                                       (concat ":" (project-name) ":")
                                                     (match-string 0 str)))) t)
 
-  (setq rm-whitelist (mapconcat 'identity '("company-.*") "\\|"))
+  ;; (setq rm-whitelist (mapconcat 'identity '("company-.*") "\\|"))
+
+  (setq rm-blacklist '(" yas" " ," " company" " Abbrev" " Fill" " ElDoc"))
   
   (smart-mode-line-enable))
