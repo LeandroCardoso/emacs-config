@@ -9,5 +9,7 @@
            " " filename-and-process)
      (mark " " (name 40 -1) " " filename)))
 
+(add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode)))
+
 (global-set-key (kbd "C-x C-b") 'ibuffer) ;; default is list-buffers
 (global-set-key (kbd "C-x 4 C-b") 'ibuffer-other-window)
