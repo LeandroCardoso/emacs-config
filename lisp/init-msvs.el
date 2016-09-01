@@ -14,8 +14,14 @@
 (add-to-list 'auto-mode-alist '("\\.proj\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.vcxproj\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.vcxproj\\.filters\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.props\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.targets\\'" . nxml-mode))
+
+
+(with-eval-after-load "grep"
+  ;; MSVS
+  (add-to-list 'grep-files-aliases '("msvs" . "*.sln *proj *proj.filters *.props *.targets")))
 
 
 (defun directory-parent (DIR &optional NUMBER)

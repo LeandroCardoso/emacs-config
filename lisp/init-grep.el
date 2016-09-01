@@ -10,8 +10,6 @@
   (add-to-list 'grep-files-aliases '("h" . "*.h *.hpp *.hxx"))
   (add-to-list 'grep-files-aliases '("c" . "*.c *.cpp *.cxx"))
   (add-to-list 'grep-files-aliases '("ch" . "*.h *.hpp *.hxx *.c *.cpp *.cxx"))
-  ;; MSVS
-  (add-to-list 'grep-files-aliases '("msvs" . "*.sln *.vcxproj *.vcxproj.filters *.props *.targets"))
 
   (grep-apply-setting 'grep-command "grep -I -nH ")
   (grep-apply-setting 'grep-find-command '("find -L . -type f -exec grep -I -nH  {} +" . 37))
