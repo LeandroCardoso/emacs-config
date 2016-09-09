@@ -39,4 +39,7 @@
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
 
-  (global-company-mode))
+  (global-company-mode)
+  
+  (when (require 'company-flx nil t)
+    (company-flx-mode +1)))
