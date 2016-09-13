@@ -33,9 +33,8 @@
   ;; keymap
   ;; (define-key company-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key company-mode-map (kbd "<C-tab>") 'company-complete)
-  ;; (define-key company-mode-map (kbd "<C-tab>") 'company-complete-common-or-cycle)
   
-  ;; (define-key company-active-map (kbd "<tab>") 'company-select-next)
+  (define-key company-active-map (kbd "<escape>") 'company-abort)
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
 
