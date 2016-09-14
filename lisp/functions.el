@@ -188,3 +188,23 @@ See `project-root'"
       (progress-reporter-update report (setq count (1+ count))))
     (semanticdb-save-all-db)
     (progress-reporter-done report)))
+
+(defun kill-ring-insert ()
+  "TODO"
+  (interactive)
+  (let ((to_insert (completing-read "Yank: "
+                                    (delete-duplicates kill-ring :test #'equal))))
+    (when (and to_insert (region-active-p))
+      ;; the currently highlighted section is to be replaced by the yank
+      (delete-region (region-beginning) (region-end)))
+    (insert to_insert)))
+
+;; Warning: May be slow...
+;; TODO ignore some file extensions and sub-directories.
+;; TODO directory by parameter
+(defun find-file-wide-native ()
+  "TODO"
+  (interactive)
+  (find-file (completing-read "Find file: "
+                              (mapcar (lambda (filename) (file-relative-name filename "."))
+                                      (find-lisp-find-files "." ".*")))))
