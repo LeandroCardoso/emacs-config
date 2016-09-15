@@ -4,7 +4,7 @@
 (recentf-mode)
 
 ;; Periodically saving the list of files, just in case of an emacs crash
-(run-at-time nil 300 'recentf-save-list)
+(run-with-idle-timer 90 t 'recentf-save-list)
 
 (defun recentf-find-file ()
   "Edit file from the `recentf-list'.
