@@ -17,6 +17,7 @@
 (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.props\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.targets\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
 
 
 (with-eval-after-load "grep"
