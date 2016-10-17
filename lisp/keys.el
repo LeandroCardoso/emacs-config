@@ -1,5 +1,4 @@
 (global-set-key (kbd "M-/") 'hippie-expand) ;; default is dabbrev-expand
-(global-set-key (kbd "M-?") 'tags-search)
 (global-set-key (kbd "M-RET") 'smart-newline-and-indent) ;; ALT ENTER
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)

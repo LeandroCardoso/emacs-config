@@ -24,6 +24,10 @@ Replacement for `split-window-sensibly', but perfers
 		 (with-selected-window window
 		   (split-window-below))))))))
 
+(setq-default cursor-type 'bar)
+;; never resize the frame
+(setq frame-inhibit-implied-resize t)
+
 ;; No need to waste precious desktop space with useless GUI
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -49,26 +53,19 @@ Replacement for `split-window-sensibly', but perfers
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)
 
-;; frame.el - some settings like cursor-type must be set after the theme
-(setq initial-frame-alist '((fullscreen . maximized) (cursor-type . bar)))
+;; frame.el
+(setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
 (setq window-system-default-frame-alist '((x . ((alpha . 97)))))
 ;; disable cursor blink
 (blink-cursor-mode -1)
-
-;; fullscreen and scroll bars are bugged when a new frame is created. The following code workaround
-;; these bugs.
-(defun set-frame-settings (FRAME)
-  (sleep-for 0.1) ; I need this sleep to fullscreen works properly in Windows
-  (modify-frame-parameters FRAME '((vertical-scroll-bars . nil) (fullscreen . maximized))))
-
-(setq after-make-frame-functions 'set-frame-settings)
 
 ;; window.el
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
 
+;; key-bindings
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "C-x M-o") 'other-frame)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page

@@ -202,10 +202,9 @@ See `project-root'"
 ;; Warning: May be slow...
 ;; TODO ignore some file extensions and sub-directories.
 ;; TODO directory by parameter
-(require 'find-lisp)
 (defun find-file-wide-native ()
   "TODO"
   (interactive)
   (find-file (completing-read "Find file: "
                               (mapcar (lambda (filename) (file-relative-name filename "."))
-                                      (find-lisp-find-files "." ".*")))))
+                                      (directory-files-recursively "." ".*")))))
