@@ -105,7 +105,7 @@ bottom of the buffer stack."
   (let ((old-def-dir default-directory))
         (cd-absolute DIR)
         (message (concat "Creating TAGS at " DIR))
-        (call-process "ctags" nil "*Messages*" nil "-e" "-R" "--extra=+q" "--languages=c++")
+        (call-process "ctags" nil "*Messages*" nil "-e -R --extra=+q --fields=+aiS --languages=c++ --c++-kinds=+p")
         (cd-absolute old-def-dir)))
 
 
