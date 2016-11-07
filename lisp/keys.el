@@ -13,7 +13,6 @@
 
 ;; ESC key toogle the minibuffer
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
-(define-key isearch-mode-map (kbd "<escape>") 'isearch-abort) ;; isearch
 (define-key minibuffer-local-map (kbd "<escape>") 'abort-recursive-edit)
 
 ;; prog-mode-maps seems to be bugged
