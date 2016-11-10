@@ -7,6 +7,7 @@
   
   (setq semantic-idle-work-parse-neighboring-files-flag t)
   (setq semantic-idle-work-update-headers-flag t)
+  (setq semantic-lex-spp-use-headers-flag t)
 
   (setq semanticdb-project-root-functions
         (list
