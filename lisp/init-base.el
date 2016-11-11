@@ -5,6 +5,7 @@
 (setq truncate-partial-width-windows nil)
 (setq undo-limit 800000)
 (setq undo-strong-limit undo-limit)
+(setq-default indicate-empty-lines t)
 (setq-default fill-column 100)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
