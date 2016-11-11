@@ -67,8 +67,6 @@
 ;; semantic-analyze-proto-impl-toggle
 
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 ;; aggressive-indent-mode
 ;; (eval-after-load "aggressive-indent"
 ;;   '(global-aggressive-indent-mode))

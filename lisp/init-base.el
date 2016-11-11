@@ -8,3 +8,42 @@
 (setq-default fill-column 100)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+
+;; ESC key toogle the minibuffer
+;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
+(define-key minibuffer-local-map (kbd "<escape>") 'abort-recursive-edit)
+
+
+;; zap - misc.el
+(autoload 'zap-up-to-char "misc")
+(global-set-key (kbd "M-z") 'zap-up-to-char) ;; default is zap-to-char
+
+
+;; novice.el
+(setq disabled-command-function nil)
+
+
+;; simple.el
+(setq column-number-mode t)
+(setq completion-show-help nil)
+(setq kill-do-not-save-duplicates t)
+(setq kill-whole-line t)
+(setq next-error-highlight 'fringe-arrow)
+(setq normal-erase-is-backspace nil)
+(setq shift-select-mode nil)
+
+(global-set-key (kbd "RET") 'newline-and-indent) ;; default is newline
+(global-set-key (kbd "C-c k") 'kill-whole-line)
+(global-set-key (kbd "C-M-|") 'delete-indentation)
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
+(global-set-key (kbd "M-u") 'upcase-dwim) ;; default is upcase-word
+(global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
+(global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
+
+
+;; startup.el
+(setq initial-scratch-message nil)
+
+
+;; subr.el
+(defalias 'yes-or-no-p 'y-or-n-p)
