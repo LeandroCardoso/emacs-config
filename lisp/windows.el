@@ -121,30 +121,23 @@
             (progn
               (message "Project Root:%s" project-root-dir)
               (cond
-               ;; tfs odyssey
-               ((string-match-p "Odyssey" project-root-dir)
+               ;; tfs odyssey or opteva
+               ((or (string-match-p "Odyssey" project-root-dir)
+                    (string-match-p "Opteva" project-root-dir))
                 (setq compile-command
-                      (concat "build.cmd Release Build "
-                              (convert-standard-filename project-root-dir)
-                              "Src\\"))
-                (setq compilation-directory-output
-                      (concat project-root-dir "Src/bin/Release/")))
-               ;; tfs opteva
-               ((string-match-p "Opteva" project-root-dir)
-                (setq compile-command
-                      (concat "build.cmd Release Build "
-                              (convert-standard-filename project-root-dir)
-                              "Src\\"))
+                      (concat "build.cmd"
+                              " /p:SolutionDir=" (convert-standard-filename project-root-dir) "Src\\"
+                              " /p:Configuration=Release /t:Build"))
                 (setq compilation-directory-output
                       (concat project-root-dir "Src/bin/Release/")))
                ;; clearcase opteva
                ((file-exists-p (concat project-root-dir "view.dat"))
-                (setq compile-command "build.cmd Release Build")
+                (setq compile-command "build.cmd /p:Configuration=Release /t:Build")
                 (setq compilation-directory-output
                       (concat project-root-dir "XFSOPT_SRC/Src/Src/bin/Release/")))
                ;; undefined with project
                (t
-                (setq compile-command "build.cmd Release Build")
+                (setq compile-command "build.cmd /p:Configuration=Release /t:Build")
                 (setq compilation-directory-output
                       (concat project-root-dir "Release/"))))
               (require 'files-x)
@@ -156,7 +149,7 @@
                                          'add-or-replace)
               (save-buffer))
           ;; undefined without project
-          (setq compile-command "build.cmd Release Build")
+          (setq compile-command "build.cmd /p:Configuration=Release /t:Build")
           (setq compilation-directory-output "Release/"))))
 
 (defun odyssey-set-project ()
