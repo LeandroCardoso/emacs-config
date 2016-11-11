@@ -1,3 +1,5 @@
+(setq isearch-allow-scroll t)
+
 ;; http://endlessparentheses.com/better-backspace-during-isearch.html
 ;; https://gist.github.com/johnmastro/508fb22a2b4e1ce754e0
 (defun isearch-delete-something ()
