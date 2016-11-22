@@ -19,7 +19,6 @@
 (setq ido-show-dot-for-dired t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-use-url-at-point t)
-(setq ido-use-virtual-buffers t)
 
 ;; Enable ido in dired commands
 (put 'dired-do-copy   'ido nil)
