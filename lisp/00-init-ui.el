@@ -46,8 +46,18 @@ Replacement for `split-window-sensibly', but perfers
 (when (require 'monokai-theme nil t)
   (setq monokai-use-variable-pitch nil)
   (load-theme 'monokai t)
-  (set-face-attribute 'cursor nil :background (face-foreground 'mode-line-buffer-id))
-  (set-face-attribute 'fringe nil :foreground "dark slate gray")) ;; dim gray is also a good option
+  (set-face-background 'cursor (face-foreground 'mode-line-buffer-id))
+  (set-face-foreground 'fringe monokai-gray)
+  ;; monokai has some really weird mode-line faces
+  (set-face-attribute 'mode-line-inactive nil
+                      :background (face-background 'mode-line)
+                      :box `(:line-width 2
+                                         :color ,(face-background 'mode-line)
+                                         :style unspecified))
+  (set-face-attribute 'mode-line nil
+                      :box `(:line-width 2
+                                         :color ,monokai-gray
+                                         :style unspecified)))
 
 ;; faces.el - must be after the theme
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
