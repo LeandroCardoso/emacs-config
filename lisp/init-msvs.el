@@ -57,10 +57,18 @@ Versions supported are from 6.0 up to 10.0 ."
   ;; TODO
   ;; C:\Program Files\Microsoft SDKs\Windows\v6.0A\Include
   ;; C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include
+  ;; C:\Program Files\Microsoft SDKs\Windows\v7.1A\Include
   ;; C:\Program Files\Windows Kits\8.0\Include\shared
   ;; C:\Program Files\Windows Kits\8.0\Include\um
   ;; C:\Program Files\Windows Kits\8.1\Include\shared
   ;; C:\Program Files\Windows Kits\8.1\Include\um
+
+  ;; C:\Program Files\Microsoft Visual Studio 8\VC\include
+  ;; C:\Program Files\Microsoft Visual Studio 9.0\VC\include
+  ;; C:\Program Files\Microsoft Visual Studio 10.0\VC\include
+  ;; C:\Program Files\Microsoft Visual Studio 11.0\VC\include
+  ;; C:\Program Files\Microsoft Visual Studio 12.0\VC\include
+  ;; C:\Program Files\Microsoft Visual Studio 14.0\VC\include
   )
 
 
