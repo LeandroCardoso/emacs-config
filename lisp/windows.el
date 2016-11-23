@@ -48,11 +48,12 @@
 ;; (add-to-list 'tags-table-list "c:/DBDProj/TAGS.VC")
 
 ;; Hooks
-(defun my-xml-hook ()
-  (setq indent-tabs-mode (not (string-match-p "\\.vcxproj" (buffer-name))))
-  (setq indent-tabs-mode (not (string-match-p "\\.msbuild" (buffer-name)))))
+;; (defun my-xml-hook ()
+  ;; (setq indent-tabs-mode (not (string-match-p "\\.vcxproj" (buffer-name))))
+  ;; (setq indent-tabs-mode (not (string-match-p "\\.msbuild" (buffer-name))))
+  ;; )
 
-(add-hook 'nxml-mode-hook 'my-xml-hook)
+;; (add-hook 'nxml-mode-hook 'my-xml-hook)
 
 ;; Variables
 (setq mydrive "e:/")
