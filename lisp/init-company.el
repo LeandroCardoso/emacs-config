@@ -12,7 +12,7 @@
   ;; Enable company mode in all modes, except problematic ones.
   ;;(setq company-global-modes '(not ))
   
-  (setq company-idle-delay 0.3)
+  (setq company-idle-delay 0.5)
   (setq company-minimum-prefix-length 3)
   (setq company-show-numbers t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
