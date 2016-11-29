@@ -26,7 +26,8 @@
 
 ;; enable flyspell
 (add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(unless (eq system-type 'windows-nt) ; external processes are slow in Windows
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
 
 ;; from http://endlessparentheses.com/ispell-and-abbrev-the-perfect-auto-correct.html
