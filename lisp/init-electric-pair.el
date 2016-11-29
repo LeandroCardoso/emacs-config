@@ -1,3 +1,2 @@
-;; (setq electric-pair-inhibit-predicate 'electric-pair-default-inhibit)
-(setq electric-pair-preserve-balance nil)
+;; (setq electric-pair-inhibit-predicate 'electric-pair-default- inhibit) 
 (electric-pair-mode)
