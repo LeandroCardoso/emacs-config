@@ -10,6 +10,8 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
+(modify-coding-system-alist 'file "\\.el\\'" 'prefer-utf-8-unix)
+
 ;; ESC key toogle the minibuffer
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
 (define-key minibuffer-local-map (kbd "<escape>") 'abort-recursive-edit)
