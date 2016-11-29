@@ -128,17 +128,18 @@
                 (setq compile-command
                       (concat "build.cmd"
                               " /p:SolutionDir=" (convert-standard-filename project-root-dir) "Src\\"
+                              " /p:Platform=x86"
                               " /p:Configuration=Release /t:Build"))
                 (setq compilation-directory-output
                       (concat project-root-dir "Src/bin/Release/")))
                ;; clearcase opteva
                ((file-exists-p (concat project-root-dir "view.dat"))
-                (setq compile-command "build.cmd /p:Configuration=Release /t:Build")
+                (setq compile-command "build.cmd /p:Platform=x86 /p:Configuration=Release /t:Build")
                 (setq compilation-directory-output
                       (concat project-root-dir "XFSOPT_SRC/Src/Src/bin/Release/")))
                ;; undefined with project
                (t
-                (setq compile-command "build.cmd /p:Configuration=Release /t:Build")
+                (setq compile-command "build.cmd /p:Platform=x86 /p:Configuration=Release /t:Build")
                 (setq compilation-directory-output
                       (concat project-root-dir "Release/"))))
               (require 'files-x)
@@ -150,7 +151,7 @@
                                          'add-or-replace)
               (save-buffer))
           ;; undefined without project
-          (setq compile-command "build.cmd /p:Configuration=Release /t:Build")
+          (setq compile-command "build.cmd /p:Platform=x86 /p:Configuration=Release /t:Build")
           (setq compilation-directory-output "Release/"))))
 
 (defun odyssey-set-project ()
