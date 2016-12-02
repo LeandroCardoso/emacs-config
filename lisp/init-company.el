@@ -3,7 +3,7 @@
             (lambda ()
               (make-local-variable 'company-backends)
               ;;(push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
-              (push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
+              (push '(company-dabbrev-code :with company-yasnippet company-keywords) company-backends)))
   (add-hook 'nxml-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
@@ -12,7 +12,7 @@
   ;; Enable company mode in all modes, except problematic ones.
   ;;(setq company-global-modes '(not ))
   
-  (setq company-idle-delay 0.5)
+  (setq company-idle-delay 0.3)
   (setq company-minimum-prefix-length 3)
   (setq company-show-numbers t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
