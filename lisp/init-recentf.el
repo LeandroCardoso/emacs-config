@@ -1,6 +1,6 @@
 (require 'recentf)
 
-(setq recentf-max-saved-items 50)
+(setq recentf-max-saved-items 100)
 (recentf-mode)
 
 (defun recentf-find-file ()
