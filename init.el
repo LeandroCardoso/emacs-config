@@ -24,6 +24,9 @@
                                      nil
                                      "^[^_].*\\.el$")))
 
+;; This is required to dead keys works properly in my linux
+(require 'iso-transl)
+
 ;; pulse
 (setq pulse-command-advice-flag t)
 
