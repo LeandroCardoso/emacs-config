@@ -66,7 +66,7 @@ Replacement for `split-window-sensibly', but perfers
 ;; frame.el
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
-(setq window-system-default-frame-alist '((x . ((alpha . 97)))))
+(setq window-system-default-frame-alist '((x . ((alpha . 95)))))
 ;; disable cursor blink
 (blink-cursor-mode -1)
 
