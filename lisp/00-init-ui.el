@@ -44,7 +44,6 @@ Replacement for `split-window-sensibly', but perfers
 
 ;; Theme
 (when (require 'monokai-theme nil t)
-  (setq monokai-use-variable-pitch nil)
   (load-theme 'monokai t)
   (set-face-background 'cursor (face-foreground 'mode-line-buffer-id))
   (set-face-foreground 'fringe monokai-gray)
