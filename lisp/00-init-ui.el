@@ -35,7 +35,7 @@ Replacement for `split-window-sensibly', but perfers
 
 ;; Font
 (let ((font (cond
-             ((eq system-type 'gnu/linux) '("Source Code Pro" . "semibold 10"))
+             ((eq system-type 'gnu/linux) '("Source Code Pro" . "11"))
              ((eq system-type 'windows-nt) '("Consolas" . "10")))))
   (if (member (car font) (font-family-list))
       (set-frame-font (concat (car font) " " (cdr font)) t t)
