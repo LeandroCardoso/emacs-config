@@ -1,6 +1,4 @@
 (with-eval-after-load "magit"
-  (setq magit-popup-use-prefix-argument 'default)
-
   (when (eq system-type 'windows-nt)
     (setq w32-pipe-read-delay 0)
     (setq magit-process-connection-type nil)
