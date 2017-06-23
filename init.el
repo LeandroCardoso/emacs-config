@@ -2,6 +2,13 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa stable" . "http://stable.melpa.org/packages/") t)
+
+(setq package-archive-priorities
+      '(("melpa stable" . 2)
+        ("gnu"          . 1)
+        ("melpa"        . 0)))
+
 (setq package-selected-packages '(zenburn-theme yasnippet which-key wgrep vc-tfs transpose-frame tfs solarized-theme smex smart-mode-line rainbow-mode monokai-theme moe-theme material-theme markdown-mode magit isearch-dabbrev irony idomenu ido-ubiquitous goto-chg flx-ido fic-mode dos diff-hl csharp-mode company-flx company))
 
 
