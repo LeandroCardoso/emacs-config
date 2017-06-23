@@ -71,7 +71,7 @@ Replacement for `split-window-sensibly', but perfers
 
 ;; window.el
 (setq split-height-threshold nil)
-(setq split-width-threshold 200)
+(setq split-width-threshold 160)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
 
 ;; key-bindings

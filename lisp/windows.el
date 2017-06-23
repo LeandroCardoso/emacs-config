@@ -1,11 +1,8 @@
 (when (eq system-type 'windows-nt)
 
-
-(setenv "PATH" "c:\\Windows\\System32")
-
 ;; root directories are added in the beggining
-(add-unix-root-dir "c:\\msys32\\mingw32")
-(add-unix-root-dir "c:\\msys32")
+(add-unix-root-dir "c:\\msys64\\mingw64")
+(add-unix-root-dir "c:\\msys64")
 
 
 ;; flycheck
@@ -129,4 +126,6 @@
         (save-buffer))
   ;; undefined without project
   (setq compile-command "build.cmd /p:Platform=x86 /p:Configuration=Release /t:Build")
+)
+
 )
