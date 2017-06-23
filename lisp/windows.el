@@ -87,20 +87,23 @@
    (concat "https://www.google.com/search?q="
            (url-hexify-string QUERY))))
 
+
 (defun shell-bash ()
   "Run `shell' with bash"
   (interactive)
   (let ((explicit-shell-file-name (executable-find "bash"))
-	(shell-file-name "bash"))
-    (setenv "SHELL" shell-file-name)
+        (shell-file-name "bash"))
+    (setenv "SHELL" explicit-shell-file-name)
+    (setenv "EMACS" "t")
     (call-interactively 'shell)))
 
 (defun term-bash ()
   "Run `term' with bash"
   (interactive)
   (let ((explicit-shell-file-name (executable-find "bash"))
-	(shell-file-name "bash"))
-    (setenv "SHELL" shell-file-name)
+        (shell-file-name "bash"))
+    (setenv "SHELL" explicit-shell-file-name)
+    (setenv "EMACS" "t")
     (call-interactively 'term)))
 
 ;; (make-variable-buffer-local 'compilation-directory-output)
