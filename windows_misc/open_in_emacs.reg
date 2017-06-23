@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+ [HKEY_CLASSES_ROOT\*\Shell\Open In Emacs\Command]
+@="\"c:\\Users\\lcardoso\\emacs\\bin\\emacsclientw.exe\" -a \"c:\\Users\\lcardoso\\emacs\\bin\\runemacs.exe\" -n \"%1\""
+ [HKEY_CLASSES_ROOT\*\Shell\Open In Emacs (New Frame)\Command]
+@="\"c:\\Users\\lcardoso\\emacs\\bin\\emacsclientw.exe\" -a \"c:\\Users\\lcardoso\\emacs\\bin\\runemacs.exe\" -c -n \"%1\""
+ [HKEY_CLASSES_ROOT\*\Shell\Open In Emacs (New Session)\Command]
+@="\"c:\\Users\\lcardoso\\emacs\\bin\\runemacs.exe\" \"%1\""
