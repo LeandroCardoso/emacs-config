@@ -2,4 +2,5 @@
   (setq diff-hl-draw-borders nil)
   (unless (eq system-type 'windows-nt)
     (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
     (global-diff-hl-mode)))
