@@ -12,8 +12,6 @@
   (setq semanticdb-project-root-functions
         (list
          (lambda (directory) (locate-dominating-file directory ".git"))
-         (lambda (directory) (locate-dominating-file directory ".tfignore"))
-         (lambda (directory) (locate-dominating-file directory "view.dat"))
          (lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
   
   ;; semantic imenu
