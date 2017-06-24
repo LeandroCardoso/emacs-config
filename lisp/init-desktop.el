@@ -4,7 +4,7 @@
               (when (boundp 'desktop-dirname)
                 (list " - " (file-name-nondirectory (directory-file-name desktop-dirname)))))))
 
-(setq desktop-path '("." "~/.emacs.d/" "~"))
+(add-to-list 'desktop-path ".")
 (setq desktop-save 'ask-if-exists)
 
 (desktop-save-mode)

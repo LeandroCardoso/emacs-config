@@ -1,9 +1,9 @@
-(unless (file-directory-p "~/.emacs.d/auto-save")
-  (mkdir "~/.emacs.d/auto-save"))
+(unless (file-directory-p (concat user-emacs-directory "auto-save"))
+  (mkdir (concat user-emacs-directory "auto-save")))
 
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save/\\1" t)))
+(setq auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "auto-save/\\1") t)))
 (setq backup-by-copying t)
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
+(setq backup-directory-alist `((".*" . ,(concat user-emacs-directory "backup"))))
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq delete-old-versions t)
 
