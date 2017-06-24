@@ -4,10 +4,11 @@
               (when (boundp 'desktop-dirname)
                 (list " - " (file-name-nondirectory (directory-file-name desktop-dirname)))))))
 
-(add-to-list 'desktop-path ".")
-(setq desktop-save 'ask-if-exists)
+(with-eval-after-load "desktop"
+  (add-to-list 'desktop-path ".")
+  (setq desktop-save 'ask-if-exists)
 
-(desktop-save-mode)
+  (desktop-save-mode)
 
-(add-hook 'desktop-after-read-hook 'set-frame-title-from-desktop-dir)
-(add-hook 'desktop-save-hook 'set-frame-title-from-desktop-dir)
+  (add-hook 'desktop-after-read-hook 'set-frame-title-from-desktop-dir)
+  (add-hook 'desktop-save-hook 'set-frame-title-from-desktop-dir))
