@@ -7,12 +7,13 @@
 (when (require 'flx-ido nil t)
   ;; disable ido faces to see flx highlights.
   ;; (setq ido-use-faces nil)
-  (flx-ido-mode t))
+  (flx-ido-mode t)
+  (setq ido-use-faces nil))
 
 (setq ido-auto-merge-work-directories-length -1)
 (setq ido-create-new-buffer 'always)
 (setq ido-decorations
-      '(" { " " }" " | " " | +" "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]"))
+      '(" { " " }" " | " " | +" "" "" " [No match]" "" " [Not readable]" " [Too big]" " [Confirm]" " [" "]"))
 (setq ido-default-buffer-method 'selected-window)
 (setq ido-enable-flex-matching t)
 (setq ido-rotate-file-list-default t)
