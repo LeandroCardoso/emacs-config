@@ -9,16 +9,7 @@
         ("gnu"          . 1)
         ("melpa"        . 0)))
 
-(setq package-selected-packages '(zenburn-theme yasnippet which-key wgrep vc-tfs transpose-frame tfs solarized-theme smex smart-mode-line rainbow-mode monokai-theme moe-theme material-theme markdown-mode magit isearch-dabbrev irony idomenu ido-ubiquitous goto-chg flx-ido fic-mode dos diff-hl csharp-mode company-flx company))
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-)
-
+(setq custom-file (concat user-emacs-directory "custom-variables.el"))
 
 ;; Load all *.el files sorted by name at ~/.emacs.d/lisp. Sub-directories and files starting with
 ;; underline are ignored. If a compiled elisp file exist and it is not outdated, then load it
@@ -26,13 +17,9 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (setq load-prefer-newer t)
 (mapc 'load (mapcar 'file-name-base
-                    (directory-files (expand-file-name "lisp"
-                                                       user-emacs-directory)
+                    (directory-files (expand-file-name "lisp" user-emacs-directory)
                                      nil
                                      "^[^_].*\\.el$")))
-
-;; This is required to dead keys works properly in my linux
-(require 'iso-transl)
 
 ;; pulse
 (setq pulse-command-advice-flag t)
