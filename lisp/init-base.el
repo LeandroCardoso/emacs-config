@@ -5,9 +5,10 @@
 (setq truncate-partial-width-windows nil)
 (setq undo-limit 800000)
 (setq undo-strong-limit undo-limit)
-(setq-default indicate-empty-lines t)
+(setq-default abbrev-mode t) ;; enable abbrev-mode by default
 (setq-default fill-column 100)
 (setq-default indent-tabs-mode nil)
+(setq-default indicate-empty-lines t)
 (setq-default tab-width 4)
 
 (modify-coding-system-alist 'file "\\.el\\'" 'prefer-utf-8-unix)
@@ -50,3 +51,7 @@
 
 ;; subr.el
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+
+;; indent.el
+(setq tab-always-indent 'complete)

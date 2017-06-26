@@ -1,13 +1,9 @@
-;; packages
-(setq package-enable-at-startup nil)
-(package-initialize)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa stable" . "http://stable.melpa.org/packages/") t)
 
-(setq package-archive-priorities
-      '(("melpa stable" . 2)
-        ("gnu"          . 1)
-        ("melpa"        . 0)))
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
 
 (setq custom-file (concat user-emacs-directory "custom-variables.el"))
 
@@ -20,74 +16,6 @@
                     (directory-files (expand-file-name "lisp" user-emacs-directory)
                                      nil
                                      "^[^_].*\\.el$")))
-
-;; pulse
-(setq pulse-command-advice-flag t)
-
-;; auto modes
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(eval-after-load "csharp"
-  '(add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode)))
-
-
-;; FIXME reposition should be before the pulse
-;;(add-hook 'imenu-after-jump-hook 'reposition-window)
-
-(defadvice find-tag (after find-tag-and-reposition-window)
-  "Reposition window after find a tag"
-  (reposition-window)
-  (pulse-line-hook-function))
-
-(defadvice find-tag-other-window (after find-tag-and-reposition-window)
-  "Reposition window after find a tag"
-  (reposition-window)
-  (pulse-line-hook-function))
-
-(defadvice find-tag-other-frame (after find-tag-and-reposition-window)
-  "Reposition window after find a tag"
-  (reposition-window)
-  (pulse-line-hook-function))
-
-(ad-activate 'find-tag)
-(ad-activate 'find-tag-other-window)
-(ad-activate 'find-tag-other-frame)
-
-;;; enable abbrev-mode by default
-(setq-default abbrev-mode t)
-
-
-;; TODO key-bindings
-;; semantic-ia-fast-jump
-;; semantic-ia-describe-class
-;; semanticdb-cleanup-cache-files
-;; semantic-decoration-all-include-summary
-;; semantic-analyze-proto-impl-toggle
-
-
-;; aggressive-indent-mode
-;; (eval-after-load "aggressive-indent"
-;;   '(global-aggressive-indent-mode))
-
-;; flycheck
-;; (add-hook 'after-init-hook 'global-flycheck-mode)
-;; (setq flycheck-completion-system 'ido)
-
-;; gtags
-;; (add-hook 'c-mode-common-hook
-;;           (lambda ()
-;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-;;               (ggtags-mode 1))))
-
-;; Make local variables not annoying when loading .dir-locals.el. This is not recommended and I
-;; should find a better to avoid the warning.
-(setq enable-local-variables :all)
-
-;; minibuffer
-;; enable eldoc for minubuffer evaluation
-(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
-
-(setq tab-always-indent 'complete)
-
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

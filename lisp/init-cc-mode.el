@@ -3,6 +3,10 @@
 ;; find-file
 (setq cc-search-directories '("." "include" "*" "../*" "/usr/include" "/usr/local/include/*"))
 
+;; Unfortunately it is really sad that people keep using .h for c++ header files instead of anything
+;; more appropriate and I have to keep the following setting.
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
 ;; hooks
 
 (defun my-cc-init-hook ())
