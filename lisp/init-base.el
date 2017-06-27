@@ -55,3 +55,8 @@
 
 ;; indent.el
 (setq tab-always-indent 'complete)
+
+
+;; iso-transl
+;; This is required to dead keys works properly in my linux
+(require 'iso-transl)
