@@ -9,9 +9,11 @@ This is the interactive version of `dired-move-to-filename'"
   (interactive)
   (dired-move-to-filename))
 
+(global-set-key (kbd "C-x C-j") 'dired-jump)
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 
 (define-key dired-mode-map (kbd "b") 'browse-url-of-dired-file)
+(define-key dired-mode-map (kbd ";") 'dired-up-directory)
 (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
 (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename-i)
 (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
