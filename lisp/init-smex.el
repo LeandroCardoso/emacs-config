@@ -1,5 +1,5 @@
 (when (require 'smex nil t)
-  (setq smex-save-file (concat user-emacs-directory ".smex-items"))
+  (setq smex-save-file (concat user-emacs-directory "smex-items"))
   
   ;; keymap
   (global-set-key (kbd "M-x") 'smex)
