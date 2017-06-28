@@ -1,6 +1,7 @@
 (require 'dired)
 
 (setq dired-dwim-target t)
+(setq dired-isearch-filenames 'dwim)
 
 (defun dired-move-to-filename-i ()
   "Move to the beginning of the filename on the current line.
@@ -18,7 +19,6 @@ This is the interactive version of `dired-move-to-filename'"
 (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename-i)
 (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
 (define-key dired-mode-map (kbd "<backtab>") 'dired-previous-line)
-
 
 (with-eval-after-load "wdired"
   (define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename-i))
