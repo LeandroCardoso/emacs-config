@@ -45,7 +45,7 @@ Replacement for `split-window-sensibly', but perfers
 ;; Theme
 (when (require 'monokai-theme nil t)
   (load-theme 'monokai t)
-  (set-face-background 'cursor (face-foreground 'mode-line-buffer-id))
+  (set-face-background 'cursor monokai-red)
   (set-face-foreground 'fringe monokai-gray)
   ;; monokai has some really weird mode-line faces
   (set-face-attribute 'mode-line-inactive nil
@@ -71,7 +71,7 @@ Replacement for `split-window-sensibly', but perfers
 
 ;; window.el
 (setq split-height-threshold nil)
-(setq split-width-threshold 160)
+(setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
 
 ;; key-bindings
