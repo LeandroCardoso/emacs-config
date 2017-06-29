@@ -11,6 +11,7 @@ This is the interactive version of `dired-move-to-filename'"
   (dired-move-to-filename))
 
 (global-set-key (kbd "C-x C-j") 'dired-jump)
+(global-set-key (kbd "C-x 4 C-j") 'dired-jump-other-window)
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 
 (define-key dired-mode-map (kbd "b") 'browse-url-of-dired-file)
