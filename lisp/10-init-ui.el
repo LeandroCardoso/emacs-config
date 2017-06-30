@@ -41,23 +41,6 @@ Replacement for `split-window-sensibly', but perfers
       (set-frame-font (concat (car font) " " (cdr font)) t t)
     (message "Warning: Font %s does not exist" (car font))))
 
-
-;; Theme
-(when (require 'monokai-theme nil t)
-  (load-theme 'monokai t)
-  (set-face-background 'cursor monokai-red)
-  (set-face-foreground 'fringe monokai-gray)
-  ;; monokai has some really weird mode-line faces
-  (set-face-attribute 'mode-line-inactive nil
-                      :background (face-background 'mode-line)
-                      :box `(:line-width 2
-                                         :color ,(face-background 'mode-line)
-                                         :style unspecified))
-  (set-face-attribute 'mode-line nil
-                      :box `(:line-width 2
-                                         :color ,monokai-gray
-                                         :style unspecified)))
-
 ;; faces.el - must be after the theme
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)
