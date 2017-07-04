@@ -1,5 +1,4 @@
 (add-to-list 'auto-mode-alist '("\\.nps\\'" . javascript-mode))
-(add-to-list 'auto-mode-alist '("start\\.np" . bat-mode))
 
 ;; Use TABs with XML files
 (add-hook 'nxml-mode-hook (lambda () (setq indent-tabs-mode t)))
@@ -10,14 +9,22 @@
 (add-to-list 'auto-mode-alist '("\\.c\\'" . c++-mode))
 
 ;; log-file-mode
-(define-generic-mode
-  'log-file-mode   ;; MODE
-  nil              ;; COMMENT-LIST
-  nil              ;; KEYWORD-LIST
-  '(("^\\<\\(INFO\\|DEBUG\\)\\>" . 'font-lock-type-face)
+(define-generic-mode log-file-mode ;; MODE
+  nil                               ;; COMMENT-LIST
+  nil                               ;; KEYWORD-LIST
+  '(("^\\<\\(INFO\\|DEBUG\\)\\>" . font-lock-type-face)
     ("^\\<WARNING\\>" . compilation-warning-face)
     ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
-    )              ;; FONT-LOCK-LIST
-  '("\\.log$")     ;; AUTO-MODE-LIST
-  nil              ;; FUNCTION-LIST
-    )
+    )                               ;; FONT-LOCK-LIST
+  '("\\.log$")                      ;; AUTO-MODE-LIST
+  nil                               ;; FUNCTION-LIST
+  )
+
+;; .np6 and .npsharp mode
+(define-generic-mode np6-mode ;; MODE
+  '(";")                      ;; COMMENT-LIST
+  '("|")                      ;; KEYWORD-LIST
+  nil                         ;; FONT-LOCK-LIST
+  '("\\.np6$" "\\.npstart$")  ;; AUTO-MODE-LIST
+  nil                         ;; FUNCTION-LIST
+  )
