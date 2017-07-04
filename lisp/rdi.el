@@ -8,3 +8,16 @@
 
 ;; There are some c++ files using .c extension.
 (add-to-list 'auto-mode-alist '("\\.c\\'" . c++-mode))
+
+;; log-file-mode
+(define-generic-mode
+  'log-file-mode   ;; MODE
+  nil              ;; COMMENT-LIST
+  nil              ;; KEYWORD-LIST
+  '(("^\\<\\(INFO\\|DEBUG\\)\\>" . 'font-lock-type-face)
+    ("^\\<WARNING\\>" . compilation-warning-face)
+    ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
+    )              ;; FONT-LOCK-LIST
+  '("\\.log$")     ;; AUTO-MODE-LIST
+  nil              ;; FUNCTION-LIST
+    )
