@@ -17,7 +17,12 @@
     ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
     )                               ;; FONT-LOCK-LIST
   '("\\.log$")                      ;; AUTO-MODE-LIST
-  nil                               ;; FUNCTION-LIST
+  (list
+   (function
+    (lambda ()
+      (setq auto-revert-mode nil)
+      ))
+   )                               ;; FUNCTION-LIST
   )
 
 ;; .np6 and .npsharp mode
