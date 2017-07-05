@@ -15,6 +15,7 @@
   '(("^\\<\\(INFO\\|DEBUG\\)\\>" . font-lock-type-face)
     ("^\\<WARNING\\>" . compilation-warning-face)
     ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
+    ("\t.*\t" . font-lock-comment-face)
     )                               ;; FONT-LOCK-LIST
   '("\\.log$")                      ;; AUTO-MODE-LIST
   (list
