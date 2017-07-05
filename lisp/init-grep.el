@@ -15,6 +15,8 @@
   (grep-apply-setting 'grep-find-command '("find -L . -type f -exec grep -I -nH  {} +" . 37))
   (grep-apply-setting 'grep-find-template "find -L . <X> -type f <F> -exec grep <C> -I -nH -e <R> {} +")
 
+  (add-to-list 'grep-find-ignored-files "TAGS*")
+
   (global-set-key (kbd "C-c g") 'rgrep))
 
 
