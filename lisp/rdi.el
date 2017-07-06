@@ -21,7 +21,7 @@
   (list
    (function
     (lambda ()
-      (setq auto-revert-mode nil)
+      (setq global-auto-revert-ignore-buffer t)
       ))
    )                               ;; FUNCTION-LIST
   )
