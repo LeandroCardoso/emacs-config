@@ -106,7 +106,7 @@ bottom of the buffer stack."
   (with-temp-buffer
     (cd-absolute DIR)
     (message "Creating TAGS file at %s" DIR)
-    (call-process "ctags" nil "*TAGS*" nil "-e" "-R" "--extra=+q" "--fields=+aiS" "--languages=c++" "--c++-kinds=+p" "-V")))
+    (call-process "ctags" nil "*TAGS*" nil "-e" "-R" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "-V")))
 
 
 (defun force-backup-buffer ()
