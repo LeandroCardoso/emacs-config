@@ -3,10 +3,6 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain) ; everything in one frame
 
-;; Restore frame and windows after quit an ediff session
-(winner-mode)
-(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
-
 ;; I don't know why I need such a complex code to set the keymap with ediff-mult, but this works.
 (with-eval-after-load "ediff-mult"
   (add-hook 'ediff-meta-buffer-keymap-setup-hook
