@@ -9,6 +9,7 @@
 (add-to-list 'auto-mode-alist '("\\.c\\'" . c++-mode))
 
 ;; log-file-mode
+(modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
 (define-generic-mode log-file-mode ;; MODE
   nil                               ;; COMMENT-LIST
   nil                               ;; KEYWORD-LIST
