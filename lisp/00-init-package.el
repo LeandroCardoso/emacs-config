@@ -8,3 +8,5 @@
       '(("melpa stable" . 2)
         ("gnu"          . 1)
         ("melpa"        . 0)))
+
+(global-set-key (kbd "C-x p") 'list-packages)
