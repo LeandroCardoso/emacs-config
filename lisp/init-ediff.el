@@ -22,7 +22,9 @@
     (define-key map "F" 'ediff-files3)
     (define-key map "h" 'ediff-documentation)
     (define-key map "k" 'ediff-backup)
-    (define-key map "r" 'ediff-show-registry)
+    (define-key map "m" 'ediff-show-registry)
+    (define-key-map "r" 'ediff-regions-linewise)
+    (define-key-map "R" 'ediff-regions-wordwise)
     map)
   "Keymap for global ediff commands")
 
