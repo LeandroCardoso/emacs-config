@@ -47,6 +47,7 @@
 
 ;; startup.el
 (setq initial-scratch-message nil)
+(setq inhibit-startup-screen t)
 
 
 ;; subr.el
