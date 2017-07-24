@@ -1,6 +1,7 @@
 (setq frame-resize-pixelwise t)
 (setq highlight-nonselected-windows t)
-(setq scroll-conservatively 5)
+(setq scroll-conservatively 1000) ;; never center when scrolling
+(setq scroll-margin 1)
 (setq scroll-preserve-screen-position t)
 (setq sentence-end-double-space nil)
 (setq truncate-partial-width-windows nil)
