@@ -2,6 +2,7 @@
 (setq highlight-nonselected-windows t)
 (setq scroll-conservatively 5)
 (setq scroll-preserve-screen-position t)
+(setq sentence-end-double-space nil)
 (setq truncate-partial-width-windows nil)
 (setq undo-limit 800000)
 (setq undo-strong-limit undo-limit)
