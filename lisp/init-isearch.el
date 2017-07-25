@@ -24,4 +24,4 @@
 
 (define-key isearch-mode-map (kbd "<escape>") 'isearch-abort)
 (define-key isearch-mode-map (kbd "<backspace>") 'isearch-delete-something) ;; original is isearch-delete-char
-(define-key isearch-mode-map (kbd "M-w") 'isearch-yank-symbol)
+(define-key isearch-mode-map (kbd "C-M-w") 'isearch-yank-symbol)
