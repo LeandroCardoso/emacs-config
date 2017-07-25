@@ -17,7 +17,11 @@
   (isearch-push-state)
   (isearch-update))
 
-(define-key isearch-mode-map (kbd "<escape>") 'isearch-abort)
+(defun isearch-yank-symbol ()
+  "Pull next symbol from buffer into search string."
+  (interactive)
+  (isearch-yank-internal (lambda() (forward-symbol 1) (point))))
 
-;;original is isearch-delete-char
-(define-key isearch-mode-map (kbd "<backspace>") 'isearch-delete-something)
+(define-key isearch-mode-map (kbd "<escape>") 'isearch-abort)
+(define-key isearch-mode-map (kbd "<backspace>") 'isearch-delete-something) ;; original is isearch-delete-char
+(define-key isearch-mode-map (kbd "M-w") 'isearch-yank-symbol)
