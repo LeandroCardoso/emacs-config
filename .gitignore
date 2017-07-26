@@ -1,0 +1,14 @@
+auto-save-list/
+auto-save/
+backup/
+bookmarks
+custom-variables.el
+elpa/
+ido.last
+omnisharp/
+places
+recentf
+semanticdb/
+server/
+smex-items
+url/
