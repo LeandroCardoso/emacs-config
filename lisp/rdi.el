@@ -13,7 +13,7 @@
 (define-generic-mode log-file-mode ;; MODE
   nil                               ;; COMMENT-LIST
   nil                               ;; KEYWORD-LIST
-  '(("^\\<\\(INFO\\|DEBUG\\)\\>" . font-lock-type-face)
+  '(("^\\<\\(INFO\\|DEBUG\\)\\>" . font-lock-function-name-face)
     ("^\\<WARNING\\>" . compilation-warning-face)
     ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
     ("\t.*\t" . font-lock-comment-face)
