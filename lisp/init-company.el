@@ -4,10 +4,6 @@
               (make-local-variable 'company-backends)
               ;;(push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
               (push '(company-dabbrev-code :with company-yasnippet company-keywords) company-backends)))
-  (add-hook 'nxml-mode-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (push '(company-nxml company-dabbrev company-yasnippet) company-backends)))
 
   ;; Enable company mode in all modes, except problematic ones.
   ;;(setq company-global-modes '(not ))
