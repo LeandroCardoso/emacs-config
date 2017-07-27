@@ -4,6 +4,7 @@ backup/
 bookmarks
 custom-variables.el
 elpa/
+eshell/
 ido.last
 omnisharp/
 places
@@ -11,4 +12,5 @@ recentf
 semanticdb/
 server/
 smex-items
+tramp
 url/
