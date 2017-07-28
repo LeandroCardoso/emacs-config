@@ -26,18 +26,35 @@ Replacement for `split-window-sensibly', but perfers
 
 (defun other-window-all-frames (count)
   "Select another window in all frames in cyclic ordering of
-windows and frames.  COUNT specifies the number of windows to
+windows and frames. COUNT specifies the number of windows to
 skip, starting with the selected window, before making the
-selection.  If COUNT is positive, skip COUNT windows forwards.
-If COUNT is negative, skip -COUNT windows backwards.  COUNT zero
-means do not skip any window, so select the selected window.  In
-an interactive call, COUNT is the numeric prefix argument.
-Return nil.
+selection. If COUNT is positive, skip COUNT windows forwards. If
+COUNT is negative, skip -COUNT windows backwards. COUNT zero
+means do not skip any window, so select the selected window. In
+an interactive call, COUNT is the numeric prefix argument. Return
+nil.
 
 This function uses ‘other-window’ with argument ALL-FRAMES=t for
 finding the window to select."
   (interactive "p")
   (other-window count t)
+  (select-frame-set-input-focus (selected-frame)))
+
+
+(defun other-window-all-frames-backward (count)
+  "Select another window in all frames in cyclic ordering of
+windows and frames. COUNT specifies the number of windows to
+skip, starting with the selected window, before making the
+selection. If COUNT is positive, skip COUNT windows forwards. If
+COUNT is negative, skip -COUNT windows backwards. COUNT zero
+means do not skip any window, so select the selected window. In
+an interactive call, COUNT is the numeric prefix argument. Return
+nil.
+
+This function uses ‘other-window’ with argument ALL-FRAMES=t for
+finding the window to select."
+  (interactive "p")
+  (other-window (if (numberp count) (- count) count) t)
   (select-frame-set-input-focus (selected-frame)))
 
 
@@ -82,6 +99,7 @@ finding the window to select."
 
 ;; key-bindings
 (global-set-key (kbd "M-o") 'other-window-all-frames)
+(global-set-key (kbd "M-O") 'other-window-all-frames-backward)
 (global-set-key (kbd "C-x o") 'other-window-or-frame) ;; default is other-window
 (global-set-key (kbd "C-x M-o") 'other-frame)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
