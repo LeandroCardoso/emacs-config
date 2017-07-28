@@ -16,7 +16,7 @@
 
 ;; flyspell
 (setq flyspell-issue-welcome-flag nil)
-(setq flyspell-persistent-highlight nil) ;; make flyspell less annoying
+;;(setq flyspell-persistent-highlight nil) ;; make flyspell less annoying
 (setq flyspell-mode-line-string nil)
 (setq flyspell-use-meta-tab nil)
 
@@ -25,22 +25,6 @@
 (define-key flyspell-mode-map (kbd "C-$") 'flyspell-auto-correct-word) ;; C-$ is similar to M-$.
 
 ;; enable flyspell
-(add-hook 'text-mode-hook 'flyspell-mode)
-(unless (eq system-type 'windows-nt) ; external processes are slow in Windows
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
-
-
-;; from http://endlessparentheses.com/ispell-and-abbrev-the-perfect-auto-correct.html
-(defun ispell-word-then-abbrev (p)
-  "Call `ispell-word'. Then create an abbrev for the correction made.
-With prefix P, create local abbrev. Otherwise it will be global."
-  (interactive "P")
-  (let ((bef (downcase (or (thing-at-point 'word) ""))) aft)
-    (call-interactively 'ispell-word)
-    (setq aft (downcase (or (thing-at-point 'word) "")))
-    (unless (string= aft bef)
-      (message "\"%s\" now expands to \"%s\" %sally"
-               bef aft (if p "loc" "glob"))
-      (define-abbrev
-        (if p local-abbrev-table global-abbrev-table)
-        bef aft))))
+;; nXML mode is crashing emacs so it is disabled as a workaround
+(add-hook 'text-mode-hook #'(lambda () (unless (string= mode-name "nXML") (flyspell-mode))))
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
