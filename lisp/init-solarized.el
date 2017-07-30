@@ -20,8 +20,9 @@
                       :box (face-attribute 'mode-line :box))
 
   ;; These should be fixed in upstream
-  (set-face-foreground 'magit-blame-name "#8B2C02") ;orange-d
-  (set-face-foreground 'magit-blame-date "#8B2C02") ;orange-d
+  (with-eval-after-load "magit"
+    (set-face-foreground 'magit-blame-name "#8B2C02") ;orange-d
+    (set-face-foreground 'magit-blame-date "#8B2C02")) ;orange-d
   
   ;; TODO packages
   ;; TODO some grep improvements
