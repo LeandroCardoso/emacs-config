@@ -1,5 +1,7 @@
 ;; Display shell buffers in the same window
-(add-to-list 'display-buffer-alist '("^\\*shell\\*" . (display-buffer-same-window)))
+(add-to-list 'display-buffer-alist
+             '("^\\*shell\\*" . ((display-buffer-reuse-window display-buffer-same-window)
+                                 (reusable-frames . t))))
 
 (defun shell-other-window (&optional buffer)
   "Like `shell', but put buffer in another window."
