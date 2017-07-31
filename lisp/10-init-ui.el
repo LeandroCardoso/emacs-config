@@ -89,6 +89,10 @@ finding the window to select."
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
 (setq window-system-default-frame-alist '((x . ((alpha . 95)))))
+;; workaround to set cursor color in new frames
+(add-hook 'after-make-frame-functions
+          (lambda(FRAME)
+            (modify-frame-parameters FRAME `((cursor-color . ,(face-background 'cursor))))))
 ;; disable cursor blink
 (blink-cursor-mode -1)
 
