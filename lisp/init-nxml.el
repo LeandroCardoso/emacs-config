@@ -7,4 +7,5 @@
 Re-indents the code and inserts newlines.
 You might want to turn on `auto-fill-mode' to get better results."
   (interactive)
+  (require 'sgml-mode)
   (sgml-pretty-print (point-min) (point-max)))
