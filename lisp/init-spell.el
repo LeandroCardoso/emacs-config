@@ -16,7 +16,7 @@
 
 ;; flyspell
 (setq flyspell-issue-welcome-flag nil)
-;;(setq flyspell-persistent-highlight nil) ;; make flyspell less annoying
+(setq flyspell-persistent-highlight nil) ;; make flyspell less annoying
 (setq flyspell-mode-line-string nil)
 (setq flyspell-use-meta-tab nil)
 
