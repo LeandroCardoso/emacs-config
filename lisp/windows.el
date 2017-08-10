@@ -1,6 +1,6 @@
 (when (eq system-type 'windows-nt)
 
-;; root directories are added in the beggining
+;; root directories are added in the beginning
 (add-unix-root-dir "c:\\msys64\\mingw64")
 (add-unix-root-dir "c:\\msys64")
 
