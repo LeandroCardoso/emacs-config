@@ -8,24 +8,27 @@
 ;; There are some c++ files using .c extension.
 (add-to-list 'auto-mode-alist '("\\.c\\'" . c++-mode))
 
-;; log-file-mode
+;; np6-log-mode
 (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
-(define-generic-mode log-file-mode ;; MODE
-  nil                               ;; COMMENT-LIST
-  nil                               ;; KEYWORD-LIST
+(define-generic-mode np6-log-mode ;; MODE
+  nil                             ;; COMMENT-LIST
+  nil                             ;; KEYWORD-LIST
   '(("^\\<\\(INFO\\|DEBUG\\)\\>" . font-lock-function-name-face)
     ("^\\<WARNING\\>" . compilation-warning-face)
     ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
     ("\t.*\t" . font-lock-comment-face)
-    )                               ;; FONT-LOCK-LIST
-  '("\\.log$")                      ;; AUTO-MODE-LIST
+    )                             ;; FONT-LOCK-LIST
+  '("\\.log$")                    ;; AUTO-MODE-LIST
   (list
-   (function
-    (lambda ()
-      (setq global-auto-revert-ignore-buffer t)
-      ))
-   )                               ;; FUNCTION-LIST
+   (lambda ()
+     (setq global-auto-revert-ignore-buffer t))
+   ) ;; FUNCTION-LIST
   )
+
+;; Ugly hack to disable automatic string highlight. This is disabled due to several malformed
+;; strings.
+(require 'mode-local)
+(setq-mode-local np6-log-mode font-lock-keywords-only t)
 
 ;; .np6 and .npsharp mode
 (define-generic-mode np6-mode ;; MODE
