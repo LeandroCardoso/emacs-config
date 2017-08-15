@@ -1,11 +1,25 @@
 (setq nxml-child-indent 4)
 (setq nxml-slash-auto-complete-flag t)
 
-;; TODO use the region marked instead of the whole buffer.
+
 (defun xml-pretty-print ()
   "Simple-minded pretty printer for XML.
-Re-indents the code and inserts newlines.
-You might want to turn on `auto-fill-mode' to get better results."
-  (interactive)
-  (require 'sgml-mode)
-  (sgml-pretty-print (point-min) (point-max)))
+Re-indents the XML and inserts newlines using xmllint (from
+libxml2) tool.
+
+This function try to respect the `indent-tabs-mode' and
+`nxml-child-indent' variables and set the environment variable
+XMLLINT_INDENT of the current buffer.
+"
+  (interactive "*")
+  (make-local-variable 'process-environment)
+  (setenv "XMLLINT_INDENT"
+          (if indent-tabs-mode (make-string 1 9) (make-string nxml-child-indent 32)))
+  (save-mark-and-excursion
+   (call-process-region
+    (point-min) (point-max)
+    "xmllint"
+    t
+    '(t nil)
+    nil
+    "--format" "--recover" "--nowarning" "-")))
