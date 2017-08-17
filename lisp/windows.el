@@ -4,6 +4,16 @@
 (add-unix-root-dir "c:\\msys64\\mingw64")
 (add-unix-root-dir "c:\\msys64")
 
+;; Add windows_bin to PATH and exec-path
+(setenv "PATH" (concat (convert-standard-filename
+                        (expand-file-name
+                         (concat user-emacs-directory "windows_bin/")))
+                       path-separator
+                       (getenv "PATH")))
+(add-to-list 'exec-path (concat user-emacs-directory "windows_bin/"))
+
+(setq compile-command "msbuild.cmd /p:Platform=win32 /p:Configuration=Debug /t:Build")
+
 
 ;; flycheck
 ;; launch external process is slow in Windows, so we don't want to use the new-line option
@@ -138,8 +148,5 @@
                                    compilation-directory-output
                                    'add-or-replace)
         (save-buffer))
-  ;; undefined without project
-  (setq compile-command "build.cmd /p:Platform=x86 /p:Configuration=Release /t:Build")
 )
-
 )
