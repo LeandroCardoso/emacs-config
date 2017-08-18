@@ -18,7 +18,7 @@
     ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
     ("\t.*\t" . font-lock-comment-face)
     )                             ;; FONT-LOCK-LIST
-  '("\\.log$")                    ;; AUTO-MODE-LIST
+  '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$") ;; AUTO-MODE-LIST
   (list
    (lambda ()
      (setq global-auto-revert-ignore-buffer t))
