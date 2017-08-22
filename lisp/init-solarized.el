@@ -2,6 +2,8 @@
   (setq solarized-distinct-doc-face t)
   (setq solarized-scale-org-headlines nil)
   (setq solarized-use-more-italic t)
+  (setq solarized-use-variable-pitch nil)
+  
   (load-theme 'solarized-dark t)
   (set-face-background 'cursor "#268bd2")              ;blue
   (set-face-foreground 'mode-line-buffer-id "#b58900") ;yellow
