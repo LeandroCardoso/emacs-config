@@ -1,16 +1,3 @@
-;; Disable variable fonts because they are f*cking annoying, specially with pop-ups like the one
-;; created by `company-mode'.
-(with-eval-after-load "org"
-  (dolist (face '(org-level-1
-                  org-level-2
-                  org-level-3
-                  org-level-4
-                  org-level-5
-                  org-level-6
-                  org-level-7
-                  org-level-8))
-    (set-face-attribute face nil :height 'unspecified)))
-
 (setq org-M-RET-may-split-line '((default . nil)))  ; don't split the line at the cursor position when ALT+ENTER
 (setq org-completion-use-ido t) ; use ido completion wherever possible
 (setq org-ellipsis 'org-ellipsis); print ellipsis '...' with custom face
@@ -44,6 +31,5 @@
   (setq org-tags-column (- ARG)))
 
 (advice-add 'set-fill-column :after #'set-org-tags-right-column)
-
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
