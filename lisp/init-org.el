@@ -1,4 +1,5 @@
 (setq org-M-RET-may-split-line '((default . nil)))  ; don't split the line at the cursor position when ALT+ENTER
+(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))) ; don't automatically put new line chars
 (setq org-completion-use-ido t) ; use ido completion wherever possible
 (setq org-ellipsis 'org-ellipsis); print ellipsis '...' with custom face
 (setq org-imenu-depth 6) ; maximum level for Imenu access
