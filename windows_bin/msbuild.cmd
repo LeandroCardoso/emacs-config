@@ -1,7 +1,7 @@
+@echo off
+
 rem Usage example:
 rem msbuild.com /p:Platform={win32|x64} /p:Configuration={Debug|Release} /t:{Build|Clean|Rebuild} project.sln"
-
-@echo off
 
 if defined VS150COMNTOOLS (
     echo Using Visual Studio 2017 ^(15.0^) toolset
