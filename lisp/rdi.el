@@ -55,3 +55,8 @@
   '("\\.np6$" "\\.npstart$")  ;; AUTO-MODE-LIST
   nil                         ;; FUNCTION-LIST
   )
+
+(when (require 'engine-mode nil t)
+  (defengine jira
+    "https://jira.rdisoftware.com/secure/QuickSearch.jspa?searchString=%s"
+    :keybinding "j"))

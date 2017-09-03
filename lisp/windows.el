@@ -63,52 +63,6 @@
 
 ;; Functions
 
-(defun msdn-search (QUERY)
-  "Query MSDN for the QUERY string parameter"
-  (interactive (list (read-string (concat "MSDN (" (thing-at-point 'symbol t) "): ")
-                                  nil
-                                  'msdn-search-history
-                                  (thing-at-point 'symbol t)
-                                  nil)))
-  (browse-url
-   (concat "https://duckduckgo.com/?q=!ducky+"
-           QUERY
-           "+site:msdn.microsoft.com")))
-
-(defun cppreference (QUERY)
-  "Query cppreference for the QUERY string parameter"
-  (interactive (list (read-string (concat "cppreference (" (thing-at-point 'symbol t) "): ")
-                                  nil
-                                  'cppreference-search-history
-                                  (thing-at-point 'symbol t)
-                                  nil)))
-  (browse-url
-   (concat "https://duckduckgo.com/?q=!cppr+"
-           (url-hexify-string QUERY))))
-
-(defun google (QUERY)
-  "Query google for the QUERY string parameter"
-  (interactive (list (read-string (concat "google (" (thing-at-point 'symbol t) "): ")
-                                  nil
-                                  'google-search-history
-                                  (thing-at-point 'symbol t)
-                                  nil)))
-  (browse-url
-   (concat "https://www.google.com/search?q="
-           (url-hexify-string QUERY))))
-
-(defun jira (QUERY)
-  "Query JIRA for the QUERY string parameter"
-  (interactive (list (read-string (concat "jira (" (thing-at-point 'symbol t) "): ")
-                                  nil
-                                  'jira-search-history
-                                  (thing-at-point 'symbol t)
-                                  nil)))
-  (browse-url
-   (concat "https://jira.rdisoftware.com/secure/QuickSearch.jspa?searchString="
-           (url-hexify-string QUERY))))
-
-
 (defun shell-bash ()
   "Run `shell' with bash"
   (interactive)
