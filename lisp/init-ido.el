@@ -1,7 +1,7 @@
 (ido-mode t)
 (ido-everywhere t)
 
-(when (require 'ido-ubiquitous nil t)
+(when (require 'ido-completing-read+ nil t)
   (ido-ubiquitous-mode t))
 
 (when (require 'flx-ido nil t)
@@ -9,6 +9,9 @@
   ;; (setq ido-use-faces nil)
   (flx-ido-mode t)
   (setq ido-use-faces nil))
+
+(when (require 'crm-custom nil t)
+  (crm-custom-mode t))
 
 (setq ido-auto-merge-work-directories-length -1)
 (setq ido-create-new-buffer 'always)
