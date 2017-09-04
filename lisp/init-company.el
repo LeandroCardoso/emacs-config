@@ -27,6 +27,17 @@
   ;; TODO add c++ keywords to company-keywords-alist
   ;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
 
+  ;; company-ispell
+  (defun toggle-company-ispell ()
+    (interactive)
+    (cond
+     ((memq 'company-ispell company-backends)
+      (setq company-backends (delete 'company-ispell company-backends))
+      (message "company-ispell disabled"))
+     (t
+      (add-to-list 'company-backends 'company-ispell)
+      (message "company-ispell enabled!"))))
+
   ;; keymap
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)

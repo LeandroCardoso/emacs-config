@@ -5,14 +5,13 @@
 (setq ispell-query-replace-choices t)
 (setq ispell-silently-savep t)
 
+(let ((word-dict (expand-file-name (concat user-emacs-directory "words.txt"))))
+  (when (file-exists-p word-dict)
+    (setq ispell-complete-word-dict word-dict)))
+
 (when (eq system-type 'windows-nt)
   ;; 'look' is not automatically used because we have a custom unix path in windows.
-  (setq ispell-look-p t)
-  ;; use custom user dictionary in windows
-  (setq ispell-complete-word-dict (expand-file-name "~/dict/en_US.txt"))
-  (setenv "DICPATH" (expand-file-name "~/dict"))
-  (setenv "DICTIONARY" "en_US"))
-
+  (setq ispell-look-p t))
 
 ;; flyspell
 (setq flyspell-issue-welcome-flag nil)
