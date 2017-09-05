@@ -42,7 +42,23 @@
       ("^[0-9- :]*;" . font-lock-comment-face) ; timestamp
       ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)
       )                                       ;; FONT-LOCK-LIST
-    '("\\(newposv6\\|np6[a-z]*\\)-0\\.0\\.log") ;; AUTO-MODE-LIST
+    '("\\(newposv6\\|np6[a-z]*\\)-0\\.0\\.log$") ;; AUTO-MODE-LIST
+    (list
+     (lambda ()
+       (setq global-auto-revert-ignore-buffer t))
+     ) ;; FUNCTION-LIST
+    )
+
+  ;; np6 kiosk log mode
+  (define-generic-mode np6-kiosk-log-mode ;; MODE
+    nil                                  ;; COMMENT-LIST
+    nil                                  ;; KEYWORD-LIST
+    '(("\\(INFO\\|DEBUG\\)" . font-lock-function-name-face)
+      ("WARNING" . compilation-warning-face)
+      ("ERROR" . compilation-error-face)
+      ("[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)
+      )                                       ;; FONT-LOCK-LIST
+    '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$") ;; AUTO-MODE-LIST
     (list
      (lambda ()
        (setq global-auto-revert-ignore-buffer t))
