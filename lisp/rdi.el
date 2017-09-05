@@ -64,6 +64,7 @@
        (setq global-auto-revert-ignore-buffer t))
      ) ;; FUNCTION-LIST
     )
+  (setq-mode-local np6-kiosk-log-mode font-lock-keywords-only t)
 
   ;; .np6 and .npsharp mode
   (define-generic-mode np6-mode ;; MODE
