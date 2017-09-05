@@ -5,6 +5,10 @@
     "http://en.cppreference.com/mwiki/index.php?search=%s"
     :keybinding "c")
 
+  (defengine emacswiki
+    "https://duckduckgo.com/?q=site:emacswiki.org+%s"
+    :keybinding "e")
+
   (defengine google
     "https://www.google.com/search?q=%s"
     :keybinding "g")
