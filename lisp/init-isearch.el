@@ -1,5 +1,8 @@
 (setq isearch-allow-scroll t)
 
+(setq lazy-highlight-initial-delay 0)
+(setq lazy-highlight-max-at-a-time nil)
+
 ;; http://endlessparentheses.com/better-backspace-during-isearch.html
 ;; https://gist.github.com/johnmastro/508fb22a2b4e1ce754e0
 (defun isearch-delete-something ()
