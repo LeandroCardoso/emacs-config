@@ -56,7 +56,7 @@
     '(("\\(INFO\\|DEBUG\\)" . font-lock-function-name-face)
       ("WARN" . compilation-warning-face)
       ("ERROR" . compilation-error-face)
-      ("[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)
+      ("^[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)
       )                                       ;; FONT-LOCK-LIST
     '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$") ;; AUTO-MODE-LIST
     (list
