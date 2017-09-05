@@ -14,15 +14,11 @@
   (setq company-show-numbers t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
   
-  ;; company dabrev
+  ;; company dabbrev
   (setq company-dabbrev-downcase nil)
-  (setq company-dabbrev-ignore-case t)
-  ;; (setq company-dabbrev-time-limit 0.05)
 
-  ;; company dabbre code
+  ;; company dabbrev code
   (setq company-dabbrev-code-everywhere t)
-  (setq company-dabbrev-code-ignore-case t)
-  ;; (setq company-dabbrev-code-time-limit 0.05)
   
   ;; TODO add c++ keywords to company-keywords-alist
   ;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
