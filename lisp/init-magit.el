@@ -10,15 +10,10 @@
     (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
     (remove-hook 'server-switch-hook 'magit-commit-diff)))
 
-;; unset compose-mail keys to use it with magit
-(global-unset-key (kbd "C-x m"))   ;; compose-mail
-(global-unset-key (kbd "C-x 4 m")) ;; compose-mail-other-window
-(global-unset-key (kbd "C-x 5 m")) ;; compose-mail-other-frame
-
 ;; keymap
 (defvar magit-global-keymap
   (let ((map (make-sparse-keymap)))
-    (define-key map "m" 'magit-dispatch-popup)
+    (define-key map "g" 'magit-dispatch-popup)
     (define-key map "f" 'magit-file-popup)
     (define-key map "s" 'magit-status)
     (define-key map "i" 'magit-init)
@@ -27,4 +22,4 @@
   "Keymap for global magit commands")
 
 (defalias 'magit-global-keymap magit-global-keymap)
-(global-set-key (kbd "C-x m") 'magit-global-keymap)
+(global-set-key (kbd "C-x g") 'magit-global-keymap)
