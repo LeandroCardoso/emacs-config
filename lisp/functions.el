@@ -126,12 +126,14 @@ See `backup-buffer'"
       (downcase-region (region-beginning) (region-end))
     (downcase-word 1)))
 
+
 (defun mark-line ()
   "Put mark at end of this line, point at beginning."
   (interactive)
   (back-to-indentation)
   (push-mark (point) nil t)
   (end-of-line))
+
 
 (defun ido-push-current-directory ()
   "Put the current directory in the ido working directory list"
@@ -151,6 +153,7 @@ See `backup-buffer'"
   "Find the project root directory using the `semanticdb-project-root-functions'"
   (run-hook-with-args-until-success 'semanticdb-project-root-functions default-directory))
 
+
 (defun project-name ()
   "Return the project name using the `project-root' to find the current project-am."
   (let ((project-root (project-root)))
@@ -158,10 +161,12 @@ See `backup-buffer'"
       (file-name-nondirectory (directory-file-name project-root))
       )))
 
+
 (defun project-p ()
   "Return t when we are in a project.
 See `project-root'"
   (stringp (project-root)))
+
 
 (defun project-files ()
   "List relevant files in `project-root' directory."
@@ -169,6 +174,7 @@ See `project-root'"
   (let ((find-cmd (concat "find " (convert-standard-filename (project-root)) " -iname '*.cpp' -o -iname '*.h'")))
     (message "Finding project files...")
     (split-string (shell-command-to-string find-cmd) "[\r\n]+" t)))
+
 
 (defun semanticdb-analyze-project-files ()
   "Scan all project files for semantic tags.
@@ -189,6 +195,7 @@ See `project-root'"
     (semanticdb-save-all-db)
     (progress-reporter-done report)))
 
+
 (defun kill-ring-insert ()
   "TODO"
   (interactive)
@@ -199,6 +206,7 @@ See `project-root'"
       (delete-region (region-beginning) (region-end)))
     (insert to_insert)))
 
+
 ;; Warning: May be slow...
 ;; TODO ignore some file extensions and sub-directories.
 ;; TODO directory by parameter
@@ -208,3 +216,12 @@ See `project-root'"
   (find-file (completing-read "Find file: "
                               (mapcar (lambda (filename) (file-relative-name filename "."))
                                       (directory-files-recursively "." ".*")))))
+
+
+(defun directory-parent (DIR &optional NUMBER)
+  "Return the parent directory of `DIR'.
+With `NUMBER', return the `NUMBER' parent directory of `DIR'."
+  (when DIR
+    (if (or (null NUMBER) (= NUMBER 1) (= NUMBER 0))
+        (file-name-directory (directory-file-name DIR))
+      (directory-parent (file-name-directory (directory-file-name DIR)) (1- NUMBER)))))
