@@ -1,5 +1,0 @@
-(when (require 'highlight-indent-guides nil t)
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-auto-character-face-perc 5)
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (add-hook 'nxml-mode-hook 'highlight-indent-guides-mode))
