@@ -1,5 +1,6 @@
 ;; ispell
 (setq ispell-dictionary "en_US")
+(setenv "DICTIONARY" ispell-dictionary)
 (setq ispell-help-in-bufferp 'electric)
 (setq ispell-program-name "hunspell")
 (setq ispell-query-replace-choices t)
