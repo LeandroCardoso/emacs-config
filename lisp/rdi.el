@@ -42,7 +42,7 @@
       ("^[0-9- :]*;" . font-lock-comment-face) ; timestamp
       ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)
       )                                       ;; FONT-LOCK-LIST
-    '("\\(newposv6\\|np6[a-z]*\\)-0\\.0\\.log$") ;; AUTO-MODE-LIST
+    '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$") ;; AUTO-MODE-LIST
     (list
      (lambda ()
        (setq global-auto-revert-ignore-buffer t))
