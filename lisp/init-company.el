@@ -43,6 +43,7 @@
   (define-key company-active-map (kbd "<escape>") 'company-abort)
   (define-key company-active-map (kbd "<tab>") 'company-select-next)
   (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
+  (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
   (global-company-mode)
   
