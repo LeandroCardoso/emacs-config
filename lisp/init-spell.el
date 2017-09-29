@@ -2,6 +2,8 @@
 (setq ispell-dictionary "en_US")
 (setenv "DICTIONARY" ispell-dictionary)
 (setq ispell-help-in-bufferp 'electric)
+(setq ispell-personal-dictionary
+      (expand-file-name (concat user-emacs-directory "dict_" ispell-dictionary)))
 (setq ispell-program-name "hunspell")
 (setq ispell-query-replace-choices t)
 (setq ispell-silently-savep t)
