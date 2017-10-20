@@ -9,6 +9,29 @@
   (require 'cl)
 
 
+  (defun msvs-compile-command (&optional directory)
+    "Return a `compile-command' suitable to use with msvs."
+    (let ((solution-path ; Look up the directory hierarchy for a directory containing a ".*sln$" file
+           (when directory
+             (convert-standard-filename
+              (locate-dominating-file directory
+                                      (lambda (dir)
+                                        (directory-files dir t ".*sln$" t))))))
+          (project-file ; The ".*vcxproj$" file in current directory if it is unique
+           (when directory
+             (let ((project-file-list (directory-files directory nil ".*vcxproj$" t)))
+               (unless (cdr project-file-list)
+                 (car project-file-list))))))
+      (concat "msbuild.cmd "
+              (when solution-path (concat "/p:SolutionDir=" solution-path " "))
+              "/p:Platform=win32 /p:Configuration=Debug /t:Build "
+              project-file)))
+
+
+  (defun msvs-compile-command-hook ()
+      (set (make-local-variable 'compile-command) (msvs-compile-command default-directory)))
+
+
   (defun msvs-root-dir ()
     "Try to detect the newest Microsoft Visual Studio installed and return its root directory.
 Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (14.0)."
@@ -74,7 +97,9 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
     ;; MSVS
     (add-to-list 'grep-files-aliases '("msvs" . "*.sln *proj *proj.filters *.props *.targets")))
 
-  (setq compile-command "msbuild.cmd /p:Platform=win32 /p:Configuration=Debug /t:Build")
+  ;; set compile-command
+  (setq compile-command (msvs-compile-command))
+  (add-hook 'c-mode-common-hook 'msvs-compile-command-hook)
 
   ;; c/c++ headers
   (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/include") t)
