@@ -225,3 +225,25 @@ With `NUMBER', return the `NUMBER' parent directory of `DIR'."
     (if (or (null NUMBER) (= NUMBER 1) (= NUMBER 0))
         (file-name-directory (directory-file-name DIR))
       (directory-parent (file-name-directory (directory-file-name DIR)) (1- NUMBER)))))
+
+(defun copy-directory-if-newer (directory1 directory2)
+  "Copy files from `DIRECTORY1' to `DIRECTORY2', but only if the
+file already exists and it is older in the latter directory than
+in the former."
+  (interactive
+   (let ((dir (read-directory-name
+               "Copy directory: " default-directory default-directory t)))
+     (list dir
+           (read-directory-name
+            (format "Copy directory %s to: " dir)
+            default-directory default-directory t))))
+  (when (file-directory-p directory2)
+    (let ((files-copied 0))
+      (dolist (file (directory-files directory1 t))
+        (when (file-newer-than-file-p
+               file
+               (concat directory2 (file-name-nondirectory file)))
+          (message "Copying %s to %s" file directory2)
+          (copy-file file directory2 t)
+          (setq files-copied (1+ files-copied))))
+      (message "%d files copied from %s to %s." files-copied directory1 directory2))))
