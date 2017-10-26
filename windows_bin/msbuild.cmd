@@ -3,6 +3,9 @@
 rem Usage example:
 rem msbuild.com /p:SolutionDir={path} /p:Platform={win32|x64} /p:Configuration={Debug|Release} /t:{Build|Clean|Rebuild} {project.sln|project.vcxproj}"
 
+rem I need to fix the Visual Studio 2017 identification
+rem see https://github.com/Microsoft/vswhere
+
 if defined VS150COMNTOOLS (
     echo Using Visual Studio 2017 ^(15.0^) toolset
     call "%VS150COMNTOOLS%..\..\VC\vcvarsall.bat"
