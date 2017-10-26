@@ -23,3 +23,6 @@ XMLLINT_INDENT of the current buffer.
     '(t nil)
     nil
     "--format" "--recover" "--nowarning" "-")))
+
+
+(define-key nxml-mode-map (kbd "C-c p") 'xml-pretty-print)
