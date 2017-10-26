@@ -27,6 +27,5 @@
 (define-key flyspell-mode-map (kbd "C-$") 'flyspell-auto-correct-word) ;; C-$ is similar to M-$.
 
 ;; enable flyspell
-;; nXML mode is crashing emacs so it is disabled as a workaround
-(add-hook 'text-mode-hook #'(lambda () (unless (string= mode-name "nXML") (flyspell-mode))))
+(add-hook 'org-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
