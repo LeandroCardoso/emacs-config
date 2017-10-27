@@ -242,7 +242,7 @@ in the former."
       (dolist (file (directory-files directory1 t))
         (when (file-newer-than-file-p
                file
-               (concat directory2 (file-name-nondirectory file)))
+               (concat (file-name-as-directory directory2) (file-name-nondirectory file)))
           (message "Copying %s to %s" file directory2)
           (copy-file file directory2 t)
           (setq files-copied (1+ files-copied))))
