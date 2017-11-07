@@ -149,53 +149,6 @@ See `backup-buffer'"
       (write-region "" nil full-dir-locals-file))))
 
 
-(defun project-root ()
-  "Find the project root directory using the `semanticdb-project-root-functions'"
-  (run-hook-with-args-until-success 'semanticdb-project-root-functions default-directory))
-
-
-(defun project-name ()
-  "Return the project name using the `project-root' to find the current project-am."
-  (let ((project-root (project-root)))
-    (when project-root
-      (file-name-nondirectory (directory-file-name project-root))
-      )))
-
-
-(defun project-p ()
-  "Return t when we are in a project.
-See `project-root'"
-  (stringp (project-root)))
-
-
-(defun project-files ()
-  "List relevant files in `project-root' directory."
-  (interactive)
-  (let ((find-cmd (concat "find " (convert-standard-filename (project-root)) " -iname '*.cpp' -o -iname '*.h'")))
-    (message "Finding project files...")
-    (split-string (shell-command-to-string find-cmd) "[\r\n]+" t)))
-
-
-(defun semanticdb-analyze-project-files ()
-  "Scan all project files for semantic tags.
-`global-semanticdb-minor-mode' should already be on."
-  (interactive)
-  (let* ((count 0)
-         (files (project-files))
-         (report (make-progress-reporter "Analysing files..." 0 (length files))))
-    (dolist (file files)
-      ;; (message file) ;; DEBUG
-      (with-demoted-errors
-          (semanticdb-file-table-object file))
-          ;; (unless (find-buffer-visiting file)
-          ;;   (let ((buf (find-file-noselect file)))
-          ;;     (semantic-fetch-tags)
-          ;;     (kill-buffer buf))))
-      (progress-reporter-update report (setq count (1+ count))))
-    (semanticdb-save-all-db)
-    (progress-reporter-done report)))
-
-
 (defun kill-ring-insert ()
   "TODO"
   (interactive)
@@ -205,17 +158,6 @@ See `project-root'"
       ;; the currently highlighted section is to be replaced by the yank
       (delete-region (region-beginning) (region-end)))
     (insert to_insert)))
-
-
-;; Warning: May be slow...
-;; TODO ignore some file extensions and sub-directories.
-;; TODO directory by parameter
-(defun find-file-wide-native ()
-  "TODO"
-  (interactive)
-  (find-file (completing-read "Find file: "
-                              (mapcar (lambda (filename) (file-relative-name filename "."))
-                                      (directory-files-recursively "." ".*")))))
 
 
 (defun directory-parent (DIR &optional NUMBER)
