@@ -10,7 +10,9 @@
               (define-key ediff-meta-buffer-map (kbd "<tab>") 'ediff-next-meta-item)
               (define-key ediff-meta-buffer-map (kbd "<backtab>") 'ediff-previous-meta-item))))
 
+
 ;; global keymap
+
 (defvar ediff-global-keymap
   (let ((map (make-sparse-keymap)))
     (define-key map "b" 'ediff-buffers)
@@ -22,11 +24,40 @@
     (define-key map "F" 'ediff-files3)
     (define-key map "h" 'ediff-documentation)
     (define-key map "k" 'ediff-backup)
-    (define-key map "m" 'ediff-show-registry)
+    (define-key map (kbd "<return>") 'ediff-show-registry)
     (define-key map "r" 'ediff-regions-linewise)
     (define-key map "R" 'ediff-regions-wordwise)
+    (define-key map "v" 'ediff-revision)
+    (define-key map "t" 'ediff-directory-revisions)
     map)
   "Keymap for global ediff commands")
 
-(defalias 'ediff-global-keymap ediff-global-keymap)
-(global-set-key (kbd "C-x M-e") 'ediff-global-keymap)
+(defvar ediff-merge-global-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "b" 'ediff-merge-buffers)
+    (define-key map "B" 'ediff-merge-buffers-with-ancestor)
+    (define-key map "d" 'ediff-merge-directories)
+    (define-key map "D" 'ediff-merge-directories-with-ancestor)
+    (define-key map "t" 'ediff-merge-directory-revisions)
+    (define-key map "T" 'ediff-merge-directory-revisions-with-ancestor)
+    (define-key map "f" 'ediff-merge-files)
+    (define-key map "F" 'ediff-merge-files-with-ancestor)
+    (define-key map "v" 'ediff-merge-revisions)
+    (define-key map "V" 'ediff-merge-revisions-with-ancestor)
+    map)
+  "Keymap for global ediff merge commands")
+
+(defvar ediff-patch-global-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "b" 'ediff-patch-buffer)
+    (define-key map "f" 'ediff-patch-file)
+    map)
+  "Keymap for global ediff patch commands")
+
+(defalias 'ediff-keymap ediff-global-keymap)
+(defalias 'ediff-merge-keymap ediff-merge-global-keymap)
+(defalias 'ediff-patch-keymap ediff-patch-global-keymap)
+
+(global-set-key (kbd "C-x M-e") 'ediff-keymap)
+(global-set-key (kbd "C-x M-e m") 'ediff-merge-keymap)
+(global-set-key (kbd "C-x M-e p") 'ediff-patch-keymap)
