@@ -109,15 +109,6 @@ bottom of the buffer stack."
     (call-process "ctags" nil "*TAGS*" nil "-e" "-R" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "-V")))
 
 
-(defun force-backup-buffer ()
-  "Force a backup of the disk file visisted by the current buffer
-This is normally done before saving the buffer the first time.
-
-See `backup-buffer'"
-  (interactive)
-  (setq buffer-backed-up nil))
-
-
 ;; TODO dowcase, uppercase and capitalize, optinal arg
 (defun smart-downcase ()
   ""
