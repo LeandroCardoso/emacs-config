@@ -6,7 +6,7 @@
 `global-semanticdb-minor-mode' should already be on."
     (interactive)
     (let* ((count 0)
-           (pr (project-current t))
+           (pr (project-current))
            (dirs (append
                   (project-roots pr)
                   (project-external-roots pr)))
@@ -36,7 +36,7 @@
 
   (setq semanticdb-project-root-functions
         (list
-         (lambda (directory) (cdr (project-current directory)))
+         (lambda (directory) (cdr (project-current nil directory)))
          (lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
   
   ;; semantic imenu
