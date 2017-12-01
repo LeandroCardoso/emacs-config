@@ -86,6 +86,7 @@ See `backup-buffer'."
 
 (define-key dired-mode-map (kbd "b") 'browse-url-of-dired-file)
 (define-key dired-mode-map (kbd ";") 'dired-up-directory)
+(define-key dired-mode-map (kbd "<M-return>") 'dired-up-directory)
 (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
 (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename-i)
 (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
