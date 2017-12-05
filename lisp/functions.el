@@ -173,9 +173,10 @@ in the former."
   (when (file-directory-p directory2)
     (let ((files-copied 0))
       (dolist (file (directory-files directory1 t))
-        (when (file-newer-than-file-p
-               file
-               (concat (file-name-as-directory directory2) (file-name-nondirectory file)))
+        (when (and (file-regular-p file)
+                   (file-newer-than-file-p
+                    file
+                    (concat (file-name-as-directory directory2) (file-name-nondirectory file))))
           (message "Copying %s to %s" file directory2)
           (copy-file file directory2 t)
           (setq files-copied (1+ files-copied))))
