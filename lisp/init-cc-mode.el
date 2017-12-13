@@ -1,7 +1,7 @@
 (setq-default c-basic-offset 4)
 
 ;; find-file
-(setq cc-search-directories '("." "include" "*" "../include" "../*" "/usr/include" "/usr/local/include/*"))
+(setq cc-search-directories '("." "*" "../*" "/usr/include" "/usr/local/include/*"))
 
 ;; Unfortunately it is really sad that people keep using .h for c++ header files instead of anything
 ;; more appropriate and I have to keep the following setting.
