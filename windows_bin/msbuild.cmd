@@ -3,12 +3,21 @@
 rem Usage example:
 rem msbuild.com /p:SolutionDir={path} /p:Platform={win32|x64} /p:Configuration={Debug|Release} /t:{Build|Clean|Rebuild} {project.sln|project.vcxproj}"
 
-rem I need to fix the Visual Studio 2017 identification
-rem see https://github.com/Microsoft/vswhere
+rem Installation directory for Visual Studio releases 15.0 and upper are located by the vswhere
+rem tool. Lower em releases are located by checking the environment variables.
 
-if defined VS150COMNTOOLS (
-    echo Using Visual Studio 2017 ^(15.0^) toolset
-    call "%VS150COMNTOOLS%..\..\VC\vcvarsall.bat"
+rem If vswhere exists it should be located at this location path. Note vswhere only exists with
+rem Visual Studio 15.0 or upper releases.
+set VSWHERE="%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
+
+if exist %VSWHERE% (
+    echo Using:
+    %VSWHERE% -latest -property displayName
+    %VSWHERE% -latest -property installationVersion
+
+    for /f "usebackq tokens=*" %%i in (`%VSWHERE% -latest -property installationPath`) do (
+        call "%%i\VC\Auxiliary\Build\vcvarsall.bat" x86
+    )
 ) else if defined VS140COMNTOOLS (
     echo Using Visual Studio 2015 ^(14.0^) toolset
     call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat"
