@@ -2,6 +2,7 @@
 (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))) ; don't automatically put new line chars
 (setq org-completion-use-ido t) ; use ido completion wherever possible
 (setq org-ellipsis 'org-ellipsis); print ellipsis '...' with custom face
+(setq org-hierarchical-todo-statistics nil) ; all entries in the subtree are considered.
 (setq org-imenu-depth 6) ; maximum level for Imenu access
 (setq org-level-color-stars-only t) ; fontify only the stars in each headline
 (setq org-outline-path-complete-in-steps nil) ; I don't need this because I have ido-mode
