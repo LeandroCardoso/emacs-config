@@ -1,7 +1,5 @@
 ;; csharp
-(with-eval-after-load "csharp"
-  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode))
-
+(when (require 'csharp-mode nil t)
   ;; omnisharp
   (when (require 'omnisharp nil t)
     (setq omnisharp-server-executable-path (concat user-emacs-directory "omnisharp/OmniSharp.exe"))
