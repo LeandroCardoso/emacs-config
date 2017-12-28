@@ -99,16 +99,6 @@ bottom of the buffer stack."
   (insert ";"))
 
 
-(defun mktags (DIR)
-  "Create a TAGS file at the given directory for c++ files"
-  (interactive "DRoot directory: ")
-  ; we need a temp buffer because to preserve the current directory buffer
-  (with-temp-buffer
-    (cd-absolute DIR)
-    (message "Creating TAGS file at %s" DIR)
-    (call-process "ctags" nil "*TAGS*" nil "-e" "-R" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "-V")))
-
-
 ;; TODO dowcase, uppercase and capitalize, optinal arg
 (defun smart-downcase ()
   ""
