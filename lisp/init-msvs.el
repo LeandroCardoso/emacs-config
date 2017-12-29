@@ -81,13 +81,6 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
   (add-to-list 'auto-mode-alist '("\\.rc\\'" . c-mode))
   (add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
   (add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))
-  (add-to-list 'auto-mode-alist '("\\.proj\\'" . nxml-mode))
-  (add-to-list 'auto-mode-alist '("\\.vcxproj\\'" . nxml-mode))
-  (add-to-list 'auto-mode-alist '("\\.vcxproj\\.filters\\'" . nxml-mode))
-  (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode))
-  (add-to-list 'auto-mode-alist '("\\.props\\'" . nxml-mode))
-  (add-to-list 'auto-mode-alist '("\\.targets\\'" . nxml-mode))
-  (add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
 
   ;; An ungly hack to idenfity c++ extensionless files as c++ file. Thanks ISO c++, a file without
   ;; extension was a great idea!
