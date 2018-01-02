@@ -36,7 +36,7 @@
 
   (setq semanticdb-project-root-functions
         (list
-         (lambda (directory) (project-roots (project-current nil directory)))
+         (lambda (directory) (car (project-roots (project-current nil directory))))
          (lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
   
   ;; semantic imenu
