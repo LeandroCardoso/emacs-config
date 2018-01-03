@@ -47,22 +47,6 @@ Position the cursor at its beginning, according to the current mode."
     (indent-region (region-beginning) (region-end))))
 
 
-(defun duplicate-line-or-region (&optional arg)
-  "Duplicate the active region or current line
-With optinal arg, duplicate arg times"
-  (interactive "*p")
-  (let ((buffer (if (use-region-p)
-                    (buffer-substring (region-beginning) (region-end))
-                  (buffer-substring (point-at-bol) (point-at-eol)))))
-    (save-excursion
-      (end-of-line)
-      (dotimes (i arg)
-        (insert "\n")
-        (insert buffer))))
-  ;; line-move-1 keeps the cursor at the original position
-  (line-move-1 (or arg 1)))
-
-
 (defun resize-window-to-region (start end)
   "Resize current window vertically to fit the size of the active region"
   (interactive "r")
