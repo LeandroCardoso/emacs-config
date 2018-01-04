@@ -16,6 +16,20 @@
   (mapc 'create-tags (project-roots (project-current t))))
 
 
+(defun update-tags-for-current-file ()
+  "Update the TAGS file located in a parent directory for the current file."
+  (interactive)
+  (let* ((file buffer-file-name)
+         (directory (locate-dominating-file (or file "") "TAGS")))
+    (when directory
+      (with-temp-buffer
+        (cd-absolute directory)
+        (message "Update TAGS file at %s for %s" directory file)
+        (call-process "ctags" nil "*TAGS*" nil "-e" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "-V" "-a" file)))))
+
+
+(add-hook 'after-save-hook 'update-tags-for-current-file)
+
 (defadvice find-tag (after find-tag-and-reposition-window)
   "Reposition window after find a tag"
   (reposition-window))
@@ -31,3 +45,5 @@
 (ad-activate 'find-tag)
 (ad-activate 'find-tag-other-window)
 (ad-activate 'find-tag-other-frame)
+
+(setq tags-revert-without-query t)
