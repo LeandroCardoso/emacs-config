@@ -12,17 +12,20 @@ This function try to respect the `indent-tabs-mode' and
 XMLLINT_INDENT of the current buffer.
 "
   (interactive "*")
-  (make-local-variable 'process-environment)
-  (setenv "XMLLINT_INDENT"
-          (if indent-tabs-mode (make-string 1 9) (make-string nxml-child-indent 32)))
-  (save-mark-and-excursion
-   (call-process-region
-    (point-min) (point-max)
-    "xmllint"
-    t
-    '(t nil)
-    nil
-    "--format" "--recover" "--nowarning" "-")))
+  (if (executable-find "xmllint")
+      (progn
+        (make-local-variable 'process-environment)
+        (setenv "XMLLINT_INDENT"
+                (if indent-tabs-mode (make-string 1 9) (make-string nxml-child-indent 32)))
+        (save-mark-and-excursion
+         (call-process-region
+          (point-min) (point-max)
+          "xmllint"
+          t
+          '(t nil)
+          nil
+          "--format" "--recover" "--nowarning" "-")))
+    (error "xmllint executable not found")))
 
 ;; Original from https://www.emacswiki.org/emacs/NxmlMode
 (defun nxml-where ()
