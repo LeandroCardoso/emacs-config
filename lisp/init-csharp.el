@@ -8,7 +8,8 @@
     ;; omnisharp + company
     (with-eval-after-load "company"
       (add-to-list 'company-backends 'company-omnisharp)
-      (setq omnisharp-company-match-type 'company-match-flx)
+      ;; this value is currently bugged (setq omnisharp-company-match-type 'company-match-flx)
+      ;; this value is slow (setq omnisharp-company-match-type 'company-match-server)
       (setq omnisharp-imenu-support t))
     )
   )
