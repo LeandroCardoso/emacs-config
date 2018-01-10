@@ -155,3 +155,15 @@ in the former."
           (copy-file file directory2 t)
           (setq files-copied (1+ files-copied))))
       (message "%d files copied from %s to %s." files-copied directory1 directory2))))
+
+
+(defun copy-last-message ()
+  "Copy the last non nil message in \"*Messages*\" buffer to the kill ring."
+  (interactive)
+  (with-current-buffer (messages-buffer)
+    (save-excursion
+      (goto-char (point-max))
+      (while (and (string-empty-p (buffer-substring-no-properties (line-beginning-position)
+                                                                  (line-end-position)))
+                  (= 0 (forward-line -1)))) ; end case if buffer is empty
+      (copy-region-as-kill (line-beginning-position) (line-end-position)))))
