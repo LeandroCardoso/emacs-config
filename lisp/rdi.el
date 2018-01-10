@@ -1,6 +1,7 @@
 (when (string= (getenv "USERDOMAIN") "RDISOFTWARE")
 
-  (add-to-list 'auto-mode-alist '("\\.nps\\'" . javascript-mode))
+  (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
 
   ;; Use TABs with XML, javascript and c/c++ files
   (add-hook 'nxml-mode-hook (lambda () (setq indent-tabs-mode t)))
