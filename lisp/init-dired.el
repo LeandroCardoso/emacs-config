@@ -85,7 +85,6 @@ See `backup-buffer'."
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
 
 (define-key dired-mode-map (kbd "b") 'browse-url-of-dired-file)
-(define-key dired-mode-map (kbd ";") 'dired-up-directory)
 (define-key dired-mode-map (kbd "<M-return>") 'dired-up-directory)
 (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
 (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename-i)
