@@ -95,7 +95,8 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
 
   ;; set compile-command
   (setq compile-command (msvs-compile-command))
-  (add-hook 'c-mode-common-hook 'msvs-compile-command-hook)
+  (add-hook 'c-mode-hook 'msvs-compile-command-hook)
+  (add-hook 'c++-mode-hook 'msvs-compile-command-hook)
 
   ;; c/c++ headers
   (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/include") t)
