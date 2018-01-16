@@ -13,10 +13,13 @@
     "Return a `compile-command' suitable to use with msvs."
     (let ((solution-path ; Look up the directory hierarchy for a directory containing a ".*sln$" file
            (when directory
-             (convert-standard-filename
-              (locate-dominating-file directory
-                                      (lambda (dir)
-                                        (directory-files dir t ".*sln$" t))))))
+             (let ((solution-path-temp
+                    (locate-dominating-file directory
+                                            (lambda (dir)
+                                              (directory-files dir t ".*sln$" t)))))
+               (if solution-path-temp
+                   (convert-standard-filename solution-path-temp)
+                 nil))))
           (project-file ; The ".*vcxproj$" file in current directory if it is unique
            (when directory
              (let ((project-file-list (directory-files directory nil ".*vcxproj$" t)))
