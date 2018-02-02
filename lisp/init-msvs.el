@@ -91,7 +91,8 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
 
   (with-eval-after-load "grep"
     ;; MSVS
-    (add-to-list 'grep-files-aliases '("msvs" . "*.sln *proj *proj.filters *.props *.targets")))
+    (add-to-list 'grep-files-aliases
+                 '("msvs" . "*.sln *proj *proj.filters *.props *.targets packages.config app.config")))
 
   ;; set compile-command
   (setq compile-command (msvs-compile-command))
