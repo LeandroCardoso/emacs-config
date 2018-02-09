@@ -15,6 +15,8 @@
 (setq org-tags-column (- fill-column)) ; align tags at the right margin. See `set-org-tags-right-column'
 (setq org-tags-sort-function 'string<) ; align tags using alphabetic order
 
+(define-key org-mode-map (kbd "C-c M-t") 'org-toggle-link-display)
+
 ;; org-mode outside org-mode
 (defvar org-out-keymap
   (let ((map (make-sparse-keymap)))
