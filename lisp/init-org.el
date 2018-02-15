@@ -1,4 +1,4 @@
-(with-eval-after-load "org-mode"
+(with-eval-after-load "org"
   (setq org-M-RET-may-split-line '((default . nil))) ; don't split the line at the cursor position when ALT+ENTER
   (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))) ; don't automatically put new line chars
   (setq org-completion-use-ido t)             ; use ido completion wherever possible
