@@ -1,6 +1,18 @@
 (when (string= (getenv "USERDOMAIN") "RDISOFTWARE")
 
-  (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
+  (if (require 'js2-mode nil t)
+      (progn
+        (define-derived-mode nps-mode js2-mode "nps"
+          "Major mode for editing NP6 NPS code derived from `js2-mode'."
+          (setq-local js2-include-browser-externs nil)
+          (setq-local js2-language-version 180)
+          (push "API" js2-additional-externs))
+
+        (add-to-list 'auto-mode-alist '("\\.nps\\'" . nps-mode)))
+    ( ; else
+     (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
+     ))
+
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
 
   ;; Use TABs with XML, javascript and c/c++ files

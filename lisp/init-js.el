@@ -1,0 +1,5 @@
+(when (require 'js2-mode nil t)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (setq js2-missing-semi-one-line-override t)
+  (setq js2-mode-assume-strict t)
+  )
