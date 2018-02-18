@@ -1,11 +1,24 @@
 (when (string= (getenv "USERDOMAIN") "RDISOFTWARE")
 
-  (add-to-list 'auto-mode-alist '("\\.nps\\'" . javascript-mode))
+  (if (require 'js2-mode nil t)
+      (progn
+        (define-derived-mode nps-mode js2-mode "nps"
+          "Major mode for editing NP6 NPS code derived from `js2-mode'."
+          (setq-local js2-include-browser-externs nil)
+          (setq-local js2-language-version 180)
+          (push "API" js2-additional-externs))
 
-  ;; Use TABs with XML files
+        (add-to-list 'auto-mode-alist '("\\.nps\\'" . nps-mode)))
+    ( ; else
+     (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
+     ))
+
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
+
+  ;; Use TABs with XML, javascript and c/c++ files
   (add-hook 'nxml-mode-hook (lambda () (setq indent-tabs-mode t)))
-  ;; Use TABs with javascript files
   (add-hook 'js-mode-hook (lambda () (setq indent-tabs-mode t)))
+  (add-hook 'c-mode-common-hook (lambda () (setq indent-tabs-mode t)))
 
   ;; There are some c++ files using .c extension.
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c++-mode))
@@ -42,7 +55,7 @@
       ("^[0-9- :]*;" . font-lock-comment-face) ; timestamp
       ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)
       )                                       ;; FONT-LOCK-LIST
-    '("\\(newposv6\\|np6[a-z]*\\)-0\\.0\\.log$") ;; AUTO-MODE-LIST
+    '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$") ;; AUTO-MODE-LIST
     (list
      (lambda ()
        (setq global-auto-revert-ignore-buffer t))

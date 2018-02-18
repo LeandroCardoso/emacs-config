@@ -47,22 +47,6 @@ Position the cursor at its beginning, according to the current mode."
     (indent-region (region-beginning) (region-end))))
 
 
-(defun duplicate-line-or-region (&optional arg)
-  "Duplicate the active region or current line
-With optinal arg, duplicate arg times"
-  (interactive "*p")
-  (let ((buffer (if (use-region-p)
-                    (buffer-substring (region-beginning) (region-end))
-                  (buffer-substring (point-at-bol) (point-at-eol)))))
-    (save-excursion
-      (end-of-line)
-      (dotimes (i arg)
-        (insert "\n")
-        (insert buffer))))
-  ;; line-move-1 keeps the cursor at the original position
-  (line-move-1 (or arg 1)))
-
-
 (defun resize-window-to-region (start end)
   "Resize current window vertically to fit the size of the active region"
   (interactive "r")
@@ -99,25 +83,6 @@ bottom of the buffer stack."
   (insert ";"))
 
 
-(defun mktags (DIR)
-  "Create a TAGS file at the given directory for c++ files"
-  (interactive "DRoot directory: ")
-  ; we need a temp buffer because to preserve the current directory buffer
-  (with-temp-buffer
-    (cd-absolute DIR)
-    (message "Creating TAGS file at %s" DIR)
-    (call-process "ctags" nil "*TAGS*" nil "-e" "-R" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "-V")))
-
-
-(defun force-backup-buffer ()
-  "Force a backup of the disk file visisted by the current buffer
-This is normally done before saving the buffer the first time.
-
-See `backup-buffer'"
-  (interactive)
-  (setq buffer-backed-up nil))
-
-
 ;; TODO dowcase, uppercase and capitalize, optinal arg
 (defun smart-downcase ()
   ""
@@ -149,53 +114,6 @@ See `backup-buffer'"
       (write-region "" nil full-dir-locals-file))))
 
 
-(defun project-root ()
-  "Find the project root directory using the `semanticdb-project-root-functions'"
-  (run-hook-with-args-until-success 'semanticdb-project-root-functions default-directory))
-
-
-(defun project-name ()
-  "Return the project name using the `project-root' to find the current project-am."
-  (let ((project-root (project-root)))
-    (when project-root
-      (file-name-nondirectory (directory-file-name project-root))
-      )))
-
-
-(defun project-p ()
-  "Return t when we are in a project.
-See `project-root'"
-  (stringp (project-root)))
-
-
-(defun project-files ()
-  "List relevant files in `project-root' directory."
-  (interactive)
-  (let ((find-cmd (concat "find " (convert-standard-filename (project-root)) " -iname '*.cpp' -o -iname '*.h'")))
-    (message "Finding project files...")
-    (split-string (shell-command-to-string find-cmd) "[\r\n]+" t)))
-
-
-(defun semanticdb-analyze-project-files ()
-  "Scan all project files for semantic tags.
-`global-semanticdb-minor-mode' should already be on."
-  (interactive)
-  (let* ((count 0)
-         (files (project-files))
-         (report (make-progress-reporter "Analysing files..." 0 (length files))))
-    (dolist (file files)
-      ;; (message file) ;; DEBUG
-      (with-demoted-errors
-          (semanticdb-file-table-object file))
-          ;; (unless (find-buffer-visiting file)
-          ;;   (let ((buf (find-file-noselect file)))
-          ;;     (semantic-fetch-tags)
-          ;;     (kill-buffer buf))))
-      (progress-reporter-update report (setq count (1+ count))))
-    (semanticdb-save-all-db)
-    (progress-reporter-done report)))
-
-
 (defun kill-ring-insert ()
   "TODO"
   (interactive)
@@ -207,17 +125,6 @@ See `project-root'"
     (insert to_insert)))
 
 
-;; Warning: May be slow...
-;; TODO ignore some file extensions and sub-directories.
-;; TODO directory by parameter
-(defun find-file-wide-native ()
-  "TODO"
-  (interactive)
-  (find-file (completing-read "Find file: "
-                              (mapcar (lambda (filename) (file-relative-name filename "."))
-                                      (directory-files-recursively "." ".*")))))
-
-
 (defun directory-parent (DIR &optional NUMBER)
   "Return the parent directory of `DIR'.
 With `NUMBER', return the `NUMBER' parent directory of `DIR'."
@@ -225,3 +132,51 @@ With `NUMBER', return the `NUMBER' parent directory of `DIR'."
     (if (or (null NUMBER) (= NUMBER 1) (= NUMBER 0))
         (file-name-directory (directory-file-name DIR))
       (directory-parent (file-name-directory (directory-file-name DIR)) (1- NUMBER)))))
+
+(defun copy-directory-if-newer (directory1 directory2)
+  "Copy files from `DIRECTORY1' to `DIRECTORY2', but only if the
+file already exists and it is older in the latter directory than
+in the former."
+  (interactive
+   (let ((dir (read-directory-name
+               "Copy directory: " default-directory default-directory t)))
+     (list dir
+           (read-directory-name
+            (format "Copy directory %s to: " dir)
+            default-directory default-directory t))))
+  (when (file-directory-p directory2)
+    (let ((files-copied 0))
+      (dolist (file (directory-files directory1 t))
+        (when (and (file-regular-p file)
+                   (file-newer-than-file-p
+                    file
+                    (concat (file-name-as-directory directory2) (file-name-nondirectory file))))
+          (message "Copying %s to %s" file directory2)
+          (copy-file file directory2 t)
+          (setq files-copied (1+ files-copied))))
+      (message "%d files copied from %s to %s." files-copied directory1 directory2))))
+
+
+(defun copy-last-message ()
+  "Copy the last non nil message in \"*Messages*\" buffer to the kill ring."
+  (interactive)
+  (with-current-buffer (messages-buffer)
+    (save-excursion
+      (goto-char (point-max))
+      (while (and (string-empty-p (buffer-substring-no-properties (line-beginning-position)
+                                                                  (line-end-position)))
+                  (= 0 (forward-line -1)))) ; end case if buffer is empty
+      (copy-region-as-kill (line-beginning-position) (line-end-position)))))
+
+
+;; Adapted from: https://www.emacswiki.org/emacs/SortWords
+(defun sort-words (reverse beg end)
+  "Sort words in region alphabetically, in REVERSE if negative.
+    Prefixed with negative \\[universal-argument], sorts in reverse.
+  
+    The variable `sort-fold-case' determines whether alphabetic case
+    affects the sort order.
+  
+    See `sort-regexp-fields'."
+  (interactive "*P\nr")
+  (sort-regexp-fields reverse "[^[:blank:]]+" "\\&" beg end))

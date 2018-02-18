@@ -1,25 +1,26 @@
 (when (require 'company nil t)
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              ;;(push '(company-semantic :with company-yasnippet company-keywords) company-backends)))
-              (push '(company-dabbrev-code :with company-yasnippet company-keywords) company-backends)))
-
-  ;; Enable company mode in all modes, except problematic ones.
-  ;;(setq company-global-modes '(not ))
+  (defun c-common-set-company ()
+    (setq-local company-backends
+                '((company-etags company-dabbrev-code company-yasnippet company-keywords)
+                  (company-dabbrev-code company-yasnippet company-keywords))))
   
+  (add-hook 'c-mode-common-hook 'c-common-set-company)
+
   (setq company-idle-delay 0.3)
   (setq company-minimum-prefix-length 3)
   (setq company-search-regexp-function 'company-search-flex-regexp)
   (setq company-show-numbers t)
-  (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
-  
+  (setq company-transformers '(company-sort-by-backend-importance))
+
   ;; company dabbrev
   (setq company-dabbrev-downcase nil)
 
   ;; company dabbrev code
   (setq company-dabbrev-code-everywhere t)
-  
+
+  ;; company etags
+  (setq company-etags-everywhere t)
+
   ;; TODO add c++ keywords to company-keywords-alist
   ;; (alignas alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local)
 
@@ -43,6 +44,7 @@
   (define-key company-active-map (kbd "<escape>") 'company-abort)
   (define-key company-active-map (kbd "<tab>") 'company-select-next)
   (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
+  (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
   (global-company-mode)
   

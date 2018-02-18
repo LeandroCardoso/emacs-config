@@ -1,4 +1,29 @@
 (with-eval-after-load "semantic"
+  (require 'project)
+  
+  (defun semanticdb-analyze-project-files ()
+    "Scan all project files for semantic tags.
+`global-semanticdb-minor-mode' should already be on."
+    (interactive)
+    (let* ((count 0)
+           (pr (project-current))
+           (dirs (append
+                  (project-roots pr)
+                  (project-external-roots pr)))
+           (files (project-file-completion-table pr dirs))
+           (report (make-progress-reporter "Analysing files..." 0 (length files))))
+      (dolist (file files)
+        ;; (message file) ;; DEBUG
+        (with-demoted-errors
+            (semanticdb-file-table-object file))
+        ;; (unless (find-buffer-visiting file)
+        ;;   (let ((buf (find-file-noselect file)))
+        ;;     (semantic-fetch-tags)
+        ;;     (kill-buffer buf))))
+        (progress-reporter-update report (setq count (1+ count))))
+      (semanticdb-save-all-db)
+      (progress-reporter-done report)))
+  
   (setq semantic-default-submodes '(global-semantic-highlight-func-mode
                                     global-semantic-idle-local-symbol-highlight-mode
                                     global-semantic-idle-scheduler-mode
@@ -11,7 +36,7 @@
 
   (setq semanticdb-project-root-functions
         (list
-         (lambda (directory) (locate-dominating-file directory ".git"))
+         (lambda (directory) (car (project-roots (project-current nil directory))))
          (lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
   
   ;; semantic imenu

@@ -1,9 +1,6 @@
 (setq frame-resize-pixelwise t)
 (setq highlight-nonselected-windows t)
 (setq ring-bell-function 'ignore)
-(setq scroll-conservatively 5) ;; recenter if scroll more than value
-(setq scroll-margin 1)
-(setq scroll-preserve-screen-position t)
 (setq sentence-end-double-space nil)
 (setq truncate-partial-width-windows nil)
 (setq undo-limit 800000)

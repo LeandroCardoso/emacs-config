@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
+# -*- mode: snippet -*-
 # name: line
 # key: ln
-# binding: direct-keybinding
 # --
 __LINE__

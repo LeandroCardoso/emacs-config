@@ -1,6 +1,9 @@
 ;; ispell
 (setq ispell-dictionary "en_US")
+(setenv "DICTIONARY" ispell-dictionary)
 (setq ispell-help-in-bufferp 'electric)
+(setq ispell-personal-dictionary
+      (expand-file-name (concat user-emacs-directory "dict_" ispell-dictionary)))
 (setq ispell-program-name "hunspell")
 (setq ispell-query-replace-choices t)
 (setq ispell-silently-savep t)
@@ -24,6 +27,5 @@
 (define-key flyspell-mode-map (kbd "C-$") 'flyspell-auto-correct-word) ;; C-$ is similar to M-$.
 
 ;; enable flyspell
-;; nXML mode is crashing emacs so it is disabled as a workaround
-(add-hook 'text-mode-hook #'(lambda () (unless (string= mode-name "nXML") (flyspell-mode))))
+(add-hook 'org-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)

@@ -18,6 +18,12 @@
     (define-key map "s" 'magit-status)
     (define-key map "i" 'magit-init)
     (define-key map "c" 'magit-clone)
+    (define-key map "d" 'magit-diff-buffer-file)
+    (define-key map "D" 'magit-diff-buffer-file-popup)
+    (define-key map "l" 'magit-log-buffer-file)
+    (define-key map "L" 'magit-log-buffer-file-popup)
+    (define-key map "b" 'magit-blame)
+    (define-key map "B" 'magit-blame-popup)
     map)
   "Keymap for global magit commands")
 
