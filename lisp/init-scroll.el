@@ -2,6 +2,13 @@
 ;; (setq scroll-margin 1) scroll-margin does not work nicely with reposition-window
 (setq scroll-preserve-screen-position t)
 
+(define-key key-translation-map (kbd "<Scroll_Lock>") (kbd "<scroll>"))
+
 (global-set-key (kbd "<scroll>") 'scroll-lock-mode)
 (global-set-key (kbd "<M-scroll>") 'scroll-all-mode)
 (global-set-key (kbd "<C-pause>") 'follow-mode)
+
+(global-set-key (kbd "M-<up>") 'scroll-down-line)
+(global-set-key (kbd "M-p") 'scroll-down-line)
+(global-set-key (kbd "M-<down>") 'scroll-up-line)
+(global-set-key (kbd "M-n") 'scroll-up-line)

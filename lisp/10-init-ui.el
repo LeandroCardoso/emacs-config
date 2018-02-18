@@ -64,14 +64,17 @@ finding the window to select."
   (if (one-window-p) (other-frame arg) (other-window arg)))
 
 
-(setq-default cursor-type 'bar)
-;; never resize the frame
-(setq frame-inhibit-implied-resize t)
-
 ;; No need to waste precious desktop space with useless GUI
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+
+;; cursor
+(setq-default cursor-type 'bar)
+;; disable cursor blink
+(blink-cursor-mode -1)
+
 
 ;; Font
 (let ((font (cond
@@ -81,11 +84,19 @@ finding the window to select."
       (set-frame-font (concat (car font) " " (cdr font)) t t)
     (message "Warning: Font %s does not exist" (car font))))
 
-;; faces.el - must be after the theme
+
+;; Faces
 (set-face-attribute 'bold-italic nil :inherit '(bold italic))
 (set-face-attribute 'italic nil :underline t)
 
-;; frame.el
+
+;; Modeline
+(setq mode-line-default-help-echo nil)
+(set-face-attribute 'mode-line-highlight nil :box 'unspecified)
+
+
+;; Frame
+(setq frame-inhibit-implied-resize t) ;; never resize the frame
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
 (setq window-system-default-frame-alist '((x . ((alpha . 95)))))
@@ -93,13 +104,13 @@ finding the window to select."
 (add-hook 'after-make-frame-functions
           (lambda(FRAME)
             (modify-frame-parameters FRAME `((cursor-color . ,(face-background 'cursor))))))
-;; disable cursor blink
-(blink-cursor-mode -1)
 
-;; window.el
+
+;; Window
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
+
 
 ;; key-bindings
 (global-set-key (kbd "M-o") 'other-window-all-frames)
@@ -108,9 +119,3 @@ finding the window to select."
 (global-set-key (kbd "C-x M-o") 'other-frame)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
 (global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
-
-;; scroll
-(global-set-key (kbd "M-<up>") 'scroll-down-line)
-(global-set-key (kbd "M-p") 'scroll-down-line)
-(global-set-key (kbd "M-<down>") 'scroll-up-line)
-(global-set-key (kbd "M-n") 'scroll-up-line)
