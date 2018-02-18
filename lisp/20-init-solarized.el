@@ -1,4 +1,4 @@
-(when (require 'solarized-theme nil t)
+(when (and (require 'solarized-theme nil t) (display-graphic-p))
   (setq solarized-distinct-doc-face t)
   (setq solarized-scale-org-headlines nil)
   (setq solarized-use-more-italic t)
