@@ -18,7 +18,9 @@
      (prin1-to-string buffer-file-coding-system)))
 
   (defpowerline powerline-which-func
-    (propertize (concat "λ "(which-function)) 'face 'which-func))
+    (let ((which-func (which-function)))
+      (when which-func
+        (propertize (concat "λ " which-func) 'face 'which-func))))
 
   (defpowerline powerline-remote
     (when (file-remote-p default-directory)
