@@ -22,7 +22,7 @@
   (defpowerline powerline-which-func
     (let ((which-func (which-function)))
       (when which-func
-        (propertize (concat (char-to-stringx03BB) " " which-func) 'face 'which-func))))
+        (propertize (concat (char-to-string #x03BB) " " which-func) 'face 'which-func))))
 
   (defpowerline powerline-remote
     (when (file-remote-p default-directory)
