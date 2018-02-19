@@ -76,11 +76,6 @@
       (set-face-attribute 'mode-line nil :overline nil)
       ;; use a box color instead
       (set-face-attribute 'mode-line nil :box (face-foreground 'mode-line-buffer-id-inactive)))
-
-    ;; These should be fixed in upstream
-    (with-eval-after-load "magit"
-      (set-face-foreground 'magit-blame-name "#8B2C02") ; orange-d
-      (set-face-foreground 'magit-blame-date "#8B2C02"))
     )
 
   ;; TODO packages
