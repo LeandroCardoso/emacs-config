@@ -5,8 +5,8 @@
 (add-to-list 'package-archives '("melpa stable" . "http://stable.melpa.org/packages/") t)
 
 (setq package-archive-priorities
-      '(("melpa stable" . 2)
-        ("gnu"          . 1)
+      '(("gnu"          . 2)
+        ("melpa stable" . 1)
         ("melpa"        . 0)))
 
 (global-set-key (kbd "C-x p") 'list-packages)
