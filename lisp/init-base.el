@@ -17,6 +17,13 @@
 ;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
 (define-key minibuffer-local-map (kbd "<escape>") 'abort-recursive-edit)
 
+;; Hack to set the major mode automatically with new buffers not associated with a file
+;; http://thread.gmane.org/gmane.emacs.devel/115520/focus=115794
+(setq-default major-mode
+              (lambda () (if buffer-file-name
+                             (fundamental-mode)
+                           (let ((buffer-file-name (buffer-name)))
+                             (set-auto-mode)))))
 
 ;; zap - misc.el
 (autoload 'zap-up-to-char "misc")
