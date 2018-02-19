@@ -6,10 +6,10 @@
 
 
   (defpowerline powerline-modified
-  (if buffer-read-only
-      (char-to-string #x2717)
-    (if (buffer-modified-p)
-       (char-to-string #x2733) " ")))
+    (if buffer-read-only
+        (char-to-string #x2717)
+      (if (buffer-modified-p)
+          (char-to-string #x2733) " ")))
 
   (defpowerline powerline-mule-info
     (concat
