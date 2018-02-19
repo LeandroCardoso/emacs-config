@@ -70,13 +70,18 @@
 
     ;; Do not use the defined colors with eval-after-load, it does not work
 
+    (with-eval-after-load "dired"
+      (set-face-attribute 'dired-header nil
+                          :foreground "#268bd2" ; blue
+                          :background 'unspecified
+                          :weight 'bold))
+
     (with-eval-after-load "powerline"
       (set-face-foreground 'mode-line-buffer-id-inactive "#7B6000") ; yellow-d
       ;; overline does not mix well with powerline
       (set-face-attribute 'mode-line nil :overline nil)
       ;; use a box color instead
-      (set-face-attribute 'mode-line nil :box (face-foreground 'mode-line-buffer-id-inactive)))
-    )
+      (set-face-attribute 'mode-line nil :box (face-foreground 'mode-line-buffer-id-inactive))))
 
   ;; TODO packages
   ;; TODO some grep improvements
