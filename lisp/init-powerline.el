@@ -7,24 +7,40 @@
 
   (defpowerline powerline-modified
   (if buffer-read-only
-      "✗"
+      (char-to-string #x2717)
     (if (buffer-modified-p)
-        "✳" " ")))
+       (char-to-string #x2733) " ")))
 
   (defpowerline powerline-mule-info
     (concat
      (when current-input-method
-       (concat "🖮" current-input-method-title " "))
+       (concat (unless (eq system-type 'windows-nt)
+                 (char-to-string #x1F5AE))
+               current-input-method-title " "))
      (prin1-to-string buffer-file-coding-system)))
 
   (defpowerline powerline-which-func
     (let ((which-func (which-function)))
       (when which-func
-        (propertize (concat "λ " which-func) 'face 'which-func))))
+        (propertize (concat (char-to-stringx03BB) " " which-func) 'face 'which-func))))
 
   (defpowerline powerline-remote
     (when (file-remote-p default-directory)
-      (concat "💻" tramp-current-host)))
+      (concat (if (eq system-type 'windows-nt)
+                  "@"
+                (char-to-string #x1F4BB))
+              tramp-current-host)))
+
+  ;; Modified from the original to handle a different char in Windows
+  (defpowerline powerline-vc-custom
+    (when (and (buffer-file-name (current-buffer)) vc-mode)
+      (if (and window-system (not powerline-gui-use-vcs-glyph))
+          (format-mode-line '(vc-mode vc-mode))
+        (format " %s%s"
+                (if (eq system-type 'windows-nt)
+                    (char-to-string #x2191)
+                  (char-to-string #xe0a0))
+                (format-mode-line '(vc-mode vc-mode))))))
 
   (setq-default mode-line-format
                 '("%e"
@@ -53,7 +69,7 @@
                                      (powerline-narrow face1 'l)
                                      (powerline-raw " " face1)
                                      (funcall separator-left face1 face2)
-                                     (powerline-vc face2 'r)
+                                     (powerline-vc-custom face2 'r)
                                      (when (and (boundp 'which-func-mode) which-func-mode)
                                        (powerline-which-func face2 'l))
                                      (when (bound-and-true-p nyan-mode)
@@ -70,7 +86,9 @@
                                      (funcall separator-right face1 mode-line)
                                      (powerline-raw " ")
                                      (when powerline-display-buffer-size
-                                       (powerline-buffer-size mode-line 'r))
+                                       (concat
+                                        (powerline-buffer-size mode-line 'r)
+                                        (powerline-raw "|" mode-line 'r)))
                                      (powerline-raw "%6p" mode-line 'r)
                                      (when powerline-display-hud
                                        (powerline-hud face2 face1)))))
