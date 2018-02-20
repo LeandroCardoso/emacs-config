@@ -2,7 +2,6 @@
   (defun set-diminish ()
     (diminish 'abbrev-mode)
     (diminish 'auto-revert-mode)
-    (diminish 'company-mode)
     (diminish 'subword-mode)
     (diminish 'superword-mode)
     (diminish 'yas-minor-mode))
