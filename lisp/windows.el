@@ -12,6 +12,10 @@
                        (getenv "PATH")))
 (add-to-list 'exec-path (concat user-emacs-directory "windows_bin/"))
 
+;; nodejs
+(when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
+  (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
+
 ;; flycheck
 ;; launch external process is slow in Windows, so we don't want to use the new-line option
 (setq flycheck-check-syntax-automatically '(save idle-change mode-enable))
