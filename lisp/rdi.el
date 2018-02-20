@@ -1,19 +1,16 @@
 (when (string= (getenv "USERDOMAIN") "RDISOFTWARE")
 
-  (if (require 'js2-mode nil t)
+  (if (featurep 'js2-mode)
       (progn
-        (define-derived-mode nps-mode js2-mode "nps"
-          "Major mode for editing NP6 NPS code derived from `js2-mode'."
-          (setq-local js2-include-browser-externs nil)
-          (setq-local js2-language-version 180)
-          (push "API" js2-additional-externs))
+        (defun nps-setup-hook ()
+          (when (string-match-p "\\.nps\\'" buffer-file-name)
+            (setq-local js2-include-browser-externs nil)
+            (setq-local js2-language-version 180)
+            (push "API" js2-additional-externs)))
 
-        (add-to-list 'auto-mode-alist '("\\.nps\\'" . nps-mode)))
-    ( ; else
-     (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
-     ))
-
-  (add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
+        (add-hook 'js2-mode-hook #'nps-setup-hook)
+        (add-to-list 'auto-mode-alist '("\\.nps\\'" . js2-mode)))
+    ((add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))))
 
   ;; Use TABs with XML, javascript and c/c++ files
   (add-hook 'nxml-mode-hook (lambda () (setq indent-tabs-mode t)))
