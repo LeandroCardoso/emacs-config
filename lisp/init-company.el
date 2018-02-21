@@ -43,6 +43,7 @@
   ;; keymap
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
+  (define-key org-mode-map (kbd "<C-tab>") 'company-complete)
 
   (define-key company-active-map (kbd "<escape>") 'company-abort)
   (define-key company-active-map (kbd "<next>") 'company-next-page)
