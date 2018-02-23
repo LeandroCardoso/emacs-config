@@ -54,17 +54,16 @@
     (set-face-foreground 'mode-line-buffer-id yellow)
     (set-face-foreground 'minibuffer-prompt (face-foreground 'mode-line-buffer-id))
     (set-face-attribute 'mode-line nil
-                        :background s-base02
                         :overline (face-foreground 'mode-line-buffer-id)
-                        :underline nil
+                        :underline 'unspecified
                         :box `(:line-width 2
                                :color ,(face-background 'mode-line)
-                               :style unspecified))
+                               :style 'unspecified))
 
     (set-face-attribute 'mode-line-inactive nil
                         :background (face-background 'mode-line)
-                        :overline nil
-                        :underline nil
+                        :overline 'unspecified
+                        :underline 'unspecified
                         :box (face-attribute 'mode-line :box))
 
 
@@ -79,7 +78,7 @@
     (with-eval-after-load "powerline"
       (set-face-foreground 'mode-line-buffer-id-inactive "#7B6000") ; yellow-d
       ;; overline does not mix well with powerline
-      (set-face-attribute 'mode-line nil :overline nil)
+      (set-face-attribute 'mode-line nil :overline 'unspecified)
       ;; use a box color instead
       (set-face-attribute 'mode-line nil :box (face-foreground 'mode-line-buffer-id-inactive))
       (set-face-attribute 'mode-line-inactive nil :box (face-background 'mode-line-inactive))))
