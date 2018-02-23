@@ -5,10 +5,11 @@
   (ido-ubiquitous-mode t))
 
 (when (require 'flx-ido nil t)
-  ;; disable ido faces to see flx highlights.
-  ;; (setq ido-use-faces nil)
   (flx-ido-mode t)
-  (setq ido-use-faces nil))
+  ;; disable ido faces to see flx highlights.
+  (setq ido-use-faces nil)
+  ;; decrease the value of flx-ido-threshold to speed it up
+  (setq flx-ido-threshold 1000))
 
 (when (require 'crm-custom nil t)
   (crm-custom-mode t))
@@ -19,7 +20,6 @@
       '(" { " " }" " | " " | +" "" "" " [No match]" "" " [Not readable]" " [Too big]" " [Confirm]" " [" "]"))
 (setq ido-default-buffer-method 'selected-window)
 (setq ido-enable-flex-matching t)
-(setq ido-rotate-file-list-default t)
 (setq ido-show-dot-for-dired t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-use-url-at-point t)
