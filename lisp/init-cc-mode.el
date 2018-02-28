@@ -9,19 +9,20 @@
 
 ;; hooks
 
-(defun my-cc-init-hook ())
-(add-hook 'c-initialization-hook 'my-cc-init-hook)
-
-;; TODO proper style customization
-(defun my-c-mode-common-hook ()
-  ;;(set c-offsets-alist '((substatement-open . 0) (case-label . +))))
+(defun c-init-setup-hook ()
   (c-set-offset 'substatement-open 0)
   (c-set-offset 'case-label '+))
 
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+(add-hook 'c-initialization-hook #'c-init-setup-hook)
 
-(defun my-c-mode-hook ())
-(add-hook 'c-mode-hook 'my-c-mode-hook)
 
-(defun my-c++-mode-hook ())
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+(defun c-common-setup-hook ())
+(add-hook 'c-mode-common-hook #'c-common-setup-hook)
+
+
+(defun c-setup-hook ())
+(add-hook 'c-mode-hook #'c-setup-hook)
+
+
+(defun c++-setup-hook ())
+(add-hook 'c++-mode-hook #'c++-setup-hook)
