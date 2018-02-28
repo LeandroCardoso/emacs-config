@@ -7,9 +7,6 @@
     
     (add-hook 'csharp-mode-hook #'omnisharp-mode)
 
-    (with-eval-after-load "flycheck"
-      (add-hook 'csharp-mode-hook #'flycheck-mode))
-
     ;; omnisharp + company
     (with-eval-after-load "company"
       (add-to-list 'company-backends 'company-omnisharp)

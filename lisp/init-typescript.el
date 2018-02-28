@@ -6,7 +6,6 @@
 
   (defun tide-setup-hook ()
     (tide-setup)
-    (flycheck-mode)
     (eldoc-mode)
     (tide-hl-identifier-mode))
 

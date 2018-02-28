@@ -16,10 +16,6 @@
 (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
   (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
 
-;; flycheck
-;; launch external process is slow in Windows, so we don't want to use the new-line option
-(setq flycheck-check-syntax-automatically '(save idle-change mode-enable))
-
 ;; this is a very recommended setup
 (setq w32-pipe-read-delay 0)
 
