@@ -81,7 +81,7 @@
     '(";")                      ;; COMMENT-LIST
     '("|")                      ;; KEYWORD-LIST
     nil                         ;; FONT-LOCK-LIST
-    '("\\.np6$" "\\.npstart$")  ;; AUTO-MODE-LIST
+    '("\\.np6" "\\.npsharp$")   ;; AUTO-MODE-LIST
     nil                         ;; FUNCTION-LIST
     )
 
