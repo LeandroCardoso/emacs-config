@@ -1,6 +1,6 @@
 (when (require 'company nil t)
   (setq company-idle-delay 0.3)
-  (setq company-lighter-base nil)
+  (setq company-lighter-base "comp")
   (setq company-minimum-prefix-length 3)
   (setq company-search-regexp-function 'company-search-flex-regexp)
   (setq company-selection-wrap-around t)
