@@ -4,6 +4,15 @@
   (setq powerline-gui-use-vcs-glyph t)
   (setq powerline-height 28)
 
+  ;; remove rendering issues when switching the active window
+  (remove-hook 'window-configuration-change-hook 'powerline-set-selected-window)
+  (remove-hook 'focus-out-hook 'powerline-unset-selected-window)
+  (remove-hook 'focus-in-hook 'powerline-set-selected-window)
+  (defadvice handle-switch-frame (after powerline-set-selected-window-after-switch-frame disable))
+  (defadvice select-window (after powerline-select-window disable))
+  ;; fix framemove issue
+  (defadvice select-frame (after powerline-selected-window activate)
+    (powerline-set-selected-window))
 
   (defpowerline powerline-modified
     (if buffer-read-only
