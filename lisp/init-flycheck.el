@@ -1,5 +1,6 @@
 (when (require 'flycheck nil t)
   (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  (setq flycheck-checker-error-threshold nil)
   (setq flycheck-completing-read-function 'ido-completing-read)
   (setq flycheck-global-modes '(c++-mode csharp-mode typescript-mode))
   (setq flycheck-idle-change-delay 3)
