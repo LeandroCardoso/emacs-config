@@ -45,7 +45,8 @@
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
 
   (with-eval-after-load "cc-mode"
-    (define-key c-mode-base-map (kbd "<tab>") 'company-indent-or-complete-common))
+    (define-key c-mode-base-map (kbd "<tab>") 'company-indent-or-complete-common)
+    (define-key c-mode-base-map (kbd "<C-tab>") 'company-semantic))
   
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "<C-tab>") 'company-complete))
