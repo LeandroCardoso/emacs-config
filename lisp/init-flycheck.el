@@ -6,5 +6,10 @@
   (setq flycheck-idle-change-delay 3)
   (setq flycheck-mode-line-prefix nil)
   ;; TODO customize flycheck-mode-line. See flycheck-mode-line-status-text
+
+  ;; cppcheck
+  ;; unusedStructMember is annoying in header files
+  (setq flycheck-cppcheck-suppressions '("unusedStructMember"))
+  
   (global-flycheck-mode)
   )
