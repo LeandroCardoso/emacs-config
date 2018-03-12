@@ -13,18 +13,25 @@
   (defadvice select-frame (after powerline-selected-window activate)
     (powerline-set-selected-window))
 
+  ;; custom characters
+  (let ((fontawesome (fontawesome)))
+    (setq powerline-read-only-char (if fontawesome (char-to-string #xF146) "-"))
+    (setq powerline-modified-char (if fontawesome (char-to-string #xF14B) "*"))
+    (setq powerline-mule-char (if fontawesome (char-to-string #xF11C) ""))
+    (setq powerline-remote-char (if fontawesome (char-to-string #xF108) "@"))
+    (setq powerline-vc-char (if fontawesome (char-to-string #xF126) "")))
+  
   (defpowerline powerline-modified
     (if buffer-read-only
-        (if (fontawesome) (char-to-string #xF146) "-")
+        powerline-read-only-char
       (if (buffer-modified-p)
-          (if (fontawesome) (char-to-string #xF14B) "*")
+          powerline-modified-char
         " ")))
 
   (defpowerline powerline-mule-info
     (concat
      (when current-input-method
-       (concat (when (fontawesome) (char-to-string #xF11C))
-               current-input-method-title " "))
+       (concat powerline-mule-char current-input-method-title " "))
      (prin1-to-string buffer-file-coding-system)))
 
   (defpowerline powerline-which-func
@@ -34,13 +41,11 @@
 
   (defpowerline powerline-remote
     (when (file-remote-p default-directory)
-      (concat (if (fontawesome) (char-to-string #xF108) "@")
-              tramp-current-host)))
+      (concat powerline-remote-char tramp-current-host)))
 
   (defpowerline powerline-vc-custom
     (when (and (buffer-file-name (current-buffer)) vc-mode)
-      (concat " " (when (fontawesome) (char-to-string #xF126))
-              (format-mode-line '(vc-mode vc-mode)))))
+      (concat " " powerline-vc-char (format-mode-line '(vc-mode vc-mode)))))
 
   (setq-default mode-line-format
                 '("%e"
