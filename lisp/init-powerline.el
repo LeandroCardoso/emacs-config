@@ -1,7 +1,6 @@
 (when (require 'powerline nil t)
   (setq powerline-default-separator 'slant)
   (setq powerline-display-hud nil)
-  (setq powerline-gui-use-vcs-glyph t)
   (setq powerline-height 28)
 
   ;; remove rendering issues when switching the active window
@@ -16,15 +15,15 @@
 
   (defpowerline powerline-modified
     (if buffer-read-only
-        (char-to-string #x2717)
+        (if (fontawesome-p) (char-to-string #xF146) "-")
       (if (buffer-modified-p)
-          (char-to-string #x2733) " ")))
+          (if (fontawesome-p) (char-to-string #xF14B) "*")
+        " ")))
 
   (defpowerline powerline-mule-info
     (concat
      (when current-input-method
-       (concat (unless (eq system-type 'windows-nt)
-                 (char-to-string #x1F5AE))
+       (concat (when (fontawesome-p) (char-to-string #xF11C))
                current-input-method-title " "))
      (prin1-to-string buffer-file-coding-system)))
 
@@ -35,21 +34,13 @@
 
   (defpowerline powerline-remote
     (when (file-remote-p default-directory)
-      (concat (if (eq system-type 'windows-nt)
-                  "@"
-                (char-to-string #x1F4BB))
+      (concat (if (fontawesome-p) (char-to-string #xF108) "@")
               tramp-current-host)))
 
-  ;; Modified from the original to handle a different char in Windows
   (defpowerline powerline-vc-custom
     (when (and (buffer-file-name (current-buffer)) vc-mode)
-      (if (and window-system (not powerline-gui-use-vcs-glyph))
-          (format-mode-line '(vc-mode vc-mode))
-        (format " %s%s"
-                (if (eq system-type 'windows-nt)
-                    (char-to-string #x2191)
-                  (char-to-string #xe0a0))
-                (format-mode-line '(vc-mode vc-mode))))))
+      (concat " " (when (fontawesome-p) (char-to-string #xF126))
+              (format-mode-line '(vc-mode vc-mode)))))
 
   (setq-default mode-line-format
                 '("%e"
@@ -87,8 +78,6 @@
                                      (when powerline-display-mule-info
                                        (powerline-mule-info face2 'r))
                                      (funcall separator-right face2 face1)
-                                     (unless window-system
-                                       (powerline-raw (char-to-string #xe0a1) face1 'l))
                                      (powerline-raw "%4l" face1 'l)
                                      (powerline-raw ":" face1 'l)
                                      (powerline-raw "%3c" face1 'r)
