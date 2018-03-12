@@ -15,15 +15,15 @@
 
   (defpowerline powerline-modified
     (if buffer-read-only
-        (if (fontawesome-p) (char-to-string #xF146) "-")
+        (if (fontawesome) (char-to-string #xF146) "-")
       (if (buffer-modified-p)
-          (if (fontawesome-p) (char-to-string #xF14B) "*")
+          (if (fontawesome) (char-to-string #xF14B) "*")
         " ")))
 
   (defpowerline powerline-mule-info
     (concat
      (when current-input-method
-       (concat (when (fontawesome-p) (char-to-string #xF11C))
+       (concat (when (fontawesome) (char-to-string #xF11C))
                current-input-method-title " "))
      (prin1-to-string buffer-file-coding-system)))
 
@@ -34,12 +34,12 @@
 
   (defpowerline powerline-remote
     (when (file-remote-p default-directory)
-      (concat (if (fontawesome-p) (char-to-string #xF108) "@")
+      (concat (if (fontawesome) (char-to-string #xF108) "@")
               tramp-current-host)))
 
   (defpowerline powerline-vc-custom
     (when (and (buffer-file-name (current-buffer)) vc-mode)
-      (concat " " (when (fontawesome-p) (char-to-string #xF126))
+      (concat " " (when (fontawesome) (char-to-string #xF126))
               (format-mode-line '(vc-mode vc-mode)))))
 
   (setq-default mode-line-format
