@@ -51,6 +51,9 @@
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "<C-tab>") 'company-complete))
 
+  (with-eval-after-load "shell"
+    (define-key shell-mode-map (kbd "<C-tab>") 'company-complete))
+
   (define-key company-active-map (kbd "<escape>") 'company-abort)
   (define-key company-active-map (kbd "<next>") 'company-next-page)
   (define-key company-active-map (kbd "C-v") 'company-next-page)
