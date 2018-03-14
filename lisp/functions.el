@@ -180,3 +180,12 @@ in the former."
     See `sort-regexp-fields'."
   (interactive "*P\nr")
   (sort-regexp-fields reverse "[^[:blank:]]+" "\\&" beg end))
+
+(defun standard-value (symbol)
+  "Return SYMBOL's standard value.
+This is the global default value."
+  (eval (car (get symbol 'standard-value))))
+
+(defun set-standard (symbol)
+  "Set SYMBOL`s value to the standard value. SYMBOL is evaluated.'"
+  (set symbol (standard-value symbol)))
