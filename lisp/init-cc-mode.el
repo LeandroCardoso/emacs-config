@@ -9,14 +9,13 @@
 
 ;; hooks
 
-(defun c-init-setup-hook ()
-  (c-set-offset 'substatement-open 0)
-  (c-set-offset 'case-label '+))
-
+(defun c-init-setup-hook ())
 (add-hook 'c-initialization-hook #'c-init-setup-hook)
 
 
-(defun c-common-setup-hook ())
+(defun c-common-setup-hook ()
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'case-label '+))
 (add-hook 'c-mode-common-hook #'c-common-setup-hook)
 
 
