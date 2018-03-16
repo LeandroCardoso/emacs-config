@@ -36,6 +36,10 @@
     (set-face-attribute 'mode-line nil :box (face-foreground 'mode-line-buffer-id-inactive))
     (set-face-attribute 'mode-line-inactive nil :box (face-background 'mode-line-inactive)))
 
+  (with-eval-after-load "symbol-overlay"
+    (set-face-attribute 'symbol-overlay-default-face nil
+                        :inherit 'unspecified
+                        :foreground "#d33682")) ; magenta
+
   ;; TODO packages
-  ;; TODO some grep improvements
   )
