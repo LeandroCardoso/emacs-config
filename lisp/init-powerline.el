@@ -83,9 +83,12 @@
                                      (when powerline-display-mule-info
                                        (powerline-mule-info face2 'r))
                                      (funcall separator-right face2 face1)
-                                     (powerline-raw "%4l" face1 'l)
-                                     (powerline-raw ":" face1 'l)
-                                     (powerline-raw "%3c" face1 'r)
+                                     (when line-number-mode
+                                       (powerline-raw "%4l" face1 'l))
+                                     (when (and line-number-mode column-number-mode)
+                                       (powerline-raw ":" face1 'l))
+                                     (when column-number-mode
+                                       (powerline-raw "%3c" face1 'r))
                                      (funcall separator-right face1 mode-line)
                                      (powerline-raw " ")
                                      (when powerline-display-buffer-size
