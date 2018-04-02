@@ -6,15 +6,16 @@
   (when (eq system-type 'windows-nt)
     (setq w32-pipe-read-delay 0)
     (setq magit-process-connection-type nil)
-    (setq magit-refresh-status-buffer nil)))
+    (setq magit-refresh-status-buffer nil))
 
-;; key bindings
-(define-key magit-mode-map [remap previous-line] 'magit-previous-line)
-(define-key magit-mode-map [remap next-line] 'magit-next-line)
+  ;; key bindings
+  (define-key magit-mode-map [remap previous-line] 'magit-previous-line)
+  (define-key magit-mode-map [remap next-line] 'magit-next-line)
 
-(define-key magit-file-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
-(define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
+  (define-key magit-file-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
+  (define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window))
 
+;; global keymap
 (defvar magit-global-keymap
   (let ((map (make-sparse-keymap)))
     (define-key map "g" 'magit-dispatch-popup)
