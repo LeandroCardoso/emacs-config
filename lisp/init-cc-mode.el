@@ -7,21 +7,22 @@
 ;; more appropriate and I have to keep the following setting.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
+(with-eval-after-load "cc-mode"
+  (add-to-list 'c-font-lock-extra-types "BOOL")
+  (add-to-list 'c++-font-lock-extra-types "BOOL"))
+
 ;; hooks
-
-(defun c-init-setup-hook ())
-(add-hook 'c-initialization-hook #'c-init-setup-hook)
-
 
 (defun c-common-setup-hook ()
   (c-set-offset 'substatement-open 0)
   (c-set-offset 'case-label '+))
-(add-hook 'c-mode-common-hook #'c-common-setup-hook)
 
-
-(defun c-setup-hook ())
-(add-hook 'c-mode-hook #'c-setup-hook)
-
+(defun c-setup-hook ()
+  (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
 
 (defun c++-setup-hook ())
+
+(add-hook 'c-mode-common-hook #'c-common-setup-hook)
+(add-hook 'c-mode-hook #'c-setup-hook)
+(add-hook 'c++-mode-hook #'c-setup-hook)
 (add-hook 'c++-mode-hook #'c++-setup-hook)
