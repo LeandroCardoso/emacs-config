@@ -1,6 +1,5 @@
 (when (require 'tide nil t)
   (setq tide-completion-detailed t)
-  (setq tide-hl-identifier-idle-time 0.1)
   (setq tide-imenu-flatten t)
   (setq tide-server-max-response-length 10240000)
 
