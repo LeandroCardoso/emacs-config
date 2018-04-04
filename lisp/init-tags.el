@@ -7,7 +7,8 @@
   (with-temp-buffer
     (cd-absolute directory)
     (message "Creating TAGS file at %s" directory)
-    (call-process "ctags" nil "*TAGS*" nil "-e" "-R" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "-V")))
+    (call-process "ctags" nil "*TAGS*" nil
+                  "-e" "-R" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "--langmap=c++:+.c" "-V")))
 
 
 (defun create-project-tags ()
@@ -25,7 +26,8 @@
       (with-temp-buffer
         (cd-absolute directory)
         (message "Update TAGS file at %s for %s" directory file)
-        (call-process "ctags" nil "*TAGS*" nil "-e" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "-V" "-a" file)))))
+        (call-process "ctags" nil "*TAGS*" nil
+                      "-e" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "--langmap=c++:+.c" "-V" "-a" file)))))
 
 
 (add-hook 'after-save-hook 'update-tags-for-current-file)
