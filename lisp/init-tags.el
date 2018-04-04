@@ -3,7 +3,7 @@
 (defalias 'ctags-call-process
   (apply-partially 'call-process
                    "ctags" nil "*TAGS*" nil
-                   "-e" "-R" "-V" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "--langmap=c++:+.c"))
+                   "-e" "-R" "-V" "--extra=+q" "--c++-kinds=+p" "--langmap=c++:+.c"))
 
 (defun create-tags (directory)
   "Create a TAGS file at the given DIRECTORY."
