@@ -1,5 +1,5 @@
 ;; Adapted from https://stackoverflow.com/a/29757750
-(defun ediff-copy-AB-to-C (arg)
+(defun ediff-copy-AB-to-C (reverse)
   "Copy current difference region from buffer A and buffer B to buffer C.
 
 With ARG, copy in reverse order - buffer A past buffer B to
