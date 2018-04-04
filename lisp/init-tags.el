@@ -1,5 +1,10 @@
 (require 'project)
 
+(defalias 'ctags-call-process
+  (apply-partially 'call-process
+                   "ctags" nil "*TAGS*" nil
+                   "-e" "-R" "-V" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "--langmap=c++:+.c"))
+
 (defun create-tags (directory)
   "Create a TAGS file at the given DIRECTORY."
   (interactive "DRoot directory: ")
@@ -7,8 +12,7 @@
   (with-temp-buffer
     (cd-absolute directory)
     (message "Creating TAGS file at %s" directory)
-    (call-process "ctags" nil "*TAGS*" nil
-                  "-e" "-R" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "--langmap=c++:+.c" "-V")))
+    (ctags-call-process)))
 
 
 (defun create-project-tags ()
@@ -26,8 +30,7 @@
       (with-temp-buffer
         (cd-absolute directory)
         (message "Update TAGS file at %s for %s" directory file)
-        (call-process "ctags" nil "*TAGS*" nil
-                      "-e" "--extra=+q" "--fields=+aiS" "--c++-kinds=+p" "--langmap=c++:+.c" "-V" "-a" file)))))
+        (ctags-call-process "-a" file)))))
 
 
 (add-hook 'after-save-hook 'update-tags-for-current-file)
