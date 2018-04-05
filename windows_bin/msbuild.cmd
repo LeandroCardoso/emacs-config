@@ -4,7 +4,8 @@ rem Usage example:
 rem msbuild.com /p:SolutionDir={path} /p:Platform={win32|x64} /p:Configuration={Debug|Release} /t:{Build|Clean|Rebuild} {project.sln|project.vcxproj}"
 
 rem Installation directory for Visual Studio releases 15.0 and upper are located by the vswhere
-rem tool. Lower em releases are located by checking the environment variables.
+rem tool. Visual Studio releases 14, 12, 11 and 10 are located by checking the environment
+rem variables. Visual Studio releases prior to 10 are not supported because they do not use msbuild.
 
 rem If vswhere exists it should be located at this location path. Note vswhere only exists with
 rem Visual Studio 15.0 or upper releases.
@@ -30,12 +31,6 @@ if exist %VSWHERE% (
 ) else if defined VS100COMNTOOLS (
     echo Using Visual Studio 2010 ^(10.0^) toolset
     call "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else if defined VS90COMNTOOLS (
-    echo Using Visual Studio 2008 ^(9.0^) toolset
-    call "%VS90COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else if defined VS80COMNTOOLS (
-    echo Using Visual Studio 2005 ^(8.0^) toolset
-    call "%VS80COMNTOOLS%..\..\VC\vcvarsall.bat"
 ) else (
     echo Error: Visual Studio not found
     goto :eof
