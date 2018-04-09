@@ -12,4 +12,8 @@
       (add-to-list 'company-backends 'company-omnisharp)
       ;; this value is slow (setq omnisharp-company-match-type 'company-match-server)
       )
+
+    ;; keymap
+    (define-key omnisharp-mode-map (kbd "M-.") 'omnisharp-find-implementations)
+    (define-key omnisharp-mode-map (kbd "C-x 4 .") 'omnisharp-go-to-definition-other-window)
     ))
