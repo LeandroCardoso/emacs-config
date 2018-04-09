@@ -4,9 +4,7 @@
   (setq tide-server-max-response-length 10240000)
 
   (defun tide-setup-hook ()
-    (tide-setup)
-    (eldoc-mode)
-    (tide-hl-identifier-mode))
+    (tide-setup))
 
   ;; formats the buffer before saving
   (add-hook 'before-save-hook 'tide-format-before-save)
