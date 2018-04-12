@@ -47,7 +47,7 @@
   (with-eval-after-load "cc-mode"
     (define-key c-mode-base-map (kbd "<tab>") 'company-indent-or-complete-common)
     (define-key c-mode-base-map (kbd "<C-tab>") 'company-semantic))
-  
+
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "<C-tab>") 'company-complete))
 
@@ -60,6 +60,8 @@
   (define-key company-active-map (kbd "<prior>") 'company-previous-page)
   (define-key company-active-map (kbd "M-v") 'company-previous-page)
   (define-key company-active-map (kbd "<C-tab>") 'company-complete-common)
+   ;; workaround for tng in org-mode
+  (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
   (define-key company-search-map (kbd "<escape>") 'company-search-abort)
 
