@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: rdi-Parameter
+# key: <p
+# --
+<Parameter name="$1" value="$2"/>$0
