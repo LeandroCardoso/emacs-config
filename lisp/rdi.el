@@ -89,4 +89,44 @@
     (defengine jira
       "https://jira.rdisoftware.com/secure/QuickSearch.jspa?searchString=%s"
       :keybinding "j"))
+
+  (defun np61-set-exec-dir (directory)
+    (interactive "D")
+    (setq np61-exec-dir directory)
+    (setq np61-exec-start-cmd "start.bat")
+    (setq np61-exec-stop-cmd "stop.bat")
+    (setq np61-exec-reset-cmd "clean.bat")
+    (setq np61-exec-bin-dir "bin")
+    (setq np61-exec-compilation-dir "c:/Dev/np61/bin/Debug-Win32-VS13"))
+
+  (defun np61-start ()
+    (interactive)
+    (unless (boundp 'np61-exec-dir)
+      (call-interactively 'np61-set-exec-dir))
+    (with-temp-buffer
+      (cd-absolute np61-exec-dir)
+      (async-shell-command np61-exec-start-cmd "*np61*")))
+
+  (defun np61-stop ()
+    (interactive)
+    (unless (boundp 'np61-exec-dir)
+      (call-interactively 'np61-set-exec-dir))
+    (with-temp-buffer
+      (cd-absolute np61-exec-dir)
+      (async-shell-command np61-exec-stop-cmd "*np61*")))
+
+  (defun np61-reset ()
+    (interactive)
+    (unless (boundp 'np61-exec-dir)
+      (call-interactively 'np61-set-exec-dir))
+    (with-temp-buffer
+      (cd-absolute np61-exec-dir)
+      (async-shell-command np61-exec-reset-cmd "*np61*")))
+  
+  (defun np61-copy-compilation ()
+    (interactive)
+    (unless (boundp 'np61-exec-dir)
+      (call-interactively 'np61-set-exec-dir))
+    (copy-directory-if-newer np61-exec-compilation-dir
+                             (concat np61-exec-dir "/" np61-exec-bin-dir)))
   )
