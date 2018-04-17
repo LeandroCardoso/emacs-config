@@ -20,11 +20,16 @@
                (if solution-path-temp
                    (convert-standard-filename solution-path-temp)
                  nil))))
-          (project-file ; The ".*vcxproj$" file in current directory if it is unique
-           (when directory
-             (let ((project-file-list (directory-files directory nil ".*vcxproj$" t)))
-               (unless (cdr project-file-list)
-                 (car project-file-list))))))
+          ;; if the current buffer is a project or solution file use it as project-file, else use
+          ;; the vcxproj file in current directory, but only if it is unique.
+          (project-file
+           (if (or (string-match ".*vcxproj$" buffer-file-name)
+                   (string-match ".*sln$" buffer-file-name))
+               (file-name-nondirectory buffer-file-name)
+             (when directory
+               (let ((project-file-list (directory-files directory nil ".*vcxproj$" t)))
+                 (unless (cdr project-file-list)
+                   (car project-file-list)))))))
       (concat "msbuild.cmd "
               (when solution-path (concat "/p:SolutionDir=" solution-path " "))
               "/p:Platform=win32 /p:Configuration=Debug /t:Build "
