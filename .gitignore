@@ -3,6 +3,7 @@ auto-save/
 backup/
 bookmarks
 custom-variables.el
+dev/
 elpa/
 eshell/
 ido.last
