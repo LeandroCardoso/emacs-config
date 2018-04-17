@@ -29,6 +29,12 @@
 
   (add-hook 'c-mode-common-hook 'c-common-set-company)
 
+  ;; xml mode
+  (add-hook 'nxml-mode-hook
+            (lambda ()
+              (make-local-variable 'company-backends)
+              (push '(company-nxml company-dabbrev company-yasnippet) company-backends)))
+
   ;; company-ispell
   (defun toggle-company-ispell ()
     (interactive)
