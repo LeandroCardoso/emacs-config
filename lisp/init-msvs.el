@@ -23,8 +23,9 @@
           ;; if the current buffer is a project or solution file use it as project-file, else use
           ;; the vcxproj file in current directory, but only if it is unique.
           (project-file
-           (if (or (string-match ".*vcxproj$" buffer-file-name)
-                   (string-match ".*sln$" buffer-file-name))
+           (if (and buffer-file-name
+                    (or (string-match-p ".*vcxproj$" buffer-file-name)
+                        (string-match-p ".*sln$" buffer-file-name)))
                (file-name-nondirectory buffer-file-name)
              (when directory
                (let ((project-file-list (directory-files directory nil ".*vcxproj$" t)))
