@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: static_cast
+# name: static_cast<...>(...)
 # key: sc
 # --
 static_cast<$1>($2)$0

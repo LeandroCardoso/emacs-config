@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: line
+# name: __LINE__
 # key: ln
 # --
 __LINE__

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: reinterpret_cast
+# name: reinterpret_cast<...>(...)
 # key: rc
 # --
 reinterpret_cast<$1>($2)$0
