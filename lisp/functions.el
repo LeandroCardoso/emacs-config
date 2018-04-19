@@ -83,15 +83,6 @@ bottom of the buffer stack."
   (insert ";"))
 
 
-;; TODO dowcase, uppercase and capitalize, optinal arg
-(defun smart-downcase ()
-  ""
-  (interactive)
-  (if (use-region-p)
-      (downcase-region (region-beginning) (region-end))
-    (downcase-word 1)))
-
-
 (defun mark-line ()
   "Put mark at end of this line, point at beginning."
   (interactive)
