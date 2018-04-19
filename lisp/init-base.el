@@ -50,6 +50,7 @@
 (global-set-key (kbd "M-u") 'upcase-dwim) ;; default is upcase-word
 (global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
 (global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
+(global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
 
 
 ;; startup.el
