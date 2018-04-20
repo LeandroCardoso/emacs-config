@@ -1,3 +1,5 @@
+;; functions
+
 (defun split-window-sensibly-horizontally (&optional window)
   "Split WINDOW in a way suitable for `display-buffer'.
 WINDOW defaults to the currently selected window.
@@ -64,6 +66,35 @@ finding the window to select."
   (if (one-window-p) (other-frame arg) (other-window arg)))
 
 
+(defun resize-window-to-region (start end)
+  "Resize current window vertically to fit the size of the active region"
+  (interactive "r")
+  (when mark-active
+    (window-resize nil (1+ (- (count-screen-lines start end) (window-body-height))))
+    (recenter (count-lines start (point)))))
+
+
+;; From obsolete lucid.el
+(defun switch-to-other-buffer (arg)
+  "Switch to the previous buffer.
+With a numeric arg N, switch to the Nth most recent buffer.
+With an arg of 0, buries the current buffer at the
+bottom of the buffer stack."
+  (interactive "p")
+  (if (eq arg 0)
+      (bury-buffer (current-buffer)))
+  (switch-to-buffer
+   (if (<= arg 1) (other-buffer (current-buffer))
+     (nth arg
+      (apply 'nconc
+         (mapcar
+          (lambda (buf)
+            (if (= ?\  (string-to-char (buffer-name buf)))
+            nil
+              (list buf)))
+          (buffer-list)))))))
+
+
 ;; No need to waste precious desktop space with useless GUI
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -91,8 +122,20 @@ finding the window to select."
 
 
 ;; Modeline
+(setq column-number-mode t)
 (setq mode-line-default-help-echo nil)
 (set-face-attribute 'mode-line-highlight nil :box 'unspecified)
+
+
+;; Fringe
+(setq-default indicate-empty-lines t)
+(setq next-error-highlight 'fringe-arrow)
+
+
+;; Window
+(setq split-height-threshold nil)
+(setq split-width-threshold 200)
+(setq split-window-preferred-function 'split-window-sensibly-horizontally)
 
 
 ;; Frame
@@ -106,12 +149,6 @@ finding the window to select."
             (modify-frame-parameters FRAME `((cursor-color . ,(face-background 'cursor))))))
 
 
-;; Window
-(setq split-height-threshold nil)
-(setq split-width-threshold 200)
-(setq split-window-preferred-function 'split-window-sensibly-horizontally)
-
-
 ;; key-bindings
 (global-set-key (kbd "M-o") 'other-window-all-frames)
 (global-set-key (kbd "M-O") 'other-window-all-frames-backward)
@@ -119,3 +156,4 @@ finding the window to select."
 (global-set-key (kbd "C-x M-o") 'other-frame)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
 (global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
+(global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
