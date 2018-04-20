@@ -4,19 +4,20 @@
     "Set emacs to use an additional custom unix root directory.
 Custom directories are added in the begging"
     (when (file-directory-p DIRNAME)
-      (progn
-        (dolist (DIR '("/usr/bin" "/bin"))
-          (when (file-directory-p (concat DIRNAME DIR))
-            (setenv "PATH" (concat (convert-standard-filename (concat DIRNAME DIR))
-                                   path-separator
-                                   (getenv "PATH")))
-            (add-to-list 'exec-path (concat DIRNAME DIR))))
-        (dolist (DIR '("/usr/share/man" "/share/man" "/usr/local/man" "/local/man"))
-          (when (file-directory-p (concat DIRNAME DIR))
-            (add-to-list 'woman-manpath (concat DIRNAME DIR))))
-        (dolist (DIR '("/usr/share/info" "/share/info" "/usr/local/info" "/local/info"))
-          (when (file-directory-p (concat DIRNAME DIR))
-            (add-to-list 'Info-additional-directory-list (concat DIRNAME DIR)))))))
+      (require 'woman)
+      (require 'info)
+      (dolist (DIR '("/usr/bin" "/bin"))
+        (when (file-directory-p (concat DIRNAME DIR))
+          (setenv "PATH" (concat (convert-standard-filename (concat DIRNAME DIR))
+                                 path-separator
+                                 (getenv "PATH")))
+          (add-to-list 'exec-path (concat DIRNAME DIR))))
+      (dolist (DIR '("/usr/share/man" "/share/man" "/usr/local/man" "/local/man"))
+        (when (file-directory-p (concat DIRNAME DIR))
+          (add-to-list 'woman-manpath (concat DIRNAME DIR))))
+      (dolist (DIR '("/usr/share/info" "/share/info" "/usr/local/info" "/local/info"))
+        (when (file-directory-p (concat DIRNAME DIR))
+          (add-to-list 'Info-additional-directory-list (concat DIRNAME DIR))))))
 
   ;; root directories are added in the beginning
   (add-unix-root-dir "c:\\msys64\\mingw64")
