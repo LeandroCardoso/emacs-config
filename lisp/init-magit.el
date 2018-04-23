@@ -6,7 +6,8 @@
   (when (eq system-type 'windows-nt)
     (setq w32-pipe-read-delay 0)
     (setq magit-process-connection-type nil)
-    (setq magit-refresh-status-buffer nil))
+    (setq magit-refresh-status-buffer nil)
+    (remove-hook 'server-switch-hook 'magit-commit-diff)) ; remove diff output from commit
 
   ;; key bindings
   (define-key magit-mode-map [remap previous-line] 'magit-previous-line)
