@@ -1,27 +1,28 @@
-;; Adapted from https://stackoverflow.com/a/29757750
-(defun ediff-copy-AB-to-C (reverse)
-  "Copy current difference region from buffer A and buffer B to buffer C.
+(with-eval-after-load "ediff"
+  ;; Adapted from https://stackoverflow.com/a/29757750
+  (defun ediff-copy-AB-to-C (reverse)
+    "Copy current difference region from buffer A and buffer B to buffer C.
 
 With ARG, copy in reverse order - buffer A past buffer B to
 buffer C."
-  (interactive "P")
-  (ediff-barf-if-not-control-buffer)
-  (ediff-copy-diff ediff-current-difference nil 'C nil
-                   (concat
-                    (ediff-get-region-contents ediff-current-difference (if reverse 'B 'A) ediff-control-buffer)
-                    (ediff-get-region-contents ediff-current-difference (if reverse 'A 'B) ediff-control-buffer)))
-  (ediff-recenter))
+    (interactive "P")
+    (ediff-barf-if-not-control-buffer)
+    (ediff-copy-diff ediff-current-difference nil 'C nil
+                     (concat
+                      (ediff-get-region-contents ediff-current-difference (if reverse 'B 'A) ediff-control-buffer)
+                      (ediff-get-region-contents ediff-current-difference (if reverse 'A 'B) ediff-control-buffer)))
+    (ediff-recenter))
 
-(defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-AB-to-C))
-(add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+  (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-AB-to-C))
+  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
 
 
-;; (setq ediff-custom-diff-options "-c -w")
-;; (setq ediff-diff-options "--binary -w")
-(setq ediff-split-window-function 'split-window-horizontally)
-(setq ediff-window-setup-function 'ediff-setup-windows-plain) ; everything in one frame
+  ;; (setq ediff-custom-diff-options "-c -w")
+  ;; (setq ediff-diff-options "--binary -w")
+  (setq ediff-split-window-function 'split-window-horizontally)
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain) ; everything in one frame
+  )
 
-;; I don't know why I need such a complex code to set the keymap with ediff-mult, but this works.
 (with-eval-after-load "ediff-mult"
   (add-hook 'ediff-meta-buffer-keymap-setup-hook
             (lambda ()

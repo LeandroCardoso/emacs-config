@@ -1,7 +1,9 @@
 ;; csharp
-(when (require 'csharp-mode nil t)
+(with-eval-after-load "csharp-mode"
+  (define-key csharp-mode-map (kbd "C-c C-o") 'omnisharp-mode)
+
   ;; omnisharp
-  (when (require 'omnisharp nil t)
+  (with-eval-after-load "omnisharp"
     (setq omnisharp-imenu-support t)
     (setq omnisharp-server-executable-path (concat user-emacs-directory "omnisharp/OmniSharp.exe"))
 
@@ -14,6 +16,4 @@
       (define-key omnisharp-mode-map (kbd "M-.") 'omnisharp-find-implementations)
       (define-key omnisharp-mode-map (kbd "C-x 4 .") 'omnisharp-go-to-definition-other-window))
 
-    (add-hook 'omnisharp-mode-hook #'omnisharp-setup-hook)
-
-    (define-key csharp-mode-map (kbd "C-c C-o") 'omnisharp-mode)))
+    (add-hook 'omnisharp-mode-hook #'omnisharp-setup-hook)))

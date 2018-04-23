@@ -17,7 +17,6 @@
 
   (add-to-list 'grep-find-ignored-files "TAGS*")
 
-  (global-set-key (kbd "C-x M-g") 'rgrep))
+  (require 'wgrep nil t))
 
-
-(require 'wgrep nil t)
+(global-set-key (kbd "C-x M-g") 'rgrep)
