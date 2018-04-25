@@ -2,4 +2,4 @@
 # name: reinterpret_cast<...>(...)
 # key: rc
 # --
-reinterpret_cast<$1>($2)$0
+reinterpret_cast<$1>($2);$0
