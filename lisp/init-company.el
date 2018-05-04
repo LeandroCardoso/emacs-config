@@ -24,8 +24,8 @@
   ;; c/c++ mode
   (defun c-common-set-company ()
     (setq-local company-backends
-                '((company-etags company-dabbrev-code company-yasnippet company-keywords)
-                  (company-dabbrev-code company-yasnippet company-keywords))))
+                '((company-etags company-dabbrev-code :with company-yasnippet company-keywords)
+                  (company-dabbrev-code :with company-yasnippet company-keywords))))
 
   (add-hook 'c-mode-common-hook 'c-common-set-company)
 
@@ -33,7 +33,7 @@
   (add-hook 'nxml-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (push '(company-nxml company-dabbrev company-yasnippet) company-backends)))
+              (push '(company-nxml :with company-dabbrev company-yasnippet) company-backends)))
 
   ;; company-ispell
   (defun toggle-company-ispell ()

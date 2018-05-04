@@ -9,7 +9,7 @@
 
     ;; omnisharp + company
     (with-eval-after-load "company"
-      (add-to-list 'company-backends 'company-omnisharp))
+      (add-to-list 'company-backends '(company-omnisharp :with company-yasnippet company-keywords)))
 
     (defun omnisharp-setup-hook ()
       ;; keymap
