@@ -17,6 +17,10 @@
     "https://social.msdn.microsoft.com/search/en-US/windows?query=%s"
     :keybinding "m")
 
+  (defengine urbandictionary
+    "https://www.urbandictionary.com/define.php?term=%s"
+    :keybinding "u")
+
   (defengine wikipedia
     "https://en.wikipedia.org/w/index.php?search=%s"
     :keybinding "w")
