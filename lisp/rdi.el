@@ -91,7 +91,7 @@
       :keybinding "j"))
 
   (defun np61-set-exec-dir (directory)
-    (interactive "D")
+    (interactive "DRoot np61 directory: ")
     (setq np61-exec-dir directory)
     (setq np61-exec-start-cmd "start.bat")
     (setq np61-exec-stop-cmd "stop.bat")
