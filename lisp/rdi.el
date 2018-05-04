@@ -129,4 +129,17 @@
       (call-interactively 'np61-set-exec-dir))
     (copy-directory-if-newer np61-exec-compilation-dir
                              (concat np61-exec-dir "/" np61-exec-bin-dir)))
-  )
+
+  ;; global keymap
+  (defvar np61-global-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map "s" 'np61-set-exec-dir)
+      (define-key map "a" 'np61-start)
+      (define-key map "o" 'np61-stop)
+      (define-key map "r" 'np61-reset)
+      (define-key map (kbd "<f5>") 'np61-copy-compilation)
+      map)
+    "Keymap for global np61 commands")
+
+  (defalias 'np61-keymap np61-global-keymap)
+  (global-set-key (kbd "<f5>") 'np61-keymap))
