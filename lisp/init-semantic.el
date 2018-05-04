@@ -29,6 +29,7 @@
                                     global-semantic-idle-summary-mode
                                     global-semanticdb-minor-mode))
   
+  (setq semantic-idle-truncate-long-summaries nil)
   (setq semantic-idle-work-parse-neighboring-files-flag t)
   (setq semantic-idle-work-update-headers-flag t)
   (setq semantic-lex-spp-use-headers-flag t)
