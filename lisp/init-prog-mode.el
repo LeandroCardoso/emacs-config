@@ -29,4 +29,3 @@ one already exists at point."
 
 (define-key prog-mode-map (kbd ";") 'electric-semicolon)
 (define-key prog-mode-map (kbd "C-;") 'smart-semicolon)
-(define-key prog-mode-map (kbd "<f9>") 'compile)
