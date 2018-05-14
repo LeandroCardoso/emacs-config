@@ -78,6 +78,12 @@ See `backup-buffer'."
           (dired-get-marked-files nil arg))
     (revert-buffer))
 
+
+  (defun dired-eww-open-file ()
+    "In Dired, render the file on this line using EWW"
+    (interactive)
+    (eww-open-file (dired-get-file-for-visit)))
+
   ;; local keys
   (define-key dired-mode-map (kbd "b") 'browse-url-of-dired-file)
   (define-key dired-mode-map (kbd "<M-return>") 'dired-up-directory)
@@ -86,6 +92,7 @@ See `backup-buffer'."
   (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
   (define-key dired-mode-map (kbd "<backtab>") 'dired-previous-line)
   (define-key dired-mode-map (kbd "K") 'dired-do-backup)
+  (define-key dired-mode-map (kbd "E") 'dired-eww-open-file)
 
   (with-eval-after-load "wdired"
     (define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename-i)))
