@@ -111,5 +111,5 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
   ;; (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/atlmfc/include") t)
 
 
-  (add-to-list 'cc-search-directories "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include" t)
+  (add-to-list 'cc-search-directories "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Include" t)
   )
