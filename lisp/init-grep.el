@@ -19,4 +19,4 @@
 
   (require 'wgrep nil t))
 
-(global-set-key (kbd "C-x M-g") 'rgrep)
+(global-set-key (kbd "C-M-g") 'rgrep)
