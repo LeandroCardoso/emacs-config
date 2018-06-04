@@ -18,7 +18,7 @@
   (add-hook 'c-mode-common-hook (lambda () (setq indent-tabs-mode t)))
 
   ;; There are some c++ files using .c extension.
-  (add-to-list 'auto-mode-alist '("\\.c\\'" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.c\\'" . c-or-c++-mode))
 
   ;; np6 log mode
   (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)

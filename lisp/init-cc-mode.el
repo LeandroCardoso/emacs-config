@@ -4,10 +4,6 @@
   ;; find-file
   (setq cc-search-directories '("." "./*" "../*" "/usr/include" "/usr/local/include/*"))
 
-  ;; Unfortunately it is really sad that people keep using .h for c++ header files instead of
-  ;; anything more appropriate and I have to keep the following setting.
-  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-
   (add-to-list 'c-font-lock-extra-types "BOOL")
   (add-to-list 'c++-font-lock-extra-types "BOOL")
 

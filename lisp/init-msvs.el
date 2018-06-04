@@ -8,7 +8,6 @@
 (when (eq system-type 'windows-nt)
   (require 'cl)
 
-
   (defun msvs-compile-command (&optional directory)
     "Return a `compile-command' suitable to use with msvs."
     (let ((solution-path ; Look up the directory hierarchy for a directory containing a ".*sln$" file
@@ -18,7 +17,7 @@
                                             (lambda (dir)
                                               (directory-files dir t ".*sln$" t)))))
                (if solution-path-temp
-                   (convert-standard-filename solution-path-temp)
+                   (w32-convert-filename solution-path-temp)
                  nil))))
           ;; if the current buffer is a project or solution file use it as project-file, else use
           ;; the vcxproj file in current directory, but only if it is unique.
@@ -63,9 +62,9 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
     (when msvs-root
       (setenv "PATH"
               (concat
-               (convert-standard-filename (concat msvs-root "Common7\\Tools"))
+               (w32-convert-filename (concat msvs-root "Common7\\Tools"))
                path-separator
-               (convert-standard-filename (concat msvs-root "Common7\\IDE"))
+               (w32-convert-filename (concat msvs-root "Common7\\IDE"))
                path-separator
                (getenv "PATH")))))
 
