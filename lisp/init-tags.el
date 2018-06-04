@@ -33,7 +33,7 @@
         (ctags-call-process "-a" file)))))
 
 
-(add-hook 'after-save-hook 'update-tags-for-current-file)
+;; (add-hook 'after-save-hook 'update-tags-for-current-file)
 
 (defadvice find-tag (after find-tag-and-reposition-window)
   "Reposition window after find a tag"
