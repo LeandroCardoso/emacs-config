@@ -1,6 +1,7 @@
 (with-eval-after-load "magit"
   ;; settings
   (setq magit-completing-read-function 'magit-ido-completing-read)
+  (setq magit-blame-echo-style 'margin)
 
   ;; Windows specific settings
   (when (eq system-type 'windows-nt)
