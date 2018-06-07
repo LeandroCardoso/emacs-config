@@ -50,7 +50,7 @@ in the former."
                     file
                     (concat (file-name-as-directory directory2) (file-name-nondirectory file))))
           (message "Copying %s to %s" file directory2)
-          (copy-file file directory2 t)
+          (copy-file file (file-name-as-directory directory2) t)
           (setq files-copied (1+ files-copied))))
       (message "%d files copied from %s to %s." files-copied directory1 directory2))))
 
