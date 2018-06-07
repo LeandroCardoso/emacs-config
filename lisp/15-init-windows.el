@@ -47,12 +47,6 @@ Custom directories are added in the begging"
   ;; this is a very recommended setup
   (setq w32-pipe-read-delay 0)
 
-  ;; gtags
-  (setq ggtags-highlight-tag nil) ;; this is slow in windows
-  (setenv "GTAGSFORCECPP" "1")
-  (setenv "GTAGSLIBPATH" (concat "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include:"
-                                 "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include"))
-
   ;; Hack to maximize frame in Windows
   (add-hook 'after-make-frame-functions
             (lambda(FRAME)

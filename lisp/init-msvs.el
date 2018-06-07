@@ -111,4 +111,8 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
 
 
   (add-to-list 'cc-search-directories "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Include" t)
+
+    ;; gtags
+  (setenv "GTAGSLIBPATH" (concat "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include:"
+                                 "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include"))
   )

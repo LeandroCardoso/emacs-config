@@ -21,37 +21,14 @@
   ;; etags
   (setq company-etags-everywhere t)
 
-  ;; c/c++ mode
-  (defun c-common-set-company ()
-    (setq-local company-backends
-                '((company-etags company-dabbrev-code :with company-yasnippet company-keywords)
-                  (company-dabbrev-code :with company-yasnippet company-keywords))))
-
-  (add-hook 'c-mode-common-hook 'c-common-set-company)
-
-  ;; xml mode
-  (add-hook 'nxml-mode-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (push '(company-nxml :with company-dabbrev company-yasnippet) company-backends)))
-
-  ;; company-ispell
-  (defun toggle-company-ispell ()
-    (interactive)
-    (cond
-     ((memq 'company-ispell company-backends)
-      (setq company-backends (delete 'company-ispell company-backends))
-      (message "company-ispell disabled"))
-     (t
-      (add-to-list 'company-backends 'company-ispell)
-      (message "company-ispell enabled!"))))
+  ;; gtags - In Windows company-gtags-executable is set with the full path to global executable -
+  ;; this is great, but does not work. Set it to just "global" fix it.
+  (when (eq system-type 'windows-nt)
+    (setq company-gtags-executable "global"))
 
   ;; keymap
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
-
-  (with-eval-after-load "cc-mode"
-    (define-key c-mode-base-map (kbd "<C-tab>") 'company-semantic))
 
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "<C-tab>") 'company-complete))
