@@ -7,10 +7,6 @@
   (add-to-list 'c-font-lock-extra-types "BOOL")
   (add-to-list 'c++-font-lock-extra-types "BOOL")
 
-  ;; workaround for prog-mode-map
-  (unless (keymap-parent c-mode-base-map)
-    (set-keymap-parent c-mode-base-map prog-mode-map))
-
   ;; hooks
 
   (defun c-common-setup-hook ()
