@@ -1,4 +1,4 @@
-(with-eval-after-load "magit"
+(when (require 'magit nil t)
   ;; settings
   (setq magit-completing-read-function 'magit-ido-completing-read)
   (setq magit-blame-echo-style 'margin)
@@ -16,3 +16,6 @@
 
   (define-key magit-file-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
   (define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window))
+
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
