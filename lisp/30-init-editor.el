@@ -67,7 +67,7 @@ See `sort-regexp-fields'."
 
 ;; key bindings
 (global-set-key (kbd "C-c a") 'align-regexp)
-(global-set-key (kbd "<M-return>") 'newline-no-break)
+(global-set-key (kbd "M-RET") 'newline-no-break)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-M-|") 'delete-indentation)
