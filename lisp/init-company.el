@@ -12,7 +12,12 @@
 
   (company-tng-configure-default)
 
+  ;; Give company-gtags and company-etags more priority than company-dabbrev-code
+  (setcar (member '(company-dabbrev-code company-gtags company-etags company-keywords) company-backends)
+        '(company-gtags company-etags company-dabbrev-code company-keywords))
+
   ;; dabbrev
+  (setq company-dabbrev-char-regexp "\\sw\\|\\s_")
   (setq company-dabbrev-downcase nil)
 
   ;; dabbrev code
