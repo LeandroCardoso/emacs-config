@@ -30,14 +30,12 @@
                                     global-semanticdb-minor-mode))
   
   (setq semantic-idle-truncate-long-summaries nil)
-  (setq semantic-idle-work-parse-neighboring-files-flag t)
-  (setq semantic-idle-work-update-headers-flag t)
-  (setq semantic-lex-spp-use-headers-flag t)
+  (setq semantic-idle-work-parse-neighboring-files-flag nil)
+  (setq semantic-idle-work-update-headers-flag nil)
 
   (setq semanticdb-project-root-functions
         (list
-         (lambda (directory) (car (project-roots (project-current nil directory))))
-         (lambda (directory) (locate-dominating-file directory ".dir-locals.el"))))
+         (lambda (directory) (car (project-roots (project-current nil directory))))))
   
   ;; semantic imenu
   (setq semantic-imenu-adopt-external-members nil) ;; put class members on t he first imenu level
@@ -46,7 +44,7 @@
   ;; (setq semantic-imenu-index-directory t) ;; index the entire directory for tags
   (setq semantic-imenu-summary-function 'semantic-format-tag-canonical-name) ;; see semantic-format-tag-functions
 
-  (semantic-mode)
+  ;; (semantic-mode)
 
   ;; c.el
   )
