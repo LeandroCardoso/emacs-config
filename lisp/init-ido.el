@@ -2,6 +2,7 @@
 (ido-everywhere t)
 
 (when (require 'ido-completing-read+ nil t)
+  (setq ido-cr+-max-items 100000)
   (ido-ubiquitous-mode t))
 
 (when (require 'flx-ido nil t)
