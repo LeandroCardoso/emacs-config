@@ -3,7 +3,9 @@
         '(("width" "height")
           ("left" "right" "top" "bottom")
           ("true" "false")
-          ("yes" "no")))
+          ("yes" "no")
+          ("enable" "disable")
+          ("enabled" "disabled")))
 
   (setq rotate-text-symbols
         '(("private" "protected" "public")
