@@ -7,7 +7,7 @@
   (when fontawesome
     (set-fontset-font "fontset-default"
                       '(#xf000 . #xf453)
-                      (font-spec :size (if (eq system-type 'windows-nt) 12 15) :name fontawesome))))
+                      (font-spec :size (if (eq system-type 'windows-nt) 13 15) :name fontawesome))))
 
 ;; TODO ibuffer
 ;; TODO dired
