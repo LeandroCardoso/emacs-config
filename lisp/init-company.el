@@ -14,7 +14,15 @@
 
   ;; Give company-gtags and company-etags more priority than company-dabbrev-code
   (setcar (member '(company-dabbrev-code company-gtags company-etags company-keywords) company-backends)
-        '(company-gtags company-etags company-dabbrev-code company-keywords))
+          '(company-gtags company-etags company-dabbrev-code company-keywords))
+
+  (defun company-use-dabbrev ()
+    "Set `company-mode' to use `company-dabbrev' as default for current buffer."
+    (make-local-variable 'company-backends)
+    (push '(company-dabbrev :with company-yasnippet) company-backends))
+
+  ;; xml mode
+  (add-hook 'nxml-mode-hook 'company-use-dabbrev)
 
   ;; dabbrev
   (setq company-dabbrev-char-regexp "\\sw\\|\\s_")
