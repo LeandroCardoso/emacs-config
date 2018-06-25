@@ -25,7 +25,7 @@
   (add-hook 'nxml-mode-hook 'company-use-dabbrev)
 
   ;; dabbrev
-  (setq company-dabbrev-char-regexp "\\sw\\|\\s_")
+  (setq company-dabbrev-char-regexp "\\sw\\|_\\|-")
   (setq company-dabbrev-downcase nil)
 
   ;; dabbrev code
