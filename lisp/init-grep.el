@@ -1,9 +1,12 @@
 (with-eval-after-load "grep"
   (setq grep-save-buffers nil)
 
-  ;; add *.c to c++ aliases
-  (setcdr (assoc "cc" grep-files-aliases) "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++")
-  (setcdr (assoc "cchh" grep-files-aliases) "*.cc *.[ch]xx *.[ch]pp *.[CHch] *.CC *.HH *.[ch]++")
+  ;; Remove c++ aliases and add new ones with *.c files in the begging of the list to get higher
+  ;; priority.
+  (assq-delete-all (car (assoc "cc" grep-files-aliases)) grep-files-aliases)
+  (assq-delete-all (car (assoc "cchh" grep-files-aliases)) grep-files-aliases)
+  (push '("cc" . "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++") grep-files-aliases)
+  (push '("cchh" . "*.cc *.[ch]xx *.[ch]pp *.[CHch] *.CC *.HH *.[ch]++") grep-files-aliases)
 
   (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"))
     (add-to-list 'grep-find-ignored-files file))
