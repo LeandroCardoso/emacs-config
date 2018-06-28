@@ -11,6 +11,8 @@
   (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"))
     (add-to-list 'grep-find-ignored-files file))
 
+  (define-key grep-mode-map (kbd "r") 'rename-uniquely)
+
   (require 'wgrep nil t))
 
 (global-set-key (kbd "C-M-g") 'rgrep)
