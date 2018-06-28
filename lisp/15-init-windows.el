@@ -47,23 +47,6 @@ Custom directories are added in the begging"
   ;; this is a very recommended setup
   (setq w32-pipe-read-delay 0)
 
-  ;; Hack to maximize frame in Windows
-  (add-hook 'after-make-frame-functions
-            (lambda(FRAME)
-              (modify-frame-parameters FRAME '((fullscreen . maximized)))))
-
-
-  ;; (add-to-list 'tags-table-list "c:/DBDProj/TAGS.MS-SDK")
-  ;; (add-to-list 'tags-table-list "c:/DBDProj/TAGS.VC")
-
-  ;; Hooks
-  ;; (defun my-xml-hook ()
-  ;; (setq indent-tabs-mode (not (string-match-p "\\.vcxproj" (buffer-name))))
-  ;; (setq indent-tabs-mode (not (string-match-p "\\.msbuild" (buffer-name))))
-  ;; )
-
-  ;; (add-hook 'nxml-mode-hook 'my-xml-hook)
-
 
   ;; Functions
 

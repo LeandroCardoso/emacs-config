@@ -116,11 +116,6 @@ bottom of the buffer stack."
     (message "Warning: Font %s does not exist" (car font))))
 
 
-;; Faces
-(set-face-attribute 'bold-italic nil :inherit '(bold italic))
-(set-face-attribute 'italic nil :underline t)
-
-
 ;; Modeline
 (setq column-number-mode t)
 (setq mode-line-default-help-echo nil)
