@@ -1,8 +1,6 @@
 (with-eval-after-load "woman"
   (setq woman-fill-frame t)
-  (setq woman-use-symbol-font t)
-  (set-face-attribute 'woman-bold nil :inherit '(Man-overstrike))
-  (set-face-attribute 'woman-italic nil :inherit '(Man-underline)))
+  (setq woman-use-symbol-font t))
 
 ;; unset compose-mail keys to use it with woman
 (global-unset-key (kbd "C-x m"))   ;; compose-mail

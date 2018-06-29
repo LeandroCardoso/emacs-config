@@ -41,5 +41,9 @@
                         :inherit 'unspecified
                         :foreground "#d33682")) ; magenta
 
+  (with-eval-after-load "woman"
+    (set-face-attribute 'woman-bold nil :inherit '(Man-overstrike))
+    (set-face-attribute 'woman-italic nil :inherit '(Man-underline)))
+
   ;; TODO packages
   )
