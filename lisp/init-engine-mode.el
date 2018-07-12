@@ -17,6 +17,10 @@
     "https://social.msdn.microsoft.com/search/en-US/windows?query=%s"
     :keybinding "m")
 
+  (defengine csharp
+    "https://docs.microsoft.com/en-us/dotnet/api/?term=%s"
+    :keybinding "s")
+
   (defengine urbandictionary
     "https://www.urbandictionary.com/define.php?term=%s"
     :keybinding "u")
