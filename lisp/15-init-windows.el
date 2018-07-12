@@ -47,6 +47,8 @@ Custom directories are added in the begging"
   ;; this is a very recommended setup
   (setq w32-pipe-read-delay 0)
 
+  ;; Workaround for ediff
+  (setenv "LANG" "C")
 
   ;; Functions
 
