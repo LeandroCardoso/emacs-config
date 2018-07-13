@@ -1,19 +1,30 @@
 ;; csharp
 (with-eval-after-load "csharp-mode"
-  (define-key csharp-mode-map (kbd "C-c C-o") 'omnisharp-mode)
-
   ;; omnisharp
-  (with-eval-after-load "omnisharp"
-    (setq omnisharp-imenu-support t)
+  (when (require 'omnisharp nil t)
+    (defun omnisharp-smart-start-server (&optional no-autodetect)
+      "Stops Omnisharp server if running and starts an OmniSharp server for a given path to a project or solution file.
+
+See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
+      (interactive "P")
+      (omnisharp-stop-server)
+      (omnisharp-start-omnisharp-server no-autodetect))
+
+
+    (add-hook 'csharp-mode-hook 'omnisharp-mode)
+
+    (setq omnisharp-imenu-support nil) ; disabled because it does not work when server is not running
     (setq omnisharp-server-executable-path (concat user-emacs-directory "omnisharp/OmniSharp.exe"))
 
     ;; omnisharp + company
     (with-eval-after-load "company"
-      (add-to-list 'company-backends '(company-omnisharp :with company-yasnippet company-keywords)))
+      (add-to-list 'company-backends 'company-omnisharp))
 
     (defun omnisharp-setup-hook ()
       ;; keymap
       (define-key omnisharp-mode-map (kbd "M-.") 'omnisharp-find-implementations)
-      (define-key omnisharp-mode-map (kbd "C-x 4 .") 'omnisharp-go-to-definition-other-window))
+      (define-key omnisharp-mode-map (kbd "M-?") 'omnisharp-find-usages)
+      (define-key omnisharp-mode-map (kbd "C-x 4 .") 'omnisharp-go-to-definition-other-window)
+      (define-key omnisharp-mode-map (kbd "C-c C-o") 'omnisharp-smart-start-server))
 
     (add-hook 'omnisharp-mode-hook #'omnisharp-setup-hook)))
