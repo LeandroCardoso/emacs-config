@@ -8,7 +8,7 @@
   (setq company-tooltip-align-annotations t)
   (setq company-tooltip-margin 2)
   (setq company-tooltip-minimum-width 32)
-  (setq company-transformers '(company-sort-by-backend-importance))
+  (setq company-transformers '(company-sort-by-occurrence))
 
   (company-tng-configure-default)
 
@@ -42,6 +42,10 @@
   ;; keymap
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
+
+  (when (featurep 'yasnippet)
+    (define-key prog-mode-map (kbd "<C-tab>") 'company-yasnippet)
+    (define-key text-mode-map (kbd "<C-tab>") 'company-yasnippet))
 
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "<C-tab>") 'company-complete))
