@@ -8,7 +8,7 @@
   (push '("cc" . "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++") grep-files-aliases)
   (push '("cchh" . "*.cc *.[ch]xx *.[ch]pp *.[CHch] *.CC *.HH *.[ch]++") grep-files-aliases)
 
-  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"))
+  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS" "*.exe"))
     (add-to-list 'grep-find-ignored-files file))
 
   (define-key grep-mode-map (kbd "r") 'rename-uniquely)
