@@ -6,14 +6,14 @@
     "Alist of cached buffers to project root directory.")
 
   (defun ibuffer-project-generate-root-alist ()
-  (setq ibuffer-project-root-alist nil)
-  (dolist (buf (buffer-list))
-    (with-current-buffer buf
-      (when (ibuffer-buffer-file-name)
-        (let ((pr (project-current)))
-          (when pr
-            (push (cons (buffer-name) (car (project-roots pr)))
-                  ibuffer-project-root-alist)))))))
+    (setq ibuffer-project-root-alist nil)
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        (when (ibuffer-buffer-file-name)
+          (let ((pr (project-current)))
+            (when pr
+              (push (cons (buffer-name) (car (project-roots pr)))
+                    ibuffer-project-root-alist)))))))
 
   (define-ibuffer-filter project
       "Limit current view to buffers with project root directory matching QUALIFIER."
@@ -35,6 +35,9 @@
                    ibuffer-project-root-alist)))
     (ibuffer-update nil t))
 
+  (add-hook 'ibuffer-hook #'ibuffer-set-filter-groups-by-project-root)
+
+
   ;;(setq ibuffer-display-summary nil)
   (setq ibuffer-formats
         '((mark modified read-only " "
@@ -46,7 +49,6 @@
                 " " filename-and-process)
           (mark " " (name 40 -1) " " filename)))
 
-  (add-hook 'ibuffer-hook #'ibuffer-set-filter-groups-by-project-root)
   ;; (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
   )
 
