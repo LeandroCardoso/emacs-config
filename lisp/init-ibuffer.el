@@ -2,6 +2,8 @@
 
   ;; ibuffer-project
   (require 'project)
+  (require 'ibuf-ext)
+
   (defvar ibuffer-project-root-alist nil
     "Alist of cached buffers to project root directory.")
 
@@ -49,6 +51,10 @@
                 " " filename-and-process)
           (mark " " (name 40 -1) " " filename)))
 
+  (defun ibuffer-setup-hook ()
+    (setq-local scroll-conservatively 0))
+
+  (add-hook 'ibuffer-mode-hook #'ibuffer-setup-hook)
   ;; (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
   )
 
