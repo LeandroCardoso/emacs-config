@@ -9,7 +9,7 @@
 
   (defun ibuffer-project-generate-root-alist ()
     (setq ibuffer-project-root-alist nil)
-    (dolist (buf (buffer-list))
+    (dolist (buf (reverse (buffer-list)))
       (with-current-buffer buf
         (when (ibuffer-buffer-file-name)
           (let ((pr (project-current)))
