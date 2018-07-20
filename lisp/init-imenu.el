@@ -14,3 +14,7 @@
 
   (global-set-key (kbd "C-z") 'imenu) ; default is suspend-frame
   )
+
+(when (require 'imenu-anywhere nil t)
+  ;; (setq imenu-anywhere-buffer-filter-functions nil)
+  (global-set-key (kbd "C-z") 'ido-imenu-anywhere))
