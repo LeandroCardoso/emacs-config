@@ -16,6 +16,7 @@
   (crm-custom-mode t))
 
 (setq ido-auto-merge-work-directories-length -1)
+(setq ido-completion-buffer-all-completions t)
 (setq ido-create-new-buffer 'always)
 (setq ido-decorations
       '(" { " " }" " | " " | +" "" "" " [No match]" "" " [Not readable]" " [Too big]" " [Confirm]" " [" "]"))
