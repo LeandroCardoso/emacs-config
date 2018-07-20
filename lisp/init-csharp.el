@@ -8,6 +8,7 @@
 See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
       (interactive "P")
       (omnisharp-stop-server)
+      (sleep-for 0.1)
       (omnisharp-start-omnisharp-server no-autodetect))
 
 
@@ -25,6 +26,9 @@ See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
       (define-key omnisharp-mode-map (kbd "M-.") 'omnisharp-find-implementations)
       (define-key omnisharp-mode-map (kbd "M-?") 'omnisharp-find-usages)
       (define-key omnisharp-mode-map (kbd "C-x 4 .") 'omnisharp-go-to-definition-other-window)
+      ; TODO fallback to imenu if omnisharp is not running
+      (define-key omnisharp-mode-map (kbd "C-z") 'omnisharp-navigate-to-current-file-member) ; replaces imenu
+      (define-key omnisharp-mode-map (kbd "C-M-z") 'omnisharp-navigate-to-solution-member)
       (define-key omnisharp-mode-map (kbd "C-c C-o") 'omnisharp-smart-start-server))
 
     (add-hook 'omnisharp-mode-hook #'omnisharp-setup-hook)))
