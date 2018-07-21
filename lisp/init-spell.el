@@ -30,6 +30,6 @@
   )
 
 ;; enable flyspell
-(unless (eq system-type 'windows-nt)
-  (add-hook 'org-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+;; (unless (eq system-type 'windows-nt)
+;;   (add-hook 'org-mode-hook 'flyspell-mode)
+;;   (add-hook 'prog-mode-hook 'flyspell-prog-mode))
