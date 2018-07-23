@@ -43,7 +43,7 @@
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
 
-  (when (featurep 'yasnippet)
+  (with-eval-after-load "yasnippet"
     (define-key prog-mode-map (kbd "<C-tab>") 'company-yasnippet)
     (define-key text-mode-map (kbd "<C-tab>") 'company-yasnippet))
 
