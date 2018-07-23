@@ -12,6 +12,8 @@
     (add-to-list 'grep-find-ignored-files file))
 
   (define-key grep-mode-map (kbd "r") 'rename-uniquely)
+  (define-key grep-mode-map (kbd "k") 'keep-lines)
+  (define-key grep-mode-map (kbd "f") 'flush-lines)
 
   (require 'wgrep nil t))
 
