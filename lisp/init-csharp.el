@@ -8,7 +8,7 @@
 See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
       (interactive "P")
       (omnisharp-stop-server)
-      (sleep-for 0.1)
+      (sleep-for 0.5)
       (omnisharp-start-omnisharp-server no-autodetect))
 
 
