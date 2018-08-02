@@ -1,4 +1,7 @@
 (when (string= (getenv "USERDOMAIN") "RDISOFTWARE")
+  (require 'project)
+  (add-to-list 'project-root-list "~/Documents/bugs/")
+  (add-to-list 'project-root-list "~/Documents/env/")
 
   (if (featurep 'js2-mode)
       (progn
