@@ -24,7 +24,6 @@
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c-or-c++-mode))
 
   ;; np6 log mode
-  (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
   (define-generic-mode np6-log-mode ;; MODE
     nil                             ;; COMMENT-LIST
     nil                             ;; KEYWORD-LIST

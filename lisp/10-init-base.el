@@ -28,6 +28,17 @@
 ;; iso-transl - This is required for dead keys work in linux
 (require 'iso-transl)
 
+;; Set coding system to utf-8
+(set-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+
+;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+;; Force unix EOL in emacs-lisp files outside of unix
 (modify-coding-system-alist 'file "\\.el\\'" 'prefer-utf-8-unix)
 
 ;; ESC key toogle the minibuffer
