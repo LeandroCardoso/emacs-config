@@ -1,5 +1,6 @@
 (with-eval-after-load "cc-mode"
-  (setq-default c-basic-offset 4)
+  (add-to-list 'c-default-style '(c++-mode . "stroustrup"))
+  (add-to-list 'c-default-style '(c-mode . "stroustrup"))
 
   ;; find-file
   (setq cc-search-directories '("." "./*" "../*" "/usr/include" "/usr/local/include/*"))
@@ -8,10 +9,7 @@
   (add-to-list 'c++-font-lock-extra-types "BOOL")
 
   ;; hooks
-
-  (defun c-common-setup-hook ()
-    (c-set-offset 'substatement-open 0)
-    (c-set-offset 'case-label '+))
+  (defun c-common-setup-hook ())
 
   (defun c-setup-hook ()
     (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
