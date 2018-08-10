@@ -27,6 +27,9 @@
   ;; dabbrev
   (setq company-dabbrev-char-regexp "\\sw\\|_\\|-")
   (setq company-dabbrev-downcase nil)
+  (setq company-dabbrev-ignore-case t)
+  ;; Enable mixing of major-modes like c and c++ modes
+  (setq company-dabbrev-code-other-buffers 'code)
 
   ;; dabbrev code
   (setq company-dabbrev-code-everywhere t)
@@ -34,8 +37,11 @@
   ;; etags
   (setq company-etags-everywhere t)
 
-  ;; gtags - In Windows company-gtags-executable is set with the full path to global executable -
-  ;; this is great, but does not work. Set it to just "global" fix it.
+  ;; gtags
+  (setq company-gtags-insert-arguments nil)
+
+  ;; In Windows company-gtags-executable is set with the full path to global executable - this is
+  ;; great, but does not work. Set it to just "global" fix it.
   (when (eq system-type 'windows-nt)
     (setq company-gtags-executable "global"))
 
