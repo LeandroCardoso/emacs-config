@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: <Parameter name="..." value="..."/>
-# key: <p
+# key: param
 # --
 <Parameter name="$1" value="$2"/>$0
