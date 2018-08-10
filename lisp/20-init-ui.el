@@ -74,6 +74,17 @@ finding the window to select."
     (recenter (count-lines start (point)))))
 
 
+(defun kill-other-buffer-and-window (count)
+  "Kill other buffer.
+See `kill-buffer' and `other-window'"
+  (interactive "p")
+  (save-selected-window
+    (let ((curbuf (current-buffer)))
+      (other-window count)
+      (when (not (eq curbuf (current-buffer)))
+        (kill-buffer-and-window)))))
+
+
 ;; From obsolete lucid.el
 (defun switch-to-other-buffer (arg)
   "Switch to the previous buffer.
@@ -149,6 +160,7 @@ bottom of the buffer stack."
 (global-set-key (kbd "M-O") 'other-window-all-frames-backward)
 (global-set-key (kbd "C-x o") 'other-window-or-frame) ;; default is other-window
 (global-set-key (kbd "C-x M-o") 'other-frame)
+(global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
 (global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
 (global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
 (global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
