@@ -1,4 +1,6 @@
 (with-eval-after-load "cc-mode"
+  (setq c-guess-region-max 100000)
+
   (add-to-list 'c-default-style '(c++-mode . "stroustrup"))
   (add-to-list 'c-default-style '(c-mode . "stroustrup"))
 
@@ -9,14 +11,14 @@
   (add-to-list 'c++-font-lock-extra-types "BOOL")
 
   ;; hooks
-  (defun c-common-setup-hook ())
+  (defun c-common-setup-hook ()
+    (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
 
   (defun c-setup-hook ()
-    (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
+    (c-toggle-comment-style -1))
 
   (defun c++-setup-hook ())
 
   (add-hook 'c-mode-common-hook #'c-common-setup-hook)
   (add-hook 'c-mode-hook #'c-setup-hook)
-  (add-hook 'c++-mode-hook #'c-setup-hook)
   (add-hook 'c++-mode-hook #'c++-setup-hook))
