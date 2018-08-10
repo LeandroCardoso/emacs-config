@@ -12,8 +12,11 @@
             (push "API" js2-additional-externs)))
 
         (add-hook 'js2-mode-hook #'nps-setup-hook)
-        (add-to-list 'auto-mode-alist '("\\.nps\\'" . js2-mode)))
-    ((add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))))
+        (add-hook 'js2-minor-mode-hook #'nps-setup-hook)
+        ;; (add-to-list 'auto-mode-alist '("\\.nps\\'" . js2-mode))
+        ))
+
+  (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
 
   ;; Use TABs with XML, javascript and c/c++ files
   (add-hook 'nxml-mode-hook (lambda () (setq indent-tabs-mode t)))
@@ -23,6 +26,8 @@
   ;; There are some c++ files using .c extension.
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c-or-c++-mode))
 
+  (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
+  
   ;; np6 log mode
   (define-generic-mode np6-log-mode ;; MODE
     nil                             ;; COMMENT-LIST
