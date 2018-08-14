@@ -3,7 +3,7 @@
   (setq nxml-slash-auto-complete-flag t)
 
 
-  (defun xml-pretty-print (start end)
+  (defun xml-pretty-print ()
     "Simple-minded pretty printer for XML.
 Re-indents the XML and inserts newlines using xmllint (from
 libxml2) tool.
@@ -14,15 +14,15 @@ This function try to respect the `indent-tabs-mode' and
 `nxml-child-indent' variables and set the environment variable
 XMLLINT_INDENT of the current buffer.
 "
-    (interactive "*r")
+    (interactive "*")
     (if (executable-find "xmllint")
         (progn
           (make-local-variable 'process-environment)
           (setenv "XMLLINT_INDENT"
                   (if indent-tabs-mode (make-string 1 9) (make-string nxml-child-indent 32)))
           (save-mark-and-excursion
-            (let ((min (if mark-active start (point-min)))
-                  (max (if mark-active end (point-max))))
+            (let ((min (if (use-region-p) (region-beginning) (point-min)))
+                  (max (if (use-region-p) (region-end) (point-max))))
               (call-process-region min max "xmllint" t '(t nil) nil
                                    "--format" "--recover" "--nowarning" "-"))))
       (error "xmllint executable not found")))
