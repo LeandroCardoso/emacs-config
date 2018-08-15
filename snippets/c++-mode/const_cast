@@ -2,4 +2,4 @@
 # name: const_cast<...>(...)
 # key: cc
 # --
-const_cast<$1>($2)$0
+const_cast<${1:type}>($0)
