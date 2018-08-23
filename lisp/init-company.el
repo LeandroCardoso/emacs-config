@@ -13,8 +13,10 @@
   (company-tng-configure-default)
 
   ;; Give company-gtags and company-etags more priority than company-dabbrev-code
-  (setcar (member '(company-dabbrev-code company-gtags company-etags company-keywords) company-backends)
-          '(company-gtags company-etags company-dabbrev-code company-keywords))
+  (let ((backend (member '(company-dabbrev-code company-gtags company-etags company-keywords)
+                         company-backends)))
+    (when backend
+      (setcar backend '(company-gtags company-etags company-dabbrev-code company-keywords))))
 
   (defun company-use-dabbrev ()
     "Set `company-mode' to use `company-dabbrev' as default for current buffer."
