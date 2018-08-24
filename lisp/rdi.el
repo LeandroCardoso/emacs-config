@@ -18,14 +18,10 @@
 
   (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
 
-  ;; Use TABs with XML, javascript and c/c++ files
-  (add-hook 'nxml-mode-hook (lambda () (setq indent-tabs-mode t)))
-  (add-hook 'js-mode-hook (lambda () (setq indent-tabs-mode t)))
-  (add-hook 'c-mode-common-hook (lambda () (setq indent-tabs-mode t)))
-
   ;; There are some c++ files using .c extension.
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c-or-c++-mode))
 
+  ;; Force coding system in log files
   (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
   
   ;; np6 log mode

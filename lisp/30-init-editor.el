@@ -22,6 +22,23 @@ See `indent-region'"
       (setq end (point))
       (indent-region begin end))))
 
+(defvar infer-indentation-style-region-max 100000
+  "The maximum region size for examining indentation style with
+`infer-indentation-style'. nil means no limit.")
+
+;; Adapted from: https://www.emacswiki.org/emacs/NoTabs
+(defun infer-indentation-style ()
+  "If our source file uses tabs, we use tabs, if spaces spaces,
+and if neither, we use the current `indent-tabs-mode'"
+  (interactive)
+  (let* ((point-max (if infer-indentation-style-region-max
+                        infer-indentation-style-region-max
+                      (point-max)))
+         (space-count (how-many "^  " (point-min) point-max))
+         (tab-count (how-many "^\t" (point-min) point-max)))
+    (if (> space-count tab-count) (setq indent-tabs-mode nil))
+    (if (> tab-count space-count) (setq indent-tabs-mode t))))
+
 
 (defun mark-line (&optional N)
   "Put mark at end of this line, point at beginning.
@@ -64,6 +81,9 @@ See `sort-regexp-fields'."
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq kill-whole-line t)
+
+(add-to-list 'text-mode-hook 'infer-indentation-style)
+(add-to-list 'prog-mode-hook 'infer-indentation-style)
 
 ;; key bindings
 (global-set-key (kbd "C-c a") 'align-regexp)
