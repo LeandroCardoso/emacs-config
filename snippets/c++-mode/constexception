@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: const exception &e
+# key: ex
+# --
+const exception &e
