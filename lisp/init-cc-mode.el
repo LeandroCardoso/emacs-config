@@ -1,13 +1,14 @@
 (with-eval-after-load "cc-mode"
   (setq c-guess-region-max 100000)
 
-  (defun c-or-c++mode-i ()
+  (defun c-or-c++-mode-i ()
     "Analyze buffer and enable either C or C++ mode.
 This is the interactive version of `c-or-c++-mode'."
-    (interactive "P")
+    (interactive)
     (c-or-c++-mode))
 
-  (c-add-style "c++-custom" '("stroustrup" (c-offsets-alist (inlambda . 0))))
+  (c-add-style "c++-custom" '("stroustrup" (c-offsets-alist (inlambda . 0)
+                                                          (inline-open . 0))))
 
   (add-to-list 'c-default-style '(c++-mode . "c++-custom"))
   (add-to-list 'c-default-style '(c-mode . "c++-custom"))
