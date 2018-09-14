@@ -9,8 +9,7 @@
   (flx-ido-mode t)
   ;; disable ido faces to see flx highlights.
   (setq ido-use-faces nil)
-  ;; decrease the value of flx-ido-threshold to speed it up
-  (setq flx-ido-threshold 2000))
+  )
 
 (when (require 'crm-custom nil t)
   (crm-custom-mode t))
