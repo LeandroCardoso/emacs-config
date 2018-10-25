@@ -8,36 +8,38 @@
 (when (eq system-type 'windows-nt)
   (require 'cl)
 
-  (defun msvs-compile-command (&optional directory)
+  (defun msvs-compile-command ()
     "Return a `compile-command' suitable to use with msvs."
-    (let ((solution-path ; Look up the directory hierarchy for a directory containing a ".*sln$" file
-           (when directory
-             (let ((solution-path-temp
-                    (locate-dominating-file directory
-                                            (lambda (dir)
-                                              (directory-files dir t ".*sln$" t)))))
-               (if solution-path-temp
-                   (w32-convert-filename solution-path-temp)
-                 nil))))
-          ;; if the current buffer is a project or solution file use it as project-file, else use
-          ;; the vcxproj file in current directory, but only if it is unique.
-          (project-file
-           (if (and buffer-file-name
-                    (or (string-match-p ".*vcxproj$" buffer-file-name)
-                        (string-match-p ".*sln$" buffer-file-name)))
-               (file-name-nondirectory buffer-file-name)
-             (when directory
-               (let ((project-file-list (directory-files directory nil ".*vcxproj$" t)))
-                 (unless (cdr project-file-list)
-                   (car project-file-list)))))))
+    (let* ((project-regexp ".*\\(vcx\\|cs\\)proj$")
+           (solution-directory
+            ;; Look up the directory hierarchy for a directory containing a ".*sln$" file
+            (locate-dominating-file default-directory
+                                    (lambda (dir)
+                                      (directory-files dir t ".*sln$" t))))
+           (project-file
+            ;; if the current buffer is a project or solution file use it as project-file, else look
+            ;; up the directory hierarchy for a directory containing a project file.
+            (if (and buffer-file-name
+                     (or (string-match-p project-regexp buffer-file-name)
+                         (string-match-p ".*sln$" buffer-file-name)))
+                (file-name-nondirectory buffer-file-name)
+              (let* ((project-directory
+                      (locate-dominating-file default-directory
+                                              (lambda (dir)
+                                                (directory-files dir t project-regexp))))
+                     (project-file-list (directory-files project-directory t project-regexp t)))
+                (unless (cdr project-file-list)
+                  (car project-file-list))))))
       (concat "msbuild.cmd "
-              (when solution-path (concat "/p:SolutionDir=" solution-path " "))
+              (when solution-directory (concat "/p:SolutionDir="
+                                               (w32-convert-filename (file-relative-name solution-directory))" "))
               "/p:Platform=win32 /p:Configuration=Debug /t:Build "
-              project-file)))
+              (w32-convert-filename (file-relative-name project-file default-directory)))))
 
 
-  (defun msvs-compile-command-hook ()
-      (set (make-local-variable 'compile-command) (msvs-compile-command default-directory)))
+  (defun msvs-set-compile-command ()
+    (interactive)
+    (set (make-local-variable 'compile-command) (msvs-compile-command)))
 
 
   (defun msvs-root-dir ()
@@ -103,9 +105,8 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
     )
 
   ;; set compile-command
-  (setq compile-command (msvs-compile-command))
-  (add-hook 'c-mode-hook 'msvs-compile-command-hook)
-  (add-hook 'c++-mode-hook 'msvs-compile-command-hook)
+  (add-hook 'c-mode-hook 'msvs-set-compile-command)
+  (add-hook 'c++-mode-hook 'msvs-set-compile-command)
 
   ;; c/c++ headers
   (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/include") t)
