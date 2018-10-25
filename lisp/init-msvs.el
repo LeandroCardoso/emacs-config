@@ -32,9 +32,11 @@
                   (car project-file-list))))))
       (concat "msbuild.cmd "
               (when solution-directory (concat "/p:SolutionDir="
-                                               (w32-convert-filename (file-relative-name solution-directory))" "))
+                                               (w32-convert-filename (file-relative-name solution-directory
+                                                                                         (file-name-directory project-file)))
+                                               " "))
               "/p:Platform=win32 /p:Configuration=Debug /t:Build "
-              (w32-convert-filename (file-relative-name project-file default-directory)))))
+              (w32-convert-filename (file-relative-name project-file)))))
 
 
   (defun msvs-set-compile-command ()
