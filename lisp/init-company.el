@@ -50,6 +50,8 @@
   ;; keymap
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
+  (define-key prog-mode-map (kbd "<C-S-tab>") 'company-dabbrev-code)
+  (define-key text-mode-map (kbd "<C-S-tab>") 'company-dabbrev)
 
   (with-eval-after-load "yasnippet"
     (define-key prog-mode-map (kbd "<C-tab>") 'company-yasnippet)
