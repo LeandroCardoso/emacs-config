@@ -1,3 +1,4 @@
+(setq eval-expression-print-length nil)
 (setq frame-resize-pixelwise t)
 (setq gc-cons-threshold 10000000) ; 10 MB
 (setq highlight-nonselected-windows t)
