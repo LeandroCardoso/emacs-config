@@ -55,6 +55,35 @@ in the former."
       (message "%d files copied from %s to %s." files-copied directory1 directory2))))
 
 
+(defun locate-dominating-file-match (file match)
+  "Starting at FILE, look up directory hierarchy for file names that
+match the regexp MATCH. FILE can be a file or a directory. If it's a
+file, its directory will serve as the starting point for searching the
+hierarchy of directories. Stop at the first parent directory containing a
+file name that match the regexp MATCH, and return a list of file names.
+Return nil if not found.
+
+If FULL is non-nil, return absolute file names. Otherwise return names
+ that are relative to the specified directory.
+
+If NOSORT is non-nil, the list is not sorted--its order is unpredictable.
+ Otherwise, the list returned is sorted with ‘string-lessp’. NOSORT is
+ useful if you plan to sort the result yourself."
+  ;; This function was inspired by the `locate-dominating-file'.
+  ;;
+  ;; Represent /home/luser/foo as ~/foo so that we don't try to look for
+  ;; `match' in /home or in /.
+  (let ((directory (file-name-directory (abbreviate-file-name (expand-file-name file))))
+        try)
+    (while (not (or try
+                    (null directory)
+                    (not (file-directory-p directory))
+                    (string-match-p locate-dominating-stop-dir-regexp directory)))
+      (setq try (directory-files directory t match t))
+      (unless try
+        (setq directory (file-name-directory (directory-file-name directory)))))
+    try))
+
 (defun copy-last-message ()
   "Copy the last non nil message in \"*Messages*\" buffer to the kill ring."
   (interactive)
