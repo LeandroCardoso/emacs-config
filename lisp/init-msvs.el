@@ -8,40 +8,49 @@
 (when (eq system-type 'windows-nt)
   (require 'cl)
 
-  (defun msvs-compile-command ()
-    "Return a `compile-command' suitable to use with msvs."
-    (let* ((project-regexp ".*\\(vcx\\|cs\\)proj$")
-           (solution-directory
-            ;; Look up the directory hierarchy for a directory containing a ".*sln$" file
-            (locate-dominating-file default-directory
-                                    (lambda (dir)
-                                      (directory-files dir t ".*sln$" t))))
-           (project-file
-            ;; if the current buffer is a project or solution file use it as project-file, else look
-            ;; up the directory hierarchy for a directory containing a project file.
+  (defun msvs-compile-command (&optional solution platform configuration target)
+    "Return a `compile-command' for compile a msvs project."
+    (let* ((solution-regexp ".*sln$")
+           (project-regexp ".*\\(vcx\\|cs\\)proj$")
+           ;; If the current buffer is a solution file then use it as solution-file, else look up
+           ;; the directory hierarchy for a directory containing a solution file.
+           (solution-file
             (if (and buffer-file-name
-                     (or (string-match-p project-regexp buffer-file-name)
-                         (string-match-p ".*sln$" buffer-file-name)))
-                (file-name-nondirectory buffer-file-name)
-              (let* ((project-directory
-                      (locate-dominating-file default-directory
-                                              (lambda (dir)
-                                                (directory-files dir t project-regexp))))
-                     (project-file-list (directory-files project-directory t project-regexp t)))
-                (unless (cdr project-file-list)
-                  (car project-file-list))))))
-      (concat "msbuild.cmd "
-              (when solution-directory (concat "/p:SolutionDir="
-                                               (w32-convert-filename (file-relative-name solution-directory
-                                                                                         (file-name-directory project-file)))
-                                               " "))
-              "/p:Platform=win32 /p:Configuration=Debug /t:Build "
-              (w32-convert-filename (file-relative-name project-file)))))
+                     (string-match-p solution-regexp buffer-file-name))
+                buffer-file-name
+              (car (locate-dominating-file-match default-directory solution-regexp))))
+           (solution-directory (file-name-directory solution-file))
+           ;; If the current buffer is a project file then use it as project-file, else look up the
+           ;; directory hierarchy for a directory containing a project file.
+           (project-file
+            (if (and buffer-file-name
+                     (string-match-p project-regexp buffer-file-name))
+                buffer-file-name
+              (car (locate-dominating-file-match default-directory project-regexp))))
+           (project-directory (file-name-directory project-file)))
+      (concat "msbuild.cmd"
+              (when (and (not solution)
+                         solution-directory)
+                (concat " /p:SolutionDir="
+                        (w32-convert-filename
+                         (file-relative-name solution-directory project-directory))))
+              (if platform (concat " /p:Platform=" platform))
+              (if configuration (concat " /p:Configuration=" configuration))
+              (if target (concat " /t:" target))
+              " "
+              (w32-convert-filename (if solution
+                                        solution-file
+                                      (file-relative-name project-file))))))
 
 
   (defun msvs-set-compile-command ()
     (interactive)
-    (set (make-local-variable 'compile-command) (msvs-compile-command)))
+    (set (make-local-variable 'compile-command)
+         (cond ((or (eq major-mode 'c-mode)
+                    (eq major-mode 'c++-mode))
+                (msvs-compile-command nil "win32" "Debug" "Build"))
+               ((eq major-mode 'csharp-mode)
+                (msvs-compile-command t "\"Any CPU\"" "Debug" "Build")))))
 
 
   (defun msvs-root-dir ()
@@ -109,6 +118,7 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
   ;; set compile-command
   (add-hook 'c-mode-hook 'msvs-set-compile-command)
   (add-hook 'c++-mode-hook 'msvs-set-compile-command)
+  (with-eval-after-load "csharp" (add-hook 'csharp-mode-hook 'msvs-set-compile-command))
 
   ;; c/c++ headers
   (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/include") t)
