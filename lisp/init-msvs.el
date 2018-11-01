@@ -31,9 +31,7 @@
       (concat "msbuild.cmd"
               (when (and (not solution)
                          solution-directory)
-                (concat " /p:SolutionDir="
-                        (w32-convert-filename
-                         (file-relative-name solution-directory project-directory))))
+                (concat " /p:SolutionDir=" (w32-convert-filename solution-directory)))
               (if platform (concat " /p:Platform=" platform))
               (if configuration (concat " /p:Configuration=" configuration))
               (if target (concat " /t:" target))
