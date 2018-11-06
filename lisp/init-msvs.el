@@ -116,7 +116,7 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
   ;; set compile-command
   (add-hook 'c-mode-hook 'msvs-set-compile-command)
   (add-hook 'c++-mode-hook 'msvs-set-compile-command)
-  (with-eval-after-load "csharp" (add-hook 'csharp-mode-hook 'msvs-set-compile-command))
+  (with-eval-after-load "csharp-mode" (add-hook 'csharp-mode-hook 'msvs-set-compile-command))
 
   ;; c/c++ headers
   (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/include") t)
