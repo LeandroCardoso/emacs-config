@@ -7,6 +7,9 @@
   (load-theme 'solarized-dark t)
 
   (set-face-background 'cursor (face-foreground 'font-lock-constant-face)) ; blue
+  (set-face-attribute 'header-line nil
+                      :foreground (face-foreground 'warning)
+                      :weight 'bold) ; yellow
   (set-face-foreground 'mode-line-buffer-id (face-foreground 'warning))    ; yellow
   (set-face-foreground 'minibuffer-prompt (face-foreground 'mode-line-buffer-id))
   (set-face-attribute 'mode-line nil
@@ -24,7 +27,7 @@
 
   (with-eval-after-load "dired"
     (set-face-attribute 'dired-header nil
-                        :foreground (face-foreground 'dired-directory) ; blue
+                        :foreground (face-foreground 'header-line)
                         :background 'unspecified
                         :weight 'bold))
 
@@ -39,11 +42,9 @@
   (with-eval-after-load "symbol-overlay"
     (set-face-attribute 'symbol-overlay-default-face nil
                         :inherit 'unspecified
-                        :foreground "#d33682")) ; magenta
+                        :foreground (face-background 'isearch))) ; magenta
 
   (with-eval-after-load "woman"
     (set-face-attribute 'woman-bold nil :inherit '(Man-overstrike))
     (set-face-attribute 'woman-italic nil :inherit '(Man-underline)))
-
-  ;; TODO packages
   )
