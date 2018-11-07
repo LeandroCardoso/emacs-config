@@ -1,17 +1,19 @@
-(setq eval-expression-print-length nil)
 (setq frame-resize-pixelwise t)
 (setq gc-cons-threshold 10000000) ; 10 MB
 (setq highlight-nonselected-windows t)
 (setq ring-bell-function 'ignore)
-(setq sentence-end-double-space nil)
 (setq undo-limit 800000)
 (setq undo-strong-limit undo-limit)
+
+;; indent.el
+(setq tab-always-indent 'complete)
 
 ;; novice.el
 (setq disabled-command-function nil)
 
 ;; simple.el
 (setq completion-show-help nil)
+(setq eval-expression-print-length nil)
 (setq kill-do-not-save-duplicates t)
 (setq normal-erase-is-backspace nil)
 (setq shift-select-mode nil)
@@ -20,11 +22,12 @@
 (setq initial-scratch-message nil)
 (setq inhibit-startup-screen t)
 
-;; indent.el
-(setq tab-always-indent 'complete)
-
 ;; subr.el
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; paragraphs
+(setq sentence-end-double-space nil)
+
 
 ;; iso-transl - This is required for dead keys work in linux
 (require 'iso-transl)
