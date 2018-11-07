@@ -8,6 +8,13 @@
 ;; indent.el
 (setq tab-always-indent 'complete)
 
+;; minibuffer
+(setq enable-recursive-minibuffers t)
+(setq minibuffer-eldef-shorten-default t)
+(minibuffer-depth-indicate-mode)
+;; ESC key toogle the minibuffer
+(define-key minibuffer-local-map (kbd "<escape>") 'keyboard-escape-quit)
+
 ;; novice.el
 (setq disabled-command-function nil)
 
@@ -28,6 +35,9 @@
 ;; paragraphs
 (setq sentence-end-double-space nil)
 
+;; keys
+(global-set-key (kbd "<C-M-escape>") 'keyboard-quit)
+
 
 ;; iso-transl - This is required for dead keys work in linux
 (require 'iso-transl)
@@ -44,10 +54,6 @@
 
 ;; Force unix EOL in emacs-lisp files outside of unix
 (modify-coding-system-alist 'file "\\.el\\'" 'prefer-utf-8-unix)
-
-;; ESC key toogle the minibuffer
-;; related commands: keyboard-escape-quit keyboard-quit minibuffer-keyboard-quit
-(define-key minibuffer-local-map (kbd "<escape>") 'abort-recursive-edit)
 
 ;; Hack to set the major mode automatically with new buffers not associated with a file
 ;; http://thread.gmane.org/gmane.emacs.devel/115520/focus=115794
