@@ -161,6 +161,4 @@ bottom of the buffer stack."
 (global-set-key (kbd "C-x o") 'other-window-or-frame) ;; default is other-window
 (global-set-key (kbd "C-x M-o") 'other-frame)
 (global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
-(global-set-key (kbd "C-c -") 'shrink-window) ;; default is backward-page
-(global-set-key (kbd "C-c +") 'enlarge-window) ;; default is forward-page
 (global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
