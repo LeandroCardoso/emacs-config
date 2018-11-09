@@ -8,25 +8,26 @@
 (when (eq system-type 'windows-nt)
   (require 'cl)
 
+  (defvar msvs-solution-regexp ".*sln$")
+  (defvar msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
+
   (defun msvs-compile-command (&optional solution platform configuration target)
     "Return a `compile-command' for compile a msvs project."
-    (let* ((solution-regexp ".*sln$")
-           (project-regexp ".*\\(vcx\\|cs\\)proj$")
-           ;; If the current buffer is a solution file then use it as solution-file, else look up
+    (let* (;; If the current buffer is a solution file then use it as solution-file, else look up
            ;; the directory hierarchy for a directory containing a solution file.
            (solution-file
             (if (and buffer-file-name
-                     (string-match-p solution-regexp buffer-file-name))
+                     (string-match-p msvs-solution-regexp buffer-file-name))
                 buffer-file-name
-              (car (locate-dominating-file-match default-directory solution-regexp))))
+              (car (locate-dominating-file-match default-directory msvs-solution-regexp))))
            (solution-directory (file-name-directory solution-file))
            ;; If the current buffer is a project file then use it as project-file, else look up the
            ;; directory hierarchy for a directory containing a project file.
            (project-file
             (if (and buffer-file-name
-                     (string-match-p project-regexp buffer-file-name))
+                     (string-match-p msvs-project-regexp buffer-file-name))
                 buffer-file-name
-              (car (locate-dominating-file-match default-directory project-regexp))))
+              (car (locate-dominating-file-match default-directory msvs-project-regexp))))
            (project-directory (file-name-directory project-file)))
       (concat "msbuild.cmd"
               (when (and (not solution)
@@ -43,12 +44,17 @@
 
   (defun msvs-set-compile-command ()
     (interactive)
-    (set (make-local-variable 'compile-command)
-         (cond ((or (eq major-mode 'c-mode)
-                    (eq major-mode 'c++-mode))
-                (msvs-compile-command nil "win32" "Debug" "Build"))
-               ((eq major-mode 'csharp-mode)
-                (msvs-compile-command t "\"Any CPU\"" "Debug" "Build")))))
+    (setq-local compile-command
+                (cond ((or (eq major-mode 'c-mode)
+                           (eq major-mode 'c++-mode))
+                       (msvs-compile-command nil "win32" "Debug" "Build"))
+                      ((eq major-mode 'csharp-mode)
+                       (msvs-compile-command t "\"Any CPU\"" "Debug" "Build"))))
+    ;; If the project directory is different than the default-directory then compilation-search-path
+    ;; needs to be set.
+    (add-to-list (make-local-variable 'compilation-search-path)
+                 (file-name-directory
+                  (car (locate-dominating-file-match default-directory msvs-project-regexp)))))
 
 
   (defun msvs-root-dir ()
