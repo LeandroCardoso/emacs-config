@@ -15,7 +15,7 @@ See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
     (add-hook 'csharp-mode-hook 'omnisharp-mode)
 
     (setq omnisharp-imenu-support nil) ; disabled because it does not work when server is not running
-    (setq omnisharp-server-executable-path (concat user-emacs-directory "omnisharp/OmniSharp.exe"))
+    (setq omnisharp-cache-directory (concat user-emacs-directory "omnisharp"))
 
     ;; omnisharp + company
     (with-eval-after-load "company"
