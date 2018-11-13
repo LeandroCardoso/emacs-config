@@ -15,13 +15,14 @@
 
 (when (require 'imenu-anywhere nil t)
   (defun ido-imenu-anywhere-dwim (arg)
-    "Call `ido-imenu-anywhere' for all buffers.
-If a prefix ARG is specified, call it for just the current buffer."
+    "Call `ido-imenu-anywhere' for all buffers or just the current buffer.
+If a prefix ARG is specified, call it for all the buffers,
+otherwise call it to just the current buffer."
     (interactive "P")
     (let ((imenu-anywhere-buffer-list-function
            (if arg
-               '(lambda () (list (current-buffer)))
-             imenu-anywhere-buffer-list-function)))
+               imenu-anywhere-buffer-list-function
+             '(lambda () (list (current-buffer))))))
       (ido-imenu-anywhere)))
 
   (add-to-list 'imenu-anywhere-friendly-modes '(c-mode c++-mode))
