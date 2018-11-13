@@ -20,7 +20,8 @@
                      (string-match-p msvs-solution-regexp buffer-file-name))
                 buffer-file-name
               (car (locate-dominating-file-match default-directory msvs-solution-regexp))))
-           (solution-directory (file-name-directory solution-file))
+           (solution-directory (if solution-file
+                                   (file-name-directory solution-file)))
            ;; If the current buffer is a project file then use it as project-file, else look up the
            ;; directory hierarchy for a directory containing a project file.
            (project-file
@@ -28,18 +29,20 @@
                      (string-match-p msvs-project-regexp buffer-file-name))
                 buffer-file-name
               (car (locate-dominating-file-match default-directory msvs-project-regexp))))
-           (project-directory (file-name-directory project-file)))
+           (project-directory (if project-file
+                                  (file-name-directory project-file))))
       (concat "msbuild.cmd"
               (when (and (not solution)
                          solution-directory)
                 (concat " /p:SolutionDir=" (w32-convert-filename solution-directory)))
-              (if platform (concat " /p:Platform=" platform))
-              (if configuration (concat " /p:Configuration=" configuration))
-              (if target (concat " /t:" target))
+              (when platform (concat " /p:Platform=" platform))
+              (when configuration (concat " /p:Configuration=" configuration))
+              (when target (concat " /t:" target))
               " "
-              (w32-convert-filename (if solution
-                                        solution-file
-                                      (file-relative-name project-file))))))
+              (let ((object (if solution
+                                solution-file
+                              (when project-file (file-relative-name project-file)))))
+                (when object (w32-convert-filename object))))))
 
 
   (defun msvs-set-compile-command ()
@@ -52,9 +55,10 @@
                        (msvs-compile-command t "\"Any CPU\"" "Debug" "Build"))))
     ;; If the project directory is different than the default-directory then compilation-search-path
     ;; needs to be set.
-    (add-to-list (make-local-variable 'compilation-search-path)
-                 (file-name-directory
-                  (car (locate-dominating-file-match default-directory msvs-project-regexp)))))
+    (let ((project-file (car (locate-dominating-file-match default-directory msvs-project-regexp))))
+      (when project-file
+        (add-to-list (make-local-variable 'compilation-search-path)
+                     (file-name-directory project-file)))))
 
 
   (defun msvs-root-dir ()
