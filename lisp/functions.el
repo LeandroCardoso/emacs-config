@@ -74,14 +74,17 @@ If NOSORT is non-nil, the list is not sorted--its order is unpredictable.
   ;; Represent /home/luser/foo as ~/foo so that we don't try to look for
   ;; `match' in /home or in /.
   (let ((directory (file-name-directory (abbreviate-file-name (expand-file-name file))))
-        try)
+        (try nil))
     (while (not (or try
                     (null directory)
                     (not (file-directory-p directory))
                     (string-match-p locate-dominating-stop-dir-regexp directory)))
       (setq try (directory-files directory t match t))
       (unless try
-        (setq directory (file-name-directory (directory-file-name directory)))))
+        ;; if current directory is equal to root directory, then set it to nil and exit the loop
+        (if (string= directory
+                     (setq directory (file-name-directory (directory-file-name directory))))
+            (setq directory nil))))
     try))
 
 (defun copy-last-message ()
