@@ -44,8 +44,9 @@ Custom directories are added in the begging"
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
     (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
 
-  ;; this is a very recommended setup
+  ;; improve performace in Windows
   (setq w32-pipe-read-delay 0)
+  (setq inhibit-compacting-font-caches t)
 
   ;; Workaround for ediff
   (setenv "LANG" "C")
