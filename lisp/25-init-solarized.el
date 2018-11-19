@@ -15,7 +15,7 @@
   (set-face-attribute 'mode-line nil
                       :overline (face-foreground 'mode-line-buffer-id)
                       :underline 'unspecified
-                      :box `(:line-width 2
+                      :box `(:line-width 4
                              :color ,(face-background 'mode-line)
                              :style 'unspecified))
 
