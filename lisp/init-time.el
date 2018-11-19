@@ -11,6 +11,7 @@ is in fullscreen. Disable it otherwise."
      0)))
 
 (setq display-time-24hr-format t)
+(setq display-time-interval 30)
 (setq display-time-load-average-threshold 0.5)
 
 (advice-add 'toggle-frame-fullscreen :after #'smart-display-time-mode)
