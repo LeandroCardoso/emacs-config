@@ -93,6 +93,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "M-u") 'upcase-dwim) ;; default is upcase-word
 (global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
 (global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
+(global-set-key (kbd "C-c D") 'delete-pair)
 
 ;; zap - misc.el
 (autoload 'zap-up-to-char "misc")
