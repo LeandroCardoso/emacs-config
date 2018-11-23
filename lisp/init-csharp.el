@@ -23,7 +23,7 @@ See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
 
     (defun omnisharp-setup-hook ()
       ;; keymap
-      (define-key omnisharp-mode-map (kbd "M-.") 'omnisharp-find-implementations)
+      (define-key omnisharp-mode-map (kbd "M-.") 'omnisharp-go-to-definition)
       (define-key omnisharp-mode-map (kbd "M-?") 'omnisharp-find-usages)
       (define-key omnisharp-mode-map (kbd "C-x 4 .") 'omnisharp-go-to-definition-other-window)
       ; TODO fallback to imenu if omnisharp is not running
