@@ -10,6 +10,9 @@
 
   (defvar msvs-solution-regexp ".*sln$")
   (defvar msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
+  (defvar msvs-vswhere (expand-file-name (concat (getenv "ProgramFiles(x86)")
+                                                 "/Microsoft Visual Studio/Installer/vswhere.exe")))
+
 
   (defun msvs-compile-command (&optional solution platform configuration target)
     "Return a `compile-command' for compile a msvs project."
