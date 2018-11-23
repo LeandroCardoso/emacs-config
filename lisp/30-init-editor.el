@@ -31,9 +31,7 @@ See `indent-region'"
   "If our source file uses tabs, we use tabs, if spaces spaces,
 and if neither, we use the current `indent-tabs-mode'"
   (interactive)
-  (let* ((point-max (if infer-indentation-style-region-max
-                        infer-indentation-style-region-max
-                      (point-max)))
+  (let* ((point-max (or infer-indentation-style-region-max (point-max)))
          (space-count (how-many "^  " (point-min) point-max))
          (tab-count (how-many "^\t" (point-min) point-max)))
     (if (> space-count tab-count) (setq indent-tabs-mode nil))
