@@ -70,6 +70,7 @@
   (define-key company-active-map (kbd "M-v") 'company-previous-page)
   (define-key company-active-map (kbd "C-c <tab>") 'company-complete-common)
   (define-key company-active-map (kbd "<S-tab>") 'company-select-previous) ; workaround for tng in org-mode
+  (define-key company-active-map (kbd "<return>") 'company-complete-selection)
 
   (define-key company-search-map (kbd "<escape>") 'company-search-abort)
 
