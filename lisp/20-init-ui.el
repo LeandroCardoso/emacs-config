@@ -142,7 +142,18 @@ bottom of the buffer stack."
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
-
+(dolist (buf '("^\\*Apropos\\*"
+               "^\\*Flycheck"
+               "^\\*Help\\*"
+               "^\\*Occur\\*"
+               "^\\* OmniSharp"
+               "^\\*Woman"
+               "^\\*compilation\\*"
+               "^\\*grep\\*"
+               "^\\*info\\*"
+               "^\\*xref\\*"))
+  (add-to-list 'display-buffer-alist
+               `(,buf . ((display-buffer-pop-up-window) . ((window-height . 0.4)))) t))
 
 ;; Frame
 (setq frame-inhibit-implied-resize t) ;; never resize the frame
