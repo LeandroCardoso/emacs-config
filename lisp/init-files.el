@@ -14,8 +14,7 @@ See `backup-buffer'."
   (interactive)
   (let ((make-backup-files t)
         (backup-inhibited nil)
-        (buffer-backed-up nil)
-        (version-control nil))
+        (buffer-backed-up nil))
     (backup-buffer)
     (when buffer-backed-up
       (message "created backup for buffer %s" (file-name-nondirectory buffer-file-name)))))
