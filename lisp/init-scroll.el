@@ -11,7 +11,7 @@
 (global-set-key (kbd "<M-Scroll_Lock>") 'scroll-all-mode)
 (global-set-key (kbd "<C-Scroll_Lock>") 'follow-mode)
 
-(global-set-key (kbd "M-<up>") 'scroll-down-line)
-(global-set-key (kbd "M-p") 'scroll-down-line)
-(global-set-key (kbd "M-<down>") 'scroll-up-line)
-(global-set-key (kbd "M-n") 'scroll-up-line)
+(global-set-key (kbd "<S-up>") 'scroll-down-line)
+(global-set-key (kbd "C-S-p") 'scroll-down-line)
+(global-set-key (kbd "<S-down>") 'scroll-up-line)
+(global-set-key (kbd "C-S-n") 'scroll-up-line)
