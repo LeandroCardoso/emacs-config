@@ -1,3 +1,6 @@
+;; occur
+(add-hook 'occur-mode-hook #'(lambda () (setq truncate-lines t)))
+
 (define-key occur-mode-map (kbd "<tab>") 'occur-next)
 (define-key occur-mode-map (kbd "<backtab>") 'occur-prev)
 

@@ -11,6 +11,8 @@
   (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS" "*.exe"))
     (add-to-list 'grep-find-ignored-files file))
 
+  (add-hook 'grep-setup-hook #'(lambda () (setq truncate-lines t)))
+
   (define-key grep-mode-map (kbd "r") 'rename-uniquely)
   (define-key grep-mode-map (kbd "k") 'keep-lines)
   (define-key grep-mode-map (kbd "f") 'flush-lines)
