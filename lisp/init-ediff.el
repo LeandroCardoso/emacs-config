@@ -1,4 +1,5 @@
 (with-eval-after-load "ediff"
+  ;; Copy AB to C
   ;; Adapted from https://stackoverflow.com/a/29757750
   (defun ediff-copy-AB-to-C (reverse)
     "Copy current difference region from buffer A and buffer B to buffer C.
@@ -9,12 +10,48 @@ buffer C."
     (ediff-barf-if-not-control-buffer)
     (ediff-copy-diff ediff-current-difference nil 'C nil
                      (concat
-                      (ediff-get-region-contents ediff-current-difference (if reverse 'B 'A) ediff-control-buffer)
-                      (ediff-get-region-contents ediff-current-difference (if reverse 'A 'B) ediff-control-buffer)))
+                      (ediff-get-region-contents
+                       ediff-current-difference
+                       (if reverse 'B 'A)
+                       ediff-control-buffer)
+                      (ediff-get-region-contents
+                       ediff-current-difference
+                       (if reverse 'A 'B)
+                       ediff-control-buffer)))
     (ediff-recenter))
 
-  (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-AB-to-C))
+  (defun add-d-to-ediff-mode-map ()
+    (define-key ediff-mode-map (kbd "d") 'ediff-copy-AB-to-C))
+
   (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+
+
+  ;; Text scale
+  (defun ediff-text-scale-increase (inc)
+    "docstring"
+    (interactive "p")
+    (ediff-barf-if-not-control-buffer)
+    (dolist (buf `(,ediff-buffer-A ,ediff-buffer-B ,ediff-buffer-C))
+      (when buf
+        (with-current-buffer buf
+          (text-scale-increase inc)))))
+
+  (defun ediff-text-scale-decrease (dec)
+    "docstring"
+    (interactive "p")
+    (ediff-text-scale-increase (- dec)))
+
+  (defun ediff-text-scale-reset ()
+    "docstring"
+    (interactive)
+    (ediff-text-scale-increase 0))
+
+  (defun add-text-scale-to-ediff-mode-map ()
+    (define-key ediff-mode-map (kbd "+") 'ediff-text-scale-increase)
+    (define-key ediff-mode-map (kbd "-") 'ediff-text-scale-decrease)
+    (define-key ediff-mode-map (kbd "0") 'ediff-text-scale-reset))
+
+  (add-hook 'ediff-keymap-setup-hook 'add-text-scale-to-ediff-mode-map)
 
 
   ;; (setq ediff-custom-diff-options "-c -w")
