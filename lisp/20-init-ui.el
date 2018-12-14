@@ -126,6 +126,8 @@ bottom of the buffer stack."
       (set-frame-font (concat (car font) " " (cdr font)) t t)
     (message "Warning: Font %s does not exist" (car font))))
 
+(setq text-scale-mode-step 1.1)
+
 
 ;; Modeline
 (setq column-number-mode t)
