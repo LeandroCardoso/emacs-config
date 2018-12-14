@@ -84,6 +84,8 @@ See `backup-buffer'."
     (interactive)
     (eww-open-file (dired-get-file-for-visit)))
 
+  (add-hook 'dired-mode-hook #'(lambda () (setq truncate-lines t)))
+
   ;; local keys
   (define-key dired-mode-map (kbd "<M-return>") 'dired-up-directory)
   (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
