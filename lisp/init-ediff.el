@@ -52,6 +52,8 @@ buffer C."
     (define-key ediff-mode-map (kbd "0") 'ediff-text-scale-reset))
 
   (add-hook 'ediff-keymap-setup-hook 'add-text-scale-to-ediff-mode-map)
+  (add-hook 'ediff-cleanup-hook 'ediff-text-scale-reset)
+  (add-hook 'ediff-suspend-hook 'ediff-text-scale-reset)
 
 
   ;; (setq ediff-custom-diff-options "-c -w")
