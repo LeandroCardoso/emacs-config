@@ -14,18 +14,10 @@
 one already exists at point."
   (interactive "*")
   (move-end-of-line nil)
-  (delete-trailing-whitespace)
+  (delete-horizontal-space)
   (unless (char-equal (preceding-char) (string-to-char ";"))
     (insert ";")))
 
-(defun electric-semicolon ()
-  "Insert a \";\" unless one already exists at point, in this case forward one char."
-  (interactive "*")
-  (if (char-equal (following-char) (string-to-char ";"))
-      (forward-char)
-    (insert ";")))
 
 ;; key bindings
-
 (define-key prog-mode-map (kbd ";") 'electric-semicolon)
-(define-key prog-mode-map (kbd "C-;") 'smart-semicolon)
