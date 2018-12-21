@@ -31,7 +31,7 @@ buffer C."
     "docstring"
     (interactive "p")
     (ediff-barf-if-not-control-buffer)
-    (dolist (buf `(,ediff-buffer-A ,ediff-buffer-B ,ediff-buffer-C))
+    (dolist (buf `(,ediff-buffer-A ,ediff-buffer-B ,ediff-buffer-C ,ediff-ancestor-buffer))
       (when buf
         (with-current-buffer buf
           (text-scale-increase inc)))))
