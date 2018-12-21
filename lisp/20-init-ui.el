@@ -158,6 +158,7 @@ bottom of the buffer stack."
                `(,buf . ((display-buffer-pop-up-window) . ((window-height . 0.4)))) t))
 
 ;; Frame
+(setq frame-title-format (concat "%b - emacs@" (system-name)))
 (setq frame-inhibit-implied-resize t) ;; never resize the frame
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
