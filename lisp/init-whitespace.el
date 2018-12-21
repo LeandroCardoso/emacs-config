@@ -3,8 +3,7 @@
 
   (defvar whitespace-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map "C" 'whitespace-cleanup)
-      (define-key map "c" 'whitespace-cleanup-region)
+      (define-key map "c" 'whitespace-cleanup)
       (define-key map "n" 'whitespace-newline-mode)
       (define-key map "o" 'whitespace-toggle-options)
       (define-key map "r" 'delete-whitespace-rectangle) ; rect.el
