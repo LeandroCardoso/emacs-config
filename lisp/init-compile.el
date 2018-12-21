@@ -2,4 +2,4 @@
   (setq compilation-scroll-output 'first-error)
   (setq compilation-error-screen-columns nil))
 
-(global-set-key (kbd "<f9>") 'compile)
+(define-key prog-mode-map (kbd "<f9>") 'compile)
