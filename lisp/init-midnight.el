@@ -5,7 +5,6 @@
 (defun clean-buffer-list-check-idle-time ()
   "Return t if emacs idle time is less than the
 `clean-buffer-list-delay-general'."
-  (message "current idle time:%s" (current-idle-time))
   (< (round (float-time (or (current-idle-time) '(0 0 0))))
      (* clean-buffer-list-delay-general 24 60 60)))
 
