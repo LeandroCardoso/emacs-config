@@ -8,8 +8,10 @@
 (when (eq system-type 'windows-nt)
   (require 'cl)
 
-  (defvar msvs-solution-regexp ".*sln$")
+  (defvar msvs-cpp-project-regexp ".*vcxproj$")
+  (defvar msvs-cs-project-regexp ".*csproj$")
   (defvar msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
+  (defvar msvs-solution-regexp ".*sln$")
   (defvar msvs-vswhere (expand-file-name (concat (getenv "ProgramFiles(x86)")
                                                  "/Microsoft Visual Studio/Installer/vswhere.exe")))
 
@@ -51,11 +53,22 @@
   (defun msvs-set-compile-command ()
     (interactive)
     (setq-local compile-command
-                (cond ((or (eq major-mode 'c-mode)
-                           (eq major-mode 'c++-mode))
-                       (msvs-compile-command nil "win32" "Debug" "Build"))
-                      ((eq major-mode 'csharp-mode)
-                       (msvs-compile-command t "\"Any CPU\"" "Debug" "Build"))))
+                (cond
+                 ;; c or c++
+                 ((or (eq major-mode 'c-mode)
+                      (eq major-mode 'c++-mode)
+                      (and buffer-file-name
+                           (string-match-p msvs-cpp-project-regexp buffer-file-name)))
+                  (msvs-compile-command nil "win32" "Debug" "Build"))
+                 ;; c#
+                 ((or (eq major-mode 'csharp-mode)
+                      (and buffer-file-name
+                           (string-match-p msvs-cs-project-regexp buffer-file-name)))
+                  (msvs-compile-command t "\"Any CPU\"" "Debug" "Build"))
+                 ;; solution
+                 ((and buffer-file-name
+                       (string-match-p msvs-solution-regexp buffer-file-name))
+                  (msvs-compile-command t "win32" "Debug" "Build"))))
     ;; If the project directory is different than the default-directory then compilation-search-path
     ;; needs to be set.
     (let ((project-file (car (locate-dominating-file-match default-directory msvs-project-regexp))))
