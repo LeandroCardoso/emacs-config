@@ -31,14 +31,6 @@
                         :background 'unspecified
                         :weight 'bold))
 
-  (with-eval-after-load "powerline"
-    (set-face-foreground 'mode-line-buffer-id-inactive "#7B6000") ; yellow-d
-    ;; overline does not mix well with powerline
-    (set-face-attribute 'mode-line nil :overline 'unspecified)
-    ;; use a box color instead
-    (set-face-attribute 'mode-line nil :box (face-foreground 'mode-line-buffer-id-inactive))
-    (set-face-attribute 'mode-line-inactive nil :box (face-background 'mode-line-inactive)))
-
   (with-eval-after-load "symbol-overlay"
     (set-face-attribute 'symbol-overlay-default-face nil
                         :inherit 'unspecified
