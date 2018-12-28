@@ -10,6 +10,7 @@
   (set-face-attribute 'header-line nil
                       :foreground (face-foreground 'warning)
                       :weight 'bold) ; yellow
+  (set-face-foreground 'fringe (face-foreground 'vertical-border))
   (set-face-foreground 'mode-line-buffer-id (face-foreground 'warning))    ; yellow
   (set-face-foreground 'minibuffer-prompt (face-foreground 'mode-line-buffer-id))
   (set-face-attribute 'mode-line nil
