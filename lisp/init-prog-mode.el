@@ -20,4 +20,4 @@ one already exists at point."
 
 
 ;; key bindings
-(define-key prog-mode-map (kbd ";") 'electric-semicolon)
+(define-key prog-mode-map (kbd "C-;") 'smart-semicolon)
