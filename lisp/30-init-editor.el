@@ -52,7 +52,7 @@ With argument N not nil or 1, move forward N - 1 lines first."
 With ARG, insert that many newlines."
   (interactive "*P")
   (move-end-of-line nil)
-  (newline arg))
+  (newline arg t))
 
 
 ;; Adapted from: https://www.emacswiki.org/emacs/SortWords
