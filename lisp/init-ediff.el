@@ -47,9 +47,9 @@ buffer C."
     (ediff-text-scale-increase 0))
 
   (defun add-text-scale-to-ediff-mode-map ()
-    (define-key ediff-mode-map (kbd "+") 'ediff-text-scale-increase)
-    (define-key ediff-mode-map (kbd "-") 'ediff-text-scale-decrease)
-    (define-key ediff-mode-map (kbd "0") 'ediff-text-scale-reset))
+    (define-key ediff-mode-map (kbd "C-+") 'ediff-text-scale-increase)
+    (define-key ediff-mode-map (kbd "C--") 'ediff-text-scale-decrease)
+    (define-key ediff-mode-map (kbd "C-0") 'ediff-text-scale-reset))
 
   (add-hook 'ediff-keymap-setup-hook 'add-text-scale-to-ediff-mode-map)
   (add-hook 'ediff-cleanup-hook 'ediff-text-scale-reset)
