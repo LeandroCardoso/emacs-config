@@ -21,8 +21,7 @@
     (let* (;; If the current buffer is a solution file then use it as solution-file, else look up
            ;; the directory hierarchy for a directory containing a solution file.
            (solution-file
-            (if (and buffer-file-name
-                     (string-match-p msvs-solution-regexp buffer-file-name))
+            (if (string-match-p msvs-solution-regexp (or buffer-file-name ""))
                 buffer-file-name
               (car (locate-dominating-file-match default-directory msvs-solution-regexp))))
            (solution-directory (if solution-file
@@ -30,8 +29,7 @@
            ;; If the current buffer is a project file then use it as project-file, else look up the
            ;; directory hierarchy for a directory containing a project file.
            (project-file
-            (if (and buffer-file-name
-                     (string-match-p msvs-project-regexp buffer-file-name))
+            (if (string-match-p msvs-project-regexp (or buffer-file-name ""))
                 buffer-file-name
               (car (locate-dominating-file-match default-directory msvs-project-regexp))))
            (project-directory (if project-file
@@ -57,17 +55,14 @@
                  ;; c or c++
                  ((or (eq major-mode 'c-mode)
                       (eq major-mode 'c++-mode)
-                      (and buffer-file-name
-                           (string-match-p msvs-cpp-project-regexp buffer-file-name)))
+                      (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")))
                   (msvs-compile-command nil "win32" "Debug" "Build"))
                  ;; c#
                  ((or (eq major-mode 'csharp-mode)
-                      (and buffer-file-name
-                           (string-match-p msvs-cs-project-regexp buffer-file-name)))
+                      (string-match-p msvs-cs-project-regexp (or buffer-file-name "")))
                   (msvs-compile-command t "\"Any CPU\"" "Debug" "Build"))
                  ;; solution
-                 ((and buffer-file-name
-                       (string-match-p msvs-solution-regexp buffer-file-name))
+                 ((string-match-p msvs-solution-regexp (or buffer-file-name ""))
                   (msvs-compile-command t "win32" "Debug" "Build"))))
     ;; If the project directory is different than the default-directory then compilation-search-path
     ;; needs to be set.
