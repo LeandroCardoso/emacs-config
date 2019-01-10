@@ -6,7 +6,7 @@
   (if (featurep 'js2-mode)
       (progn
         (defun nps-setup-hook ()
-          (when (string-match-p "\\.nps\\'" buffer-file-name)
+          (when (string-match-p "\\.nps\\'" (or buffer-file-name ""))
             (setq-local js2-include-browser-externs nil)
             (setq-local js2-language-version 180)
             (push "API" js2-additional-externs)))
