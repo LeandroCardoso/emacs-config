@@ -8,6 +8,15 @@
     (setq w32-pipe-read-delay 0)
     (setq magit-process-connection-type nil)
     (setq magit-refresh-status-buffer nil)
+
+    ;; experimental performance settings
+    (setq magit-diff-highlight-indentation nil)
+    (setq magit-diff-highlight-trailing nil)
+    (setq magit-diff-paint-whitespace nil)
+    (setq magit-diff-highlight-hunk-body nil)
+    (setq magit-diff-refine-hunk nil)
+    (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+
     (remove-hook 'server-switch-hook 'magit-commit-diff)) ; remove diff output from commit
 
   (add-hook 'magit-status-mode-hook #'disable-global-hl-line-mode)
@@ -17,7 +26,7 @@
   (define-key magit-mode-map [remap next-line] 'magit-next-line)
 
   (define-key magit-file-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
-  (define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window))
+  (define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
 
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
