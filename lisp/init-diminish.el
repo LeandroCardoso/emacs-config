@@ -7,6 +7,7 @@
     (diminish 'subword-mode)
     (diminish 'superword-mode)
     (diminish 'symbol-overlay-mode)
-    (diminish 'yas-minor-mode))
+    (diminish 'yas-minor-mode)
+    (diminish 'volatile-highlights-mode))
 
   (add-hook 'after-init-hook 'set-diminish))
