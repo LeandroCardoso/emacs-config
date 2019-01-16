@@ -100,24 +100,6 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
                path-separator
                (getenv "PATH")))))
 
-
-  (with-eval-after-load "semantic"
-    (let ((msvs-root (msvs-root-dir)))
-      (when msvs-root
-        ;; TODO Window SDKs
-        ;; C:\Program Files\Microsoft SDKs\Windows\v6.0A\Include
-        ;; C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include
-        ;; C:\Program Files\Microsoft SDKs\Windows\v7.1A\Include
-        ;; C:\Program Files\Windows Kits\8.0\Include\shared
-        ;; C:\Program Files\Windows Kits\8.0\Include\um
-        ;; C:\Program Files\Windows Kits\8.1\Include\shared
-        ;; C:\Program Files\Windows Kits\8.1\Include\um
-        ;; (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c-mode)
-        ;; (semantic-add-system-include "C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include" 'c++-mode)
-        (semantic-add-system-include (concat msvs-root "VC/include") 'c-mode)
-        (semantic-add-system-include (concat msvs-root "VC/include") 'c++-mode))))
-
-
   (add-to-list 'auto-mode-alist '("\\.rc\\'" . c-mode))
   (add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
   (add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))
