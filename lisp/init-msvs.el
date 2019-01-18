@@ -17,7 +17,7 @@
 
 
   (defun msvs-compile-command (&optional solution platform configuration target)
-    "Return a `compile-command' for compile a msvs project."
+    "Return a `compile-command' for compile a msvs project/file."
     (let* (;; If the current buffer is a solution file then use it as solution-file, else look up
            ;; the directory hierarchy for a directory containing a solution file.
            (solution-file
@@ -49,6 +49,7 @@
 
 
   (defun msvs-set-compile-command ()
+    "Set a `compile-command' for compile a msvs project/file."
     (interactive)
     (setq-local compile-command
                 (cond
@@ -71,14 +72,21 @@
         (add-to-list (make-local-variable 'compilation-search-path)
                      (file-name-directory project-file)))))
 
+  (defun msvs-list-installations()
+    "Returns a list of Microsoft Visual Studio installation versions"
+    (when (file-readable-p msvs-vswhere)
+      (split-string (with-output-to-string
+                      (call-process msvs-vswhere nil `(,standard-output nil) nil
+                                    "-legacy" "-property" "installationVersion"))
+                    "[\n\r]+" t)))
+
 
   (defun msvs-root-dir ()
     "Try to detect the newest Microsoft Visual Studio installed and return its root directory.
 Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (14.0)."
     (directory-parent
      (some (lambda (ENV_VAR) (getenv ENV_VAR))
-           '("VS150COMNTOOLS" ; Visual Studio 2017
-             "VS140COMNTOOLS" ; Visual Studio 2015
+           '("VS140COMNTOOLS" ; Visual Studio 2015
              ;; There is no VS130COMNTOOLS.
              "VS120COMNTOOLS" ; Visual Studio 2013
              "VS110COMNTOOLS" ; Visual Studio 2012
