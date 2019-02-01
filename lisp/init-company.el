@@ -12,8 +12,9 @@
 
   (company-tng-configure-default)
 
-  ;; delete company-semantic from backends list
+  ;; delete semantic and clang from backends list
   (setq company-backends (delete 'company-semantic company-backends))
+  (setq company-backends (delete 'company-clang company-backends))
 
   ;; Give company-gtags and company-etags more priority than company-dabbrev-code
   (let ((backend (member '(company-dabbrev-code company-gtags company-etags company-keywords)
