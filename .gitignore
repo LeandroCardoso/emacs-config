@@ -16,4 +16,5 @@ semanticdb/
 server/
 smex-items
 tramp
+transient/
 url/

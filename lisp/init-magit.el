@@ -1,7 +1,11 @@
 (when (require 'magit nil t)
   ;; settings
-  (setq magit-completing-read-function 'magit-ido-completing-read)
   (setq magit-blame-echo-style 'margin)
+  (setq magit-completing-read-function 'magit-ido-completing-read)
+  (setq magit-ediff-dwim-show-on-hunks t)
+
+  ;; transient
+  (setq transient-default-level 7)
 
   ;; Windows specific settings
   (when (eq system-type 'windows-nt)
@@ -29,4 +33,4 @@
   (define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
 
   (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
+  (global-set-key (kbd "C-x M-g") 'magit-dispatch))
