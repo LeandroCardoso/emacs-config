@@ -147,7 +147,7 @@ bottom of the buffer stack."
 
 ;; reuse frames with `display-buffer-other-frame'
 (setcar display-buffer--other-frame-action
-     '(display-buffer-reuse-window display-buffer-use-some-frame))
+     '(display-buffer-reuse-window display-buffer-use-some-frame display-buffer-pop-up-frame))
 
 (dolist (buf '("^\\*Flycheck"
                "^\\*Occur\\*"
