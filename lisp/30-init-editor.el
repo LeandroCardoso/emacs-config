@@ -38,6 +38,17 @@ and if neither, we use the current `indent-tabs-mode'"
     (if (> tab-count space-count) (setq indent-tabs-mode t))))
 
 
+;; Adapted from https://www.emacswiki.org/emacs/BrowseKillRing
+(defun insert-from-kill-ring ()
+  "Search a past killed text from the `kill-ring' and insert it."
+  (interactive "*")
+  (let ((text (completing-read "Insert: " (seq-uniq kill-ring))))
+    (when (and text (region-active-p))
+      ;; the currently highlighted section is to be replaced by the new text
+      (delete-region (region-beginning) (region-end)))
+    (insert text)))
+
+
 (defun mark-line (&optional N)
   "Put mark at end of this line, point at beginning.
 With argument N not nil or 1, move forward N - 1 lines first."
@@ -94,6 +105,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
 (global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
 (global-set-key (kbd "C-c D") 'delete-pair)
+(global-set-key (kbd "C-M-y") 'insert-from-kill-ring)
 
 ;; zap - misc.el
 (autoload 'zap-up-to-char "misc")

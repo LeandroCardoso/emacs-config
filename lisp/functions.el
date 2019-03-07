@@ -12,17 +12,6 @@
       (write-region "" nil full-dir-locals-file))))
 
 
-(defun kill-ring-insert ()
-  "TODO"
-  (interactive)
-  (let ((to_insert (completing-read "Yank: "
-                                    (delete-duplicates kill-ring :test #'equal))))
-    (when (and to_insert (region-active-p))
-      ;; the currently highlighted section is to be replaced by the yank
-      (delete-region (region-beginning) (region-end)))
-    (insert to_insert)))
-
-
 (defun directory-parent (DIR &optional NUMBER)
   "Return the parent directory of `DIR'.
 With `NUMBER', return the `NUMBER' parent directory of `DIR'."
