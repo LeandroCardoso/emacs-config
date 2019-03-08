@@ -38,15 +38,26 @@ and if neither, we use the current `indent-tabs-mode'"
     (if (> tab-count space-count) (setq indent-tabs-mode t))))
 
 
-;; Adapted from https://www.emacswiki.org/emacs/BrowseKillRing
-(defun insert-from-kill-ring ()
-  "Search a past killed text from the `kill-ring' and insert it."
-  (interactive "*")
+(defun insert-from-kill-ring (&optional arg)
+  "Search a past killed text from the `kill-ring' and insert it.
+Put point at the end, and set mark at the beginning without
+activating it. When ARG is non nil, put point at beginning, and
+mark at end.
+
+This command honors the `yank-handled-properties' and
+`yank-excluded-properties' variables, and the `yank-handler' text
+property, as described by the command `yank' (\\[yank])."
+  (interactive "P*")
   (let ((text (completing-read "Insert: " (seq-uniq kill-ring))))
-    (when (and text (region-active-p))
-      ;; the currently highlighted section is to be replaced by the new text
-      (delete-region (region-beginning) (region-end)))
-    (insert text)))
+    (push-mark)
+    (insert-for-yank text)
+    (if (consp arg)
+        ;; This is like exchange-point-and-mark, but doesn't activate the mark.
+        ;; It is cleaner to avoid activation, even though the command
+        ;; loop would deactivate the mark because we inserted text.
+        (goto-char (prog1 (mark t)
+                     (set-marker (mark-marker) (point) (current-buffer))))))
+  nil)
 
 
 (defun mark-line (&optional N)
