@@ -1,5 +1,11 @@
 ;; csharp
 (with-eval-after-load "csharp-mode"
+  (defun csharp-mode-setup ()
+    (local-set-key (kbd "/") 'c-electric-slash))
+
+  (add-hook 'csharp-mode-hook 'csharp-mode-setup)
+
+
   ;; omnisharp
   (when (require 'omnisharp nil t)
     (defun omnisharp-smart-start-server (&optional no-autodetect)
