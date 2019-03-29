@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: __FUNCTION__
+# key: func
+# --
+__FUNCTION__
