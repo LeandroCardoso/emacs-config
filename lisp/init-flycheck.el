@@ -8,6 +8,11 @@
   (setq flycheck-idle-change-delay 5)
   (setq flycheck-mode-line-prefix "!")
 
+  ;; Increased the "File" column size
+  (seq-doseq (el flycheck-error-list-format)
+    (when (string= (car el) "File")
+      (setcdr el 20)))
+
   ;; cppcheck
   ;; unusedStructMember is annoying in header files
   (setq flycheck-cppcheck-suppressions '("unusedStructMember"))
