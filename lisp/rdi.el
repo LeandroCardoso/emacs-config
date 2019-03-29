@@ -23,7 +23,7 @@
 
   ;; Force coding system in log files
   (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
-  
+
   ;; np6 log mode
   (define-generic-mode np6-log-mode ;; MODE
     nil                             ;; COMMENT-LIST
@@ -125,7 +125,7 @@
     (with-temp-buffer
       (cd-absolute np61-exec-dir)
       (async-shell-command np61-exec-reset-cmd "*np61*")))
-  
+
   (defun np61-copy-compilation ()
     (interactive)
     (unless (boundp 'np61-exec-dir)
@@ -145,4 +145,37 @@
     "Keymap for global np61 commands")
 
   (defalias 'np61-keymap np61-global-keymap)
-  (global-set-key (kbd "<f5>") 'np61-keymap))
+  (global-set-key (kbd "<f5>") 'np61-keymap)
+
+  ;; Experimental clang support
+  (setq flycheck-clang-ms-extensions t)
+  (setq flycheck-clang-language-standard "c++11")
+  (setq flycheck-clang-warnings '("all" "extra" "no-invalid-token-paste"))
+
+  (setq flycheck-clang-definitions nil)
+  (dolist (def '("NPMODDEF" "XP_WIN" "_MSC_VER"))
+    (add-to-list 'flycheck-clang-definitions def))
+
+  (setq flycheck-clang-include-path nil)
+  (let ((pr "c:/Dev/np61/")) ;; (car (project-roots (project-current)))
+    (dolist (path (list "../"
+                        (concat pr "extSrc/js180/src")
+                        (concat pr "src/Log/npLog/include")
+                        (concat pr "src/drivers/include")
+                        (concat pr "src/npCore/include")
+                        (concat pr "src/npCore/npSales")
+                        (concat pr "src/npCore/npSales/Promotions")
+                        (concat pr "src/npCore/npSales/Promotions/Actions")
+                        (concat pr "src/npCore/npSales/Promotions/Utils")
+                        (concat pr "src/npSharp")
+                        (concat pr "src/npre/include")
+                        (concat pr "src/npre/npCppLib")
+                        (concat pr "src/pos/npPSWMGR")
+                        (concat pr "src/services/rps/include")
+                        (concat pr "src/stt/include")
+                        (concat pr "src/updt/include")
+                        (concat pr "src/way/include")
+                        (concat pr "src/way/npAdpApplyUpdate")
+                        (concat pr "src/way/npAdpNP6Publisher")))
+      (add-to-list 'flycheck-clang-include-path path)))
+  )
