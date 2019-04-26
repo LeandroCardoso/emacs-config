@@ -43,7 +43,9 @@ If DELTA is negative, shrink selected window by -DELTA."
                                  ((null delta) resize-window-step)
                                  (t delta))))
     (enlarge-window (if (floatp delta-or-default)
-                        (truncate (* (if horizontal (frame-width) (frame-height)) delta-or-default))
+                        (let ((dt-pxl (truncate (* (if horizontal (frame-width) (frame-height))
+                                                  delta-or-default))))
+                          (if (= dt-pxl 0) 1 dt-pxl))
                       delta-or-default)
                     horizontal)))
 
