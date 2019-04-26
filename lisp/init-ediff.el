@@ -58,6 +58,7 @@ buffer C."
 
   ;; (setq ediff-custom-diff-options "-c -w")
   ;; (setq ediff-diff-options "--binary -w")
+  (setq ediff-show-ancestor nil)
   (setq ediff-split-window-function 'split-window-horizontally)
   (setq ediff-window-setup-function 'ediff-setup-windows-plain) ; everything in one frame
 
