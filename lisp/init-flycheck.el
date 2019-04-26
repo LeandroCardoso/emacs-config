@@ -9,9 +9,13 @@
   (setq flycheck-mode-line-prefix "!")
 
   ;; Increased the "File" column size
-  (seq-doseq (el flycheck-error-list-format)
-    (when (string= (car el) "File")
-      (setcdr el 20)))
+  ;; FIXME
+  ;; (seq-doseq (el flycheck-error-list-format)
+  ;;   (when (string= (car el) "File")
+  ;;     (setcdr el 20)))
+
+  ;; clang
+  (flycheck-add-next-checker 'c/c++-clang 'c/c++-cppcheck)
 
   ;; cppcheck
   ;; unusedStructMember is annoying in header files
