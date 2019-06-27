@@ -1,5 +1,6 @@
 .emacs.desktop
 .emacs.desktop.lock
+amx-items
 auto-save-list/
 auto-save/
 backup/
@@ -14,7 +15,6 @@ places
 recentf
 semanticdb/
 server/
-smex-items
 tramp
 transient/
 url/

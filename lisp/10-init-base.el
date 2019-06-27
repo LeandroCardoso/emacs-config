@@ -13,6 +13,7 @@
 (setq minibuffer-eldef-shorten-default t)
 (minibuffer-depth-indicate-mode)
 ;; ESC key toogle the minibuffer
+(global-set-key (kbd "<escape>") 'execute-extended-command)
 (define-key minibuffer-local-map (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; novice.el
