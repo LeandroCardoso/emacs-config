@@ -111,7 +111,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-M-|") 'delete-indentation)
-(global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
+(global-set-key (kbd "<C-backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "M-u") 'upcase-dwim) ;; default is upcase-word
 (global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
 (global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
