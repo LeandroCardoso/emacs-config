@@ -8,6 +8,19 @@
 
 
 ;; functions
+(defun indent-defun ()
+  "Indent the current function.
+See `indent-region'"
+  (interactive "*")
+  (save-excursion
+    (let ((begin nil)
+          (end nil))
+      (beginning-of-defun)
+      (setq begin (point))
+      (end-of-defun)
+      (setq end (point))
+      (indent-region begin end))))
+
 
 (defun smart-semicolon ()
   "Go to end of line, delete trailing whitespace and insert a \";\" unless
@@ -20,4 +33,5 @@ one already exists at point."
 
 
 ;; key bindings
+(define-key prog-mode-map (kbd "C-c C-q") 'indent-defun) ;; similar to the c-indent-defun
 (define-key prog-mode-map (kbd "C-;") 'smart-semicolon)

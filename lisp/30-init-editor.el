@@ -9,19 +9,6 @@ See `indent-region'"
   (indent-region (point-min) (point-max) column))
 
 
-(defun indent-defun ()
-  "Indent the current function.
-See `indent-region'"
-  (interactive "*")
-  (save-excursion
-    (let ((begin nil)
-          (end nil))
-      (beginning-of-defun)
-      (setq begin (point))
-      (end-of-defun)
-      (setq end (point))
-      (indent-region begin end))))
-
 (defvar infer-indentation-style-region-max 100000
   "The maximum region size for examining indentation style with
 `infer-indentation-style'. nil means no limit.")
