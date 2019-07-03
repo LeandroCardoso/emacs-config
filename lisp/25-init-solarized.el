@@ -32,6 +32,11 @@
                         :background 'unspecified
                         :weight 'bold))
 
+  (with-eval-after-load "moody"
+    (set-face-background 'mode-line-inactive (solarized-color-blend (face-background 'mode-line)
+                                                                    (face-background 'default)
+                                                                    0.5)))
+
   (with-eval-after-load "symbol-overlay"
     (set-face-attribute 'symbol-overlay-default-face nil
                         :inherit 'unspecified
