@@ -1,13 +1,10 @@
-(with-eval-after-load 'prog-mode
-  (defun font-lock-todo-setup ()
-    (font-lock-add-keywords
-     nil
-     '(("\\<\\(FIXME\\|TODO\\|BUG\\)\\>" 1 font-lock-warning-face t))))
+(defun font-lock-todo-setup ()
+  (font-lock-add-keywords
+   nil
+   '(("\\<\\(FIXME\\|TODO\\|BUG\\)\\>" 1 font-lock-warning-face t))))
 
-  (add-hook 'prog-mode-hook #'font-lock-todo-setup))
+(add-hook 'prog-mode-hook #'font-lock-todo-setup)
 
-
-;; functions
 (defun indent-defun ()
   "Indent the current function.
 See `indent-region'"
@@ -20,7 +17,6 @@ See `indent-region'"
       (end-of-defun)
       (setq end (point))
       (indent-region begin end))))
-
 
 (defun smart-semicolon ()
   "Go to end of line, delete trailing whitespace and insert a \";\" unless

@@ -33,12 +33,11 @@
 ;; subr.el
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; paragraphs
+;; paragraphs.el
 (setq sentence-end-double-space nil)
 
-;; keys
+;; key bindings
 (global-set-key (kbd "<C-M-escape>") 'keyboard-quit)
-
 
 ;; iso-transl - This is required for dead keys work in linux
 (require 'iso-transl)

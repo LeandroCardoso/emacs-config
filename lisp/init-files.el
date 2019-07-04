@@ -1,13 +1,3 @@
-(unless (file-directory-p (concat user-emacs-directory "auto-save"))
-  (mkdir (concat user-emacs-directory "auto-save")))
-
-(setq auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "auto-save/\\1") t)))
-(setq make-backup-files nil)
-(setq backup-by-copying t)
-(setq version-control t)
-(setq confirm-kill-emacs 'y-or-n-p)
-(setq delete-old-versions t)
-
 (defun make-backup-buffer ()
   "Make a backup of the disk file visited by the current buffer.
 See `backup-buffer'."
@@ -19,5 +9,21 @@ See `backup-buffer'."
     (when buffer-backed-up
       (message "created backup for buffer %s" (file-name-nondirectory buffer-file-name)))))
 
+(defun directory-list (path)
+  "Find all directories in PATH."
+  (when (file-directory-p path)
+      (process-lines find-program path "-type" "d")))
+
+(unless (file-directory-p (concat user-emacs-directory "auto-save"))
+  (mkdir (concat user-emacs-directory "auto-save")))
+
+(setq auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "auto-save/\\1") t)))
+(setq make-backup-files nil)
+(setq backup-by-copying t)
+(setq version-control t)
+(setq confirm-kill-emacs 'y-or-n-p)
+(setq delete-old-versions t)
+
+;; key bindings
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x ~") 'make-backup-buffer)

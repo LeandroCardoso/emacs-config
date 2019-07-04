@@ -33,7 +33,7 @@
       ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
       ("\t.*\t" . font-lock-comment-face)
       ("Legacy [a-zA-Z]+ Log" . font-lock-comment-face)
-      )                                              ;; FONT-LOCK-LIST
+      )                                                ;; FONT-LOCK-LIST
     '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$") ;; AUTO-MODE-LIST
     (list
      (lambda ()
@@ -55,7 +55,7 @@
       ("\\(ERROR\\|FATAL\\)" . compilation-error-face)
       ("^[0-9- :]*;" . font-lock-comment-face) ; timestamp
       ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)
-      )                                       ;; FONT-LOCK-LIST
+      )                                                  ;; FONT-LOCK-LIST
     '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$") ;; AUTO-MODE-LIST
     (list
      (lambda ()
@@ -65,13 +65,13 @@
 
   ;; np6 kiosk log mode
   (define-generic-mode np6-kiosk-log-mode ;; MODE
-    nil                                  ;; COMMENT-LIST
-    nil                                  ;; KEYWORD-LIST
+    nil                                   ;; COMMENT-LIST
+    nil                                   ;; KEYWORD-LIST
     '((" \\(INFO\\|DEBUG\\) " . font-lock-function-name-face)
       (" WARN " . compilation-warning-face)
       (" ERROR " . compilation-error-face)
       ("^[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)
-      )                                       ;; FONT-LOCK-LIST
+      )                                                        ;; FONT-LOCK-LIST
     '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$") ;; AUTO-MODE-LIST
     (list
      (lambda ()
@@ -81,12 +81,12 @@
   (setq-mode-local np6-kiosk-log-mode font-lock-keywords-only t)
 
   ;; .np6 and .npsharp mode
-  (define-generic-mode np6-mode ;; MODE
-    '(";")                      ;; COMMENT-LIST
-    '("|")                      ;; KEYWORD-LIST
-    nil                         ;; FONT-LOCK-LIST
+  (define-generic-mode np6-mode        ;; MODE
+    '(";")                             ;; COMMENT-LIST
+    '("|")                             ;; KEYWORD-LIST
+    nil                                ;; FONT-LOCK-LIST
     '("start.*\\.\\(np6\\|npsharp\\)") ;; AUTO-MODE-LIST
-    nil                         ;; FUNCTION-LIST
+    nil                                ;; FUNCTION-LIST
     )
 
   (when (require 'engine-mode nil t)
@@ -158,25 +158,13 @@
     (add-to-list 'flycheck-clang-definitions def))
 
   (setq flycheck-clang-include-path nil)
-  (let ((pr "c:/Dev/np61/")) ;; (car (project-roots (project-current)))
-    (dolist (path (list "../"
-                        (concat pr "extSrc/js180/src")
-                        (concat pr "src/Log/npLog/include")
-                        (concat pr "src/drivers/include")
-                        (concat pr "src/npCore/include")
-                        (concat pr "src/npCore/npSales")
-                        (concat pr "src/npCore/npSales/Promotions")
-                        (concat pr "src/npCore/npSales/Promotions/Actions")
-                        (concat pr "src/npCore/npSales/Promotions/Utils")
-                        (concat pr "src/npSharp")
-                        (concat pr "src/npre/include")
-                        (concat pr "src/npre/npCppLib")
-                        (concat pr "src/pos/npPSWMGR")
-                        (concat pr "src/services/rps/include")
-                        (concat pr "src/stt/include")
-                        (concat pr "src/updt/include")
-                        (concat pr "src/way/include")
-                        (concat pr "src/way/npAdpApplyUpdate")
-                        (concat pr "src/way/npAdpNP6Publisher")))
-      (add-to-list 'flycheck-clang-include-path path)))
-  )
+
+  (defun clang-update-np61 (&optional force)
+    (when (or (null flycheck-clang-include-path) force)
+      (setq flycheck-clang-include-path nil)
+      (let ((pr "c:/Dev/np61/"))
+        (dolist (path (nconc (directory-list (concat pr "src/"))
+                             (directory-list (concat pr "extSrc/"))))
+          (push path flycheck-clang-include-path)))))
+
+  (add-hook 'flycheck-mode-hook 'clang-update-np61))
