@@ -8,7 +8,7 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq delete-old-versions t)
 
-(defun backup-buffer-interactive ()
+(defun make-backup-buffer ()
   "Make a backup of the disk file visited by the current buffer.
 See `backup-buffer'."
   (interactive)
@@ -20,4 +20,4 @@ See `backup-buffer'."
       (message "created backup for buffer %s" (file-name-nondirectory buffer-file-name)))))
 
 (global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-x ~") 'backup-buffer-interactive)
+(global-set-key (kbd "C-x ~") 'make-backup-buffer)
