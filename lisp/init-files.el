@@ -1,3 +1,19 @@
+(defun directory-list (path)
+  "Find all directories in PATH."
+  (when (file-directory-p path)
+    (process-lines find-program path "-type" "d")))
+
+(defun file-name-kill-ring-save (full-path)
+  "Save the current file name in the kill ring and display it the message area.
+
+With prefix argument FULL-PATH save the current full path file name in the kill ring."
+  (interactive "P")
+  (when buffer-file-name
+    (kill-new (if full-path
+                  buffer-file-name
+                (file-name-nondirectory buffer-file-name)))
+    (message "File name %s" buffer-file-name)))
+
 (defun make-backup-buffer ()
   "Make a backup of the disk file visited by the current buffer.
 See `backup-buffer'."
@@ -9,21 +25,19 @@ See `backup-buffer'."
     (when buffer-backed-up
       (message "created backup for buffer %s" (file-name-nondirectory buffer-file-name)))))
 
-(defun directory-list (path)
-  "Find all directories in PATH."
-  (when (file-directory-p path)
-      (process-lines find-program path "-type" "d")))
-
+;; auto-save
 (unless (file-directory-p (concat user-emacs-directory "auto-save"))
   (mkdir (concat user-emacs-directory "auto-save")))
-
 (setq auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "auto-save/\\1") t)))
-(setq make-backup-files nil)
+;; backup
 (setq backup-by-copying t)
-(setq version-control t)
-(setq confirm-kill-emacs 'y-or-n-p)
 (setq delete-old-versions t)
+(setq make-backup-files nil)
+(setq version-control t)
+;; misc
+(setq confirm-kill-emacs 'y-or-n-p)
 
 ;; key bindings
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x ~") 'make-backup-buffer)
+(global-set-key (kbd "C-x C-d") 'file-name-kill-ring-save) ; replace list-directory
