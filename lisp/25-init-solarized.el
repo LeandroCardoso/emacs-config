@@ -6,36 +6,21 @@
 
   (load-theme 'solarized-dark t)
 
-  (set-face-background 'cursor (face-foreground 'font-lock-constant-face)) ; blue
-  (set-face-attribute 'header-line nil
-                      :foreground (face-foreground 'warning)
-                      :weight 'bold) ; yellow
-  (set-face-foreground 'fringe (face-foreground 'vertical-border))
-  (set-face-foreground 'mode-line-buffer-id (face-foreground 'warning))    ; yellow
-  (set-face-foreground 'minibuffer-prompt (face-foreground 'mode-line-buffer-id))
-  (set-face-attribute 'mode-line nil
-                      :overline (face-foreground 'mode-line-buffer-id)
-                      :underline 'unspecified
-                      :box `(:line-width 4
-                             :color ,(face-background 'mode-line)
-                             :style 'unspecified))
-
-  (set-face-attribute 'mode-line-inactive nil
-                      :background (face-background 'mode-line)
-                      :overline 'unspecified
-                      :underline 'unspecified
-                      :box (face-attribute 'mode-line :box))
+  (solarized-with-color-variables 'dark
+    (set-face-background 'cursor blue)
+    (set-face-attribute 'header-line nil
+                        :foreground yellow
+                        :weight 'bold)
+    (set-face-foreground 'fringe (face-foreground 'vertical-border))
+    (set-face-foreground 'mode-line-buffer-id yellow)
+    (set-face-foreground 'minibuffer-prompt yellow)
+    (set-face-background 'mode-line (solarized-color-blend base02 blue 0.85)))
 
   (with-eval-after-load "dired"
     (set-face-attribute 'dired-header nil
                         :foreground (face-foreground 'header-line)
                         :background 'unspecified
                         :weight 'bold))
-
-  (with-eval-after-load "moody"
-    (set-face-background 'mode-line-inactive (solarized-color-blend (face-background 'mode-line)
-                                                                    (face-background 'default)
-                                                                    0.5)))
 
   (with-eval-after-load "symbol-overlay"
     (set-face-attribute 'symbol-overlay-default-face nil
