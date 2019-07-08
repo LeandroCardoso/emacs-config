@@ -12,9 +12,10 @@
                         :foreground yellow
                         :weight 'bold)
     (set-face-foreground 'fringe (face-foreground 'vertical-border))
-    (set-face-foreground 'mode-line-buffer-id yellow)
     (set-face-foreground 'minibuffer-prompt yellow)
-    (set-face-background 'mode-line (solarized-color-blend base02 blue 0.85)))
+    (set-face-foreground 'mode-line-buffer-id yellow)
+    (set-face-background 'mode-line (solarized-color-blend base02 blue 0.85))
+    (set-face-background 'mode-line-inactive base02))
 
   (with-eval-after-load "dired"
     (set-face-attribute 'dired-header nil
