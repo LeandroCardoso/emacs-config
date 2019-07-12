@@ -20,15 +20,15 @@ This is the interactive version of `c-or-c++-mode'."
   (add-to-list 'c++-font-lock-extra-types "BOOL")
 
   ;; hooks
-  (defun c-common-setup-hook ())
-
-  (defun c-setup-hook ()
-    (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face)))
-    (c-toggle-comment-style -1))
-
-  (defun c++-setup-hook ()
+  (defun c-c++-setup-hook ()
     (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
 
-  (add-hook 'c-mode-common-hook #'c-common-setup-hook)
+  (defun c-setup-hook ()
+    (c-toggle-comment-style -1))
+
+  (defun c++-setup-hook ())
+
   (add-hook 'c-mode-hook #'c-setup-hook)
-  (add-hook 'c++-mode-hook #'c++-setup-hook))
+  (add-hook 'c-mode-hook #'c-c++-setup-hook)
+  (add-hook 'c++-mode-hook #'c++-setup-hook)
+  (add-hook 'c++-mode-hook #'c-c++-setup-hook))
