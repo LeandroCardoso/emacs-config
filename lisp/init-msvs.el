@@ -1,10 +1,10 @@
 ;; Add support to MS Visual Studio
 ;;
 ;; References:
-;; - https://blogs.msdn.microsoft.com/chuckw/2013/10/03/a-brief-history-of-windows-sdks
+;; - https://walbourn.github.io/a-brief-history-of-windows-sdks/
 ;; - https://en.wikipedia.org/wiki/Microsoft_Windows_SDK
 ;; - https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
-
+;; TODO use Common7\Tools\vsdevcmd.bat to compile
 (when (eq system-type 'windows-nt)
   (require 'cl)
 
@@ -12,8 +12,41 @@
   (defvar msvs-cs-project-regexp ".*csproj$")
   (defvar msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
   (defvar msvs-solution-regexp ".*sln$")
-  (defvar msvs-vswhere (expand-file-name (concat (getenv "ProgramFiles(x86)")
-                                                 "/Microsoft Visual Studio/Installer/vswhere.exe")))
+
+  (defvar msvs-vswhere
+    (concat (expand-file-name (getenv "ProgramFiles(x86)"))
+            "/Microsoft Visual Studio/Installer/vswhere.exe"))
+
+  (defvar msvs-root-directory
+    (if (file-readable-p msvs-vswhere)
+        (expand-file-name
+         (car (process-lines msvs-vswhere "-legacy" "-latest" "-property" "installationPath")))
+      (directory-parent
+       (expand-file-name
+        (some (lambda (ENV_VAR) (getenv ENV_VAR))
+              '("VS140COMNTOOLS"  ; Visual Studio 2015
+                ;; There is no VS130COMNTOOLS.
+                "VS120COMNTOOLS"  ; Visual Studio 2013
+                "VS110COMNTOOLS"  ; Visual Studio 2012
+                "VS100COMNTOOLS"  ; Visual Studio 2010
+                "VS90COMNTOOLS"   ; Visual Studio 2008
+                "VS80COMNTOOLS"))) ; Visual Studio 2005
+       2)))
+
+  ;; TODO support to multiple visual studios
+  (defvar msvs-include-directory
+    (concat (expand-file-name (getenv "ProgramFiles(x86)"))
+            "/Microsoft Visual Studio 12.0/VC/include"))
+
+  ;; TODO support to multiple sdks. Find Windows.h @ "Microsoft SDKs/Windows/" and "Windows Kits/"
+  (defvar msvs-platform-sdk
+    (concat (expand-file-name (getenv "ProgramFiles(x86)"))
+            "/Windows Kits/8.1/Include/um"))
+
+  ;; Add Visual Studio binary directories to PATH
+  (when msvs-root-directory
+    (w32-add-to-path (concat msvs-root-directory "/Common7/Tools"))
+    (add-to-list 'exec-path (concat msvs-root-directory "/Common7/Tools")))
 
 
   (defun msvs-compile-command (&optional solution platform configuration target)
@@ -72,41 +105,6 @@
         (add-to-list (make-local-variable 'compilation-search-path)
                      (file-name-directory project-file)))))
 
-  (defun msvs-list-installations()
-    "Returns a list of Microsoft Visual Studio installation versions"
-    (when (file-readable-p msvs-vswhere)
-      (split-string (with-output-to-string
-                      (call-process msvs-vswhere nil `(,standard-output nil) nil
-                                    "-legacy" "-property" "installationVersion"))
-                    "[\n\r]+" t)))
-
-
-  (defun msvs-root-dir ()
-    "Try to detect the newest Microsoft Visual Studio installed and return its root directory.
-Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (14.0)."
-    (directory-parent
-     (some (lambda (ENV_VAR) (getenv ENV_VAR))
-           '("VS140COMNTOOLS" ; Visual Studio 2015
-             ;; There is no VS130COMNTOOLS.
-             "VS120COMNTOOLS" ; Visual Studio 2013
-             "VS110COMNTOOLS" ; Visual Studio 2012
-             "VS100COMNTOOLS" ; Visual Studio 2010
-             "VS90COMNTOOLS"  ; Visual Studio 2008
-             "VS80COMNTOOLS"  ; Visual Studio 2005
-             ))
-     2))
-
-
-  ;; Add Visual Studio binary directories to PATH
-  (let ((msvs-root (msvs-root-dir)))
-    (when msvs-root
-      (setenv "PATH"
-              (concat
-               (w32-convert-filename (concat msvs-root "Common7\\Tools"))
-               path-separator
-               (w32-convert-filename (concat msvs-root "Common7\\IDE"))
-               path-separator
-               (getenv "PATH")))))
 
   (add-to-list 'auto-mode-alist '("\\.rc\\'" . c-mode))
   (add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
@@ -130,14 +128,13 @@ Versions supported are from Visual Studio 2005 (8.0) up to Visual Studio 2015 (1
   (with-eval-after-load "csharp-mode" (add-hook 'csharp-mode-hook 'msvs-set-compile-command))
 
   ;; c/c++ headers
-  (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/include") t)
-  ;; c/c++ ATL/MFC headers
-  ;; (add-to-list 'cc-search-directories (concat (msvs-root-dir) "VC/atlmfc/include") t)
+  (add-to-list 'cc-search-directories msvs-include-directory t)
+  (add-to-list 'cc-search-directories msvs-platform-sdk t)
 
+  ;; flycheck-clang
+  (add-to-list 'flycheck-clang-include-path msvs-include-directory)
+  (add-to-list 'flycheck-clang-include-path msvs-platform-sdk)
 
-  (add-to-list 'cc-search-directories "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Include" t)
-
-    ;; gtags
-  (setenv "GTAGSLIBPATH" (concat "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1A\\Include:"
-                                 "C:\\Program Files\\Microsoft Visual Studio 12.0\\VC\\include"))
+  ;; gtags
+  ;; (setenv "GTAGSLIBPATH" (concat msvs-include-directory ":" msvs-platform-sdk))
   )
