@@ -1,4 +1,6 @@
 (when (eq system-type 'windows-nt)
+  (require 'woman)
+  (require 'info)
 
   (defun w32-convert-filename (file-name)
     "Converted slash characters in file names into backslashes."
@@ -9,35 +11,32 @@
         (setq start (match-end 0)))
       file-name))
 
-  (defun add-unix-root-dir (DIRNAME)
-    "Set emacs to use an additional custom unix root directory.
-Custom directories are added in the begging"
-    (when (file-directory-p DIRNAME)
-      (require 'woman)
-      (require 'info)
-      (dolist (DIR '("/usr/bin" "/bin"))
-        (when (file-directory-p (concat DIRNAME DIR))
-          (setenv "PATH" (concat (w32-convert-filename (concat DIRNAME DIR))
-                                 path-separator
-                                 (getenv "PATH")))
-          (add-to-list 'exec-path (concat DIRNAME DIR))))
-      (dolist (DIR '("/usr/share/man" "/share/man" "/usr/local/man" "/local/man"))
-        (when (file-directory-p (concat DIRNAME DIR))
-          (add-to-list 'woman-manpath (concat DIRNAME DIR))))
-      (dolist (DIR '("/usr/share/info" "/share/info" "/usr/local/info" "/local/info"))
-        (when (file-directory-p (concat DIRNAME DIR))
-          (add-to-list 'Info-additional-directory-list (concat DIRNAME DIR))))))
+  (defun w32-add-to-path (new-path)
+    "Add NEW-PATH to the environment variable \"PATH\""
+    (let ((current-path (getenv "PATH"))
+          (w32-new-path (w32-convert-filename new-path)))
+      (unless (string-match-p (regexp-quote w32-new-path) (or current-path ""))
+        (setenv "PATH" (concat w32-new-path path-separator current-path)))))
+
+  (defun w32-add-unix-root-path (path)
+    "Set emacs to use an additional custom unix root path."
+    (when (file-directory-p path)
+      (dolist (bin-dir '("/usr/bin" "/bin"))
+        (when (file-directory-p (concat path bin-dir))
+          (w32-add-to-path (concat path bin-dir))
+          (add-to-list 'exec-path (concat path bin-dir))))
+      (dolist (man-dir '("/usr/share/man" "/share/man" "/usr/local/man" "/local/man"))
+        (when (file-directory-p (concat path man-dir))
+          (add-to-list 'woman-manpath (concat path man-dir))))
+      (dolist (info-dir '("/usr/share/info" "/share/info" "/usr/local/info" "/local/info"))
+        (when (file-directory-p (concat path info-dir))
+          (add-to-list 'Info-additional-directory-list (concat path info-dir))))))
 
   ;; root directories are added in the beginning
-  (add-unix-root-dir "c:/msys64/mingw64")
-  (add-unix-root-dir "c:/msys64")
+  (w32-add-unix-root-path "c:/msys64/mingw64")
+  (w32-add-unix-root-path "c:/msys64")
 
   ;; Add windows_bin to PATH and exec-path
-  (setenv "PATH" (concat (w32-convert-filename
-                          (expand-file-name
-                           (concat user-emacs-directory "windows_bin/")))
-                         path-separator
-                         (getenv "PATH")))
   (add-to-list 'exec-path (concat user-emacs-directory "windows_bin/"))
 
   ;; nodejs
@@ -51,8 +50,7 @@ Custom directories are added in the begging"
   ;; Workaround for ediff
   (setenv "LANG" "C")
 
-  ;; Functions
-
+  ;; TODO
   (defun shell-bash ()
     "Run `shell' with bash"
     (interactive)
