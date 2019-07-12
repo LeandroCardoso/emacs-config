@@ -153,7 +153,12 @@
   (setq flycheck-clang-warnings '("all" "extra" "no-invalid-token-paste"))
 
   (setq flycheck-clang-definitions nil)
-  (dolist (def '("NPMODDEF" "XP_WIN" "_MSC_VER"))
+  (dolist (def '("_MSC_VER=1800" ;used by windows
+                 "_M_IX86"
+                 "_WIN32"
+                 "NPMODDEF"      ;used by np61
+                 "XP_WIN"        ;used by js180
+                 ))
     (push def flycheck-clang-definitions))
 
   (defun clang-update-np61 (&optional force)
