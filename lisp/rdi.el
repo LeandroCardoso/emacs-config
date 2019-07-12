@@ -148,16 +148,13 @@
   (defalias 'np61-keymap np61-global-keymap)
   (global-set-key (kbd "<f5>") 'np61-keymap)
 
-  ;; Experimental clang support
+  ;; flycheck-clang
   (setq flycheck-clang-ms-extensions t)
-  (setq flycheck-clang-language-standard "c++11")
   (setq flycheck-clang-warnings '("all" "extra" "no-invalid-token-paste"))
 
   (setq flycheck-clang-definitions nil)
   (dolist (def '("NPMODDEF" "XP_WIN" "_MSC_VER"))
-    (add-to-list 'flycheck-clang-definitions def))
-
-  (setq flycheck-clang-include-path nil)
+    (push def flycheck-clang-definitions))
 
   (defun clang-update-np61 (&optional force)
     (when (or (null flycheck-clang-include-path) force)
@@ -165,6 +162,13 @@
       (let ((pr "c:/Dev/np61/"))
         (dolist (path (nconc (directory-list (concat pr "src/"))
                              (directory-list (concat pr "extSrc/"))))
-          (push path flycheck-clang-include-path)))))
+          ;; Skip directories that do not have header files
+          (when (directory-files path nil "\\.h.*" t)
+            (push path flycheck-clang-include-path))))
+      ;; Include Visual Studio and Windows SDK
+      (when msvs-include-directory
+        (push msvs-include-directory flycheck-clang-include-path))
+      (when msvs-platform-sdk
+        (push msvs-platform-sdk flycheck-clang-include-path))))
 
   (add-hook 'flycheck-mode-hook 'clang-update-np61))
