@@ -89,11 +89,7 @@
     nil                                ;; FUNCTION-LIST
     )
 
-  (when (require 'engine-mode nil t)
-    (defengine jira
-      "https://jira.rdisoftware.com/secure/QuickSearch.jspa?searchString=%s"
-      :keybinding "j"))
-
+  ;; np61 application
   (defun np61-set-exec-dir (directory)
     (interactive "DRoot np61 directory: ")
     (setq np61-exec-dir directory)
@@ -148,32 +144,52 @@
   (defalias 'np61-keymap np61-global-keymap)
   (global-set-key (kbd "<f5>") 'np61-keymap)
 
+  ;; engine
+  (when (require 'engine-mode nil t)
+    (defengine jira
+      "https://jira.rdisoftware.com/secure/QuickSearch.jspa?searchString=%s"
+      :keybinding "j"))
+
   ;; flycheck-clang
-  (setq flycheck-clang-ms-extensions t)
-  (setq flycheck-clang-warnings '("all" "extra" "no-invalid-token-paste"))
+  (when (require 'flycheck nil t)
+    (setq flycheck-clang-ms-extensions t)
+    (setq flycheck-clang-warnings '("all" "extra" "no-invalid-token-paste"))
 
-  (setq flycheck-clang-definitions nil)
-  (dolist (def '("_MSC_VER=1800" ;used by windows
-                 "_M_IX86"
-                 "_WIN32"
-                 "NPMODDEF"      ;used by np61
-                 "XP_WIN"        ;used by js180
-                 ))
-    (push def flycheck-clang-definitions))
+    (setq flycheck-clang-definitions nil)
+    (dolist (def '("_MSC_VER=1800" ;used by windows
+                   "_M_IX86"
+                   "_WIN32"
+                   "NPMODDEF" ;used by np61
+                   "XP_WIN"   ;used by js180
+                   ))
+      (push def flycheck-clang-definitions))
 
-  (defun clang-update-np61 (&optional force)
-    (when (or (null flycheck-clang-include-path) force)
-      (setq flycheck-clang-include-path nil)
-      (let ((pr "c:/Dev/np61/"))
-        (dolist (path (nconc (directory-list (concat pr "src/"))
-                             (directory-list (concat pr "extSrc/"))))
-          ;; Skip directories that do not have header files
-          (when (directory-files path nil "\\.h.*" t)
-            (push path flycheck-clang-include-path))))
-      ;; Include Visual Studio and Windows SDK
-      (when msvs-include-directory
-        (push msvs-include-directory flycheck-clang-include-path))
-      (when msvs-platform-sdk
-        (push msvs-platform-sdk flycheck-clang-include-path))))
+    (defvar np61-clang-update nil
+      "Non-nil if `np61-clang-update' function updated the `flycheck-clang-include-path'.")
 
-  (add-hook 'flycheck-mode-hook 'clang-update-np61))
+    (defun np61-clang-update (&optional force)
+      "Set `flycheck-clang-include-path' with np61 directories.
+
+This function only runs when either flycheck-clang-include-path
+is nil, `np61-clang-update' is nil or the FORCE parameter is
+non-nil."
+      (when (or (null flycheck-clang-include-path) (not np61-clang-update) force)
+        (message "Updating flycheck-clang-include-path...")
+        (let ((start-time (current-time))
+              (pr "c:/Dev/np61/"))
+          (setq flycheck-clang-include-path nil)
+          (setq np61-clang-update t)
+          (dolist (path (nconc (directory-list (concat pr "src/"))
+                               (directory-list (concat pr "extSrc/"))))
+            ;; Skip directories that do not have header files
+            (when (directory-files path nil "\\.h.*" t)
+              (push path flycheck-clang-include-path)))
+          ;; Include Visual Studio and Windows SDK
+          (when msvs-include-directory
+            (push msvs-include-directory flycheck-clang-include-path))
+          (when msvs-platform-sdk
+            (push msvs-platform-sdk flycheck-clang-include-path))
+          (message "Updating flycheck-clang-include-path...done in %g seconds"
+                   (float-time (time-since start-time))))))
+
+    (add-hook 'flycheck-mode-hook 'np61-clang-update)))
