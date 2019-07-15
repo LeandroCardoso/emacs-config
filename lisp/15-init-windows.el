@@ -4,7 +4,7 @@
 
   (defun w32-convert-filename (file-name)
     "Converted slash characters in file names into backslashes."
-    (let ((file-name (convert-standard-filename file-name))
+    (let ((file-name (convert-standard-filename (expand-file-name file-name)))
           (start 0))
       (while (string-match "/" file-name start)
         (aset file-name (match-beginning 0) ?\\)
@@ -37,6 +37,7 @@
   (w32-add-unix-root-path "c:/msys64")
 
   ;; Add windows_bin to PATH and exec-path
+  (w32-add-to-path (concat user-emacs-directory "windows_bin/"))
   (add-to-list 'exec-path (concat user-emacs-directory "windows_bin/"))
 
   ;; nodejs
