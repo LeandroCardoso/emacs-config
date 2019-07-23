@@ -12,3 +12,5 @@
                     (directory-files (expand-file-name "lisp" user-emacs-directory)
                                      nil
                                      "^[^_\\.].*\\.el$")))
+
+(message "emacs started in %s" (emacs-init-time))
