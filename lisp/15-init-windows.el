@@ -37,8 +37,8 @@
   (w32-add-unix-root-path "c:/msys64")
 
   ;; Add windows_bin to PATH and exec-path
-  (w32-add-to-path (concat user-emacs-directory "windows_bin/"))
-  (add-to-list 'exec-path (concat user-emacs-directory "windows_bin/"))
+  (w32-add-to-path (expand-file-name "windows_bin/" user-emacs-directory))
+  (add-to-list 'exec-path (expand-file-name "windows_bin/" user-emacs-directory))
 
   ;; nodejs
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")

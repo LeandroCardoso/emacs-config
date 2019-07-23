@@ -29,7 +29,7 @@ See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
 
     (add-hook 'csharp-mode-hook 'omnisharp-mode)
 
-    (setq omnisharp-cache-directory (concat user-emacs-directory "omnisharp"))
+    (setq omnisharp-cache-directory (expand-file-name "omnisharp" user-emacs-directory))
     (setq omnisharp-company-do-template-completion nil)
     (setq omnisharp-imenu-support nil) ; disabled because it does not work when server is not running
 
