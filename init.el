@@ -3,6 +3,10 @@
 
 (setq custom-file (concat user-emacs-directory "custom-variables.el"))
 
+;; local packages
+(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+(byte-recompile-directory (expand-file-name "packages" user-emacs-directory) 0)
+
 ;; Load all emacs list (*.el/*.elc) files sorted by name at ~/.emacs.d/lisp. Sub-directories and
 ;; files starting with underline or dot are ignored. If a compiled elisp file exist and it is not
 ;; outdated, then load it instead of the non-compiled one.
