@@ -3,16 +3,26 @@
   (when (file-directory-p path)
     (process-lines find-program path "-type" "d")))
 
-(defun file-name-kill-ring-save (full-path)
-  "Save the current file name in the kill ring and display it the message area.
+(defun print-buffer-location (&optional short)
+  "If the current buffer is a file visited buffer, save the
+current file name in the kill ring and display it in the message
+area.
 
-With prefix argument FULL-PATH save the current full path file name in the kill ring."
+Otherwise save the current directory in the kill ring and display
+it in the message area.
+
+With prefix argument SHORT when current buffer is a file visied
+buffer, save only the file name without the directory in the kill
+ring."
   (interactive "P")
-  (when buffer-file-name
-    (kill-new (if full-path
-                  buffer-file-name
-                (file-name-nondirectory buffer-file-name)))
-    (message "File name %s" buffer-file-name)))
+  (kill-new (if buffer-file-name
+                (if short
+                    buffer-file-name
+                  (file-name-nondirectory buffer-file-name))
+              default-directory))
+  (if buffer-file-name
+      (message "File name %s" buffer-file-name)
+    (message "Directory %s" default-directory)))
 
 (defun make-backup-buffer ()
   "Make a backup of the disk file visited by the current buffer.
@@ -40,4 +50,4 @@ See `backup-buffer'."
 ;; key bindings
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x ~") 'make-backup-buffer)
-(global-set-key (kbd "C-x C-d") 'file-name-kill-ring-save) ; replace list-directory
+(global-set-key (kbd "C-x C-d") 'print-buffer-location) ; replace list-directory
