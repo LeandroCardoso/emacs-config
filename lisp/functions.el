@@ -85,7 +85,7 @@ If NOSORT is non-nil, the list is not sorted--its order is unpredictable.
       (while (and (string-empty-p (buffer-substring-no-properties (line-beginning-position)
                                                                   (line-end-position)))
                   (= 0 (forward-line -1)))) ; end case if buffer is empty
-      (copy-region-as-kill (line-beginning-position) (line-end-position)))))
+      (kill-new (buffer-substring (line-beginning-position) (line-end-position))))))
 
 
 (defun standard-value (symbol)
