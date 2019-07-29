@@ -105,10 +105,26 @@
         (add-to-list (make-local-variable 'compilation-search-path)
                      (file-name-directory project-file)))))
 
+  ;; Create modes for solution and project files, so we can set the compile command
+
+  (define-generic-mode sln-mode ;; MODE
+    '("#")                      ;; COMMENT-LIST
+    nil                         ;; KEYWORD-LIST
+    nil                         ;; FONT-LOCK-LIST
+    '("\\.sln\\'")              ;; AUTO-MODE-LIST
+    (list 'msvs-set-compile-command
+          (lambda () (local-set-key (kbd "<f9>") 'compile))
+          ) ;; FUNCTION-LIST
+    )
+
+  (define-derived-mode vsproj-mode nxml-mode "VS-proj" nil
+    (msvs-set-compile-command)
+    (local-set-key (kbd "<f9>") 'compile))
 
   (add-to-list 'auto-mode-alist '("\\.rc\\'" . c-mode))
   (add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
   (add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))
+  (add-to-list 'auto-mode-alist '("\\.\\(vcx\\|cs\\)proj\\'" . vsproj-mode))
 
   ;; An ungly hack to idenfity c++ extensionless files as c++ file. Thanks ISO c++, a file without
   ;; extension was a great idea!
