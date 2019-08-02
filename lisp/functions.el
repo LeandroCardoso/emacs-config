@@ -4,26 +4,30 @@
   (push default-directory ido-work-directory-list))
 
 
-(defun create-dir-local-file (DIRECTORY)
-  "Create the `dir-locals-file in the DIRECTORY if it does not exist yet."
-  (let ((full-dir-locals-file (concat DIRECTORY dir-locals-file)))
+(defun create-dir-local-file (directory)
+  "Create a `dir-locals-file' in the DIRECTORY if it does not exist yet."
+  (let ((full-dir-locals-file (concat directory dir-locals-file)))
     (when (not (file-exists-p full-dir-locals-file))
       ;;(with-temp-file full-dir-locals-file)))
       (write-region "" nil full-dir-locals-file))))
 
 
-(defun directory-parent (DIR &optional NUMBER)
-  "Return the parent directory of `DIR'.
-With `NUMBER', return the `NUMBER' parent directory of `DIR'."
-  (when DIR
-    (if (or (null NUMBER) (= NUMBER 1) (= NUMBER 0))
-        (file-name-directory (directory-file-name DIR))
-      (directory-parent (file-name-directory (directory-file-name DIR)) (1- NUMBER)))))
+(defun directory-parent (directory &optional number)
+  "Return the parent directory of DIRECTORY.
+With NUMBER, return the NUMBER parent directory of DIRECTORY."
+  (when directory
+    (if (or (null number) (= number 1) (= number 0))
+        (file-name-directory (directory-file-name directory))
+      (directory-parent (file-name-directory (directory-file-name directory)) (1- number)))))
 
-(defun copy-directory-if-newer (directory1 directory2)
-  "Copy files from `DIRECTORY1' to `DIRECTORY2', but only if the
-file already exists and it is older in the latter directory than
-in the former."
+(defun copy-directory-common-files (origin destination &optional all)
+  "Copy all files from ORIGIN directory to DESTINATION directory,
+but only if the file exists in both directories and the file
+timestamp is newer in the ORIGIN directory than in the
+DESTINATION directory.
+
+With optional argument ALL, ignore the timestamp checking and
+copy all files that exist in both directories."
   (interactive
    (let ((dir (read-directory-name
                "Copy directory: " default-directory default-directory t)))
@@ -31,17 +35,18 @@ in the former."
            (read-directory-name
             (format "Copy directory %s to: " dir)
             default-directory default-directory t))))
-  (when (file-directory-p directory2)
+  (when (file-directory-p destination)
     (let ((files-copied 0))
-      (dolist (file (directory-files directory1 t))
+      (dolist (file (directory-files origin t))
         (when (and (file-regular-p file)
-                   (file-newer-than-file-p
-                    file
-                    (concat (file-name-as-directory directory2) (file-name-nondirectory file))))
-          (message "Copying %s to %s" file directory2)
-          (copy-file file (file-name-as-directory directory2) t)
+                   (or all
+                       (file-newer-than-file-p
+                        file
+                        (concat (file-name-as-directory destination) (file-name-nondirectory file)))))
+          (message "Copying %s to %s" file destination)
+          (copy-file file (file-name-as-directory destination) t)
           (setq files-copied (1+ files-copied))))
-      (message "%d files copied from %s to %s." files-copied directory1 directory2))))
+      (message "%d files copied from %s to %s." files-copied origin destination))))
 
 
 (defun locate-dominating-file-match (file match)

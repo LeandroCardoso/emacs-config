@@ -127,8 +127,8 @@
     (interactive)
     (unless (boundp 'np61-exec-dir)
       (call-interactively 'np61-set-exec-dir))
-    (copy-directory-if-newer np61-exec-compilation-dir
-                             (concat np61-exec-dir "/" np61-exec-bin-dir)))
+    (copy-directory-common-files np61-exec-compilation-dir
+                                 (concat np61-exec-dir "/" np61-exec-bin-dir)))
 
   ;; global keymap
   (defvar np61-global-keymap
