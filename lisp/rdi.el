@@ -164,32 +164,35 @@
                    ))
       (push def flycheck-clang-definitions))
 
-    (defvar np61-clang-update nil
-      "Non-nil if `np61-clang-update' function updated the `flycheck-clang-include-path'.")
+    (defvar np61-include-path-list nil
+      "A list of include paths for np61 project.")
+
+    (defun np61-update-include-path-list ()
+      (setq np61-include-path-list nil)
+      (message "Updating np61-update-include-path-list...")
+      (let ((start-time (current-time))
+            (pr "c:/Dev/np61/"))
+        (dolist (path (nconc (directory-list (concat pr "src/"))
+                             (directory-list (concat pr "extSrc/"))))
+          ;; Skip directories that do not have header files
+          (when (directory-files path nil "\\.h.*" t)
+            (push path np61-include-path-list)))
+        (message "Updating np61-update-include-path-list...done in %g seconds"
+                 (float-time (time-since start-time)))))
 
     (defun np61-clang-update (&optional force)
-      "Set `flycheck-clang-include-path' with np61 directories.
+      "Set `flycheck-clang-include-path' with np61 and compiler directories.
 
 This function only runs when either flycheck-clang-include-path
-is nil, `np61-clang-update' is nil or the FORCE parameter is
+is nil, `np61-include-path-list' is nil or the FORCE parameter is
 non-nil."
-      (when (or (null flycheck-clang-include-path) (not np61-clang-update) force)
-        (message "Updating flycheck-clang-include-path...")
-        (let ((start-time (current-time))
-              (pr "c:/Dev/np61/"))
-          (setq flycheck-clang-include-path nil)
-          (setq np61-clang-update t)
-          (dolist (path (nconc (directory-list (concat pr "src/"))
-                               (directory-list (concat pr "extSrc/"))))
-            ;; Skip directories that do not have header files
-            (when (directory-files path nil "\\.h.*" t)
-              (push path flycheck-clang-include-path)))
-          ;; Include Visual Studio and Windows SDK
-          (when msvs-include-directory
-            (push msvs-include-directory flycheck-clang-include-path))
-          (when msvs-platform-sdk
-            (push msvs-platform-sdk flycheck-clang-include-path))
-          (message "Updating flycheck-clang-include-path...done in %g seconds"
-                   (float-time (time-since start-time))))))
+      (when (or (null flycheck-clang-include-path) (not np61-include-path-list) force)
+        (when (or (not np61-include-path-list) force)
+          (np61-update-include-path-list))
+        (setq flycheck-clang-include-path np61-include-path-list)
+        (when msvs-include-directory
+          (push msvs-include-directory flycheck-clang-include-path))
+        (when msvs-platform-sdk
+          (push msvs-platform-sdk flycheck-clang-include-path))))
 
     (add-hook 'flycheck-mode-hook 'np61-clang-update)))
