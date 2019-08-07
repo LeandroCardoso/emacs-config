@@ -3,18 +3,15 @@
   (add-to-list 'project-root-list "~/Documents/bugs/")
   (add-to-list 'project-root-list "~/Documents/env/")
 
-  (if (featurep 'js2-mode)
-      (progn
-        (defun nps-setup-hook ()
-          (when (string-match-p "\\.nps\\'" (or buffer-file-name ""))
-            (setq-local js2-include-browser-externs nil)
-            (setq-local js2-language-version 180)
-            (push "API" js2-additional-externs)))
+  ;; nps
+  (when (featurep 'js2-mode)
+    (defun nps-setup-hook ()
+      (when (string-match-p "\\.nps\\'" (or buffer-file-name ""))
+        (setq-local js2-include-browser-externs nil)
+        (setq-local js2-language-version 180)))
 
-        (add-hook 'js2-mode-hook #'nps-setup-hook)
-        (add-hook 'js2-minor-mode-hook #'nps-setup-hook)
-        ;; (add-to-list 'auto-mode-alist '("\\.nps\\'" . js2-mode))
-        ))
+    (add-hook 'js2-mode-hook #'nps-setup-hook)
+    (add-hook 'js2-minor-mode-hook #'nps-setup-hook))
 
   (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
 
