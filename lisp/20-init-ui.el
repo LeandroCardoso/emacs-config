@@ -171,7 +171,7 @@ bottom of the buffer stack."
                "^\\*xref\\*"
                "^\\*company"))
   (add-to-list 'display-buffer-alist
-               `(,buf . ((display-buffer-pop-up-window) . ((window-height . 0.4)))) t))
+               `(,buf . ((display-buffer-pop-up-window) . ((window-height . 0.3)))) t))
 
 (dolist (buf '("^\\*Apropos\\*"
                "^\\*Help\\*"
@@ -179,7 +179,7 @@ bottom of the buffer stack."
                "^\\*compilation\\*"
                "^\\*info\\*"))
   (add-to-list 'display-buffer-alist
-               `(,buf . ((display-buffer-reuse-window) . ((window-height . 0.4)))) t))
+               `(,buf . ((display-buffer-reuse-window) . ((window-height . 0.3)))) t))
 
 ;; Frame
 (setq frame-title-format (concat "%b - emacs@" (system-name)))
