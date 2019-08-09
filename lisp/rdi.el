@@ -7,6 +7,7 @@
   (when (featurep 'js2-mode)
     (defun nps-setup-hook ()
       (when (string-match-p "\\.nps\\'" (or buffer-file-name ""))
+        (setq-local js2-highlight-external-variables nil)
         (setq-local js2-include-browser-externs nil)
         (setq-local js2-language-version 180)))
 
