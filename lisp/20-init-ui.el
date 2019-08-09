@@ -85,6 +85,21 @@ See `kill-buffer' and `other-window'"
         (kill-buffer-and-window)))))
 
 
+(defun toggle-frame-fullscreen+ (arg)
+  "Toggle fullscreen state of selected frame.
+
+With parameter ARG, call `toggle-frame-fullscreen' for all visible frames.
+
+Without parameter ARG, behavior like `toggle-frame-fullscreen'. "
+  (interactive "P")
+  (if arg
+      (dolist (frame (frame-list))
+        (when (frame-visible-p frame)
+          (with-selected-frame frame
+            (toggle-frame-fullscreen))))
+    (toggle-frame-fullscreen)))
+
+
 ;; From obsolete lucid.el
 (defun switch-to-other-buffer (arg)
   "Switch to the previous buffer.
@@ -187,3 +202,5 @@ bottom of the buffer stack."
 (global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
 (global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x c") 'clone-buffer)
+
+(global-set-key [remap toggle-frame-fullscreen] 'toggle-frame-fullscreen+)
