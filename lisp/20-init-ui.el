@@ -129,8 +129,6 @@ bottom of the buffer stack."
 
 ;; cursor
 (setq-default cursor-type 'bar)
-;; disable cursor blink
-(blink-cursor-mode -1)
 
 
 ;; Font
