@@ -166,6 +166,8 @@
       "A list of include paths for np61 project.")
 
     (defun np61-update-include-path-list ()
+      "Update the `np61-include-path-list'."
+      (interactive)
       (setq np61-include-path-list nil)
       (message "Updating np61-update-include-path-list...")
       (let ((start-time (current-time))
@@ -178,28 +180,22 @@
         (message "Updating np61-update-include-path-list...done in %g seconds"
                  (float-time (time-since start-time)))))
 
-    (defun np61-clang-update (&optional force)
-      "Set `flycheck-clang-include-path' with np61 and compiler directories.
-
-This function only runs when either flycheck-clang-include-path
-is nil, `np61-include-path-list' is nil or the FORCE parameter is
-non-nil."
-      ;; update np61-include-path-list
-      (when (or (null np61-include-path-list) force)
-        (np61-update-include-path-list))
-      ;; update flycheck-clang-include-path
-      (when (or (null flycheck-clang-include-path) force)
-        (setq flycheck-clang-include-path np61-include-path-list)
+    (defun np61-c-c++-setup ()
+      "Set `flycheck-clang-include-path' and
+`company-clang-arguments' with np61 and compiler directories."
+      (when (string= "c:/Dev/np61/" (car (project-roots (project-current))))
+        ;; update np61-include-path-list
+        (when (null np61-include-path-list) (np61-update-include-path-list))
+        ;; update flycheck-clang-include-path
+        (setq-local flycheck-clang-include-path np61-include-path-list)
         (when msvs-include-directory (push msvs-include-directory flycheck-clang-include-path))
-        (when msvs-platform-sdk (push msvs-platform-sdk flycheck-clang-include-path)))
-      ;; include company-clang-arguments
-      (when (and (fboundp 'company-clang-arguments)
-                 (or (null company-clang-arguments) force))
-        (setq company-clang-arguments
-              (mapcar* (lambda (path) (concat "-I" path))
-                       np61-include-path-list))
+        (when msvs-platform-sdk (push msvs-platform-sdk flycheck-clang-include-path))
+        ;; update company-clang-arguments
+        (setq-local company-clang-arguments
+                    (mapcar* (lambda (path) (concat "-I" path)) np61-include-path-list))
         (when msvs-include-directory (push (concat "-I" msvs-include-directory) company-clang-arguments))
-        (when msvs-platform-sdk (push (concat "-I" msvs-platform-sdk) company-clang-arguments))) ;
+        (when msvs-platform-sdk (push (concat "-I" msvs-platform-sdk) company-clang-arguments)))
       nil)
 
-    (add-hook 'flycheck-mode-hook 'np61-clang-update)))
+    (add-hook 'c-mode-hook 'np61-c-c++-setup)
+    (add-hook 'c++-mode-hook 'np61-c-c++-setup)))
