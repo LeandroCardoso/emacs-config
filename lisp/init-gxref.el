@@ -21,7 +21,8 @@ any additional command line arguments to pass to GNU Global."
     (gxref--find-symbol symbol "-r" "-s"))
 
   (defun gxref-create-project-db ()
-    "Create a GTAGS database in the first directory specified as `project-roots'"
+    "Create a GTAGS database in the first root directory
+ specified by the `project-roots'."
     (interactive)
     (gxref-create-db (car (project-roots (project-current t)))))
   )
