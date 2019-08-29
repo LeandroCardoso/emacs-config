@@ -26,7 +26,7 @@
           (cdr (assoc (buffer-name) ibuffer-project-root-alist)))
       (equal qualifier it)))
 
-  (defun ibuffer-set-filter-groups-by-project-root ()
+  (defun ibuffer-set-filter-groups-by-project ()
     "Set the current filter groups to filter by project root directory."
     (interactive)
     (ibuffer-project-generate-root-alist)
@@ -37,7 +37,26 @@
                    ibuffer-project-root-alist)))
     (ibuffer-update nil t))
 
-  (add-hook 'ibuffer-hook #'ibuffer-set-filter-groups-by-project-root)
+  (defun ibuffer-find-file+ (file &optional wildcards)
+    "Like `find-file', but default to the directory of the buffer
+at point or directory of the group at point when using the
+`ibuffer-set-filter-groups-by-project'."
+    (interactive
+     (let ((default-directory (let ((buf (ibuffer-current-buffer))
+                                    (group (get-text-property (point) 'ibuffer-filter-group-name)))
+                                (cond ((buffer-live-p buf)
+                                       (with-current-buffer buf
+                                         default-directory))
+                                      ((file-directory-p group)
+                                       group)
+                                      (t default-directory)))))
+       (list (read-file-name "Find file: " default-directory)
+             t)))
+    (find-file file wildcards))
+
+  (add-hook 'ibuffer-hook #'ibuffer-set-filter-groups-by-project)
+  (define-key ibuffer-mode-map [remap ibuffer-find-file] 'ibuffer-find-file+)
+  (define-key ibuffer-mode-map (kbd "/ @") 'ibuffer-filter-by-project)
 
 
   ;;(setq ibuffer-display-summary nil)
