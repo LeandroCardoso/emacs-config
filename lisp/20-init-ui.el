@@ -4,7 +4,7 @@
   "Split WINDOW in a way suitable for `display-buffer'.
 WINDOW defaults to the currently selected window.
 
-Replacement for `split-window-sensibly', but perfers
+Replacement for `split-window-sensibly', but prefers
 `split-width-threshold' over `split-height-threshold'."
   (let ((window (or window (selected-window))))
     (or (and (window-splittable-p window t)
