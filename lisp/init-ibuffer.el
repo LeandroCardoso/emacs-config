@@ -4,6 +4,10 @@
   (require 'project)
   (require 'ibuf-ext)
 
+  (defcustom ibuffer-project-include-non-file nil
+    "Whether non-file buffers are included in the project groups
+    when using the `ibuffer-set-filter-groups-by-project'")
+
   (defvar ibuffer-project-root-alist nil
     "Alist of cached buffers to project root directory.")
 
@@ -11,7 +15,7 @@
     (setq ibuffer-project-root-alist nil)
     (dolist (buf (reverse (buffer-list)))
       (with-current-buffer buf
-        (when (ibuffer-buffer-file-name)
+        (when (or ibuffer-project-include-non-file (ibuffer-buffer-file-name))
           (let ((pr (project-current)))
             (when pr
               (push (cons (buffer-name) (car (project-roots pr)))
