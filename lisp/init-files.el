@@ -3,20 +3,18 @@
   (when (file-directory-p path)
     (process-lines find-program path "-type" "d")))
 
-(defun print-buffer-location (&optional short)
+(defun copy-filename-as-kill (&optional full)
   "If the current buffer is a file visited buffer, save the
-current file name in the kill ring and display it in the message
-area.
+current file name in the kill ring.
 
-Otherwise save the current directory in the kill ring and display
-it in the message area.
+Otherwise save the current directory in the kill ring.
 
-With prefix argument SHORT when current buffer is a file visied
+With prefix argument FULL when current buffer is a file visied
 buffer, save only the file name without the directory in the kill
 ring."
   (interactive "P")
   (kill-new (if buffer-file-name
-                (if short
+                (if full
                     buffer-file-name
                   (file-name-nondirectory buffer-file-name))
               default-directory))
@@ -50,4 +48,4 @@ See `backup-buffer'."
 ;; key bindings
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x ~") 'make-backup-buffer)
-(global-set-key (kbd "C-x C-d") 'print-buffer-location) ; replace list-directory
+(global-set-key (kbd "C-x C-d") 'copy-filename-as-kill) ; replace list-directory
