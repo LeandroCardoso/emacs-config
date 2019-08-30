@@ -22,6 +22,19 @@ ring."
       (message "File name %s" buffer-file-name)
     (message "Directory %s" default-directory)))
 
+;; Adapted from https://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+(defun rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (message "Buffer '%s' is not visiting a file!" (buffer-name))
+      (let ((new-name (read-file-name "New name: " nil nil nil (file-name-nondirectory filename))))
+        (if (vc-backend filename)
+            (vc-rename-file filename new-name)
+          (rename-file filename new-name 1)
+          (set-visited-file-name new-name t t))))))
+
 (defun make-backup-buffer ()
   "Make a backup of the disk file visited by the current buffer.
 See `backup-buffer'."
