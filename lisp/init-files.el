@@ -39,12 +39,14 @@ ring."
   "Make a backup of the disk file visited by the current buffer.
 See `backup-buffer'."
   (interactive)
-  (let ((make-backup-files t)
-        (backup-inhibited nil)
-        (buffer-backed-up nil))
-    (backup-buffer)
-    (when buffer-backed-up
-      (message "created backup for buffer %s" (file-name-nondirectory buffer-file-name)))))
+  (if (not (buffer-file-name))
+      (message "Buffer %s is not visiting a file" (buffer-name))
+    (let ((make-backup-files t)
+          (backup-inhibited nil)
+          (buffer-backed-up nil))
+      (backup-buffer)
+      (when buffer-backed-up
+        (message "Created backup for buffer %s" (file-name-nondirectory buffer-file-name))))))
 
 ;; auto-save
 (unless (file-directory-p (concat user-emacs-directory "auto-save"))
