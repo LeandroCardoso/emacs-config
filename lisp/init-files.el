@@ -22,14 +22,15 @@ ring."
       (message "File name %s" buffer-file-name)
     (message "Directory %s" default-directory)))
 
-;; Adapted from https://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
-(defun rename-file-and-buffer ()
-  "Rename the current buffer and file it is visiting."
+(defun rename-buffer-and-file ()
+  "Rename the current buffer and the file name when it is
+visiting a file."
   (interactive)
   (let ((filename (buffer-file-name)))
     (if (not (and filename (file-exists-p filename)))
-        (message "Buffer '%s' is not visiting a file!" (buffer-name))
-      (let ((new-name (read-file-name "New name: " nil nil nil (file-name-nondirectory filename))))
+        (let ((new-name (read-string "Rename buffer: " (buffer-name))))
+          (rename-buffer new-name))
+      (let ((new-name (read-file-name "Rename file: " nil nil nil (file-name-nondirectory filename))))
         (if (vc-backend filename)
             (vc-rename-file filename new-name)
           (rename-file filename new-name 1)
@@ -61,6 +62,7 @@ See `backup-buffer'."
 (setq confirm-kill-emacs 'y-or-n-p)
 
 ;; key bindings
+(global-set-key (kbd "C-c C-r") 'rename-buffer-and-file)
 (global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-x ~") 'make-backup-buffer)
+(global-set-key (kbd "C-c ~") 'make-backup-buffer)
 (global-set-key (kbd "C-x C-d") 'copy-filename-as-kill) ; replace list-directory
