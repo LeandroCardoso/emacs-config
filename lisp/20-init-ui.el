@@ -86,18 +86,24 @@ See `kill-buffer' and `other-window'"
 
 
 (defun toggle-frame-fullscreen+ (arg)
-  "Toggle fullscreen state of selected frame.
+  "Toggle fullscreen state of all frames.
+Make all frames fullscreen or restore their previous size if the
+selected frame is already fullscreen.
 
-With parameter ARG, call `toggle-frame-fullscreen' for all visible frames.
+With parameter ARG, toggle only the selected frame, instead of
+all frames.
 
-Without parameter ARG, behavior like `toggle-frame-fullscreen'. "
+See also `toggle-frame-fullscreen'. "
   (interactive "P")
   (if arg
+      (toggle-frame-fullscreen)
+    (let ((fullscreen (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))))
       (dolist (frame (frame-list))
-        (when (frame-visible-p frame)
+        (when (and (frame-visible-p frame)
+                   (eq (not fullscreen)
+                       (not (memq (frame-parameter frame 'fullscreen) '(fullscreen fullboth)))))
           (with-selected-frame frame
-            (toggle-frame-fullscreen))))
-    (toggle-frame-fullscreen)))
+            (toggle-frame-fullscreen)))))))
 
 
 ;; From obsolete lucid.el
