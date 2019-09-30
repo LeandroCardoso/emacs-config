@@ -23,6 +23,9 @@
                         :background 'unspecified
                         :weight 'bold))
 
+  (with-eval-after-load "transient"
+    (set-face-background 'transient-separator (face-foreground 'vertical-border)))
+
   (with-eval-after-load "symbol-overlay"
     (set-face-attribute 'symbol-overlay-default-face nil
                         :inherit 'unspecified
