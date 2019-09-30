@@ -82,4 +82,7 @@
   (global-company-mode)
 
   (when (require 'company-flx nil t)
-    (company-flx-mode +1)))
+    (company-flx-mode +1))
+
+  (when (require 'company-c-headers nil t)
+    (add-to-list 'company-backends 'company-c-headers)))

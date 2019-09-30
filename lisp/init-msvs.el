@@ -151,6 +151,10 @@
   (add-to-list 'flycheck-clang-include-path msvs-include-directory)
   (add-to-list 'flycheck-clang-include-path msvs-platform-sdk)
 
+  ;; company-c-headers
+  (add-to-list 'company-c-headers-path-system msvs-include-directory)
+  (add-to-list 'company-c-headers-path-system msvs-platform-sdk)
+
   ;; gtags
   ;; (setenv "GTAGSLIBPATH" (concat msvs-include-directory ":" msvs-platform-sdk))
   )

@@ -194,7 +194,9 @@
         (setq-local company-clang-arguments
                     (mapcar* (lambda (path) (concat "-I" path)) np61-include-path-list))
         (when msvs-include-directory (push (concat "-I" msvs-include-directory) company-clang-arguments))
-        (when msvs-platform-sdk (push (concat "-I" msvs-platform-sdk) company-clang-arguments)))
+        (when msvs-platform-sdk (push (concat "-I" msvs-platform-sdk) company-clang-arguments))
+        ;; update company-c-headers
+        (setq-local company-c-headers-path-user np61-include-path-list))
       nil)
 
     (add-hook 'c-mode-hook 'np61-c-c++-setup)
