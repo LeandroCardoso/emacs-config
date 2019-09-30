@@ -127,6 +127,16 @@ bottom of the buffer stack."
           (buffer-list)))))))
 
 
+(defun maximize-frame-unless-fullscreen ()
+  (unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
+    (set-frame-parameter nil 'fullscreen 'maximized)))
+
+;; Workaround for the second frame not becoming maximized after it was restored from fullscreen in
+;; Windows.
+(when (eq system-type 'windows-nt)
+  (advice-add 'toggle-frame-fullscreen :after #'maximize-frame-unless-fullscreen))
+
+
 ;; No need to waste precious desktop space with useless GUI
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
