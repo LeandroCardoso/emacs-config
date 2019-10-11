@@ -183,6 +183,7 @@
     (defun np61-c-c++-setup ()
       "Set `flycheck-clang-include-path' and
 `company-clang-arguments' with np61 and compiler directories."
+      (interactive)
       (when (string= "c:/Dev/np61/" (car (project-roots (project-current))))
         ;; update np61-include-path-list
         (when (null np61-include-path-list) (np61-update-include-path-list))
