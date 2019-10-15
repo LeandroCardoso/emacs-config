@@ -51,7 +51,7 @@ at point or directory of the group at point when using the
                                 (cond ((buffer-live-p buf)
                                        (with-current-buffer buf
                                          default-directory))
-                                      ((file-directory-p group)
+                                      ((and group (file-directory-p group))
                                        group)
                                       (t default-directory)))))
        (list (read-file-name "Find file: " default-directory)
