@@ -121,12 +121,13 @@
       (cd-absolute np61-exec-dir)
       (async-shell-command np61-exec-reset-cmd "*np61*")))
 
-  (defun np61-copy-compilation ()
-    (interactive)
+  (defun np61-copy-compilation (&optional force)
+    (interactive "P")
     (unless (boundp 'np61-exec-dir)
       (call-interactively 'np61-set-exec-dir))
     (copy-directory-common-files np61-exec-compilation-dir
-                                 (concat np61-exec-dir "/" np61-exec-bin-dir)))
+                                 (concat np61-exec-dir "/" np61-exec-bin-dir)
+                                 force))
 
   ;; global keymap
   (defvar np61-global-keymap
