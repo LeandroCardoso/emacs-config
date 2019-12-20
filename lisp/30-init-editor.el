@@ -1,5 +1,26 @@
 ;; functions
 
+(defun base64-decode ()
+  "If region is active, base64-decode the region, otherwise
+base64-decode the whole buffer."
+  (interactive)
+  (base64-encode t))
+
+
+(defun base64-encode (&optional arg)
+  "When ARG is omitted and if region is active, base64-encode the
+region, otherwise base64-encode the whole buffer.
+
+When ARG is present and if region is active, base64-decode the
+region, otherwise base64-decode the whole buffer."
+  (interactive "*P")
+  (let ((min (if (use-region-p) (region-beginning) (point-min)))
+        (max (if (use-region-p) (region-end) (point-max))))
+    (if arg
+        (base64-decode-region min max)
+      (base64-encode-region min max t))))
+
+
 (defun indent-buffer (&optional column)
   "Indent the currently visited buffer.
 A numeric prefix argument specifies a column: indent each line to that column.
@@ -94,16 +115,19 @@ See `sort-regexp-fields'."
 
 ;; key bindings
 (global-set-key (kbd "C-c a") 'align-regexp)
-(global-set-key (kbd "M-RET") 'newline-no-break)
-(global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
-(global-set-key (kbd "C-c k") 'kill-whole-line)
-(global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "<C-backspace>") 'backward-kill-sexp)
-(global-set-key (kbd "M-u") 'upcase-dwim) ;; default is upcase-word
-(global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
-(global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
+(global-set-key (kbd "M-#") 'base64-encode)
+(global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-c D") 'delete-pair)
 (global-set-key (kbd "C-M-y") 'insert-from-kill-ring)
+(global-set-key (kbd "C-c k") 'kill-whole-line)
+(global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
+(global-set-key (kbd "M-RET") 'newline-no-break)
+
+(global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
+(global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
+(global-set-key (kbd "M-u") 'upcase-dwim) ;; default is upcase-word
+
 
 ;; zap - misc.el
 (autoload 'zap-up-to-char "misc")
