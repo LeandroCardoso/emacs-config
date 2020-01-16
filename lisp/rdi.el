@@ -19,6 +19,8 @@
   ;; There are some c++ files using .c extension.
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c-or-c++-mode))
 
+  (add-to-list 'auto-mode-alist '("product\\.specification" . nxml-mode))
+
   ;; Force coding system in log files
   (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
 
