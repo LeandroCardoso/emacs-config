@@ -147,9 +147,12 @@
 
   ;; engine
   (when (require 'engine-mode nil t)
-    (defengine jira
+    (defengine jira-rdi
       "https://jira.rdisoftware.com/secure/QuickSearch.jspa?searchString=%s"
-      :keybinding "j"))
+      :keybinding "j")
+    (defengine jira-mcd
+      "https://us-jira.mcd.com/secure/QuickSearch.jspa?searchString=%s"
+      :keybinding "d"))
 
   ;; flycheck-clang
   (when (require 'flycheck nil t)
