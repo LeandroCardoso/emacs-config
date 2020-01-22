@@ -8,6 +8,7 @@
 
   ;; omnisharp
   (when (require 'omnisharp nil t)
+    ;; Integrate omnisharp with project.el - this should be upstream
     (defun omnisharp--project-root-extension ()
       "Tries to resolve project root for current buffer. nil if no project root directory
 was found. Uses default project.el for the job."
@@ -17,8 +18,9 @@ was found. Uses default project.el for the job."
 
     (advice-add 'omnisharp--project-root :after-until #'omnisharp--project-root-extension)
 
-    (defun omnisharp-smart-start-server (&optional no-autodetect)
-      "Stops Omnisharp server if running and starts an OmniSharp server for a given path to a project or solution file.
+    (defun omnisharp-restart-omnisharp-server (&optional no-autodetect)
+      "Stops Omnisharp server if running and starts an OmniSharp server
+for a given path to a project or solution file.
 
 See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
       (interactive "P")
@@ -45,6 +47,6 @@ See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
       ; TODO fallback to imenu if omnisharp is not running
       (define-key omnisharp-mode-map (kbd "C-z") 'omnisharp-navigate-to-current-file-member) ; replaces imenu
       (define-key omnisharp-mode-map (kbd "C-M-z") 'omnisharp-navigate-to-solution-member)
-      (define-key omnisharp-mode-map (kbd "C-c C-o") 'omnisharp-smart-start-server))
+      (define-key omnisharp-mode-map (kbd "C-c C-o") 'omnisharp-restart-omnisharp-server))
 
     (add-hook 'omnisharp-mode-hook #'omnisharp-setup-hook)))
