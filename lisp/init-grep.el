@@ -8,6 +8,8 @@
   (push '("cc" . "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++") grep-files-aliases)
   (push '("cchh" . "*.cc *.[ch]xx *.[ch]pp *.[CHch] *.CC *.HH *.[ch]++") grep-files-aliases)
 
+  (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
+
   (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS" "*.exe"))
     (add-to-list 'grep-find-ignored-files file))
 
