@@ -7,15 +7,14 @@ Indentation is done using the `indent-tabs-mode' and
 `nxml-child-indent' variables."
   (interactive "*")
   (if (executable-find "xmllint")
-      (progn
+      (save-mark-and-excursion
         (make-local-variable 'process-environment)
         (setenv "XMLLINT_INDENT"
                 (if indent-tabs-mode (make-string 1 9) (make-string nxml-child-indent 32)))
-        (save-mark-and-excursion
-          (let ((min (if (use-region-p) (region-beginning) (point-min)))
-                (max (if (use-region-p) (region-end) (point-max))))
-            (call-process-region min max "xmllint" t '(t nil) nil
-                                 "--format" "--recover" "--nowarning" "-"))))
+        (let ((min (if (use-region-p) (region-beginning) (point-min)))
+              (max (if (use-region-p) (region-end) (point-max))))
+          (call-process-region min max "xmllint" t '(t nil) nil
+                               "--format" "--recover" "--nowarning" "-")))
     (error "xmllint executable not found")))
 
 ;; Original from https://www.emacswiki.org/emacs/NxmlMode
