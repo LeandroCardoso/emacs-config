@@ -90,51 +90,60 @@
     )
 
   ;; np61 application
-  (defun np61-set-exec-dir (directory)
-    (interactive "DRoot np61 directory: ")
-    (setq np61-exec-dir directory)
-    (setq np61-exec-start-cmd "start.bat")
-    (setq np61-exec-stop-cmd "stop.bat")
-    (setq np61-exec-reset-cmd "clean.bat")
-    (setq np61-exec-bin-dir "bin")
-    (setq np61-exec-compilation-dir "c:/Dev/np61/bin/Debug-Win32-VS13"))
+  (defun np61-set-root-path (path)
+    (interactive "DRoot np61 path: ")
+    (setq np61-root-path path)
+    (setq np61-start-cmd "start.bat")
+    (setq np61-stop-cmd "stop.bat")
+    (setq np61-reset-cmd "clean.bat")
+    (setq np61-compilation-dir "c:/Dev/np61/bin/Debug-Win32-VS13"))
 
   (defun np61-start ()
     (interactive)
-    (unless (boundp 'np61-exec-dir)
-      (call-interactively 'np61-set-exec-dir))
+    (unless (boundp 'np61-root-path)
+      (call-interactively 'np61-set-root-path))
     (with-temp-buffer
-      (cd-absolute np61-exec-dir)
-      (async-shell-command np61-exec-start-cmd "*np61*")))
+      (cd-absolute np61-root-path)
+      (async-shell-command np61-start-cmd "*np61*")))
 
   (defun np61-stop ()
     (interactive)
-    (unless (boundp 'np61-exec-dir)
-      (call-interactively 'np61-set-exec-dir))
+    (unless (boundp 'np61-root-path)
+      (call-interactively 'np61-set-root-path))
     (with-temp-buffer
-      (cd-absolute np61-exec-dir)
-      (async-shell-command np61-exec-stop-cmd "*np61*")))
+      (cd-absolute np61-root-path)
+      (async-shell-command np61-stop-cmd "*np61*")))
 
   (defun np61-reset ()
     (interactive)
-    (unless (boundp 'np61-exec-dir)
-      (call-interactively 'np61-set-exec-dir))
+    (unless (boundp 'np61-root-path)
+      (call-interactively 'np61-set-root-path))
     (with-temp-buffer
-      (cd-absolute np61-exec-dir)
-      (async-shell-command np61-exec-reset-cmd "*np61*")))
+      (cd-absolute np61-root-path)
+      (async-shell-command np61-reset-cmd "*np61*")))
 
   (defun np61-copy-compilation (&optional force)
     (interactive "P")
-    (unless (boundp 'np61-exec-dir)
-      (call-interactively 'np61-set-exec-dir))
-    (copy-directory-common-files np61-exec-compilation-dir
-                                 (concat np61-exec-dir "/" np61-exec-bin-dir)
-                                 force))
+    (unless (boundp 'np61-root-path)
+      (call-interactively 'np61-set-root-path))
+    (sync-directories np61-compilation-dir (concat np61-root-path "/bin") force))
+
+  (defun np61-copy-plugin-compiled (&optional force)
+    (interactive "P")
+    (unless (boundp 'np61-root-path)
+      (call-interactively 'np61-set-root-path))
+    (let ((plugin-name (when (string-match "C:/Dev/pele/NpSharpRoot/Plugins/\\([^/]+\\)" default-directory)
+                         (match-string-no-properties 1 default-directory))))
+      (sync-directories (concat "C:/Dev/pele/NpSharpRoot/Plugins/"
+                                plugin-name
+                                "/src/NpSharp.Plugin." plugin-name "/bin/Debug")
+                        (concat np61-root-path "NpSharpBin/Plugins/" plugin-name)
+                        force)))
 
   ;; global keymap
   (defvar np61-global-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map "s" 'np61-set-exec-dir)
+      (define-key map "s" 'np61-set-root-path)
       (define-key map "a" 'np61-start)
       (define-key map "o" 'np61-stop)
       (define-key map "r" 'np61-reset)

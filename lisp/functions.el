@@ -20,33 +20,35 @@ With NUMBER, return the NUMBER parent directory of DIRECTORY."
         (file-name-directory (directory-file-name directory))
       (directory-parent (file-name-directory (directory-file-name directory)) (1- number)))))
 
-(defun copy-directory-common-files (origin destination &optional all)
-  "Copy all files from ORIGIN directory to DESTINATION directory,
-but only if the file exists in both directories and the file
-timestamp is newer in the ORIGIN directory than in the
-DESTINATION directory.
+(defun sync-directories (source destination &optional ignore-timestamp)
+  "Copy all files from SOURCE directory to DESTINATION directory
+that exists in both directories and are newer in source.
 
-With optional argument ALL, ignore the timestamp checking and
+With optional argument IGNORE-TIMESTAMP, ignore the timestamp and
 copy all files that exist in both directories."
   (interactive
-   (let ((dir (read-directory-name
-               "Copy directory: " default-directory default-directory t)))
-     (list dir
-           (read-directory-name
-            (format "Copy directory %s to: " dir)
-            default-directory default-directory t))))
-  (when (file-directory-p destination)
-    (let ((files-copied 0))
-      (dolist (file (directory-files origin t))
-        (when (and (file-regular-p file)
-                   (or all
-                       (file-newer-than-file-p
-                        file
-                        (concat (file-name-as-directory destination) (file-name-nondirectory file)))))
-          (message "Copying %s to %s" file destination)
-          (copy-file file (file-name-as-directory destination) t)
-          (setq files-copied (1+ files-copied))))
-      (message "%d files copied from %s to %s." files-copied origin destination))))
+   (let ((dir (read-directory-name "Copy directory: " default-directory default-directory t)))
+     (list dir (read-directory-name
+                (format "Copy directory %s to: " dir) default-directory default-directory t))))
+  (if (not (file-directory-p source))
+      (error "source is not a directory"))
+  (if (not (file-directory-p destination))
+      (error "destination is not a directory"))
+  (if (equal (file-name-as-directory source) (file-name-as-directory destination))
+      (error "source and directory are the same"))
+  (let ((files-copied 0))
+    (message "Copying from %s to %s" source destination)
+    (dolist (source-file (directory-files source t))
+      (let ((destination-file (concat (file-name-as-directory destination)
+                                      (file-name-nondirectory source-file))))
+        (when (and (file-regular-p source-file)
+                   (file-exists-p destination-file)
+                   (or ignore-timestamp
+                       (file-newer-than-file-p source-file destination-file)))
+          (message "Copying %s" (file-name-nondirectory source-file))
+          (copy-file source-file (file-name-as-directory destination) t)
+          (setq files-copied (1+ files-copied)))))
+    (message "%d files copied from %s to %s." files-copied source destination)))
 
 
 (defun locate-dominating-file-match (file match)
