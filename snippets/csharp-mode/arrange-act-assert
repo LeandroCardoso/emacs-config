@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: arrange-act-assert
+# key: aaa
+# --
+// arrange
+	$0
+// act
+
+// assert
