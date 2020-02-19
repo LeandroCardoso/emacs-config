@@ -89,70 +89,70 @@
     nil                                ;; FUNCTION-LIST
     )
 
-  ;; np61 application
-  (defun np61-set-root-path (path)
-    (interactive "DRoot np61 path: ")
-    (setq np61-root-path path)
-    (setq np61-start-cmd "start.bat")
-    (setq np61-stop-cmd "stop.bat")
-    (setq np61-reset-cmd "clean.bat")
-    (setq np61-compilation-dir "c:/Dev/np61/bin/Debug-Win32-VS13"))
+  ;; npos application
+  (defun npos-set-root-path (path)
+    (interactive "DRoot npos path: ")
+    (setq npos-root-path path)
+    (setq npos-start-cmd "start.bat")
+    (setq npos-stop-cmd "stop.bat")
+    (setq npos-clean-cmd "clean.bat")
+    (setq np61-compilation-path "c:/Dev/np61/bin/Debug-Win32-VS13"))
 
-  (defun np61-start ()
+  (defun npos-start ()
     (interactive)
-    (unless (boundp 'np61-root-path)
-      (call-interactively 'np61-set-root-path))
+    (unless (boundp 'npos-root-path)
+      (call-interactively 'npos-set-root-path))
     (with-temp-buffer
-      (cd-absolute np61-root-path)
-      (async-shell-command np61-start-cmd "*np61*")))
+      (cd-absolute npos-root-path)
+      (async-shell-command npos-start-cmd "*npos*")))
 
-  (defun np61-stop ()
+  (defun npos-stop ()
     (interactive)
-    (unless (boundp 'np61-root-path)
-      (call-interactively 'np61-set-root-path))
+    (unless (boundp 'npos-root-path)
+      (call-interactively 'npos-set-root-path))
     (with-temp-buffer
-      (cd-absolute np61-root-path)
-      (async-shell-command np61-stop-cmd "*np61*")))
+      (cd-absolute npos-root-path)
+      (async-shell-command npos-stop-cmd "*npos*")))
 
-  (defun np61-reset ()
+  (defun npos-clean ()
     (interactive)
-    (unless (boundp 'np61-root-path)
-      (call-interactively 'np61-set-root-path))
+    (unless (boundp 'npos-root-path)
+      (call-interactively 'npos-set-root-path))
     (with-temp-buffer
-      (cd-absolute np61-root-path)
-      (async-shell-command np61-reset-cmd "*np61*")))
+      (cd-absolute npos-root-path)
+      (async-shell-command npos-clean-cmd "*npos*")))
 
   (defun np61-copy-compilation (&optional force)
     (interactive "P")
-    (unless (boundp 'np61-root-path)
-      (call-interactively 'np61-set-root-path))
-    (sync-directories np61-compilation-dir (concat np61-root-path "/bin") force))
+    (unless (boundp 'npos-root-path)
+      (call-interactively 'npos-set-root-path))
+    (sync-directories np61-compilation-path (concat npos-root-path "/bin") force))
 
-  (defun np61-copy-plugin-compiled (&optional force)
+  (defun npos-copy-plugin-compiled (&optional force)
     (interactive "P")
-    (unless (boundp 'np61-root-path)
-      (call-interactively 'np61-set-root-path))
+    (unless (boundp 'npos-root-path)
+      (call-interactively 'npos-set-root-path))
     (let ((plugin-name (when (string-match "C:/Dev/pele/NpSharpRoot/Plugins/\\([^/]+\\)" default-directory)
                          (match-string-no-properties 1 default-directory))))
       (sync-directories (concat "C:/Dev/pele/NpSharpRoot/Plugins/"
                                 plugin-name
                                 "/src/NpSharp.Plugin." plugin-name "/bin/Debug")
-                        (concat np61-root-path "NpSharpBin/Plugins/" plugin-name)
+                        (concat npos-root-path "NpSharpBin/Plugins/" plugin-name)
                         force)))
 
   ;; global keymap
-  (defvar np61-global-keymap
+  (defvar npos-global-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map "s" 'np61-set-root-path)
-      (define-key map "a" 'np61-start)
-      (define-key map "o" 'np61-stop)
-      (define-key map "r" 'np61-reset)
+      (define-key map "s" 'npos-set-root-path)
+      (define-key map "a" 'npos-start)
+      (define-key map "o" 'npos-stop)
+      (define-key map "r" 'npos-clean)
       (define-key map (kbd "<f5>") 'np61-copy-compilation)
       map)
-    "Keymap for global np61 commands")
+    "Keymap for global npos commands")
 
-  (defalias 'np61-keymap np61-global-keymap)
-  (global-set-key (kbd "<f5>") 'np61-keymap)
+  (defalias 'npos-keymap npos-global-keymap)
+  (global-set-key (kbd "<f5>") 'npos-keymap)
 
   ;; engine
   (when (require 'engine-mode nil t)
