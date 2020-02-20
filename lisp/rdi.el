@@ -89,65 +89,71 @@
     nil                                ;; FUNCTION-LIST
     )
 
+  (defvar npos-path nil "Path for NPOS environment")
+  (defvar npos-base-path "~/Documents/env/" "Initial path used by `npos-set-path'")
+  (defvar npos-start-cmd "start.bat" "Script used to start NPOS")
+  (defvar npos-stop-cmd "stop.bat" "Script used to stop NPOS")
+  (defvar npos-clean-cmd "clean.bat" "Script used to clean-up the NPOS environment")
+  (defvar np61-bin-path "c:/Dev/np61/bin/Debug-Win32-VS13")
+  (defvar npsharp-plugins-path "c:/Dev/pele/NpSharpRoot/Plugins")
+
   ;; npos application
-  (defun npos-set-root-path (path)
-    (interactive "DRoot npos path: ")
-    (setq npos-root-path path)
-    (setq npos-start-cmd "start.bat")
-    (setq npos-stop-cmd "stop.bat")
-    (setq npos-clean-cmd "clean.bat")
-    (setq np61-compilation-path "c:/Dev/np61/bin/Debug-Win32-VS13"))
+  (defun npos-set-path ()
+    (interactive)
+    (setq npos-path (read-directory-name "NPOS directory: " npos-base-path
+                                         npos-base-path t)))
 
   (defun npos-start ()
     (interactive)
-    (unless (boundp 'npos-root-path)
-      (call-interactively 'npos-set-root-path))
+    (unless npos-path
+      (call-interactively 'npos-set-path))
     (with-temp-buffer
-      (cd-absolute npos-root-path)
+      (cd-absolute npos-path)
       (async-shell-command npos-start-cmd "*npos*")))
 
   (defun npos-stop ()
     (interactive)
-    (unless (boundp 'npos-root-path)
-      (call-interactively 'npos-set-root-path))
+    (unless npos-path
+      (call-interactively 'npos-set-path))
     (with-temp-buffer
-      (cd-absolute npos-root-path)
+      (cd-absolute npos-path)
       (async-shell-command npos-stop-cmd "*npos*")))
 
   (defun npos-clean ()
     (interactive)
-    (unless (boundp 'npos-root-path)
-      (call-interactively 'npos-set-root-path))
+    (unless 'npos-path
+      (call-interactively 'npos-set-path))
     (with-temp-buffer
-      (cd-absolute npos-root-path)
+      (cd-absolute npos-path)
       (async-shell-command npos-clean-cmd "*npos*")))
 
-  (defun np61-copy-compilation (&optional force)
+  (defun np61-copy-bin (&optional force)
     (interactive "P")
-    (unless (boundp 'npos-root-path)
-      (call-interactively 'npos-set-root-path))
-    (sync-directories np61-compilation-path (concat npos-root-path "/bin") force))
+    (unless npos-path
+      (call-interactively 'npos-set-path))
+    (sync-directories np61-bin-path (concat npos-path "/bin") force))
 
-  (defun npos-copy-plugin-compiled (&optional force)
+  (defun npsharp-plugin-copy-bin (&optional force)
     (interactive "P")
-    (unless (boundp 'npos-root-path)
-      (call-interactively 'npos-set-root-path))
-    (let ((plugin-name (when (string-match "C:/Dev/pele/NpSharpRoot/Plugins/\\([^/]+\\)" default-directory)
+    (unless npos-path
+      (call-interactively 'npos-set-path))
+    (let ((plugin-name (when (string-match (concat npsharp-plugins-path "/\\([^/]+\\)") default-directory)
                          (match-string-no-properties 1 default-directory))))
-      (sync-directories (concat "C:/Dev/pele/NpSharpRoot/Plugins/"
-                                plugin-name
+      (sync-directories (concat npsharp-plugins-path "/" plugin-name
                                 "/src/NpSharp.Plugin." plugin-name "/bin/Debug")
-                        (concat npos-root-path "NpSharpBin/Plugins/" plugin-name)
+                        (concat npos-path "/NpSharpBin/Plugins/" plugin-name)
                         force)))
+
+  ;TODO special plugins: Np6PosCore Np6WayCore Sales
 
   ;; global keymap
   (defvar npos-global-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map "s" 'npos-set-root-path)
+      (define-key map "s" 'npos-set-path)
       (define-key map "a" 'npos-start)
       (define-key map "o" 'npos-stop)
       (define-key map "r" 'npos-clean)
-      (define-key map (kbd "<f5>") 'np61-copy-compilation)
+      (define-key map (kbd "<f5>") 'np61-copy-bin)
       map)
     "Keymap for global npos commands")
 
