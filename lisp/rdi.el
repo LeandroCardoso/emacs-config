@@ -94,8 +94,8 @@
   (defvar npos-start-cmd "start.bat" "Script used to start NPOS")
   (defvar npos-stop-cmd "stop.bat" "Script used to stop NPOS")
   (defvar npos-clean-cmd "clean.bat" "Script used to clean-up the NPOS environment")
-  (defvar np61-bin-path "c:/Dev/np61/bin/Debug-Win32-VS13")
-  (defvar npsharp-plugins-path "c:/Dev/pele/NpSharpRoot/Plugins")
+  (defvar np61-src-path "c:/Dev/np61" "Source code path for np61")
+  (defvar npsharp-plugins-src-path "c:/Dev/pele/NpSharpRoot/Plugins" "Source code path for np# plugins")
 
   ;; npos application
   (defun npos-set-path ()
@@ -105,41 +105,41 @@
 
   (defun npos-start ()
     (interactive)
-    (unless npos-path
-      (call-interactively 'npos-set-path))
+    (unless npos-path (call-interactively 'npos-set-path))
     (with-temp-buffer
       (cd-absolute npos-path)
       (async-shell-command npos-start-cmd "*npos*")))
 
   (defun npos-stop ()
     (interactive)
-    (unless npos-path
-      (call-interactively 'npos-set-path))
+    (unless npos-path (call-interactively 'npos-set-path))
     (with-temp-buffer
       (cd-absolute npos-path)
       (async-shell-command npos-stop-cmd "*npos*")))
 
   (defun npos-clean ()
     (interactive)
-    (unless 'npos-path
-      (call-interactively 'npos-set-path))
+    (unless 'npos-path (call-interactively 'npos-set-path))
     (with-temp-buffer
       (cd-absolute npos-path)
       (async-shell-command npos-clean-cmd "*npos*")))
 
   (defun np61-copy-bin (&optional force)
     (interactive "P")
-    (unless npos-path
-      (call-interactively 'npos-set-path))
-    (sync-directories np61-bin-path (concat npos-path "/bin") force))
+    (unless npos-path (call-interactively 'npos-set-path))
+    (sync-directories (concat np61-src-path "/bin/Debug-Win32-VS13")
+                      (concat npos-path "/bin") force))
+
+  (defun npsharp-plugin-name (&optional path)
+    (let ((path (or path default-directory)))
+      (when (string-match (concat npsharp-plugins-src-path "/\\([^/]+\\)") path)
+        (match-string-no-properties 1 path))))
 
   (defun npsharp-plugin-copy-bin (&optional force)
     (interactive "P")
-    (unless npos-path
-      (call-interactively 'npos-set-path))
-    (let ((plugin-name (when (string-match (concat npsharp-plugins-path "/\\([^/]+\\)") default-directory)
-                         (match-string-no-properties 1 default-directory))))
-      (sync-directories (concat npsharp-plugins-path "/" plugin-name
+    (unless npos-path (call-interactively 'npos-set-path))
+    (let ((plugin-name (npsharp-plugin-name)))
+      (sync-directories (concat npsharp-plugins-src-path "/" plugin-name
                                 "/src/NpSharp.Plugin." plugin-name "/bin/Debug")
                         (concat npos-path "/NpSharpBin/Plugins/" plugin-name)
                         force)))
@@ -149,11 +149,11 @@
   ;; global keymap
   (defvar npos-global-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map "s" 'npos-set-path)
-      (define-key map "a" 'npos-start)
-      (define-key map "o" 'npos-stop)
+      (define-key map (kbd "<f5>") 'npos-set-path)
+      (define-key map "s" 'npos-start)
+      (define-key map "q" 'npos-stop)
       (define-key map "r" 'npos-clean)
-      (define-key map (kbd "<f5>") 'np61-copy-bin)
+      (define-key map "c" 'np61-copy-bin)
       map)
     "Keymap for global npos commands")
 
@@ -215,7 +215,8 @@
         ;; update company-clang-arguments
         (setq-local company-clang-arguments
                     (mapcar* (lambda (path) (concat "-I" path)) np61-include-path-list))
-        (when msvs-include-directory (push (concat "-I" msvs-include-directory) company-clang-arguments))
+        (when msvs-include-directory (push (concat "-I" msvs-include-directory)
+                                           company-clang-arguments))
         (when msvs-platform-sdk (push (concat "-I" msvs-platform-sdk) company-clang-arguments))
         ;; update company-c-headers
         (setq-local company-c-headers-path-user np61-include-path-list))
