@@ -26,6 +26,7 @@
   (add-hook 'magit-status-mode-hook #'disable-global-hl-line-mode)
 
   ;; key bindings
+  (define-key magit-mode-map (kbd "M-u") 'magit-section-up)
   (define-key magit-mode-map [remap previous-line] 'magit-previous-line)
   (define-key magit-mode-map [remap next-line] 'magit-next-line)
 
