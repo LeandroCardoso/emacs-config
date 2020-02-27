@@ -89,76 +89,83 @@
     nil                                ;; FUNCTION-LIST
     )
 
-  (defvar npos-path nil "Path for NPOS environment")
-  (defvar npos-base-path "~/Documents/env/" "Initial path used by `npos-set-path'")
-  (defvar npos-start-cmd "start.bat" "Script used to start NPOS")
-  (defvar npos-stop-cmd "stop.bat" "Script used to stop NPOS")
-  (defvar npos-clean-cmd "clean.bat" "Script used to clean-up the NPOS environment")
-  (defvar np61-src-path "c:/Dev/np61" "Source code path for np61")
-  (defvar npsharp-plugins-src-path "c:/Dev/pele/NpSharpRoot/Plugins" "Source code path for np# plugins")
+  (defconst np6-base-path "~/Documents/env/" "Initial path used by `np6-set-path'")
+  (defvar np6-path nil "Path for NP6 environment")
+  (defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
+  (defvar np6-plugins-src-path "c:/Dev/pele/NpSharpRoot/Plugins/" "Source code path for np# plugins")
+  (defvar np6-core-src-path "c:/Dev/np61/" "Source code path for np61 core")
+  (defvar np6-core-target nil "Target for np61 core binaries. Valid values are np61, posCore, wayCore or sale")
 
-  ;; npos application
-  (defun npos-set-path ()
+  (defun np6-config ()
     (interactive)
-    (setq npos-path (read-directory-name "NPOS directory: " npos-base-path
-                                         npos-base-path t)))
+    (when (or (called-interactively-p)
+              (not np6-path)
+              (not np6-core-target))
+      (setq np6-path (read-directory-name "NP6 environment directory: " np6-base-path nil t))
+      (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))
+      (setq np6-core-target (cadr (read-multiple-choice "Np61 core target module? "
+                                                        '((?n "np61" "NP61")
+                                                          (?p "posCore" "Np6PosCore plugin")
+                                                          (?w "wayCore" "Np6WayCore plugin")
+                                                          (?s "sale" "Sale plugin")))))))
 
-  (defun npos-start ()
+  (defun np6-config-info()
     (interactive)
-    (unless npos-path (call-interactively 'npos-set-path))
-    (with-temp-buffer
-      (cd-absolute npos-path)
-      (async-shell-command npos-start-cmd "*npos*")))
+    (message "NP6 path:[%s] debug:[%s] core target:[%s]" np6-path np6-debug np6-core-target))
 
-  (defun npos-stop ()
+  (defun np6-execute-script ()
     (interactive)
-    (unless npos-path (call-interactively 'npos-set-path))
-    (with-temp-buffer
-      (cd-absolute npos-path)
-      (async-shell-command npos-stop-cmd "*npos*")))
+    (np6-config)
+    (let ((cmd (read-file-name "Script: " np6-path nil t nil
+                               (lambda (fn) (string-match-p "\\.bat" fn)))))
+      (when cmd
+        (start-process cmd "*np6*" cmd))))
 
-  (defun npos-clean ()
-    (interactive)
-    (unless 'npos-path (call-interactively 'npos-set-path))
-    (with-temp-buffer
-      (cd-absolute npos-path)
-      (async-shell-command npos-clean-cmd "*npos*")))
-
-  (defun np61-copy-bin (&optional force)
-    (interactive "P")
-    (unless npos-path (call-interactively 'npos-set-path))
-    (sync-directories (concat np61-src-path "/bin/Debug-Win32-VS13")
-                      (concat npos-path "/bin") force))
-
-  (defun npsharp-plugin-name (&optional path)
+  (defun np6-plugin-name (&optional path)
     (let ((path (or path default-directory)))
-      (when (string-match (concat npsharp-plugins-src-path "/\\([^/]+\\)") path)
+      (when (string-match (concat np6-plugins-src-path "\\([^/]+\\)") path)
         (match-string-no-properties 1 path))))
 
-  (defun npsharp-plugin-copy-bin (&optional force)
+  (defun np6-plugin-copy-bin (&optional force)
     (interactive "P")
-    (unless npos-path (call-interactively 'npos-set-path))
-    (let ((plugin-name (npsharp-plugin-name)))
-      (sync-directories (concat npsharp-plugins-src-path "/" plugin-name
-                                "/src/NpSharp.Plugin." plugin-name "/bin/Debug")
-                        (concat npos-path "/NpSharpBin/Plugins/" plugin-name)
+    (np6-config)
+    (let ((plugin-name (np6-plugin-name)))
+      (sync-directories (concat np6-plugins-src-path plugin-name "/src/NpSharp.Plugin." plugin-name
+                                (if np6-debug "/bin/Debug" "/bin/Release"))
+                        (concat np6-path "NpSharpBin/Plugins/" plugin-name)
                         force)))
 
-  ;TODO special plugins: Np6PosCore Np6WayCore Sales
+  (defun np6-core-copy-bin (&optional force)
+    (interactive "P")
+    (np6-config)
+    (sync-directories (concat np6-core-src-path
+                              (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
+                      (pcase np6-core-target
+                        ("np61" (concat np6-path "bin"))
+                        ("posCore" (concat np6-path "NpSharpBin/Plugins/Np6PosCore"))
+                        ("wayCore" (concat np6-path "NpSharpBin/Plugins/Np6WayCore"))
+                        ("sale" (concat np6-path "NpSharpBin/Plugins/Sale/accountingServiceBin")))
+                      force))
 
-  ;; global keymap
-  (defvar npos-global-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "<f5>") 'npos-set-path)
-      (define-key map "s" 'npos-start)
-      (define-key map "q" 'npos-stop)
-      (define-key map "r" 'npos-clean)
-      (define-key map "c" 'np61-copy-bin)
-      map)
-    "Keymap for global npos commands")
+  (defun np6-copy-bin-dwim (&optional force)
+    (interactive "P")
+    (if (np6-plugin-name)
+        (np6-plugin-copy-bin force)
+      (np6-core-copy-bin force)))
 
-  (defalias 'npos-keymap npos-global-keymap)
-  (global-set-key (kbd "<f5>") 'npos-keymap)
+  ;; keymap
+  (defvar np6-keymap nil "Keymap for global NP6 commands")
+  (setq np6-keymap
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "<f5>") 'np6-config)
+          (define-key map "i" 'np6-config-info)
+          (define-key map "x" 'np6-execute-script)
+          (define-key map "c" 'np6-copy-bin-dwim)
+          (define-key map "p" 'np6-plugin-copy-bin)
+          (define-key map "C" 'np6-core-copy-bin)
+          map))
+  (defalias 'np6-keymap np6-keymap)
+  (global-set-key (kbd "<f5>") 'np6-keymap)
 
   ;; engine
   (when (require 'engine-mode nil t)
@@ -192,7 +199,7 @@
       (setq np61-include-path-list nil)
       (message "Updating np61-update-include-path-list...")
       (let ((start-time (current-time))
-            (pr "c:/Dev/np61/"))
+            (pr np6-core-src-path))
         (dolist (path (nconc (directory-list (concat pr "src/"))
                              (directory-list (concat pr "extSrc/"))))
           ;; Skip directories that do not have header files
@@ -205,7 +212,7 @@
       "Set `flycheck-clang-include-path' and
 `company-clang-arguments' with np61 and compiler directories."
       (interactive)
-      (when (string= "c:/Dev/np61/" (car (project-roots (project-current))))
+      (when (string= np6-core-src-path (car (project-roots (project-current))))
         ;; update np61-include-path-list
         (when (null np61-include-path-list) (np61-update-include-path-list))
         ;; update flycheck-clang-include-path
