@@ -17,13 +17,13 @@
   (define-key org-mode-map (kbd "C-c M-t") 'org-toggle-link-display)
 
   ;; org-mode outside org-mode
-  (defvar org-out-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map "l" 'org-store-link)
-      (define-key map "t" 'orgtbl-mode)
-      (define-key map "s" 'orgstruct-mode)
-      map)
-    "Keymap for org-mode commands outside org-mode")
+  (defvar org-out-keymap nil "Keymap for org-mode commands outside org-mode")
+  (setq org-out-keymap
+        (let ((map (make-sparse-keymap)))
+          (define-key map "l" 'org-store-link)
+          (define-key map "t" 'orgtbl-mode)
+          (define-key map "s" 'orgstruct-mode)
+          map))
   (defalias 'org-out-keymap org-out-keymap)
   (global-set-key (kbd "C-c o") 'org-out-keymap)
 
