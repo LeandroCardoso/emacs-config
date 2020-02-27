@@ -1,5 +1,32 @@
 (with-eval-after-load "ibuffer"
 
+  ;; Modified version of ibuffer column "name" that uses the `buffer-file-name', instead of the file
+  ;; `buffer-name'. This version integrates better with the uniquify package.
+  (define-ibuffer-column file-name-or-buffer-name
+    (:name "Name"
+     :inline t
+     :header-mouse-map ibuffer-name-header-map
+     :props
+           ('mouse-face 'highlight 'keymap ibuffer-name-map
+                        'ibuffer-name-column t
+                        'help-echo '(if tooltip-mode
+                                        "mouse-1: mark this buffer\nmouse-2: select this buffer\nmouse-3: operate on this buffer"
+                                      "mouse-1: mark buffer   mouse-2: select buffer   mouse-3: operate"))
+     :summarizer
+           (lambda (strings)
+             (let ((bufs (length strings)))
+               (cond ((zerop bufs) "No buffers")
+                     ((= 1 bufs) "1 buffer")
+                     (t (format "%s buffers" bufs))))))
+    (let* ((name (if (buffer-file-name) (file-name-nondirectory (buffer-file-name)) (buffer-name)))
+           (string (propertize name
+                               'font-lock-face
+                               (ibuffer-buffer-name-face buffer mark))))
+      (if (not (seq-position string ?\n))
+          string
+        (replace-regexp-in-string
+         "\n" (propertize "^J" 'font-lock-face 'escape-glyph) string))))
+
   ;; ibuffer-project
   (require 'project)
   (require 'ibuf-ext)
@@ -62,11 +89,9 @@ at point or directory of the group at point when using the
   (define-key ibuffer-mode-map [remap ibuffer-find-file] 'ibuffer-find-file+)
   (define-key ibuffer-mode-map (kbd "/ @") 'ibuffer-filter-by-project)
 
-
-  ;;(setq ibuffer-display-summary nil)
   (setq ibuffer-formats
         '((mark modified read-only " "
-                (name 40 40 :left :elide)
+                (file-name-or-buffer-name 40 40 :left :elide)
                 " "
                 (size 6 -1 :right)
                 " "
@@ -77,9 +102,8 @@ at point or directory of the group at point when using the
   (defun ibuffer-setup-hook ()
     (setq-local scroll-conservatively 0))
 
-  (add-hook 'ibuffer-mode-hook #'ibuffer-setup-hook)
   ;; (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
-  )
+  (add-hook 'ibuffer-mode-hook #'ibuffer-setup-hook))
 
 (global-set-key (kbd "C-x C-b") 'ibuffer) ;; default is list-buffers
 (global-set-key (kbd "C-x 4 C-b") 'ibuffer-other-window)
