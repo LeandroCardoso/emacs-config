@@ -89,29 +89,30 @@
     nil                                ;; FUNCTION-LIST
     )
 
-  (defconst np6-base-path "~/Documents/env/" "Initial path used by `np6-set-path'")
+  (defconst np6-base-path "~/Documents/env/" "Initial path used by `np6-config'")
   (defvar np6-path nil "Path for NP6 environment")
+  (defvar np6-core-dest nil "Path relative from `np6-path' to np61 core binaries destination to copy to")
   (defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
   (defvar np6-plugins-src-path "c:/Dev/pele/NpSharpRoot/Plugins/" "Source code path for np# plugins")
   (defvar np6-core-src-path "c:/Dev/np61/" "Source code path for np61 core")
-  (defvar np6-core-target nil "Target for np61 core binaries. Valid values are np61, posCore, wayCore or sale")
 
   (defun np6-config ()
     (interactive)
     (when (or (called-interactively-p)
               (not np6-path)
-              (not np6-core-target))
+              (not np6-core-dest))
       (setq np6-path (read-directory-name "NP6 environment directory: " np6-base-path nil t))
-      (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))
-      (setq np6-core-target (cadr (read-multiple-choice "Np61 core target module? "
-                                                        '((?n "np61" "NP61")
-                                                          (?p "posCore" "Np6PosCore plugin")
-                                                          (?w "wayCore" "Np6WayCore plugin")
-                                                          (?s "sale" "Sale plugin")))))))
+      (setq np6-core-dest (caddr (read-multiple-choice
+                                  "Np61 core? "
+                                  '((?n "np61" "bin")
+                                    (?p "posCore" "NpSharpBin/Plugins/Np6PosCore")
+                                    (?w "wayCore" "NpSharpBin/Plugins/Np6WayCore")
+                                    (?s "sale" "NpSharpBin/Plugins/Sale/accountingServiceBin")))))
+      (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
 
   (defun np6-config-info()
     (interactive)
-    (message "NP6 path:[%s] debug:[%s] core target:[%s]" np6-path np6-debug np6-core-target))
+    (message "NP6 path:[%s] core:[%s] debug:[%s]" np6-path np6-core-dest np6-debug))
 
   (defun np6-execute-script ()
     (interactive)
@@ -140,11 +141,7 @@
     (np6-config)
     (sync-directories (concat np6-core-src-path
                               (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
-                      (pcase np6-core-target
-                        ("np61" (concat np6-path "bin"))
-                        ("posCore" (concat np6-path "NpSharpBin/Plugins/Np6PosCore"))
-                        ("wayCore" (concat np6-path "NpSharpBin/Plugins/Np6WayCore"))
-                        ("sale" (concat np6-path "NpSharpBin/Plugins/Sale/accountingServiceBin")))
+                      (concat np6-path np6-core-dest)
                       force))
 
   (defun np6-copy-bin-dwim (&optional force)
@@ -161,7 +158,7 @@
           (define-key map "i" 'np6-config-info)
           (define-key map "x" 'np6-execute-script)
           (define-key map "c" 'np6-copy-bin-dwim)
-          (define-key map "p" 'np6-plugin-copy-bin)
+          (define-key map "P" 'np6-plugin-copy-bin)
           (define-key map "C" 'np6-core-copy-bin)
           map))
   (defalias 'np6-keymap np6-keymap)
@@ -174,7 +171,7 @@
       :keybinding "j")
     (defengine jira-mcd
       "https://us-jira.mcd.com/secure/QuickSearch.jspa?searchString=%s"
-      :keybinding "d"))
+      :keybinding "J"))
 
   ;; flycheck-clang
   (when (require 'flycheck nil t)
