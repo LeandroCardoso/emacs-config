@@ -117,10 +117,11 @@
   (defun np6-execute-script ()
     (interactive)
     (np6-config)
-    (let ((cmd (read-file-name "Script: " np6-path nil t nil
-                               (lambda (fn) (string-match-p "\\.bat" fn)))))
+    (let ((cmd (expand-file-name (read-file-name "Script: " np6-path nil t nil
+                                                 (lambda (fn) (string-match-p "\\.bat" fn))))))
       (when cmd
-        (start-process cmd "*np6*" cmd))))
+        (let ((default-directory (file-name-directory cmd)))
+          (start-process cmd "*np6*" cmd)))))
 
   (defun np6-plugin-name (&optional path)
     (let ((path (or path default-directory)))
