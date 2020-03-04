@@ -26,25 +26,25 @@ Indentation is done using the `indent-tabs-mode' and
       (save-restriction
         (widen)
         (while (and (< (point-min) (point)) ;; Doesn't error if point is at beginning of buffer
-                    (condition-case nil
-                        (progn
-                          (nxml-backward-up-element) ; always returns nil
-                          t)
-                      (error nil)))
-          (setq path (cons (xmltok-start-tag-local-name) path)))
-        (if (called-interactively-p t)
-            (message "/%s" (mapconcat 'identity path "/"))
-          (format "/%s" (mapconcat 'identity path "/")))))))
+                    (ignore-errors (progn (nxml-backward-up-element) t)))
+          (setq path (cons (xmltok-start-tag-local-name) path)))))
+    (if (called-interactively-p)
+        (message "/%s" (mapconcat 'identity path "/"))
+      (format "/%s" (mapconcat 'identity path "/")))))
 
 (with-eval-after-load "nxml-mode"
   (setq nxml-child-indent 4)
   (setq nxml-slash-auto-complete-flag t)
   (define-key nxml-mode-map (kbd "C-c C-q") 'xml-format))
+;; which-func integration
+;; See https://www.emacswiki.org/emacs/WhichFuncMode Non-standard languages (TL;DR;)
+(defun nxml-which-func-setup-hook ()
+  (when (and (derived-mode-p 'nxml-mode)
+             (< (buffer-size) 1000000)) ;1MB
+    (which-function-mode t)
+    (setq which-func-mode t)
+    (add-hook 'which-func-functions 'xml-where t t)))
 
-;; (defun nxml-enable-which-func ()
-;;   (when (derived-mode-p 'nxml-mode)
-;;     (which-function-mode t)
-;;     (setq which-func-mode t)
-;;     (add-hook 'which-func-functions 'nxml-where t t)))
+;; We need this to be run AFTER which-func-ff-hook - the "t" means append
+(add-hook 'find-file-hook 'nxml-which-func-setup-hook t)
 
-;; (add-hook 'find-file-hook 'nxml-enable-which-func t)
