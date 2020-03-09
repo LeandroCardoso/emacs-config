@@ -1,5 +1,4 @@
 (setq frame-resize-pixelwise t)
-(setq gc-cons-threshold 10000000) ; 10 MB
 (setq highlight-nonselected-windows t)
 (setq ring-bell-function 'ignore)
 (setq undo-limit (* 8 1024 1024))

@@ -2,6 +2,7 @@
 ;; (package-initialize)
 
 (setq custom-file (concat user-emacs-directory "custom-variables.el"))
+(setq gc-cons-threshold (* 32 1024 1024))
 
 ;; local packages
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
@@ -17,4 +18,5 @@
                                      nil
                                      "^[^_\\.].*\\.el$")))
 
+(setq gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value)))
 (message "emacs started in %s" (emacs-init-time))
