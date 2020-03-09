@@ -52,10 +52,14 @@
     (setq company-gtags-executable "global"))
 
   ;; keymap
+  ;; <C-S-tab> is used in Windows, <C-S-iso-lefttab> is used in Linux
+
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key prog-mode-map (kbd "<C-S-tab>") 'company-dabbrev-code)
+  (define-key prog-mode-map (kbd "<C-S-iso-lefttab>") 'company-dabbrev-code)
   (define-key text-mode-map (kbd "<C-S-tab>") 'company-dabbrev)
+  (define-key text-mode-map (kbd "<C-S-iso-lefttab>") 'company-dabbrev)
 
   (with-eval-after-load "yasnippet"
     (define-key prog-mode-map (kbd "<C-tab>") 'company-yasnippet)
@@ -75,6 +79,7 @@
   (define-key company-active-map (kbd "M-v") 'company-previous-page)
   (define-key company-active-map (kbd "C-c <tab>") 'company-complete-common)
   (define-key company-active-map (kbd "<S-tab>") 'company-select-previous) ; workaround for tng in org-mode
+  (define-key company-active-map (kbd "<S-iso-lefttab>") 'company-select-previous) ; workaround for tng in org-mode
   (define-key company-active-map (kbd "<return>") 'company-complete-selection)
 
   (define-key company-search-map (kbd "<escape>") 'company-search-abort)
