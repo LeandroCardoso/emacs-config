@@ -1,7 +1,7 @@
 (defun directory-list (path)
   "Find all directories in PATH."
   (when (file-directory-p path)
-    (process-lines find-program path "-type" "d")))
+    (process-lines find-program (expand-file-name path) "-type" "d")))
 
 (defun copy-filename-as-kill (&optional full)
   "If the current buffer is a file visited buffer, save the
