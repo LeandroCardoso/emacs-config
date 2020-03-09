@@ -2,8 +2,8 @@
 (setq gc-cons-threshold 10000000) ; 10 MB
 (setq highlight-nonselected-windows t)
 (setq ring-bell-function 'ignore)
-(setq undo-limit 800000)
-(setq undo-strong-limit undo-limit)
+(setq undo-limit (* 8 1024 1024))
+(setq undo-strong-limit (truncate (* undo-limit 1.5)))
 
 ;; indent.el
 (setq tab-always-indent 'complete)
