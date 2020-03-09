@@ -1,4 +1,5 @@
-(when (string= (getenv "USERDOMAIN") "RDISOFTWARE")
+(defun np6-setup ()
+  (interactive)
   (require 'project)
   (add-to-list 'project-root-list "~/Documents/bugs/")
   (add-to-list 'project-root-list "~/Documents/env/")
@@ -90,11 +91,13 @@
     )
 
   (defconst np6-base-path "~/Documents/env/" "Initial path used by `np6-config'")
+  (defconst np6-plugins-src-path "c:/Dev/pele/NpSharpRoot/Plugins/" "Source code path for np# plugins")
+  (defconst np6-core-src-path (cond ((file-exists-p "c:/Dev/np61/") "c:/Dev/np61/")
+                                    ((file-exists-p "~/dev/rdi/np61/") "~/dev/rdi/np61/")
+                                    (t nil)) "Source code path for np61 core")
   (defvar np6-path nil "Path for NP6 environment")
   (defvar np6-core-dest nil "Path relative from `np6-path' to np61 core binaries destination to copy to")
   (defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
-  (defvar np6-plugins-src-path "c:/Dev/pele/NpSharpRoot/Plugins/" "Source code path for np# plugins")
-  (defvar np6-core-src-path "c:/Dev/np61/" "Source code path for np61 core")
 
   (defun np6-config ()
     (interactive)
@@ -118,7 +121,7 @@
     (interactive)
     (np6-config)
     (let* ((cmd (completing-read (concat "Script [" np6-path "]: ")
-                                (directory-files np6-path nil "\\.bat") nil t nil))
+                                 (directory-files np6-path nil "\\.bat") nil t nil))
            (full-cmd (concat np6-path cmd))
            (default-directory (file-name-directory full-cmd)))
       (when (and cmd (not (string-empty-p cmd)))
@@ -126,25 +129,32 @@
 
   (defun np6-plugin-name (&optional path)
     (let ((path (or path default-directory)))
-      (when (string-match (concat np6-plugins-src-path "\\([^/]+\\)") path)
+      (when (and np6-plugins-src-path
+                 (string-match (concat np6-plugins-src-path "\\([^/]+\\)") path))
         (match-string-no-properties 1 path))))
 
   (defun np6-plugin-copy-bin (&optional force)
     (interactive "P")
-    (np6-config)
     (let ((plugin-name (np6-plugin-name)))
-      (sync-directories (concat np6-plugins-src-path plugin-name "/src/NpSharp.Plugin." plugin-name
-                                (if np6-debug "/bin/Debug" "/bin/Release"))
-                        (concat np6-path "NpSharpBin/Plugins/" plugin-name)
-                        force)))
+      (if plugin-name
+          (progn
+            (np6-config)
+            (sync-directories (concat np6-plugins-src-path plugin-name "/src/NpSharp.Plugin." plugin-name
+                                      (if np6-debug "/bin/Debug" "/bin/Release"))
+                              (concat np6-path "NpSharpBin/Plugins/" plugin-name)
+                              force)))
+      (error "Plugin not found")))
 
   (defun np6-core-copy-bin (&optional force)
     (interactive "P")
-    (np6-config)
-    (sync-directories (concat np6-core-src-path
-                              (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
-                      (concat np6-path np6-core-dest)
-                      force))
+    (if np6-core-src-path
+        (progn
+          (np6-config)
+          (sync-directories (concat np6-core-src-path
+                                    (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
+                            (concat np6-path np6-core-dest)
+                            force))
+      (error "Np6 core not found")))
 
   (defun np6-copy-bin-dwim (&optional force)
     (interactive "P")
@@ -195,17 +205,20 @@
     (defun np61-update-include-path-list ()
       "Update the `np61-include-path-list'."
       (interactive)
-      (setq np61-include-path-list nil)
-      (message "Updating np61-update-include-path-list...")
-      (let ((start-time (current-time))
-            (pr np6-core-src-path))
-        (dolist (path (nconc (directory-list (concat pr "src/"))
-                             (directory-list (concat pr "extSrc/"))))
-          ;; Skip directories that do not have header files
-          (when (directory-files path nil "\\.h.*" t)
-            (push path np61-include-path-list)))
-        (message "Updating np61-update-include-path-list...done in %g seconds"
-                 (float-time (time-since start-time)))))
+      (if np6-core-src-path
+          (progn
+            (setq np61-include-path-list nil)
+            (message "Updating np61-update-include-path-list...")
+            (let ((start-time (current-time))
+                  (pr np6-core-src-path))
+              (dolist (path (nconc (directory-list (concat pr "src/"))
+                                   (directory-list (concat pr "extSrc/"))))
+                ;; Skip directories that do not have header files
+                (when (directory-files path nil "\\.h.*" t)
+                  (push path np61-include-path-list)))
+              (message "Updating np61-update-include-path-list...done in %g seconds"
+                       (float-time (time-since start-time)))))
+        (error "Np6 core not found")))
 
     (defun np61-c-c++-setup ()
       "Set `flycheck-clang-include-path' and
@@ -230,3 +243,6 @@
 
     (add-hook 'c-mode-hook 'np61-c-c++-setup)
     (add-hook 'c++-mode-hook 'np61-c-c++-setup)))
+
+(when (string= (getenv "USERDOMAIN") "RDISOFTWARE")
+  (np6-setup))
