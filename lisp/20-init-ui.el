@@ -200,7 +200,7 @@ bottom of the buffer stack."
 (setq frame-inhibit-implied-resize t) ;; never resize the frame
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
-(setq window-system-default-frame-alist '((x . ((alpha . 95)))))
+(setq window-system-default-frame-alist '((x . ((alpha . 98)))))
 ;; workaround to set cursor color in new frames
 (add-hook 'after-make-frame-functions
           (lambda(FRAME)
