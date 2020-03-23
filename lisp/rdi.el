@@ -95,22 +95,19 @@
   (defconst np6-core-src-path (cond ((file-exists-p "c:/Dev/np61/") "c:/Dev/np61/")
                                     ((file-exists-p "~/dev/rdi/np61/") "~/dev/rdi/np61/")
                                     (t nil)) "Source code path for np61 core")
+  (defconst np6-core-dest '("bin"
+                            "NpSharpBin/Plugins/Np6PosCore"
+                            "NpSharpBin/Plugins/Np6WayCore"
+                            "NpSharpBin/Plugins/Sale/accountingServiceBin")
+    "List of paths relative from `np6-path' to np61 core binaries destination to copy to")
   (defvar np6-path nil "Path for NP6 environment")
-  (defvar np6-core-dest nil "Path relative from `np6-path' to np61 core binaries destination to copy to")
   (defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
 
   (defun np6-config ()
     (interactive)
     (when (or (called-interactively-p)
-              (not np6-path)
-              (not np6-core-dest))
+              (not np6-path))
       (setq np6-path (read-directory-name "NP6 environment directory: " np6-base-path nil t))
-      (setq np6-core-dest (caddr (read-multiple-choice
-                                  "Np61 core? "
-                                  '((?n "np61" "bin")
-                                    (?p "posCore" "NpSharpBin/Plugins/Np6PosCore")
-                                    (?w "wayCore" "NpSharpBin/Plugins/Np6WayCore")
-                                    (?s "sale" "NpSharpBin/Plugins/Sale/accountingServiceBin")))))
       (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
 
   (defun np6-config-info()
@@ -150,10 +147,12 @@
     (if np6-core-src-path
         (progn
           (np6-config)
-          (sync-directories (concat np6-core-src-path
-                                    (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
-                            (concat np6-path np6-core-dest)
-                            force))
+          (dolist (dest-dir np6-core-dest)
+            (let (dest-path (concat np6-path dest-dir))
+              (when (file-directory-p dest-path)
+                (sync-directories (concat np6-core-src-path
+                                          (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
+                                  dest-dir force)))))
       (error "Np6 core not found")))
 
   (defun np6-copy-bin-dwim (&optional force)
