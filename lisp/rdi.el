@@ -95,19 +95,24 @@
   (defconst np6-core-src-path (cond ((file-exists-p "c:/Dev/np61/") "c:/Dev/np61/")
                                     ((file-exists-p "~/dev/rdi/np61/") "~/dev/rdi/np61/")
                                     (t nil)) "Source code path for np61 core")
-  (defconst np6-core-dest '("bin"
-                            "NpSharpBin/Plugins/Np6PosCore"
-                            "NpSharpBin/Plugins/Np6WayCore"
-                            "NpSharpBin/Plugins/Sale/accountingServiceBin")
-    "List of paths relative from `np6-path' to np61 core binaries destination to copy to")
   (defvar np6-path nil "Path for NP6 environment")
+  (defvar np6-core-dest nil
+    "List of paths relative from `np6-path' to np61 core binaries destination to copy to")
   (defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
 
   (defun np6-config ()
     (interactive)
     (when (or (called-interactively-p)
-              (not np6-path))
+              (not np6-path)
+              (not np6-core-dest))
       (setq np6-path (read-directory-name "NP6 environment directory: " np6-base-path nil t))
+      (setq np6-core-dest nil)
+      (dolist (dest '("bin"
+                      "NpSharpBin/Plugins/Np6PosCore"
+                      "NpSharpBin/Plugins/Np6WayCore"
+                      "NpSharpBin/Plugins/Sale/accountingServiceBin"))
+        (when (yes-or-no-p (format "Copy to %s? " dest))
+          (push np6-core-dest dest)))
       (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
 
   (defun np6-config-info()
