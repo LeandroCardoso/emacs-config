@@ -148,7 +148,7 @@
         (progn
           (np6-config)
           (dolist (dest-dir np6-core-dest)
-            (let (dest-path (concat np6-path dest-dir))
+            (let ((dest-path (concat np6-path dest-dir)))
               (when (file-directory-p dest-path)
                 (sync-directories (concat np6-core-src-path
                                           (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
