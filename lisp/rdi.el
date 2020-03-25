@@ -97,7 +97,7 @@
                                     (t nil)) "Source code path for np61 core")
   (defvar np6-path nil "Path for NP6 environment")
   (defvar np6-core-dest nil
-    "List of paths relative from `np6-path' to np61 core binaries destination to copy to")
+    "Map of destination names to destination paths to copy np61 core binaries")
   (defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
 
   (defun np6-config ()
@@ -112,12 +112,12 @@
                       ("wayCore" . "NpSharpBin/Plugins/Np6WayCore")
                       ("sale" . "NpSharpBin/Plugins/Sale/accountingServiceBin")))
         (when (yes-or-no-p (format "Copy to %s? " (car dest)))
-          (push (cdr dest) np6-core-dest)))
+          (push dest np6-core-dest)))
       (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
 
   (defun np6-config-info()
     (interactive)
-    (message "NP6 path:[%s] core:%s debug:%s" np6-path np6-core-dest np6-debug))
+    (message "NP6 path:[%s] core:%s debug:%s" np6-path (mapcar 'car np6-core-dest) np6-debug))
 
   (defun np6-execute-script ()
     (interactive)
@@ -153,7 +153,7 @@
         (progn
           (np6-config)
           (dolist (dest-dir np6-core-dest)
-            (let ((dest-path (concat np6-path dest-dir)))
+            (let ((dest-path (concat np6-path (cdr dest-dir))))
               (when (file-directory-p dest-path)
                 (sync-directories (concat np6-core-src-path
                                           (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
