@@ -107,17 +107,17 @@
               (not np6-core-dest))
       (setq np6-path (read-directory-name "NP6 environment directory: " np6-base-path nil t))
       (setq np6-core-dest nil)
-      (dolist (dest '("bin"
-                      "NpSharpBin/Plugins/Np6PosCore"
-                      "NpSharpBin/Plugins/Np6WayCore"
-                      "NpSharpBin/Plugins/Sale/accountingServiceBin"))
-        (when (yes-or-no-p (format "Copy to %s? " dest))
-          (push dest np6-core-dest)))
+      (dolist (dest '(("np61" . "bin")
+                      ("posCore" . "NpSharpBin/Plugins/Np6PosCore")
+                      ("wayCore" . "NpSharpBin/Plugins/Np6WayCore")
+                      ("sale" . "NpSharpBin/Plugins/Sale/accountingServiceBin")))
+        (when (yes-or-no-p (format "Copy to %s? " (car dest)))
+          (push (cdr dest) np6-core-dest)))
       (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
 
   (defun np6-config-info()
     (interactive)
-    (message "NP6 path:[%s] core:[%s] debug:[%s]" np6-path np6-core-dest np6-debug))
+    (message "NP6 path:[%s] core:%s debug:%s" np6-path np6-core-dest np6-debug))
 
   (defun np6-execute-script ()
     (interactive)
