@@ -112,7 +112,7 @@
                       "NpSharpBin/Plugins/Np6WayCore"
                       "NpSharpBin/Plugins/Sale/accountingServiceBin"))
         (when (yes-or-no-p (format "Copy to %s? " dest))
-          (push np6-core-dest dest)))
+          (push dest np6-core-dest)))
       (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
 
   (defun np6-config-info()
