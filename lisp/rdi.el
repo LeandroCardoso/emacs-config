@@ -152,7 +152,7 @@
               (when (file-directory-p dest-path)
                 (sync-directories (concat np6-core-src-path
                                           (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
-                                  dest-dir force)))))
+                                  dest-path force)))))
       (error "Np6 core not found")))
 
   (defun np6-copy-bin-dwim (&optional force)
