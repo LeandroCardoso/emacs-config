@@ -61,3 +61,7 @@
                              (fundamental-mode)
                            (let ((buffer-file-name (buffer-name)))
                              (set-auto-mode)))))
+
+(defmacro make-interactive (symbol)
+  "Make the function named `symbol' interactive"
+  (advice-add symbol :before #'(lambda (&rest r) "Make this function interactive." (interactive))))

@@ -2,14 +2,6 @@
   (setq dired-dwim-target t)
   (setq dired-isearch-filenames 'dwim)
 
-  (defun dired-move-to-filename-i ()
-    "Move to the beginning of the filename on the current line.
-Return the position of the beginning of the filename, or nil if none found.
-This is the interactive version of `dired-move-to-filename'"
-    (interactive)
-    (dired-move-to-filename))
-
-
   ;; function adapted from `backup-buffer'
   (defun dired-do-backup (&optional arg)
     "Make a backup of the marked (or next ARG) files.
@@ -84,19 +76,19 @@ See `backup-buffer'."
     (interactive)
     (eww-open-file (dired-get-file-for-visit)))
 
-  (add-hook 'dired-mode-hook #'(lambda () (setq truncate-lines t)))
+  (make-interactive dired-move-to-filename)
 
   ;; local keys
   (define-key dired-mode-map (kbd "<M-return>") 'dired-up-directory)
   (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
-  (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename-i)
+  (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename)
   (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
   (define-key dired-mode-map (kbd "<backtab>") 'dired-previous-line)
   (define-key dired-mode-map (kbd "K") 'dired-do-backup)
   (define-key dired-mode-map (kbd "E") 'dired-eww-open-file)
 
   (with-eval-after-load "wdired"
-    (define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename-i)))
+    (define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename)))
 
 ;; global keys
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
