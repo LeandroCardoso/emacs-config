@@ -48,9 +48,6 @@
   (setq w32-pipe-read-delay 0)
   (setq inhibit-compacting-font-caches t)
 
-  ;; Workaround for ediff
-  (setenv "LANG" "C")
-
   ;; TODO
   (defun shell-bash ()
     "Run `shell' with bash"
