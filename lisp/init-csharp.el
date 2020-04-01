@@ -14,7 +14,7 @@
 was found. Uses default project.el for the job."
       (let ((pr (project-current)))
         (when pr
-          (car (project-roots pr)))))
+          (expand-file-name (car (project-roots pr))))))
 
     (advice-add 'omnisharp--project-root :after-until #'omnisharp--project-root-extension)
 

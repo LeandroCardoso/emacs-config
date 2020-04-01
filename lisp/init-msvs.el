@@ -130,18 +130,11 @@
 (defun nuget-restore()
   (interactive)
   (let* ((solution-file-list (locate-dominating-file-match default-directory msvs-solution-regexp))
-         (solution-path (when solution-file-list
-                          (file-relative-name (file-name-directory (car solution-file-list)))))
-         (nuget-file (when solution-path
-                       (concat solution-path ".nuget/NuGet.exe"))))
-    (if solution-path
-        (if (file-exists-p nuget-file)
-            (message "%s"
-                     (with-temp-buffer
-                       (call-process nuget-file nil t nil "restore" "-SolutionDirectory" solution-path)
-                       (buffer-string)))
-          (error "Nuget executable not found"))
-      (error "Solution file not found"))))
+         (default-directory (when solution-file-list
+                              (file-name-directory (car solution-file-list))))
+         (exec-path (cons "./.nuget" exec-path)))
+    (start-process "nuget" "*nuget*" "nuget" "restore" "-NonInteractive")
+    (view-buffer "*nuget*")))
 
 
 ;; Create modes for solution and project files, so we can set the compile command
