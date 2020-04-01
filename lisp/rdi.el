@@ -127,7 +127,8 @@
            (full-cmd (concat np6-path cmd))
            (default-directory (file-name-directory full-cmd)))
       (when (and cmd (not (string-empty-p cmd)))
-        (start-process cmd "*np6*" full-cmd))))
+        (start-process cmd "*np6*" full-cmd)
+        (view-buffer "*np6*"))))
 
   (defun np6-plugin-name (&optional path)
     (let ((path (or path default-directory)))
