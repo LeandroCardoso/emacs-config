@@ -144,8 +144,8 @@
             (sync-directories (concat np6-plugins-src-path plugin-name "/src/NpSharp.Plugin." plugin-name
                                       (if np6-debug "/bin/Debug" "/bin/Release"))
                               (concat np6-path "NpSharpBin/Plugins/" plugin-name)
-                              force)))
-      (error "Plugin not found")))
+                              force))
+      (error "Plugin not found"))))
 
   (defun np6-core-copy-bin (&optional force)
     (interactive "P")
