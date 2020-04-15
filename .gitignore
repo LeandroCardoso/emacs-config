@@ -16,6 +16,7 @@ places
 recentf
 semanticdb/
 server/
+session.*
 tramp
 transient/
 url/
