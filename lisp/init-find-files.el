@@ -2,16 +2,15 @@
 
 (unless (eq system-type 'windows-nt)
   (defun find-file-sudo (&optional arg)
-    "Reopen the current file as root, preserving point position.
+    "Like `find-file', but as root.
 
-With a prefix ARG prompt for a file to visit.
-Will also prompt for a file to visit if current buffer is not visiting a file."
+With a prefix ARG re-open the current file as root."
     (interactive "P")
-    (if (or arg (not buffer-file-name))
-        (find-file (concat "/sudo:root@localhost:"
-                           (ido-read-file-name "Find file (as root): ")))
-      (let ((p (point)))
-        (find-alternate-file (concat "/sudo::root@localhost" buffer-file-name))
-        (goto-char p)))))
+    (if (and arg buffer-file-name)
+        (let ((p (point)))
+          (find-file (concat "/sudo:root@localhost:" buffer-file-name))
+          (goto-char p))
+      (find-file (concat "/sudo:root@localhost:"
+                         (read-file-name "Find file (as root): "))))))
 
 (global-set-key (kbd "C-M-o") 'ff-find-other-file) ;; default is split-line
