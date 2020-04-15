@@ -8,7 +8,6 @@
 (setq tab-always-indent 'complete)
 
 ;; minibuffer
-(setq enable-recursive-minibuffers t)
 (setq minibuffer-eldef-shorten-default t)
 (minibuffer-depth-indicate-mode)
 ;; ESC key toogle the minibuffer
