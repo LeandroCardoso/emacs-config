@@ -148,12 +148,12 @@ bottom of the buffer stack."
 
 
 ;; Font
-(let ((font (cond
-             ((eq system-type 'gnu/linux) '("Source Code Pro" . "11"))
-             ((eq system-type 'windows-nt) '("Consolas" . "10")))))
-  (if (member (car font) (font-family-list))
-      (set-frame-font (concat (car font) " " (cdr font)) t t)
-    (message "Warning: Font %s does not exist" (car font))))
+(let ((font-name (cond ((eq system-type 'gnu/linux) "Source Code Pro")
+                       ((eq system-type 'windows-nt) "Consolas")))
+      (font-size (if (< 1920 (display-pixel-width)) "11" "10")))
+  (if (member font-name (font-family-list))
+      (set-frame-font (concat font-name " " font-size) t t)
+    (message "Warning: Font %s does not exist" font-name)))
 
 (setq text-scale-mode-step 1.1)
 
