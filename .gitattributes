@@ -1,2 +1,2 @@
-*     text=input
-*.reg text eol=crlf
+*     text=lf
+*.reg -text
