@@ -54,16 +54,19 @@
                                   "/Windows Kits/8.1/Include/um"))
 
   ;; c/c++ headers
-  (add-to-list 'cc-search-directories msvs-include-directory t)
-  (add-to-list 'cc-search-directories msvs-platform-sdk t)
+  (with-eval-after-load "find-file"
+    (add-to-list 'cc-search-directories msvs-include-directory t)
+    (add-to-list 'cc-search-directories msvs-platform-sdk t))
 
   ;; flycheck-clang
-  (add-to-list 'flycheck-clang-include-path msvs-include-directory)
-  (add-to-list 'flycheck-clang-include-path msvs-platform-sdk)
+  (with-eval-after-load "flycheck-clang"
+    (add-to-list 'flycheck-clang-include-path msvs-include-directory)
+    (add-to-list 'flycheck-clang-include-path msvs-platform-sdk))
 
   ;; company-c-headers
-  (add-to-list 'company-c-headers-path-system msvs-include-directory)
-  (add-to-list 'company-c-headers-path-system msvs-platform-sdk)
+  (with-eval-after-load "company"
+    (add-to-list 'company-c-headers-path-system msvs-include-directory)
+    (add-to-list 'company-c-headers-path-system msvs-platform-sdk))
 
   ;; gtags
   ;; (setenv "GTAGSLIBPATH" (concat msvs-include-directory ":" msvs-platform-sdk))
