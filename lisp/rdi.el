@@ -21,6 +21,7 @@
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c-or-c++-mode))
 
   (add-to-list 'auto-mode-alist '("product\\.specification" . nxml-mode))
+  (add-to-list 'auto-mode-alist '("STLD\\.raw" . nxml-mode))
 
   ;; Force coding system in log files
   (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
