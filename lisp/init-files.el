@@ -60,6 +60,7 @@ See `backup-buffer'."
 (setq version-control t)
 ;; misc
 (setq confirm-kill-emacs 'y-or-n-p)
+(setq confirm-kill-processes nil)
 
 ;; key bindings
 (global-set-key (kbd "C-c C-r") 'rename-buffer-and-file)
