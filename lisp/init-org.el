@@ -13,6 +13,7 @@
   (setq org-startup-truncated nil)                   ; don't set `truncate-lines', this break long tables
   (setq org-tags-column (- fill-column))             ; align tags at the right margin. See `set-org-tags-right-column'
   (setq org-tags-sort-function 'string<)             ; align tags using alphabetic order
+  (setq org-todo-keywords '((sequence "TODO" "|" "DONE" "CANCELED")))
 
   (define-key org-mode-map (kbd "C-c M-t") 'org-toggle-link-display)
 
