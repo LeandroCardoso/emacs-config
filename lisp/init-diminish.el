@@ -7,8 +7,9 @@
     (diminish 'subword-mode)
     (diminish 'superword-mode)
     (diminish 'symbol-overlay-mode)
+    (diminish 'volatile-highlights-mode)
+    (diminish 'whole-line-or-region-local-mode)
     (diminish 'ws-butler-mode)
-    (diminish 'yas-minor-mode)
-    (diminish 'volatile-highlights-mode))
+    (diminish 'yas-minor-mode))
 
   (add-hook 'after-init-hook 'set-diminish))
