@@ -68,13 +68,21 @@ property, as described by the command `yank' (\\[yank])."
   nil)
 
 
-(defun mark-line (&optional N)
-  "Put mark at end of this line, point at beginning.
-With argument N not nil or 1, move forward N - 1 lines first."
-  (interactive "P")
-  (back-to-indentation)
-  (push-mark (point) nil t)
-  (end-of-line N))
+(defun mark-line (&optional n)
+  "Put point at beginning of the current line and mark at end.
+
+With argument N, marks N lines.
+
+Interactively, if this command is repeated or (in Transient Mark
+mode) if the mark is active, it marks the next N lines after the
+ones already marked."
+  (interactive "p")
+  (if (and (or (eq last-command this-command) (mark t))
+           (and transient-mark-mode mark-active))
+      (end-of-line (1+ (or n 1)))
+    (back-to-indentation)
+    (push-mark (point) nil t)
+    (end-of-line n)))
 
 
 (defun newline-no-break (&optional arg)
