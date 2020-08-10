@@ -4,3 +4,6 @@
 ;; framemove is a windmove extension for frames.
 (when (require 'framemove nil t)
   (setq framemove-hook-into-windmove t))
+
+(when (require 'windswap nil t)
+  (windswap-default-keybindings 'control 'shift))
