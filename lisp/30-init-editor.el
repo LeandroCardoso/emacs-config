@@ -118,8 +118,9 @@ See `sort-regexp-fields'."
 (setq-default tab-width 4)
 (setq kill-whole-line t)
 
-(add-to-list 'text-mode-hook 'infer-indentation-style)
-(add-to-list 'prog-mode-hook 'infer-indentation-style)
+(add-hook 'text-mode-hook 'infer-indentation-style)
+(add-hook 'prog-mode-hook 'infer-indentation-style)
+(add-hook 'conf-mode-hook 'infer-indentation-style)
 
 ;; key bindings
 (global-set-key (kbd "C-c a") 'align-regexp)
