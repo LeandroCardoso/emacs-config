@@ -131,6 +131,7 @@ bottom of the buffer stack."
   (unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
     (set-frame-parameter nil 'fullscreen 'maximized)))
 
+
 ;; Workaround for the second frame not becoming maximized after it was restored from fullscreen in
 ;; Windows.
 (when (eq system-type 'windows-nt)
@@ -150,8 +151,8 @@ bottom of the buffer stack."
 ;; Font
 (let ((font-name (cond ((eq system-type 'gnu/linux) "Source Code Pro")
                        ((eq system-type 'windows-nt) "Consolas")))
-      (font-size (if (< 1920 (display-pixel-width)) "11" "10")))
-  (if (member font-name (font-family-list))
+      (font-size (if (<= 1920 (display-pixel-width)) "11" "10")))
+  (if (find-font (font-spec :name font-name))
       (set-frame-font (concat font-name " " font-size) t t)
     (message "Warning: Font %s does not exist" font-name)))
 
