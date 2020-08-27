@@ -136,6 +136,10 @@
          (default-directory (when solution-file-list
                               (file-name-directory (car solution-file-list))))
          (exec-path (cons "./.nuget" exec-path)))
+    (if (not solution-file-list)
+        (error "Solution file not found"))
+    (if (not (executable-find "nuget"))
+        (error "Nuget executable not found"))
     (start-process "nuget" "*nuget*" "nuget" "restore" "-NonInteractive")
     (view-buffer "*nuget*")))
 
