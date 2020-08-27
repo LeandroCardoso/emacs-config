@@ -253,4 +253,4 @@ np61 and compiler directories."
   nil)
 
 (add-hook 'c-mode-hook 'np61-c-c++-setup)
-(add-hook 'c++-mode-hook 'np61-c-c++-setup))
+(add-hook 'c++-mode-hook 'np61-c-c++-setup)
