@@ -116,7 +116,7 @@
 
 (defconst np6-plugins-src-path "c:/Dev/NpSharpRoot/Plugins/" "Source code path for np# plugins")
 (defconst np6-core-src-path (cond ((file-exists-p "c:/Dev/np61/") "c:/Dev/np61/")
-                                    ((file-exists-p "~/dev/rdi/np61/") "~/dev/rdi/np61/")
+                                    ((file-exists-p "~/rdi/src/np61/") "~/rdi/src/np61/")
                                     (t nil)) "Source code path for np61 core")
 
 (defun np6-plugin-name (&optional path)
