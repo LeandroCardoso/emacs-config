@@ -159,6 +159,10 @@ bottom of the buffer stack."
 (setq text-scale-mode-step 1.1)
 
 
+;; Better underline
+(setq x-underline-at-descent-line t)
+
+
 ;; Modeline
 (setq column-number-mode t)
 (setq mode-line-default-help-echo nil)
