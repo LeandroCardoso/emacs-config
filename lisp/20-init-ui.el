@@ -26,6 +26,12 @@ Replacement for `split-window-sensibly', but prefers
            (split-window-below))))))))
 
 
+(defun other-window-backward (count &optional all-frames)
+  "A backward version of `other-window'."
+  (interactive "p")
+  (other-window (if (numberp count) (- count) count) all-frames))
+
+
 (defun other-window-all-frames (count)
   "Select another window in all frames in cyclic ordering of
 windows and frames. COUNT specifies the number of windows to
@@ -56,14 +62,8 @@ nil.
 This function uses ‘other-window’ with argument ALL-FRAMES=t for
 finding the window to select."
   (interactive "p")
-  (other-window (if (numberp count) (- count) count) t)
+  (other-window-backward count t)
   (select-frame-set-input-focus (selected-frame)))
-
-
-(defun other-window-or-frame (arg)
-  "`other-frame', if `one-window-p'; otherwise, `other-window'."
-  (interactive "p")
-  (if (one-window-p) (other-frame arg) (other-window arg)))
 
 
 (defun resize-window-to-region (start end)
@@ -214,10 +214,18 @@ bottom of the buffer stack."
 
 
 ;; key-bindings
-(global-set-key (kbd "M-o") 'other-window-all-frames)
-(global-set-key (kbd "M-O") 'other-window-all-frames-backward)
-(global-set-key (kbd "C-x o") 'other-window-or-frame) ;; default is other-window
-(global-set-key (kbd "C-x M-o") 'other-frame)
+
+;; The "all-frames" version of other-window are confusing when using virtual desktops in linux, so
+;; just set it in Windows when there is more than one monitor.
+(if (and (eq system-type 'windows-nt)
+         (> 1 (length (display-monitor-attributes-list))))
+    (progn
+      (global-set-key (kbd "M-o") 'other-window-all-frames)
+      (global-set-key (kbd "M-O") 'other-window-all-frames-backward))
+  (global-set-key (kbd "M-o") 'other-window)
+  (global-set-key (kbd "M-O") 'other-window-backward))
+
+(global-set-key (kbd "C-x o") 'other-frame) ;; default is other-window
 
 (global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
 (global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
