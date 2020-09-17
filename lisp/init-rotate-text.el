@@ -2,14 +2,15 @@
   (setq rotate-text-words
         '(("width" "height")
           ("left" "right" "top" "bottom")
-          ("true" "false")
-          ("yes" "no")
           ("enable" "disable")
-          ("enabled" "disabled")))
+          ("enabled" "disabled")
+          ("true" "false")
+          ("yes" "no")))
 
   (setq rotate-text-symbols
         '(("private" "protected" "public")
-          ("nil" "t")))
+          ("on" "off")
+          ("t" "nil")))
 
   (global-set-key (kbd "C-=") 'rotate-text)
   (global-set-key (kbd "C-+") 'rotate-text-backward)
