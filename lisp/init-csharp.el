@@ -33,7 +33,6 @@ See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
 
     (setq omnisharp-cache-directory (expand-file-name "omnisharp" user-emacs-directory))
     (setq omnisharp-company-do-template-completion nil)
-    (setq omnisharp-imenu-support nil) ; disabled because it does not work when server is not running
 
     ;; omnisharp + company
     (with-eval-after-load "company"
@@ -44,8 +43,6 @@ See `omnisharp-stop-server' and `omnisharp-start-omnisharp-server'."
       (define-key omnisharp-mode-map (kbd "M-.") 'omnisharp-go-to-definition)
       (define-key omnisharp-mode-map (kbd "M-?") 'omnisharp-find-usages)
       (define-key omnisharp-mode-map (kbd "C-x 4 .") 'omnisharp-go-to-definition-other-window)
-      ; TODO fallback to imenu if omnisharp is not running
-      (define-key omnisharp-mode-map (kbd "C-z") 'omnisharp-navigate-to-current-file-member) ; replaces imenu
       (define-key omnisharp-mode-map (kbd "C-M-z") 'omnisharp-navigate-to-solution-member)
       (define-key omnisharp-mode-map (kbd "C-c C-o") 'omnisharp-restart-omnisharp-server))
 
