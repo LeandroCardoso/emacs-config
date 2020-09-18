@@ -8,12 +8,6 @@
   (setq flycheck-idle-change-delay (if (eq system-type 'windows-nt) 30 5))
   (setq flycheck-mode-line-prefix "!")
 
-  ;; Increased the "File" column size
-  ;; FIXME
-  ;; (seq-doseq (el flycheck-error-list-format)
-  ;;   (when (string= (car el) "File")
-  ;;     (setcdr el 20)))
-
   ;; clang
   (flycheck-add-next-checker 'c/c++-clang 'c/c++-cppcheck)
 
