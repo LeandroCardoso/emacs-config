@@ -5,7 +5,6 @@
 ;; - https://en.wikipedia.org/wiki/Microsoft_Windows_SDK
 ;; - https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
 ;; TODO use Common7\Tools\vsdevcmd.bat to compile
-(require 'cl)
 
 (defvar msvs-cpp-project-regexp ".*vcxproj$")
 (defvar msvs-cs-project-regexp ".*csproj$")
@@ -21,14 +20,14 @@
   (if (and msvs-vswhere (file-readable-p msvs-vswhere))
       (expand-file-name
        (car (process-lines msvs-vswhere "-legacy" "-latest" "-property" "installationPath")))
-    (let ((vscomntools (some (lambda (ENV_VAR) (getenv ENV_VAR))
-                             '("VS140COMNTOOLS"    ; Visual Studio 2015
-                               ;; There is no VS130COMNTOOLS.
-                               "VS120COMNTOOLS"    ; Visual Studio 2013
-                               "VS110COMNTOOLS"    ; Visual Studio 2012
-                               "VS100COMNTOOLS"    ; Visual Studio 2010
-                               "VS90COMNTOOLS"     ; Visual Studio 2008
-                               "VS80COMNTOOLS")))) ; Visual Studio 2005
+    (let ((vscomntools (seq-some (lambda (ENV_VAR) (getenv ENV_VAR))
+                                 '("VS140COMNTOOLS"    ; Visual Studio 2015
+                                   ;; There is no VS130COMNTOOLS.
+                                   "VS120COMNTOOLS"    ; Visual Studio 2013
+                                   "VS110COMNTOOLS"    ; Visual Studio 2012
+                                   "VS100COMNTOOLS"    ; Visual Studio 2010
+                                   "VS90COMNTOOLS"     ; Visual Studio 2008
+                                   "VS80COMNTOOLS")))) ; Visual Studio 2005
       (when vscomntools
         (directory-parent (expand-file-name vscomntools) 2)))))
 

@@ -181,25 +181,25 @@ bottom of the buffer stack."
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
 
 ;; reuse frames with `display-buffer-other-frame'
-(setcar display-buffer--other-frame-action
-     '(display-buffer-reuse-window display-buffer-use-some-frame display-buffer-pop-up-frame))
+;; (setcar display-buffer--other-frame-action
+;;      '(display-buffer-reuse-window display-buffer-use-some-frame display-buffer-pop-up-frame))
 
-(dolist (buf '("^\\*Flycheck"
-               "^\\*Occur\\*"
-               "^\\*Woman"
-               "^\\*grep\\*"
-               "^\\*xref\\*"
-               "^\\*company"))
-  (add-to-list 'display-buffer-alist
-               `(,buf . ((display-buffer-pop-up-window) . ((window-height . 0.3)))) t))
+;; (dolist (buf '("^\\*Flycheck"
+;;                "^\\*Occur\\*"
+;;                "^\\*Woman"
+;;                "^\\*grep\\*"
+;;                "^\\*xref\\*"
+;;                "^\\*company"))
+;;   (add-to-list 'display-buffer-alist
+;;                `(,buf . ((display-buffer-pop-up-window) . ((window-height . 0.3)))) t))
 
-(dolist (buf '("^\\*Apropos\\*"
-               "^\\*Help\\*"
-               "^\\* OmniSharp"
-               "^\\*compilation\\*"
-               "^\\*info\\*"))
-  (add-to-list 'display-buffer-alist
-               `(,buf . ((display-buffer-reuse-window) . ((window-height . 0.3)))) t))
+;; (dolist (buf '("^\\*Apropos\\*"
+;;                "^\\*Help\\*"
+;;                "^\\* OmniSharp"
+;;                "^\\*compilation\\*"
+;;                "^\\*info\\*"))
+;;   (add-to-list 'display-buffer-alist
+;;                `(,buf . ((display-buffer-reuse-window) . ((window-height . 0.3)))) t))
 
 ;; Frame
 (setq frame-title-format (concat "%b - emacs@" (system-name)))

@@ -9,7 +9,6 @@
 
   ;; Windows specific settings
   (when (eq system-type 'windows-nt)
-    (setq w32-pipe-read-delay 0)
     (setq magit-process-connection-type nil)
     (setq magit-refresh-status-buffer nil)
 

@@ -1,12 +1,12 @@
-;; Required by Package.el
-;; (package-initialize)
-
 (setq custom-file (concat user-emacs-directory "custom-variables.el"))
 (setq gc-cons-threshold (* 32 1024 1024))
 
 ;; local packages
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 (byte-recompile-directory (expand-file-name "packages" user-emacs-directory) 0)
+
+(when (< emacs-major-version 27)
+  (package-initialize))
 
 ;; Load all emacs list (*.el/*.elc) files sorted by name at ~/.emacs.d/lisp. Sub-directories and
 ;; files starting with underline or dot are ignored. If a compiled elisp file exist and it is not

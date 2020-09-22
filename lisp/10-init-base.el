@@ -8,7 +8,9 @@
 (setq tab-always-indent 'complete)
 
 ;; minibuffer
+(setq minibuffer-beginning-of-buffer-movement t)
 (setq minibuffer-eldef-shorten-default t)
+(setq minibuffer-message-clear-timeout t)
 (minibuffer-depth-indicate-mode)
 ;; ESC key toogle the minibuffer
 (global-set-key (kbd "<escape>") 'execute-extended-command)
@@ -23,6 +25,7 @@
 (setq kill-do-not-save-duplicates t)
 (setq normal-erase-is-backspace nil)
 (setq shift-select-mode nil)
+(setq what-cursor-show-names t)
 
 ;; startup.el
 (setq initial-scratch-message nil)

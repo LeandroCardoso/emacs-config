@@ -1,4 +1,5 @@
 (with-eval-after-load "dired"
+  (setq dired-create-destination-dirs 'ask)
   (setq dired-dwim-target t)
   (setq dired-isearch-filenames 'dwim)
 
@@ -21,13 +22,14 @@
   (make-interactive dired-move-to-filename)
 
   ;; local keys
+  (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
+  (define-key dired-mode-map (kbd "<backtab>") 'dired-previous-line)
   (define-key dired-mode-map (kbd "<M-return>") 'dired-up-directory)
   (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
   (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename)
-  (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
-  (define-key dired-mode-map (kbd "<backtab>") 'dired-previous-line)
   (define-key dired-mode-map (kbd "K") 'dired-do-backup)
   (define-key dired-mode-map (kbd "E") 'dired-eww-open-file)
+  (define-key dired-mode-map (kbd "C-+") 'dired-create-empty-file)
 
   (with-eval-after-load "wdired"
     (define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename)))

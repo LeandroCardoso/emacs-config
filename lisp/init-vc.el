@@ -1,4 +1,6 @@
+(setq diff-font-lock-prettify t)
 (setq vc-command-messages t)
+(setq vc-find-revision-no-save t)
 (setq vc-follow-symlinks t)
 
 ;; git

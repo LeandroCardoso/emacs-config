@@ -44,10 +44,6 @@
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
     (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
 
-  ;; improve performace in Windows
-  (setq w32-pipe-read-delay 0)
-  (setq inhibit-compacting-font-caches t)
-
   ;; TODO
   (defun shell-bash ()
     "Run `shell' with bash"

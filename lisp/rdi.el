@@ -244,7 +244,7 @@ np61 and compiler directories."
     (when msvs-platform-sdk (push msvs-platform-sdk flycheck-clang-include-path))
     ;; update company-clang-arguments
     (setq-local company-clang-arguments
-                (mapcar* (lambda (path) (concat "-I" path)) np61-include-path-list))
+                (mapcar (lambda (path) (concat "-I" path)) np61-include-path-list))
     (when msvs-include-directory (push (concat "-I" msvs-include-directory)
                                        company-clang-arguments))
     (when msvs-platform-sdk (push (concat "-I" msvs-platform-sdk) company-clang-arguments))
