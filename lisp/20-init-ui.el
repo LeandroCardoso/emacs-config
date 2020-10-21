@@ -152,7 +152,7 @@ bottom of the buffer stack."
 ;; Font
 (let ((font-name (cond ((eq system-type 'gnu/linux) "Source Code Pro")
                        ((eq system-type 'windows-nt) "Consolas")))
-      (font-size (if (<= 1920 (display-pixel-width)) "11" "10")))
+      (font-size "10"))
   (if (find-font (font-spec :name font-name))
       (set-frame-font (concat font-name " " font-size) t t)
     (message "Warning: Font %s does not exist" font-name)))
