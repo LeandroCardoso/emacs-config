@@ -10,8 +10,8 @@
  ring.
 
 If the current buffer is not a file visited buffer, show the
-current default directory and wit parameter ARG copy it to the
-kill ring, without parameter ARG copy the buffer name to the kill
+current default directory and without parameter ARG copy it to
+the kill ring, wit parameter ARG copy the buffer name to the kill
 ring."
   (interactive "P")
   (kill-new (if buffer-file-name
@@ -19,8 +19,8 @@ ring."
                     buffer-file-name
                   (file-name-nondirectory buffer-file-name))
               (if arg
-                  default-directory
-                (buffer-name))))
+                  (buffer-name)
+                default-directory)))
   (if buffer-file-name
       (message "File name %s" buffer-file-name)
     (message "Directory %s" default-directory)))
