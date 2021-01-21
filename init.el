@@ -15,8 +15,8 @@
 (setq load-prefer-newer t)
 (let ((local-lisp (expand-file-name "lisp" user-emacs-directory)))
   (add-to-list 'load-path local-lisp)
-  (byte-recompile-directory local-lisp 0)
-  (mapc 'load (mapcar 'file-name-base (directory-files local-lisp nil "^[^_\\.].*\\.el$"))))
+  (mapc 'load (mapcar 'file-name-base (directory-files local-lisp nil "^[^_\\.].*\\.el$")))
+  (byte-recompile-directory local-lisp 0))
 
 (setq gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value)))
 (message "emacs started in %s" (emacs-init-time))
