@@ -2,6 +2,12 @@
   ;; settings
   (setq magit-blame-echo-style 'margin)
   (setq magit-completing-read-function 'magit-ido-completing-read)
+  (setq magit-diff-extra-stat-arguments
+        (lambda ()
+          (when-let ((window (get-buffer-window (current-buffer) 'visible)))
+            (list (format "--stat-width=%d" (window-width))
+                  (format "--stat-graph-width=%d" (/ (window-width) 5))
+                  "--compact-summary"))))
   (setq magit-ediff-dwim-show-on-hunks t)
 
   ;; transient
@@ -19,7 +25,6 @@
     (setq magit-diff-highlight-hunk-body nil)
     (setq magit-diff-refine-hunk nil)
     (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
-
     (remove-hook 'server-switch-hook 'magit-commit-diff)) ; remove diff output from commit
 
   (add-hook 'magit-status-mode-hook #'disable-global-hl-line-mode)
@@ -30,7 +35,4 @@
   (define-key magit-mode-map [remap next-line] 'magit-next-line)
 
   (define-key magit-file-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
-  (define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window)
-
-  (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "C-x M-g") 'magit-dispatch))
+  (define-key magit-hunk-section-map (kbd "SPC") 'magit-diff-visit-file-other-window))
