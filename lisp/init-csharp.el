@@ -8,16 +8,6 @@
 
   ;; omnisharp
   (when (require 'omnisharp nil t)
-    ;; Integrate omnisharp with project.el - this should be upstream
-    (defun omnisharp--project-root-extension ()
-      "Tries to resolve project root for current buffer. nil if no project root directory
-was found. Uses default project.el for the job."
-      (let ((pr (project-current)))
-        (when pr
-          (expand-file-name (car (project-roots pr))))))
-
-    (advice-add 'omnisharp--project-root :after-until #'omnisharp--project-root-extension)
-
     (defun omnisharp-restart-omnisharp-server (&optional no-autodetect)
       "Stops Omnisharp server if running and starts an OmniSharp server
 for a given path to a project or solution file.
