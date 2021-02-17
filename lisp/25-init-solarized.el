@@ -10,23 +10,18 @@
           '("My personal solarized theme customizations"
             (custom-theme-set-faces
              theme-name
-             `(cursor ((,class (:background ,blue))))
+             `(cursor ((,class (:background ,yellow))))
              `(fringe ((,class (:foreground ,s-line))))
-             `(header-line ((,class (:foreground ,yellow :underline ,base02 :weight bold))))
+             `(header-line ((,class (:underline ,base01 :weight bold))))
+             `(hl-line ((,class (:background ,(solarized-color-blend base03 "#000000" 0.8)))))
              `(minibuffer-prompt ((,class (:foreground ,yellow))))
              `(mode-line ((,class (:background ,blue-2bg))))
-             `(mode-line-buffer-id ((,class (:foreground ,yellow :weight bold))))
+             `(mode-line-buffer-id ((,class (:weight bold))))
              `(mode-line-inactive ((,class (:background ,base02))))
-             ;; dired
-             `(dired-header ((,class (:foreground ,yellow :underline t :weight bold))))
-             ;; transient
-             `(transient-separator ((,class (,@(and (>= emacs-major-version 27) '(:extend t))
-                                             :background ,s-line))))
-             ;; symbol-overlay - TODO add other faces
-             `(symbol-overlay-default-face ((,class :inherit unspecified :foreground ,magenta)))
-             ;; woman
-             `(woman-bold ((,class (:inherit Man-overstrike))))
-             `(woman-italic ((,class (:inherit Man-underline)))))))
+             `(dired-header ((,class (:inherit (header-line dired-directory)))))
+             ;; symbol-overlay - TODO add other faces and upstream
+             ;; `(symbol-overlay-default-face ((,class :inherit unspecified :foreground ,magenta)))
+             )))
 
     (load-theme 'solarized-dark t)
 
