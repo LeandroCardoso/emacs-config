@@ -1,8 +1,7 @@
 (with-eval-after-load "ibuffer"
 
-  ;; Modified version of ibuffer column "name" that uses the `buffer-file-name', instead of the file
-  ;; `buffer-name'. This version integrates better with the uniquify package.
-  (define-ibuffer-column file-name-or-buffer-name
+  ;; Modified version of ibuffer column "name" with the uniquify part striped
+  (define-ibuffer-column base-name
     (:name "Name"
      :inline t
      :header-mouse-map ibuffer-name-header-map
@@ -18,7 +17,7 @@
                (cond ((zerop bufs) "No buffers")
                      ((= 1 bufs) "1 buffer")
                      (t (format "%s buffers" bufs))))))
-    (let* ((name (if (buffer-file-name) (file-name-nondirectory (buffer-file-name)) (buffer-name)))
+    (let* ((name (or (uniquify-buffer-base-name) (buffer-name)))
            (string (propertize name
                                'font-lock-face
                                (ibuffer-buffer-name-face buffer mark))))
@@ -91,7 +90,7 @@ at point or directory of the group at point when using the
 
   (setq ibuffer-formats
         '((mark modified read-only " "
-                (file-name-or-buffer-name 40 40 :left :elide)
+                (base-name 60 60 :left :elide)
                 " "
                 (size 6 -1 :right)
                 " "
