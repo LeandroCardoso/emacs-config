@@ -8,6 +8,10 @@
 
   ;; omnisharp
   (when (require 'omnisharp nil t)
+    ;; Workaround for dot net framework not found
+    (when (eq system-type 'gnu/linux)
+      (setenv "FrameworkPathOverride" "/lib/mono/4.5"))
+
     (defun omnisharp-restart-omnisharp-server (&optional no-autodetect)
       "Stops Omnisharp server if running and starts an OmniSharp server
 for a given path to a project or solution file.
