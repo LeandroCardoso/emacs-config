@@ -9,6 +9,7 @@
                   (format "--stat-graph-width=%d" (/ (window-width) 5))
                   "--compact-summary"))))
   (setq magit-ediff-dwim-show-on-hunks t)
+  (setq magit-update-other-window-delay 1)
 
   ;; transient
   (setq transient-default-level 7)
