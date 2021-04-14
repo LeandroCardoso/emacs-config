@@ -176,30 +176,10 @@ bottom of the buffer stack."
 
 
 ;; Window
+(setq display-buffer-base-action '((display-buffer-reuse-window) (display-buffer-same-window)))
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
-
-;; reuse frames with `display-buffer-other-frame'
-;; (setcar display-buffer--other-frame-action
-;;      '(display-buffer-reuse-window display-buffer-use-some-frame display-buffer-pop-up-frame))
-
-;; (dolist (buf '("^\\*Flycheck"
-;;                "^\\*Occur\\*"
-;;                "^\\*Woman"
-;;                "^\\*grep\\*"
-;;                "^\\*xref\\*"
-;;                "^\\*company"))
-;;   (add-to-list 'display-buffer-alist
-;;                `(,buf . ((display-buffer-pop-up-window) . ((window-height . 0.3)))) t))
-
-;; (dolist (buf '("^\\*Apropos\\*"
-;;                "^\\*Help\\*"
-;;                "^\\* OmniSharp"
-;;                "^\\*compilation\\*"
-;;                "^\\*info\\*"))
-;;   (add-to-list 'display-buffer-alist
-;;                `(,buf . ((display-buffer-reuse-window) . ((window-height . 0.3)))) t))
 
 ;; Frame
 (setq frame-title-format (concat "%b - emacs@" (system-name)))
