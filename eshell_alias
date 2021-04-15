@@ -1,0 +1,13 @@
+alias d cd -
+alias eg env | grep -i $*
+alias emacs for i in ${eshell-flatten-list $*} {find-file $i}
+alias emacsclient for i in ${eshell-flatten-list $*} {find-file $i}
+alias l ls $*
+alias la ls -a $*
+alias lh ls -lh $*
+alias ll ls -l $*
+alias lla ls -la $*
+alias lsd ls -d $*
+alias lt ls =ltr $*
+alias reload eshell-read-aliases-list
+alias wcl wc -l $*
