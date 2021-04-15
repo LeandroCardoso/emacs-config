@@ -1,7 +1,13 @@
-alias d cd -
+alias D dired-other-window $1
+alias FF find-file-other-window $1
+alias V view-file-other-window $1
+alias b cd -
+alias backup dired-do-backup $1
+alias d dired $1
 alias eg env | grep -i $*
 alias emacs for i in ${eshell-flatten-list $*} {find-file $i}
 alias emacsclient for i in ${eshell-flatten-list $*} {find-file $i}
+alias ff find-file $1
 alias l ls $*
 alias la ls -a $*
 alias lh ls -lh $*
@@ -10,4 +16,5 @@ alias lla ls -la $*
 alias lsd ls -d $*
 alias lt ls =ltr $*
 alias reload eshell-read-aliases-list
+alias v view-file $1
 alias wcl wc -l $*
