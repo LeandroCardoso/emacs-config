@@ -14,7 +14,7 @@ alias lh ls -lh $*
 alias ll ls -l $*
 alias lla ls -la $*
 alias lsd ls -d $*
-alias lt ls =ltr $*
+alias lt ls -ltr $*
 alias reload eshell-read-aliases-list
 alias v view-file $1
 alias wcl wc -l $*
