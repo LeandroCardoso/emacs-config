@@ -1,8 +1,16 @@
 (require 'project)
-(add-to-list 'project-root-list "~/Documents/bugs/")
-(add-to-list 'project-root-list "~/Documents/env/")
-(add-to-list 'project-root-list "~/rdi/bugs/")
-(add-to-list 'project-root-list "~/rdi/env/")
+
+(defconst np6-bugs-path (if (eq system-type 'windows-nt) "~/Documents/bugs/" "~/dev/rdi/bugs/"))
+(defconst np6-env-path (if (eq system-type 'windows-nt) "~/Documents/env/" "~/dev/rdi/env/"))
+(defconst np6-plugins-src-path
+  (if (eq system-type 'windows-nt) "c:/Dev/NpSharpRoot/Plugins/" "~/dev/rdi/src/NpSharpRoot/Plugins/")
+  "Source code path for np# plugins")
+(defconst np6-np61-src-path (if (eq system-type 'windows-nt) "c:/Dev/np61/" "~/dev/rdi/src/np61/")
+  "Source code path for np61 core")
+
+;; Project
+(add-to-list 'project-root-list 'np6-bugs-path)
+(add-to-list 'project-root-list 'np6-env-path)
 
 ;; nps
 (when (featurep 'js2-mode)
@@ -114,11 +122,6 @@
                  ))
     (push def flycheck-clang-definitions)))
 
-(defconst np6-plugins-src-path "c:/Dev/NpSharpRoot/Plugins/" "Source code path for np# plugins")
-(defconst np6-core-src-path (cond ((file-exists-p "c:/Dev/np61/") "c:/Dev/np61/")
-                                    ((file-exists-p "~/rdi/src/np61/") "~/rdi/src/np61/")
-                                    (t nil)) "Source code path for np61 core")
-
 (defun np6-plugin-name (&optional path)
   (let ((path (or path default-directory)))
     (when (and np6-plugins-src-path
@@ -127,7 +130,7 @@
 
 ;; Environment setup
 (when (eq system-type 'windows-nt)
-  (defconst np6-base-path "~/Documents/env/" "Initial path used by `np6-config'")
+
   (defvar np6-path nil "Path for NP6 environment")
   (defvar np6-core-dest nil
     "Map of destination names to destination paths to copy np61 core binaries")
@@ -137,7 +140,7 @@
     (interactive)
     (when (or (called-interactively-p)
               (not np6-path))
-      (setq np6-path (read-directory-name "NP6 environment directory: " np6-base-path nil t))
+      (setq np6-path (read-directory-name "NP6 environment directory: " np6-env-path nil t))
       (setq np6-core-dest nil)
       (dolist (dest '(("np61" . "bin") ;TODO unify np61 and poscore
                       ("posCore" . "NpSharpBin/Plugins/Np6PosCore")
@@ -176,13 +179,13 @@
 
   (defun np6-core-copy-bin (&optional force)
     (interactive "P")
-    (if np6-core-src-path
+    (if np6-np61-src-path
         (progn
           (np6-config)
           (dolist (dest-dir np6-core-dest)
             (let ((dest-path (concat np6-path (cdr dest-dir))))
               (when (file-directory-p dest-path)
-                (sync-directories (concat np6-core-src-path
+                (sync-directories (concat np6-np61-src-path
                                           (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13"))
                                   dest-path force)))))
       (error "Np6 core not found")))
@@ -215,12 +218,12 @@
 (defun np61-update-include-path-list ()
   "Update the `np61-include-path-list'."
   (interactive)
-  (if np6-core-src-path
+  (if np6-np61-src-path
       (progn
         (setq np61-include-path-list nil)
         (message "Updating np61-update-include-path-list...")
         (let ((start-time (current-time))
-              (pr np6-core-src-path))
+              (pr np6-np61-src-path))
           (dolist (path (nconc (directory-list (concat pr "src/"))
                                (directory-list (concat pr "extSrc/"))))
             ;; Skip directories that do not have header files
@@ -235,7 +238,7 @@
 `company-clang-arguments' nad `company-c-headers-path-user' with
 np61 and compiler directories."
   (interactive)
-  (when (string= np6-core-src-path (car (project-roots (project-current))))
+  (when (string= np6-np61-src-path (car (project-roots (project-current))))
     ;; update np61-include-path-list
     (when (null np61-include-path-list) (np61-update-include-path-list))
     ;; update flycheck-clang-include-path
