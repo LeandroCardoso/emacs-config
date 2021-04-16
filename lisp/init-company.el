@@ -71,6 +71,9 @@
   (with-eval-after-load "shell"
     (define-key shell-mode-map (kbd "<C-tab>") 'company-complete))
 
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (define-key eshell-mode-map (kbd "<tab>") 'company-complete)))
+
   (define-key company-active-map (kbd "<C-tab>") 'company-abort)
   (define-key company-active-map (kbd "<escape>") 'company-abort)
   (define-key company-active-map (kbd "<next>") 'company-next-page)
