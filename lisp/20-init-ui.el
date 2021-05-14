@@ -176,7 +176,6 @@ bottom of the buffer stack."
 
 
 ;; Window
-(setq display-buffer-base-action '((display-buffer-reuse-window) (display-buffer-same-window)))
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)

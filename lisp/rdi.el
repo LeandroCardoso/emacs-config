@@ -125,7 +125,8 @@
 (defun np6-plugin-name (&optional path)
   (let ((path (or path default-directory)))
     (when (and np6-plugins-src-path
-               (string-match (concat np6-plugins-src-path "\\([^/]+\\)") path))
+               (string-match (concat (expand-file-name np6-plugins-src-path) "\\([^/]+\\)")
+                             (expand-file-name path)))
       (match-string-no-properties 1 path))))
 
 ;; Environment setup
@@ -238,7 +239,8 @@
 `company-clang-arguments' nad `company-c-headers-path-user' with
 np61 and compiler directories."
   (interactive)
-  (when (string= np6-np61-src-path (car (project-roots (project-current))))
+  (when (string= (expand-file-name np6-np61-src-path)
+                 (expand-file-name (car (project-roots (project-current)))))
     ;; update np61-include-path-list
     (when (null np61-include-path-list) (np61-update-include-path-list))
     ;; update flycheck-clang-include-path
