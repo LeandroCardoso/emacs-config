@@ -2,7 +2,9 @@
   ;; Workaround for when system language was not defined as English. I should submit a bugfix
   ;; upstream.
   (defun language-workaround-advice (function &rest r)
-    (let ((process-environment "LANG=C"))
+    (let ((process-environment process-environment))
+      (push "LANG=en_US.UTF-8" process-environment)
+      (push "LANGUAGE=en_US" process-environment)
       (apply function r)))
 
   (advice-add 'ediff-exec-process :around 'language-workaround-advice)
