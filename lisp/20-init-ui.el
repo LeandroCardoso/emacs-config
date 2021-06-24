@@ -150,12 +150,23 @@ bottom of the buffer stack."
 
 
 ;; Font
-(let ((font (cond ((eq system-type 'gnu/linux) "Source Code Pro 10")
-                  ((eq system-type 'windows-nt)
-                   (concat "Consolas " (if (< 1920 (display-pixel-width)) "11" "10"))))))
-  (if (find-font (font-spec :name font))
-      (set-frame-font font t t)
-    (message "Warning: Font %s does not exist" font)))
+(defun monitor-ppcm ()
+  ;; Monitor resolution examples
+  ;; | resolution | diagonal | mm-size | ppcm |
+  ;; |  1280x1024 |       19 | 377x302 |   34 |
+  ;; |  1920x1080 |       14 | 310x174 |   62 |
+  ;; |  1920x1080 |       23 | 510x287 |   38 |
+  ;; |  2560x1440 |       25 | 553x311 |   46 |
+  (/ (* 10 (frame-pixel-width)) (car (frame-monitor-attribute 'mm-size))))
+
+(defvar default-font-list '(("Source Code Pro" . 10))
+                            ("Consolas" . 11))
+
+(when-let ((font (seq-find (lambda (font) (find-font (font-spec :name (car font)))) default-font-list)))
+  (let ((font-name (car font))
+        (font-size (cdr font)))
+    (set-frame-font (concat font-name " " (number-to-string font-size)) t t)
+    (message "Setting default font to %s-%d" font-name font-size)))
 
 (setq text-scale-mode-step 1.1)
 
