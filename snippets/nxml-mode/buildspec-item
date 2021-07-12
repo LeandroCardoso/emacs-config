@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: <Item package="..." version="..." type="Plugin" targetFramework="..."/>
+# key: item
+# --
+<Item package="NpSharp.Plugin.$1" version="$2" type="Plugin" targetFramework="${3:$$(yas-choose-value '("Net40" "Net462"))}"/>$0

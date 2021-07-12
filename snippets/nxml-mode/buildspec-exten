@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: <Extension package="..." version="..." parentPackage="..." targetFramework="..."/>
+# key: exten
+# --
+<Extension package="NpSharp.Extension.$1" version="$2" parentPackage="NpSharp.Plugin.${1:$(substring yas-text 0 (string-match "\\\\." yas-text))}" targetFramework="${3:$$(yas-choose-value '("Net40" "Net462"))}"/>$0
