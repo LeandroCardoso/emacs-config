@@ -5,6 +5,8 @@
 
   (add-hook 'csharp-mode-hook 'csharp-mode-setup)
 
+  (add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
+
 
   ;; omnisharp
   (when (require 'omnisharp nil t)
