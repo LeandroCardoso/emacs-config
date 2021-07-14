@@ -159,8 +159,8 @@ bottom of the buffer stack."
   ;; |  2560x1440 |       25 | 553x311 |   46 |
   (/ (* 10 (frame-pixel-width)) (car (frame-monitor-attribute 'mm-size))))
 
-(defvar default-font-list '(("Source Code Pro" . 10))
-                            ("Consolas" . 11))
+(defvar default-font-list '(("Source Code Pro" . 10)
+                            ("Consolas" . 11)))
 
 (when-let ((font (seq-find (lambda (font) (find-font (font-spec :name (car font)))) default-font-list)))
   (let ((font-name (car font))
