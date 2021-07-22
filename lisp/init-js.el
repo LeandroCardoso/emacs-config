@@ -7,7 +7,7 @@
   (define-key js2-minor-mode-map [remap js-find-symbol] #'js2-jump-to-definition)
 
   (add-hook 'js2-minor-mode-hook 'js2-minor-mode-setup)
-  (add-hook 'js-mode-hook 'js2-minor-mode)
+  ;; (add-hook 'js-mode-hook 'js2-minor-mode)
 
   (setq js2-missing-semi-one-line-override t)
   (setq js2-mode-assume-strict t)
