@@ -21,6 +21,17 @@ region, otherwise base64-decode the whole buffer."
       (base64-encode-region min max t))))
 
 
+(defun delete-all-blank-lines ()
+  "Delete all blank lines in the buffer.
+
+When region is active delete all blank lines in the region."
+  (interactive "*")
+  (save-excursion
+    (let ((min (if (use-region-p) (region-beginning) (point-min)))
+          (max (if (use-region-p) (region-end) (point-max))))
+      (flush-lines "^\\s-*$" min max))))
+
+
 (defun indent-buffer (&optional column)
   "Indent the currently visited buffer.
 A numeric prefix argument specifies a column: indent each line to that column.
