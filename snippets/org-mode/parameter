@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: jira-parameter
-# key: jira-parameter
+# name: jira parameter
+# key: parameter
 # --
 Name: $1
 Location: $2

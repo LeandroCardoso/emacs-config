@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: release notes
+# key: release-notes
+# --
+{panel:title=Release Notes|borderStyle=dashed|borderColor=#ccc|titleBGColor=#0088ff|bgColor=#ffdd99}
+*Root Case:* $1
+*Affected Features:* $2
+*Affected Components:*
+$3
+*Local Script Changes:*
+$4
+*XML Configuration Changes:*
+$5
+*Additional Notes:*
+$6
+*Automation Report Link:*
+$7
+{panel}
