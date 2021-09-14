@@ -10,7 +10,9 @@
 
   (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
 
-  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS" "*.exe"))
+  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"                           ;tags
+                  "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css" ;minified files
+                  "*.cache" "*.exe" "*.nupkg" "*.so" "*.zip"))
     (add-to-list 'grep-find-ignored-files file))
 
   (add-hook 'grep-setup-hook #'(lambda () (setq truncate-lines t)))
