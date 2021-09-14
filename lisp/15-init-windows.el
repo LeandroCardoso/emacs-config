@@ -40,6 +40,9 @@
   (w32-add-to-path (expand-file-name "windows_bin/" user-emacs-directory))
   (add-to-list 'exec-path (expand-file-name "windows_bin/" user-emacs-directory))
 
+  ;; Workaround for ssh
+  (setenv "SSH_ASKPASS" "c:/msys64/usr/bin/sshpass.exe")
+
   ;; nodejs
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
     (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
