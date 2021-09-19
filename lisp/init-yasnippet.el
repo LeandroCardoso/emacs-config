@@ -12,4 +12,5 @@
   (define-key yas-keymap (kbd "<S-tab>") nil)
   (define-key yas-keymap (kbd "<backtab>") nil)
   (define-key yas-keymap (kbd "<C-tab>") 'yas-next-field-or-maybe-expand)
-  (define-key yas-keymap (kbd "<C-S-tab>") 'yas-prev-field))
+  (define-key yas-keymap (kbd "<C-S-tab>") 'yas-prev-field)
+  (define-key yas-keymap (kbd "<C-S-iso-lefttab>") 'yas-prev-field))
