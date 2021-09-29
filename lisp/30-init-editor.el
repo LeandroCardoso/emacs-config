@@ -133,6 +133,8 @@ See `sort-regexp-fields'."
 (add-hook 'prog-mode-hook 'infer-indentation-style)
 (add-hook 'conf-mode-hook 'infer-indentation-style)
 
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+
 ;; key bindings
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "<C-backspace>") 'backward-kill-sexp)
