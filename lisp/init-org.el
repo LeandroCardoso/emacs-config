@@ -24,7 +24,7 @@
         (let ((map (make-sparse-keymap)))
           (define-key map "l" 'org-store-link)
           (define-key map "t" 'orgtbl-mode)
-          (define-key map "s" 'orgstruct-mode)
+          (define-key map "s" 'orgalist-mode)
           map))
   (defalias 'org-out-keymap org-out-keymap)
   (global-set-key (kbd "C-c o") 'org-out-keymap)
