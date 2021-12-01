@@ -11,6 +11,9 @@
   (setq org-src-window-setup 'current-window)        ; show edit buffer in the current window
   (setq org-startup-folded nil)                      ; open org files in unfolded mode
   (setq org-startup-truncated nil)                   ; don't set `truncate-lines', this break long tables
+  (setq org-tag-faces `(("doubt" . ,(face-foreground 'warning))
+                        ("important" . ,(face-foreground 'org-warning))))
+  (setq org-tag-persistent-alist '(("doubt" . ?d) ("important" . ?i)))
   (setq org-tags-column (- fill-column))             ; align tags at the right margin. See `set-org-tags-right-column'
   (setq org-tags-sort-function 'string<)             ; align tags using alphabetic order
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
