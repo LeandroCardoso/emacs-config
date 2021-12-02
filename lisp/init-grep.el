@@ -8,8 +8,8 @@
     (setq grep-files-aliases (assoc-delete-all "cchh" grep-files-aliases))
     (setq grep-files-aliases (assoc-delete-all "cx" grep-files-aliases))
     (push `("cc" . ,cc) grep-files-aliases)
-    (push `("cchh" . ,(concat cc hh)) grep-files-aliases)
-    (push `("cx" . ,(concat cc hh cext)) grep-files-aliases))
+    (push `("cchh" . ,(concat cc " " hh)) grep-files-aliases)
+    (push `("cx" . ,(concat cc " " hh " " cext)) grep-files-aliases))
 
   (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
 
