@@ -14,7 +14,7 @@ Indentation is done using the `indent-tabs-mode' and
         (let ((min (if (use-region-p) (region-beginning) (point-min)))
               (max (if (use-region-p) (region-end) (point-max))))
           (call-process-region min max "xmllint" t '(t nil) nil
-                               "--format" "--recover" "--nowarning" "-")))
+                               "--format" "--recover" "--nowarning" "--encode" "UTF-8" "-")))
     (error "xmllint executable not found")))
 
 ;; Original from https://www.emacswiki.org/emacs/NxmlMode
