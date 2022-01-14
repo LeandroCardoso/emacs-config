@@ -14,22 +14,22 @@
 See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022.")
 
 
-;; Variables
+;; Constants
 
-(defvar msvs-cpp-project-regexp ".*vcxproj$")
-(defvar msvs-cs-project-regexp ".*csproj$")
-(defvar msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
-(defvar msvs-solution-regexp ".*sln$")
+(defconst msvs-cpp-project-regexp ".*vcxproj$")
+(defconst msvs-cs-project-regexp ".*csproj$")
+(defconst msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
+(defconst msvs-solution-regexp ".*sln$")
 
-(defvar msvs-program-files
+(defconst msvs-program-files
   (when (getenv "ProgramFiles(x86)")
     (concat (expand-file-name (getenv "ProgramFiles(x86)")) "/")))
 
-(defvar msvs-vswhere
+(defconst msvs-vswhere
   (when msvs-program-files
     (concat msvs-program-files "Microsoft Visual Studio/Installer/vswhere.exe")))
 
-(defvar msvs-root-directory
+(defconst msvs-root-directory
   (if (and msvs-vswhere (file-readable-p msvs-vswhere))
       (expand-file-name
        (car (process-lines msvs-vswhere "-legacy" "-latest" "-property" "installationPath")))
@@ -45,19 +45,19 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
         (directory-parent (expand-file-name vscomntools) 2)))))
 
 ;; TODO support to multiple visual studios
-(defvar msvs-include-directory
+(defconst msvs-include-directory
   (when msvs-program-files
     (concat msvs-program-files "Microsoft Visual Studio 12.0/VC/include")))
 
 ;; TODO support to multiple sdks. Find Windows.h @ "Microsoft SDKs/Windows/" and "Windows Kits/"
-(defvar msvs-platform-sdk
+(defconst msvs-platform-sdk
   (when msvs-program-files
     (concat msvs-program-files "Windows Kits/8.1/Include/um")))
 
 
 ;; Functions
 
-(defun msvs-compile-command (&optional solution platform configuration target &rest compiler-parameters)
+(defun msvs-generate-compile-command (&optional solution platform configuration target &rest rest-parameters)
   "Return a `compile-command' for compile a msvs project/file."
   (let* (;; If the current buffer is a solution file then use it as solution-file, else look up
          ;; the directory hierarchy for a directory containing a solution file.
@@ -76,8 +76,8 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
     (concat "msbuild.cmd"
             (when msvs-msbuild-default-parameters
               (concat " " (string-join msvs-msbuild-default-parameters " ")))
-            (when compiler-parameters
-              (concat " " (string-join compiler-parameters " ")))
+            (when rest-parameters
+              (concat " " (string-join rest-parameters " ")))
             (when (and (not solution)
                        solution-directory)
               (concat " /p:SolutionDir=" (w32-convert-filename solution-directory)))
@@ -100,14 +100,14 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
                  ((or (eq major-mode 'c-mode)
                       (eq major-mode 'c++-mode)
                       (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")))
-                  (msvs-compile-command nil "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
+                  (msvs-generate-compile-command nil "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
                  ;; c#
                  ((or (eq major-mode 'csharp-mode)
                       (string-match-p msvs-cs-project-regexp (or buffer-file-name "")))
-                  (msvs-compile-command t "\"Any CPU\"" "Debug" "Build"))
+                  (msvs-generate-compile-command t "\"Any CPU\"" "Debug" "Build"))
                  ;; solution
                  ((string-match-p msvs-solution-regexp (or buffer-file-name ""))
-                  (msvs-compile-command t "win32" "Debug" "Build"))))
+                  (msvs-generate-compile-command t "win32" "Debug" "Build"))))
     ;; If the project directory is different than the default-directory then compilation-search-path
     ;; needs to be set.
     (let ((project-file (car (locate-dominating-file-match default-directory msvs-project-regexp))))
@@ -173,7 +173,7 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
   (with-eval-after-load "csharp-mode" (add-hook 'csharp-mode-hook 'msvs-set-compile-command)))
 
 
-;; Auto-Modes
+;; Setup Auto-Modes
 
 ;; Create modes for solution and project files, so we can set the compile command
 (define-generic-mode sln-mode ;; MODE
