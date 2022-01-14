@@ -6,6 +6,14 @@
 ;; - https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
 ;; TODO use Common7\Tools\vsdevcmd.bat to compile
 
+;; Custom
+
+(defcustom msvs-msbuild-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
+  "Default parameters for msbuild.
+
+See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022.")
+
+
 ;; Variables
 
 (defvar msvs-cpp-project-regexp ".*vcxproj$")
@@ -66,6 +74,8 @@
          (project-directory (if project-file
                                 (file-name-directory project-file))))
     (concat "msbuild.cmd"
+            (when msvs-msbuild-default-parameters
+              (concat " " (string-join msvs-msbuild-default-parameters " ")))
             (when compiler-parameters
               (concat " " (string-join compiler-parameters " ")))
             (when (and (not solution)
@@ -79,7 +89,6 @@
                               solution-file
                             (when project-file (file-relative-name project-file)))))
               (when object (w32-convert-filename object))))))
-
 
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs project/file."
@@ -105,7 +114,6 @@
       (when project-file
         (add-to-list (make-local-variable 'compilation-search-path)
                      (file-name-directory project-file))))))
-
 
 ;; NuGet
 (defun nuget-restore()

@@ -36,4 +36,4 @@ if exist %VSWHERE% (
     goto :eof
 )
 
-msbuild.exe /m /v:minimal /fl /flp:verbosity=minimal %*
+msbuild.exe %*
