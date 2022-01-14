@@ -9,9 +9,17 @@
 ;; Custom
 
 (defcustom msvs-msbuild-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
-  "Default parameters for msbuild.
+  "Default parameters for msbuild used by `msvs-generate-compile-command'.
 
 See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022.")
+
+(defcustom msvs-compile-command-function nil
+  "Function called to generate a compilation command for msvs
+project/file.  When unset or the return of the called function is
+nil, then `msvs-compile-command-default-function' is used.
+
+See the helper function `msvs-generate-compile-command' and user
+option `msvs-msbuild-default-parameters'.")
 
 
 ;; Constants
@@ -90,24 +98,26 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
                             (when project-file (file-relative-name project-file)))))
               (when object (w32-convert-filename object))))))
 
+(defun msvs-compile-command-default-function ()
+  "Default function to generate a compilation command for msvs project/file."
+  (cond
+   ;; c or c++
+   ((or (eq major-mode 'c-mode)
+        (eq major-mode 'c++-mode)
+        (string-match-p msvs-cpp-project-regexp (or buffer-file-name ""))) ; c/c++ projects
+    (msvs-generate-compile-command nil "win32" "Debug" "Build"))
+   ;; c#
+   ((or (eq major-mode 'csharp-mode)
+        (string-match-p msvs-cs-project-regexp (or buffer-file-name ""))) ; c# project
+    (msvs-generate-compile-command t "\"Any CPU\"" "Debug" "Build"))))
+
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs project/file."
   (interactive)
   (when msvs-root-directory
-    (setq-local compile-command
-                (cond
-                 ;; c or c++
-                 ((or (eq major-mode 'c-mode)
-                      (eq major-mode 'c++-mode)
-                      (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")))
-                  (msvs-generate-compile-command nil "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
-                 ;; c#
-                 ((or (eq major-mode 'csharp-mode)
-                      (string-match-p msvs-cs-project-regexp (or buffer-file-name "")))
-                  (msvs-generate-compile-command t "\"Any CPU\"" "Debug" "Build"))
-                 ;; solution
-                 ((string-match-p msvs-solution-regexp (or buffer-file-name ""))
-                  (msvs-generate-compile-command t "win32" "Debug" "Build"))))
+    (let ((custom-command (when msvs-compile-command-function
+                            (funcall msvs-compile-command-function))))
+      (setq-local compile-command (or custom-command (msvs-compile-command-default-function))))
     ;; If the project directory is different than the default-directory then compilation-search-path
     ;; needs to be set.
     (let ((project-file (car (locate-dominating-file-match default-directory msvs-project-regexp))))
@@ -117,6 +127,7 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
 
 ;; NuGet
 (defun nuget-restore()
+  "Restore nuget packages of the current solution."
   (interactive)
   (let* ((solution-file-list (locate-dominating-file-match default-directory msvs-solution-regexp))
          (default-directory (when solution-file-list
@@ -198,3 +209,5 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
 ;; extension was a great idea!
 (when (eq system-type 'windows-nt)
   (add-to-list 'auto-mode-alist '("[Ii]nclude" . c++-mode) t))
+
+(provide 'msvs)

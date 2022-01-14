@@ -1,4 +1,5 @@
 (require 'project)
+(require 'msvs)
 
 (defconst np6-bugs-path (if (eq system-type 'windows-nt) "~/Documents/bugs/" "~/dev/rdi/bugs/"))
 (defconst np6-env-path (if (eq system-type 'windows-nt) "~/Documents/env/" "~/dev/rdi/env/"))
@@ -265,3 +266,18 @@ np61 and compiler directories."
 
 (add-hook 'c-mode-hook 'np61-c-c++-setup)
 (add-hook 'c++-mode-hook 'np61-c-c++-setup)
+
+(defun rdi-msvs-generate-compile-command ()
+  (cond
+   ;; c or c++
+   ((or (eq major-mode 'c-mode)
+        (eq major-mode 'c++-mode)
+        (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")) ; c/c++ projects
+        (string-match-p msvs-solution-regexp (or buffer-file-name ""))) ; solution
+    (msvs-generate-compile-command nil "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
+   ;; c#
+   ((or (eq major-mode 'csharp-mode)
+        (string-match-p msvs-cs-project-regexp (or buffer-file-name ""))) ; c# projects
+    (msvs-generate-compile-command t "\"Any CPU\"" "Debug" "Build"))))
+
+(setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
