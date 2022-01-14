@@ -72,7 +72,7 @@
   )
 
 
-(defun msvs-compile-command (&optional solution platform configuration target)
+(defun msvs-compile-command (&optional solution platform configuration target &rest compiler-parameters)
   "Return a `compile-command' for compile a msvs project/file."
   (let* (;; If the current buffer is a solution file then use it as solution-file, else look up
          ;; the directory hierarchy for a directory containing a solution file.
@@ -89,6 +89,8 @@
          (project-directory (if project-file
                                 (file-name-directory project-file))))
     (concat "msbuild.cmd"
+            (when compiler-parameters
+              (concat " " (string-join compiler-parameters " ")))
             (when (and (not solution)
                        solution-directory)
               (concat " /p:SolutionDir=" (w32-convert-filename solution-directory)))
@@ -112,7 +114,7 @@
                  ((or (eq major-mode 'c-mode)
                       (eq major-mode 'c++-mode)
                       (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")))
-                  (msvs-compile-command nil "win32" "Debug" "Build"))
+                  (msvs-compile-command nil "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
                  ;; c#
                  ((or (eq major-mode 'csharp-mode)
                       (string-match-p msvs-cs-project-regexp (or buffer-file-name "")))
