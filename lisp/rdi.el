@@ -272,12 +272,18 @@ np61 and compiler directories."
    ;; c or c++
    ((or (eq major-mode 'c-mode)
         (eq major-mode 'c++-mode)
-        (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")) ; c/c++ projects
-        (string-match-p msvs-solution-regexp (or buffer-file-name ""))) ; solution
-    (msvs-generate-compile-command nil "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
+        ;; c or c++ project
+        (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")))
+    (msvs-generate-compile-command t "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
    ;; c#
    ((or (eq major-mode 'csharp-mode)
-        (string-match-p msvs-cs-project-regexp (or buffer-file-name ""))) ; c# projects
-    (msvs-generate-compile-command t "\"Any CPU\"" "Debug" "Build"))))
+        (string-match-p msvs-cs-project-regexp (or buffer-file-name "")))
+    ;; c# project
+    (msvs-generate-compile-command nil "\"Any CPU\"" "Debug" "Build"))
+   ;; solution
+   ((string-match-p msvs-solution-regexp (or buffer-file-name ""))
+    (if (np6-np61-project-p)
+        (msvs-generate-compile-command nil nil "Debug" "Build" "/p:PostBuildEventUseInBuild=false")
+      (msvs-generate-compile-command nil nil "Debug" "Build")))))
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
