@@ -6,15 +6,20 @@
 ;; - https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
 ;; TODO use Common7\Tools\vsdevcmd.bat to compile
 
+;; Variables
+
 (defvar msvs-cpp-project-regexp ".*vcxproj$")
 (defvar msvs-cs-project-regexp ".*csproj$")
 (defvar msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
 (defvar msvs-solution-regexp ".*sln$")
 
-(defvar msvs-vswhere
+(defvar msvs-program-files
   (when (getenv "ProgramFiles(x86)")
-    (concat (expand-file-name (getenv "ProgramFiles(x86)"))
-            "/Microsoft Visual Studio/Installer/vswhere.exe")))
+    (concat (expand-file-name (getenv "ProgramFiles(x86)")) "/")))
+
+(defvar msvs-vswhere
+  (when msvs-program-files
+    (concat msvs-program-files "Microsoft Visual Studio/Installer/vswhere.exe")))
 
 (defvar msvs-root-directory
   (if (and msvs-vswhere (file-readable-p msvs-vswhere))
@@ -31,46 +36,18 @@
       (when vscomntools
         (directory-parent (expand-file-name vscomntools) 2)))))
 
-(when msvs-root-directory
-  ;; Add Visual Studio binary directories to PATH
-  (w32-add-to-path (concat msvs-root-directory "/Common7/Tools"))
-  (add-to-list 'exec-path (concat msvs-root-directory "/Common7/Tools"))
+;; TODO support to multiple visual studios
+(defvar msvs-include-directory
+  (when msvs-program-files
+    (concat msvs-program-files "Microsoft Visual Studio 12.0/VC/include")))
 
-  ;; An ungly hack to idenfity c++ extensionless files as c++ file. Thanks ISO c++, a file without
-  ;; extension was a great idea!
-  (add-to-list 'auto-mode-alist '("[Ii]nclude" . c++-mode) t))
+;; TODO support to multiple sdks. Find Windows.h @ "Microsoft SDKs/Windows/" and "Windows Kits/"
+(defvar msvs-platform-sdk
+  (when msvs-program-files
+    (concat msvs-program-files "Windows Kits/8.1/Include/um")))
 
-(defvar msvs-include-directory nil)
-(defvar msvs-platform-sdk nil)
-
-(when (getenv "ProgramFiles(x86)")
-  ;; TODO support to multiple visual studios
-  (setq msvs-include-directory (concat (expand-file-name (getenv "ProgramFiles(x86)"))
-                                       "/Microsoft Visual Studio 12.0/VC/include"))
-
-  ;; TODO support to multiple sdks. Find Windows.h @ "Microsoft SDKs/Windows/" and "Windows Kits/"
-  (setq msvs-platform-sdk (concat (expand-file-name (getenv "ProgramFiles(x86)"))
-                                  "/Windows Kits/8.1/Include/um"))
-
-  ;; c/c++ headers
-  (with-eval-after-load "find-file"
-    (add-to-list 'cc-search-directories msvs-include-directory t)
-    (add-to-list 'cc-search-directories msvs-platform-sdk t))
-
-  ;; flycheck-clang
-  (with-eval-after-load "flycheck-clang"
-    (add-to-list 'flycheck-clang-include-path msvs-include-directory)
-    (add-to-list 'flycheck-clang-include-path msvs-platform-sdk))
-
-  ;; company-c-headers
-  (with-eval-after-load "company"
-    (add-to-list 'company-c-headers-path-system msvs-include-directory)
-    (add-to-list 'company-c-headers-path-system msvs-platform-sdk))
-
-  ;; gtags
-  ;; (setenv "GTAGSLIBPATH" (concat msvs-include-directory ":" msvs-platform-sdk))
-  )
-
+
+;; Functions
 
 (defun msvs-compile-command (&optional solution platform configuration target &rest compiler-parameters)
   "Return a `compile-command' for compile a msvs project/file."
@@ -144,9 +121,53 @@
     (start-process "nuget" "*nuget*" "nuget" "restore" "-NonInteractive")
     (view-buffer "*nuget*")))
 
+
+;; Setup
+
+;; Add Visual Studio to PATH
+(when msvs-root-directory
+  ;; Add Visual Studio binary directories to PATH
+  (w32-add-to-path (concat msvs-root-directory "/Common7/Tools"))
+  (add-to-list 'exec-path (concat msvs-root-directory "/Common7/Tools")))
+
+;; c/c++ fast header/implementation switch
+(with-eval-after-load "find-file"
+  (when msvs-include-directory
+    (add-to-list 'cc-search-directories msvs-include-directory t))
+  (when msvs-platform-sdk
+    (add-to-list 'cc-search-directories msvs-platform-sdk t)))
+
+;; flycheck-clang
+(with-eval-after-load "flycheck-clang"
+  (when msvs-include-directory
+    (add-to-list 'flycheck-clang-include-path msvs-include-directory))
+  (when msvs-platform-sdk
+    (add-to-list 'flycheck-clang-include-path msvs-platform-sdk)))
+
+;; company-c-headers
+(with-eval-after-load "company"
+  (when msvs-include-directory
+    (add-to-list 'company-c-headers-path-system msvs-include-directory))
+  (when msvs-platform-sdk
+    (add-to-list 'company-c-headers-path-system msvs-platform-sdk)))
+
+;; grep
+(with-eval-after-load "grep"
+  (add-to-list 'grep-files-aliases
+               '("msvs" . "*.sln *proj *proj.filters *.props *.targets packages.config app.config"))
+  (dolist (file '("*.pdb" ".vs"))
+    (add-to-list 'grep-find-ignored-files file)))
+
+;; Set compile command
+(when (eq system-type 'windows-nt)
+  (add-hook 'c-mode-hook 'msvs-set-compile-command)
+  (add-hook 'c++-mode-hook 'msvs-set-compile-command)
+  (with-eval-after-load "csharp-mode" (add-hook 'csharp-mode-hook 'msvs-set-compile-command)))
+
+
+;; Auto-Modes
 
 ;; Create modes for solution and project files, so we can set the compile command
-
 (define-generic-mode sln-mode ;; MODE
   '("#")                      ;; COMMENT-LIST
   nil                         ;; KEYWORD-LIST
@@ -165,16 +186,7 @@
 (add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(vcx\\|cs\\)proj\\'" . vsproj-mode))
 
-(with-eval-after-load "grep"
-  (add-to-list 'grep-files-aliases
-               '("msvs" . "*.sln *proj *proj.filters *.props *.targets packages.config app.config"))
-
-  (dolist (file '("*.pdb" ".vs"))
-    (add-to-list 'grep-find-ignored-files file))
-  )
-
-;; set compile-command
+;; An ungly hack to idenfity c++ extensionless files as c++ file. Thanks ISO c++, a file without
+;; extension was a great idea!
 (when (eq system-type 'windows-nt)
-  (add-hook 'c-mode-hook 'msvs-set-compile-command)
-  (add-hook 'c++-mode-hook 'msvs-set-compile-command)
-  (with-eval-after-load "csharp-mode" (add-hook 'csharp-mode-hook 'msvs-set-compile-command)))
+  (add-to-list 'auto-mode-alist '("[Ii]nclude" . c++-mode) t))
