@@ -1,7 +1,7 @@
 @echo off
 
 rem Usage example:
-rem msbuild.com /p:SolutionDir={path} /p:Platform={win32|x64} /p:Configuration={Debug|Release} /t:{Build|Clean|Rebuild} {project.sln|project.vcxproj}"
+rem msbuild.com /m /v:minimal /fl /flp:verbosity=minimal /p:SolutionDir={path} /p:Platform={win32|x64|Any CPU|Mixed Platforms} /p:Configuration={Debug|Release} /t:{Build|Clean|Rebuild} {project.sln|project.vcxproj}"
 
 rem Installation directory for Visual Studio releases 15.0 and upper are located by the vswhere
 rem tool. Visual Studio releases 14, 12, 11 and 10 are located by checking the environment

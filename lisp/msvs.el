@@ -107,7 +107,7 @@ option `msvs-msbuild-default-parameters'.")
 (defun msvs-compile-command-default-function ()
   "Default function to generate a compilation command for msvs
 solution, project or file."
-  (msvs-generate-compile-command t nil "Debug" "Build"))
+  (msvs-generate-compile-command t "Mixed Platforms" "Debug" "Build"))
 
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs solution, project or file.
