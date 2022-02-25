@@ -104,6 +104,17 @@ With ARG, insert that many newlines."
   (newline arg t))
 
 
+(defun kill-line-and-join (&optional arg)
+  "Like `kill-line', but when called from eol, delete all
+whitespace except by one."
+  (interactive "P")
+  (if (and (eolp) (not (bolp)))
+      (progn
+        (kill-line arg)
+        (just-one-space))
+    (kill-line arg)))
+
+
 ;; Adapted from: https://www.emacswiki.org/emacs/SortWords
 (defun sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
@@ -142,6 +153,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-c D") 'delete-pair)
 (global-set-key (kbd "C-M-y") 'insert-from-kill-ring)
+(global-set-key [remap kill-line] 'kill-line-and-join)
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
 (global-set-key (kbd "M-RET") 'newline-no-break)
