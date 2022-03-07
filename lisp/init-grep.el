@@ -20,6 +20,14 @@
 
   (add-hook 'grep-setup-hook #'(lambda () (setq truncate-lines t)))
 
+  ;; Save grep regexp in kill-ring
+  (defun grep-save-regexp-advice (regexp &optional files dir confirm)
+    (kill-new (car grep-regexp-history)))
+
+  (advice-add 'lgrep :after #'grep-save-regexp-advice)
+  (advice-add 'rgrep :after #'grep-save-regexp-advice)
+  (advice-add 'zrgrep :after #'grep-save-regexp-advice)
+
   (define-key grep-mode-map (kbd "r") 'rename-uniquely)
   (define-key grep-mode-map (kbd "k") 'keep-lines)
   (define-key grep-mode-map (kbd "f") 'flush-lines)
