@@ -14,6 +14,16 @@
           (dired-get-marked-files nil arg))
     (revert-buffer))
 
+  (defun dired-do-ediff (&optional arg)
+    "Run `ediff', or `ediff3' with the marked files."
+    (interactive)
+    (let ((files (dired-get-marked-files nil arg)))
+      (cond ((= (length files) 2)
+             (ediff-files (nth 0 files) (nth 1 files)))
+            ((= (length files) 3)
+             (ediff-files3 (nth 0 files) (nth 1 files) (nth 2 files)))
+            (t (error "Invalid number of files marked. Ediff only accept two or three files.")))))
+
   (defun dired-eww-open-file ()
     "In Dired, render the file on this line using EWW"
     (interactive)
@@ -30,6 +40,7 @@
   (define-key dired-mode-map (kbd "K") 'dired-do-backup)
   (define-key dired-mode-map (kbd "E") 'dired-eww-open-file)
   (define-key dired-mode-map (kbd "C-+") 'dired-create-empty-file)
+  (define-key dired-mode-map (kbd "M-=") 'dired-do-ediff)
 
   (with-eval-after-load "wdired"
     (define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename)))
