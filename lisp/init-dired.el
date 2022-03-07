@@ -10,9 +10,9 @@
             (let ((backupname (car (find-backup-file-name file-name)))
                   (modes (file-modes file-name))
                   (extended-attributes (file-extended-attributes file-name)))
-            (backup-buffer-copy file-name backupname modes extended-attributes)))
-            (dired-get-marked-files nil arg))
-          (revert-buffer))
+              (backup-buffer-copy file-name backupname modes extended-attributes)))
+          (dired-get-marked-files nil arg))
+    (revert-buffer))
 
   (defun dired-eww-open-file ()
     "In Dired, render the file on this line using EWW"
