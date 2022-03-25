@@ -112,10 +112,10 @@ solution, project or file."
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs solution, project or file.
 
-The function defined in `msvs-compile-command-default-function'
-is used to generate a compilation command. If it is not defined,
-or it returned nil, then the
-`msvs-compile-command-default-function' is used."
+The function defined in `msvs-compile-command-function' is used
+to generate a compilation command. If it is not defined, or it
+returs nil, then the `msvs-compile-command-default-function' is
+used."
   (interactive)
   (when msvs-root-directory
     (when-let ((command (or (when msvs-compile-command-function
