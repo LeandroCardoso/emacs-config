@@ -284,6 +284,6 @@ np61 and compiler directories."
    ((string-match-p msvs-solution-regexp (or buffer-file-name ""))
     (if (np6-np61-project-p)
         (msvs-generate-compile-command nil "\"Mixed Platforms\"" "Debug" "Build" "/p:PostBuildEventUseInBuild=false")
-      (msvs-generate-compile-command nil "\"Mixed Platforms\"" "Debug" "Build")))))
+      (msvs-generate-compile-command nil "\"Any CPU\"" "Debug" "Build")))))
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
