@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: make_pair(...)
+# key: mp
+# --
+make_pair(${1:t1}, ${2:t2})$3
