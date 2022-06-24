@@ -1,7 +1,8 @@
 (when (require 'rotate-text nil t)
   (setq rotate-text-words
-        '(("width" "height")
+        '(("height" "width")
           ("left" "right" "top" "bottom")
+          ("active" "inactive")
           ("enable" "disable")
           ("enabled" "disabled")
           ("true" "false")
