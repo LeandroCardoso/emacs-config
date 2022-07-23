@@ -1,2 +1,2 @@
-(when (require 'default-text-scale nil)
+(when (require 'default-text-scale nil t)
       (default-text-scale-mode))
