@@ -150,23 +150,39 @@ bottom of the buffer stack."
 
 
 ;; Font
-(defun monitor-ppcm ()
+(defvar default-font-list '(("Source Code Pro" . 10)
+                            ("Consolas" . 10)))
+
+(defun monitor-dpi (&optional frame)
   ;; Monitor resolution examples
-  ;; | resolution | diagonal | mm-size | ppcm |
-  ;; |  1280x1024 |       19 | 377x302 |   34 |
-  ;; |  1920x1080 |       14 | 310x174 |   62 |
-  ;; |  1920x1080 |       23 | 510x287 |   38 |
-  ;; |  2560x1440 |       25 | 553x311 |   46 |
-  (/ (* 10 (frame-pixel-width)) (car (frame-monitor-attribute 'mm-size))))
+  ;; | resolution | diagonal | mm-size |    dpi |
+  ;; |  1280x1024 |       19 | 377x302 |  86.27 |
+  ;; |  1920x1080 |       14 | 310x174 | 157.35 |
+  ;; |  1920x1080 |       23 | 510x287 |  95.78 |
+  ;; |  2560x1440 |       25 | 553x311 | 117.49 |
+  (/ (nth 2 (frame-monitor-attribute 'geometry frame))
+     (/ (car (frame-monitor-attribute 'mm-size frame)) 25.4)))
 
-(defvar default-font-list '(("Source Code Pro" . 11)
-                            ("Consolas" . 11)))
+(defun dynamic-font-size (std-font-size &optional frame)
+  (let* ((std-dpi 96)
+         (font-size (* std-font-size (sqrt (/ (monitor-dpi frame) std-dpi)))))
+    (if (< font-size std-font-size)
+        (ceiling font-size)
+      (floor font-size))))
 
-(when-let ((font (seq-find (lambda (font) (find-font (font-spec :name (car font)))) default-font-list)))
-  (let ((font-name (car font))
-        (font-size (cdr font)))
-    (set-frame-font (concat font-name " " (number-to-string font-size)) t t)
-    (message "Setting default font to %s-%d" font-name font-size)))
+(defun dynamic-font-set-frame-font (&optional frame)
+  (interactive)
+  (when-let ((font (seq-find (lambda (font) (find-font (font-spec :name (car font)))) default-font-list)))
+    (let ((font-name (car font))
+          (font-size (dynamic-font-size (cdr font) (when (framep frame) frame))))
+      (set-frame-font (concat font-name " " (number-to-string font-size)) t (if (framep frame)
+                                                                                (list frame)
+                                                                              frame))
+      (message "Setting font to %s-%d" font-name font-size))))
+
+(dynamic-font-set-frame-font t)
+(add-hook 'after-make-frame-functions (lambda (frame)
+                                           (dynamic-font-set-frame-font frame)))
 
 (setq text-scale-mode-step 1.1)
 
