@@ -150,6 +150,13 @@ bottom of the buffer stack."
 
 
 ;; Font
+(defun list-fonts ()
+  "Display a buffer with a list of the names of available fonts."
+  (interactive)
+  (with-current-buffer-window "*fonts*" nil nil
+    (dolist (font (x-list-fonts "*"))
+      (insert (format "%s\n" font)))))
+
 (defvar default-font-list '(("Source Code Pro" . 10)
                             ("Cascadia Mono" . 10)
                             ("Consolas" . 10)))
