@@ -151,6 +151,7 @@ bottom of the buffer stack."
 
 ;; Font
 (defvar default-font-list '(("Source Code Pro" . 10)
+                            ("Cascadia Mono" . 10)
                             ("Consolas" . 10)))
 
 (defun monitor-dpi (&optional frame)
