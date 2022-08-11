@@ -151,46 +151,99 @@ bottom of the buffer stack."
 
 ;; Font
 (defun list-fonts ()
-  "Display a buffer with a list of the names of available fonts."
+  "Display a buffer with a list of available fonts."
   (interactive)
   (with-current-buffer-window "*fonts*" nil nil
     (dolist (font (x-list-fonts "*"))
       (insert (format "%s\n" font)))))
 
-(defvar default-font-list '(("Source Code Pro" . 10)
-                            ("Cascadia Mono" . 10)
-                            ("Consolas" . 10)))
+;; Monitor resolution examples
+;; | resolution | diagonal | mm-size |    dpi |
+;; |  1280x1024 |       19 | 377x302 |  86.27 |
+;; |  1920x1080 |       14 | 310x174 | 157.35 |
+;; |  1920x1080 |       23 | 510x287 |  95.78 |
+;; |  2560x1440 |       25 | 553x311 | 117.49 |
 
-(defun monitor-dpi (&optional frame)
-  ;; Monitor resolution examples
-  ;; | resolution | diagonal | mm-size |    dpi |
-  ;; |  1280x1024 |       19 | 377x302 |  86.27 |
-  ;; |  1920x1080 |       14 | 310x174 | 157.35 |
-  ;; |  1920x1080 |       23 | 510x287 |  95.78 |
-  ;; |  2560x1440 |       25 | 553x311 | 117.49 |
-  (/ (nth 2 (frame-monitor-attribute 'geometry frame))
-     (/ (car (frame-monitor-attribute 'mm-size frame)) 25.4)))
+(defun frame-monitor-dpi (&optional frame x y)
+  "Return the dpi (dots-per-inch) of FRAME's monitor.
 
-(defun dynamic-font-size (std-font-size &optional frame)
-  (let* ((std-dpi 96)
-         (font-size (* std-font-size (sqrt (/ (monitor-dpi frame) std-dpi)))))
-    (if (< font-size std-font-size)
+If FRAME is omitted or nil, use currently selected frame.
+
+By default, the current monitor is said to be the physical
+monitor dominating the selected frame. A frame is dominated by a
+physical monitor when either the largest area of the frame
+resides in the monitor, or the monitor is the closest to the
+frame if the frame does not intersect any physical monitors.
+
+If X and Y are both numbers, then ignore the value of FRAME; the
+monitor is determined to be the physical monitor that contains
+the pixel coordinate (X, Y).
+
+See `frame-monitor-attribute'."
+  (/ (nth 2 (frame-monitor-attribute 'geometry frame x y))
+     (/ (car (frame-monitor-attribute 'mm-size frame x y)) 25.4)))
+
+(defvar preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas")
+  "A list of preferred fonts.")
+
+(defvar preferred-font-size '(96 . 10)
+  "Preferred font size for dpi.
+
+Value has the form (DPI . FONT-SIZE).")
+
+(defun frame-monitor-font-size (&optional frame x y)
+  "Return a font size of FRAME's monitor dpi relative to the
+`preferred-font-size'.
+
+If FRAME is omitted or nil, use currently selected frame.
+
+By default, the current monitor is said to be the physical
+monitor dominating the selected frame. A frame is dominated by a
+physical monitor when either the largest area of the frame
+resides in the monitor, or the monitor is the closest to the
+frame if the frame does not intersect any physical monitors.
+
+If X and Y are both numbers, then ignore the value of FRAME; the
+monitor is determined to be the physical monitor that contains
+the pixel coordinate (X, Y)."
+  (let* ((pref-font-dpi (car preferred-font-size))
+         (pref-font-size (cdr preferred-font-size))
+         (font-size (* pref-font-size (sqrt (/ (frame-monitor-dpi frame x y) pref-font-dpi)))))
+    (if (< font-size pref-font-size)
         (ceiling font-size)
       (floor font-size))))
 
-(defun dynamic-font-set-frame-font (&optional frame)
-  (interactive)
-  (when-let ((font (seq-find (lambda (font) (find-font (font-spec :name (car font)))) default-font-list)))
-    (let ((font-name (car font))
-          (font-size (dynamic-font-size (cdr font) (when (framep frame) frame))))
-      (set-frame-font (concat font-name " " (number-to-string font-size)) t (if (framep frame)
-                                                                                (list frame)
-                                                                              frame))
-      (message "Setting font to %s-%d" font-name font-size))))
+(defun set-preferred-frame-monitor-font (&optional frame x y)
+"Set the first font from `preferred-font-list' that is available
+ in FRAME using a font size of FRAME's monitor dpi relative to
+ the `preferred-font-size'.
 
-(dynamic-font-set-frame-font t)
-(add-hook 'after-make-frame-functions (lambda (frame)
-                                           (dynamic-font-set-frame-font frame)))
+If FRAME is t, set font in all existing frames. If FRAME is
+omitted or nil, use currently selected frame.
+
+By default, the current monitor is said to be the physical
+monitor dominating the selected frame. A frame is dominated by a
+physical monitor when either the largest area of the frame
+resides in the monitor, or the monitor is the closest to the
+frame if the frame does not intersect any physical monitors.
+
+If X and Y are both numbers, then ignore the value of FRAME; the
+monitor is determined to be the physical monitor that contains
+the pixel coordinate (X, Y).
+
+See `frame-monitor-font-size'."
+  (interactive)
+  (when-let ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
+                                  preferred-font-list))
+             (font-size (if (framep frame)
+                            (frame-monitor-font-size frame x y)
+                          (frame-monitor-font-size))))
+    (set-frame-font (concat font-name " " (number-to-string font-size)) t
+                    (if (framep frame) (list frame) frame))
+    (message "Setting font to %s-%d" font-name font-size)))
+
+(set-preferred-frame-monitor-font t)
+(add-hook 'after-make-frame-functions (lambda (frame) (set-preferred-frame-monitor-font frame)))
 
 (setq text-scale-mode-step 1.1)
 
