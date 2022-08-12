@@ -1,3 +1,14 @@
+;; variables
+(defvar preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas")
+  "A list of preferred fonts.")
+
+
+(defvar preferred-font-size '(96 . 10)
+  "Preferred font size for dpi.
+
+Value has the form (DPI . FONT-SIZE).")
+
+
 ;; functions
 
 (defun split-window-sensibly-horizontally (&optional window)
@@ -107,6 +118,11 @@ See also `toggle-frame-fullscreen'."
     (toggle-frame-fullscreen)))
 
 
+(defun maximize-frame-unless-fullscreen ()
+  (unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
+    (set-frame-parameter nil 'fullscreen 'maximized)))
+
+
 ;; From obsolete lucid.el
 (defun switch-to-other-buffer (arg)
   "Switch to the previous buffer.
@@ -128,42 +144,11 @@ bottom of the buffer stack."
           (buffer-list)))))))
 
 
-(defun maximize-frame-unless-fullscreen ()
-  (unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
-    (set-frame-parameter nil 'fullscreen 'maximized)))
-
-
-;; Workaround for the second frame not becoming maximized after it was restored from fullscreen in
-;; Windows.
-(when (eq system-type 'windows-nt)
-  (advice-add 'toggle-frame-fullscreen :after #'maximize-frame-unless-fullscreen))
-
-
-;; No need to waste precious desktop space with useless GUI
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
-
-;; cursor
-(setq-default cursor-type 'bar)
-
-
-;; Font
-(defun list-fonts ()
-  "Display a buffer with a list of available fonts."
-  (interactive)
-  (with-current-buffer-window "*fonts*" nil nil
-    (dolist (font (x-list-fonts "*"))
-      (insert (format "%s\n" font)))))
-
-;; Monitor resolution examples
 ;; | resolution | diagonal | mm-size |    dpi |
 ;; |  1280x1024 |       19 | 377x302 |  86.27 |
 ;; |  1920x1080 |       14 | 310x174 | 157.35 |
 ;; |  1920x1080 |       23 | 510x287 |  95.78 |
 ;; |  2560x1440 |       25 | 553x311 | 117.49 |
-
 (defun frame-monitor-dpi (&optional frame x y)
   "Return the dpi (dots-per-inch) of FRAME's monitor.
 
@@ -183,13 +168,6 @@ See `frame-monitor-attribute'."
   (/ (nth 2 (frame-monitor-attribute 'geometry frame x y))
      (/ (car (frame-monitor-attribute 'mm-size frame x y)) 25.4)))
 
-(defvar preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas")
-  "A list of preferred fonts.")
-
-(defvar preferred-font-size '(96 . 10)
-  "Preferred font size for dpi.
-
-Value has the form (DPI . FONT-SIZE).")
 
 (defun frame-monitor-font-size (&optional frame x y)
   "Return a font size of FRAME's monitor dpi relative to the
@@ -213,20 +191,6 @@ the pixel coordinate (X, Y)."
         (ceiling font-size)
       (floor font-size))))
 
-(defun set-frame-font-scale (&optional arg)
-  "Change the default font size of the current frame.
-
-With no prefix argument, increase the font size.
-
-With \\[universal-argument] as prefix argument, descrease the font size.
-
-With \\[universal-argument] \\[universal-argument] as prefix argument, reset the font size to `frame-monitor-font-size'."
-  (interactive "P")
-  (let ((font-height (if (and (consp arg) (> (prefix-numeric-value arg) 4))
-                         (* 10 (frame-monitor-font-size))
-                       (funcall (if (consp arg) '- '+) (face-attribute 'default :height) 10))))
-    (set-face-attribute 'default nil :height font-height)
-    (message "Setting font size to %d" (/ font-height 10))))
 
 (defun set-preferred-frame-monitor-font (&optional frame x y)
 "Set the first font from `preferred-font-list' that is available
@@ -257,9 +221,50 @@ See `frame-monitor-font-size'."
                     (if (framep frame) (list frame) frame))
     (message "Setting font to %s-%d" font-name font-size)))
 
+
+(defun set-frame-font-scale (&optional arg)
+  "Change the default font size of the current frame.
+
+With no prefix argument, increase the font size.
+
+With \\[universal-argument] as prefix argument, descrease the font size.
+
+With \\[universal-argument] \\[universal-argument] as prefix argument, reset the font size to `frame-monitor-font-size'."
+  (interactive "P")
+  (let ((font-height (if (and (consp arg) (> (prefix-numeric-value arg) 4))
+                         (* 10 (frame-monitor-font-size))
+                       (funcall (if (consp arg) '- '+) (face-attribute 'default :height) 10))))
+    (set-face-attribute 'default nil :height font-height)
+    (message "Setting font size to %d" (/ font-height 10))))
+
+
+(defun list-fonts ()
+  "Display a buffer with a list of available fonts."
+  (interactive)
+  (with-current-buffer-window "*fonts*" nil nil
+    (dolist (font (x-list-fonts "*"))
+      (insert (format "%s\n" font)))))
+
+
+;; Workaround for the second frame not becoming maximized after it was restored from fullscreen in
+;; Windows.
+(when (eq system-type 'windows-nt)
+  (advice-add 'toggle-frame-fullscreen :after #'maximize-frame-unless-fullscreen))
+
+
+;; No need to waste precious desktop space with useless GUI
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+
+;; cursor
+(setq-default cursor-type 'bar)
+
+
+;; Font
 (set-preferred-frame-monitor-font t)
 (add-hook 'after-make-frame-functions (lambda (frame) (set-preferred-frame-monitor-font frame)))
-
 (setq text-scale-mode-step 1.1)
 
 
@@ -312,7 +317,5 @@ See `frame-monitor-font-size'."
 (global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
 (global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x c") 'clone-buffer)
-
-(global-set-key (kbd "C-M-=") 'set-frame-font-scale)
-
 (global-set-key [remap toggle-frame-fullscreen] 'toggle-frame-fullscreen+)
+(global-set-key (kbd "C-M-=") 'set-frame-font-scale)
