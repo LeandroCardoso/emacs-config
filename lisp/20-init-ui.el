@@ -213,6 +213,21 @@ the pixel coordinate (X, Y)."
         (ceiling font-size)
       (floor font-size))))
 
+(defun set-frame-font-scale (&optional arg)
+  "Change the default font size of the current frame.
+
+With no prefix argument, increase the font size.
+
+With \\[universal-argument] as prefix argument, descrease the font size.
+
+With \\[universal-argument] \\[universal-argument] as prefix argument, reset the font size to `frame-monitor-font-size'."
+  (interactive "P")
+  (let ((font-height (if (and (consp arg) (> (prefix-numeric-value arg) 4))
+                         (* 10 (frame-monitor-font-size))
+                       (funcall (if (consp arg) '- '+) (face-attribute 'default :height) 10))))
+    (set-face-attribute 'default nil :height font-height)
+    (message "Setting font size to %d" (/ font-height 10))))
+
 (defun set-preferred-frame-monitor-font (&optional frame x y)
 "Set the first font from `preferred-font-list' that is available
  in FRAME using a font size of FRAME's monitor dpi relative to
@@ -297,5 +312,7 @@ See `frame-monitor-font-size'."
 (global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
 (global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x c") 'clone-buffer)
+
+(global-set-key (kbd "C-M-=") 'set-frame-font-scale)
 
 (global-set-key [remap toggle-frame-fullscreen] 'toggle-frame-fullscreen+)
