@@ -1,31 +1,4 @@
 (with-eval-after-load "ibuffer"
-
-  ;; Modified version of ibuffer column "name" with the uniquify part striped
-  (define-ibuffer-column base-name
-    (:name "Name"
-     :inline t
-     :header-mouse-map ibuffer-name-header-map
-     :props
-           ('mouse-face 'highlight 'keymap ibuffer-name-map
-                        'ibuffer-name-column t
-                        'help-echo '(if tooltip-mode
-                                        "mouse-1: mark this buffer\nmouse-2: select this buffer\nmouse-3: operate on this buffer"
-                                      "mouse-1: mark buffer   mouse-2: select buffer   mouse-3: operate"))
-     :summarizer
-           (lambda (strings)
-             (let ((bufs (length strings)))
-               (cond ((zerop bufs) "No buffers")
-                     ((= 1 bufs) "1 buffer")
-                     (t (format "%s buffers" bufs))))))
-    (let* ((name (or (uniquify-buffer-base-name) (buffer-name)))
-           (string (propertize name
-                               'font-lock-face
-                               (ibuffer-buffer-name-face buffer mark))))
-      (if (not (seq-position string ?\n))
-          string
-        (replace-regexp-in-string
-         "\n" (propertize "^J" 'font-lock-face 'escape-glyph) string))))
-
   ;; ibuffer-project
   (require 'project)
   (require 'ibuf-ext)
@@ -87,6 +60,51 @@ at point or directory of the group at point when using the
   (add-hook 'ibuffer-hook #'ibuffer-set-filter-groups-by-project)
   (define-key ibuffer-mode-map [remap ibuffer-find-file] 'ibuffer-find-file+)
   (define-key ibuffer-mode-map (kbd "/ @") 'ibuffer-filter-by-project)
+
+
+  ;; ibuffer configuration
+
+  ;; Modified version of ibuffer column "name" with the uniquify part striped
+  (define-ibuffer-column base-name
+    (:name "Name"
+           :inline t
+           :header-mouse-map ibuffer-name-header-map
+           :props
+           ('mouse-face 'highlight 'keymap ibuffer-name-map
+                        'ibuffer-name-column t
+                        'help-echo '(if tooltip-mode
+                                        "mouse-1: mark this buffer\nmouse-2: select this buffer\nmouse-3: operate on this buffer"
+                                      "mouse-1: mark buffer   mouse-2: select buffer   mouse-3: operate"))
+           :summarizer
+           (lambda (strings)
+             (let ((bufs (length strings)))
+               (cond ((zerop bufs) "No buffers")
+                     ((= 1 bufs) "1 buffer")
+                     (t (format "%s buffers" bufs))))))
+    (let* ((name (or (uniquify-buffer-base-name) (buffer-name)))
+           (string (propertize name
+                               'font-lock-face
+                               (ibuffer-buffer-name-face buffer mark))))
+      (if (not (seq-position string ?\n))
+          string
+        (replace-regexp-in-string
+         "\n" (propertize "^J" 'font-lock-face 'escape-glyph) string))))
+
+  (setq ibuffer-modified-char ?M)
+  (setq ibuffer-read-only-char ?R)
+  (setq ibuffer-marked-char ?*)
+
+  (setq ibuffer-display-summary nil)
+  (setq ibuffer-filter-group-name-face 'link)
+  (setq ibuffer-title-face 'header-line)
+
+  (defun ibuffer-title-remove-underline (format)
+    (ibuffer-assert-ibuffer-mode)
+    (save-excursion
+      (goto-line 2)
+      (delete-region (point-at-bol) (+ (point-at-eol) 1))))
+
+  (advice-add 'ibuffer-update-title-and-summary :after #'ibuffer-title-remove-underline)
 
   (setq ibuffer-formats
         '((mark modified read-only " "
