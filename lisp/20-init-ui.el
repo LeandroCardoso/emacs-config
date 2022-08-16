@@ -232,10 +232,10 @@ With \\[universal-argument] as prefix argument, descrease the font size.
 With \\[universal-argument] \\[universal-argument] as prefix argument, reset the font size to `frame-monitor-font-size'."
   (interactive "P")
   (let ((font-height (if (and (consp arg) (> (prefix-numeric-value arg) 4))
-                         (* 10 (frame-monitor-font-size))
-                       (funcall (if (consp arg) '- '+) (face-attribute 'default :height) 10))))
-    (set-face-attribute 'default nil :height font-height)
-    (message "Setting font size to %d" (/ font-height 10))))
+                         (frame-monitor-font-size)
+                       (funcall (if (consp arg) '1- '1+) (round (/ (face-attribute 'default :height) 10.0))))))
+    (set-face-attribute 'default nil :height (* 10 font-height))
+    (message "Setting font size to %d" font-height)))
 
 
 (defun list-fonts ()
