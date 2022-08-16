@@ -16,7 +16,6 @@
            `(dired-header ((t (:foreground ,blue :underline ,blue :weight bold))))
            `(fringe ((t (:foreground ,s-line))))
            `(header-line ((t (:foreground ,yellow :underline ,yellow :weight bold))))
-           `(hl-line ((t (:background ,(solarized-color-blend base03 "#000000" 0.8)))))
            `(minibuffer-prompt ((t (:foreground ,yellow))))
            `(mode-line ((t (:background ,blue-2bg))))
            `(mode-line-buffer-id ((t (:weight bold))))
