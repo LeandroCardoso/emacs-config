@@ -15,7 +15,7 @@
            `(cursor ((t (:background ,yellow))))
            `(dired-header ((t (:foreground ,blue :underline ,blue :weight bold))))
            `(fringe ((t (:foreground ,s-line))))
-           `(header-line ((t (:foreground ,yellow :underline ,yellow :weight bold))))
+           `(header-line ((t (:foreground ,yellow :underline ,yellow :weight bold :extend t))))
            `(minibuffer-prompt ((t (:foreground ,yellow))))
            `(mode-line ((t (:background ,blue-2bg))))
            `(mode-line-buffer-id ((t (:weight bold))))
