@@ -11,16 +11,16 @@
         '("My personal solarized theme customizations"
           (custom-theme-set-faces
            theme-name
-           `(button ((t (:inherit link))))
-           `(cursor ((t (:background ,yellow))))
-           `(dired-header ((t (:foreground ,blue :underline ,blue :weight bold))))
-           `(fringe ((t (:foreground ,s-line))))
-           `(header-line ((t (:foreground ,yellow :underline ,yellow :weight bold :extend t))))
-           `(minibuffer-prompt ((t (:foreground ,yellow))))
-           `(mode-line ((t (:background ,blue-2bg))))
-           `(mode-line-buffer-id ((t (:weight bold))))
-           `(mode-line-inactive ((t (:background ,base02))))
-           `(region ((t (:foreground unspecified :background ,blue-2bg :extend t))))
+           `(button ((t :inherit link)))
+           `(cursor ((t :background ,yellow)))
+           `(dired-header ((t :inherit dired-directory :underline t :weight bold)))
+           `(fringe ((t :foreground ,s-line)))
+           `(header-line ((t :foreground ,yellow :underline ,yellow :weight bold :extend t)))
+           `(minibuffer-prompt ((t :foreground ,yellow)))
+           `(mode-line ((t :background ,blue-2bg)))
+           `(mode-line-buffer-id ((t :weight bold)))
+           `(mode-line-inactive ((t :background ,base02)))
+           `(region ((t :foreground unspecified :background ,blue-2bg :extend t)))
            ;; symbol-overlay - TODO add other faces and send upstream
            `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))))
 
