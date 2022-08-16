@@ -72,8 +72,6 @@ buffer C."
   (setq ediff-show-ancestor nil)
   (setq ediff-split-window-function 'split-window-horizontally)
   (setq ediff-window-setup-function 'ediff-setup-windows-plain) ; everything in one frame
-
-  (add-hook 'ediff-mode-hook #'disable-global-hl-line-mode)
   )
 
 (with-eval-after-load "ediff-mult"
