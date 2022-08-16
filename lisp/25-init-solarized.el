@@ -5,26 +5,24 @@
   (setq solarized-use-more-italic t)
   (setq solarized-use-variable-pitch nil)
 
-  (progn
-    (setq solarized-custom-faces
-          '("My personal solarized theme customizations"
-            (custom-theme-set-faces
-             theme-name
-             `(cursor ((,class (:background ,yellow))))
-             `(fringe ((,class (:foreground ,s-line))))
-             `(header-line ((,class (:underline ,base01 :weight bold))))
-             `(hl-line ((,class (:background ,(solarized-color-blend base03 "#000000" 0.8)))))
-             `(minibuffer-prompt ((,class (:foreground ,yellow))))
-             `(mode-line ((,class (:background ,blue-2bg))))
-             `(mode-line-buffer-id ((,class (:weight bold))))
-             `(mode-line-inactive ((,class (:background ,base02))))
-             `(dired-header ((,class (:inherit (header-line dired-directory)))))
-             ;; symbol-overlay - TODO add other faces and upstream
-             ;; `(symbol-overlay-default-face ((,class :inherit unspecified :foreground ,magenta)))
-             )))
+  (load-theme 'solarized-dark t)
 
-    (load-theme 'solarized-dark t)
+  (setq solarized-custom-faces
+        '("My personal solarized theme customizations"
+          (custom-theme-set-faces
+           theme-name
+           `(button ((t (:inherit link))))
+           `(cursor ((t (:background ,yellow))))
+           `(dired-header ((t (:foreground ,blue :underline ,blue :weight bold))))
+           `(fringe ((t (:foreground ,s-line))))
+           `(header-line ((t (:foreground ,yellow :underline ,yellow :weight bold))))
+           `(hl-line ((t (:background ,(solarized-color-blend base03 "#000000" 0.8)))))
+           `(minibuffer-prompt ((t (:foreground ,yellow))))
+           `(mode-line ((t (:background ,blue-2bg))))
+           `(mode-line-buffer-id ((t (:weight bold))))
+           `(mode-line-inactive ((t (:background ,base02))))
+           ;; symbol-overlay - TODO add other faces and send upstream
+           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))))
 
-    (solarized-with-color-variables
-      'dark 'solarized-dark solarized-dark-color-palette-alist solarized-custom-faces))
-  )
+  (solarized-with-color-variables
+    'dark 'solarized-dark solarized-dark-color-palette-alist solarized-custom-faces))
