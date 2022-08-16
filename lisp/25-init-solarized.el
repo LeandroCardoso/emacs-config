@@ -20,6 +20,7 @@
            `(mode-line ((t (:background ,blue-2bg))))
            `(mode-line-buffer-id ((t (:weight bold))))
            `(mode-line-inactive ((t (:background ,base02))))
+           `(region ((t (:foreground unspecified :background ,blue-2bg :extend t))))
            ;; symbol-overlay - TODO add other faces and send upstream
            `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))))
 
