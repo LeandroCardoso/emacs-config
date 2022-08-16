@@ -1,8 +1,12 @@
-(defun disable-global-hl-line-mode ()
-  (setq-local global-hl-line-mode nil))
+(dolist (mode '(archive-mode-hook
+                dired-mode-hook
+                grep-mode-hook
+                ibuffer-mode-hook
+                occur-mode-hook
+                proced-mode-hook
+                tabulated-list-mode-hook
+                tar-mode-hook))
+  (add-hook mode #'hl-line-mode))
 
-(global-hl-line-mode)
-
-;; global-hl-line-mode causes slowness when scrolling down repeatedly, this is a good workaround for
-;; it.
+;; hl-line-mode causes slowness when scrolling down repeatedly, this is a good workaround for it
 (setq auto-window-vscroll nil)
