@@ -2,7 +2,7 @@
   (engine-mode t)
 
   (defengine cppreference
-    "http://en.cppreference.com/mwiki/index.php?search=%s"
+    "https://en.cppreference.com/mwiki/index.php?search=%s"
     :keybinding "c")
 
   (defengine emacswiki
