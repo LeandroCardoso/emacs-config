@@ -8,8 +8,10 @@ backup/
 bookmarks
 custom-variables.el
 dev/
+eln-cache
 elpa/
 eshell/
+fonts
 ido.last
 omnisharp/
 places
