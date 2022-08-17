@@ -31,5 +31,8 @@
 
   (defengine wiktionary
     "https://en.wiktionary.org/w/index.php?search=%s"
-    :keybinding "y")
-  )
+    :keybinding "y"))
+
+;; Local Variables:
+;; no-native-compile: t
+;; End:
