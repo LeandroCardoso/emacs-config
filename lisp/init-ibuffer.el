@@ -90,13 +90,10 @@ at point or directory of the group at point when using the
         (replace-regexp-in-string
          "\n" (propertize "^J" 'font-lock-face 'escape-glyph) string))))
 
+  (setq ibuffer-display-summary nil)
+  (setq ibuffer-marked-char ?*)
   (setq ibuffer-modified-char ?M)
   (setq ibuffer-read-only-char ?R)
-  (setq ibuffer-marked-char ?*)
-
-  (setq ibuffer-display-summary nil)
-  (setq ibuffer-filter-group-name-face 'link)
-  (setq ibuffer-title-face 'header-line)
 
   (defun ibuffer-title-remove-underline (format)
     (ibuffer-assert-ibuffer-mode)

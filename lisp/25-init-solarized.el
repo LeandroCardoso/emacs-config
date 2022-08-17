@@ -23,7 +23,11 @@
            `(mode-line-inactive ((t :background ,base02)))
            `(region ((t :foreground unspecified :background ,blue-2bg :extend t)))
            ;; symbol-overlay - TODO add other faces and send upstream
-           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))))
+           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))
+          (custom-theme-set-variables
+           theme-name
+           `(ibuffer-filter-group-name-face 'link)
+           `(ibuffer-title-face 'header-line))))
 
   (solarized-with-color-variables
     'dark 'solarized-dark solarized-dark-color-palette-alist solarized-custom-faces))
