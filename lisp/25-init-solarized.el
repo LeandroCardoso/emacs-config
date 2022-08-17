@@ -16,6 +16,7 @@
            `(dired-header ((t :inherit dired-directory :underline t :weight bold)))
            `(fringe ((t :foreground ,s-line)))
            `(header-line ((t :foreground ,yellow :underline ,yellow :weight bold :extend t)))
+           `(help-key-binding ((t :box (:line-width -1 :color ,s-line) :weight bold)))
            `(minibuffer-prompt ((t :foreground ,yellow)))
            `(mode-line ((t :background ,blue-2bg)))
            `(mode-line-buffer-id ((t :weight bold)))
