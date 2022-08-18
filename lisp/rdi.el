@@ -46,10 +46,8 @@
     ("Legacy [a-zA-Z]+ Log" . font-lock-comment-face)
     )                                                ;; FONT-LOCK-LIST
   '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$") ;; AUTO-MODE-LIST
-  (list
-   (lambda ()
-     (setq global-auto-revert-ignore-buffer t))
-   ) ;; FUNCTION-LIST
+  nil
+  ;; FUNCTION-LIST
   )
 
 ;; Ugly hack to disable automatic string highlight. This is disabled due to several malformed
@@ -68,10 +66,8 @@
     ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)
     )                                                  ;; FONT-LOCK-LIST
   '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$") ;; AUTO-MODE-LIST
-  (list
-   (lambda ()
-     (setq global-auto-revert-ignore-buffer t))
-   ) ;; FUNCTION-LIST
+  nil
+  ;; FUNCTION-LIST
   )
 
 ;; np6 kiosk log mode
@@ -84,12 +80,14 @@
     ("^[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)
     )                                                        ;; FONT-LOCK-LIST
   '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$") ;; AUTO-MODE-LIST
-  (list
-   (lambda ()
-     (setq global-auto-revert-ignore-buffer t))
-   ) ;; FUNCTION-LIST
+  nil
+  ;; FUNCTION-LIST
   )
 (setq-mode-local np6-kiosk-log-mode font-lock-keywords-only t)
+
+(add-to-list 'global-auto-revert-ignore-modes 'np6-log-mode)
+(add-to-list 'global-auto-revert-ignore-modes 'np6-prod-log-mode)
+(add-to-list 'global-auto-revert-ignore-modes 'np6-kiosk-log-mode)
 
 ;; .np6 and .npsharp mode
 (define-generic-mode np6-mode        ;; MODE
