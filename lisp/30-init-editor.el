@@ -151,6 +151,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "<C-backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "M-#") 'base64-encode)
+(global-set-key (kbd "C-x C-o") 'delete-all-blank-lines) ;; default is delete-blank-lines
 (global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-c D") 'delete-pair)
 (global-set-key (kbd "C-c C-t") 'indent-tabs-mode)
