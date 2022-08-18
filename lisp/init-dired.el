@@ -1,4 +1,5 @@
 (with-eval-after-load "dired"
+  (setq dired-auto-revert-buffer t)
   (setq dired-create-destination-dirs 'ask)
   (setq dired-dwim-target t)
   (setq dired-isearch-filenames 'dwim)
