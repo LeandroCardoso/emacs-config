@@ -1,1 +1,0 @@
-(which-function-mode)
