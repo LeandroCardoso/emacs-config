@@ -7,9 +7,20 @@
   (setq company-tooltip-align-annotations t)
   (setq company-tooltip-margin 2)
   (setq company-tooltip-minimum-width 32)
-  (setq company-transformers '(company-sort-by-occurrence))
+  (setq company-transformers '(delete-consecutive-dups company-sort-by-occurrence))
 
   (company-tng-mode)
+
+  ;; c/c++ mode - use tags + dabbrev because it is faster than clang
+  (defun set-company-backend-cc-mode ()
+    (setq-local company-backends '(company-c-headers (company-gtags company-dabbrev-code company-keywords))))
+  (add-hook 'c-mode-hook #'set-company-backend-cc-mode)
+  (add-hook 'c++-mode-hook #'set-company-backend-cc-mode)
+
+  ;; xml mode
+  (defun set-company-backend-nxml ()
+    (setq-local company-backends '(company-dabbrev)))
+  (add-hook 'nxml-mode-hook #'set-company-backend-nxml)
 
   ;; dabbrev
   (setq company-dabbrev-char-regexp "\\sw\\|_\\|-")
