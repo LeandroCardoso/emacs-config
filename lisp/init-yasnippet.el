@@ -4,8 +4,6 @@
   (add-hook 'prog-mode-hook 'yas-minor-mode)
   (add-hook 'text-mode-hook 'yas-minor-mode)
 
-  (require 'hippie-exp)
-  (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
 
   ;; redefine keymap to use <C-tab>, instead of <tab> to avoid conflicting with company
   (define-key yas-keymap (kbd "<tab>") nil)
