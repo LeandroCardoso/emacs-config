@@ -1,6 +1,5 @@
 (when (require 'magit nil t)
   ;; settings
-  (setq magit-blame-echo-style 'margin)
   (setq magit-completing-read-function 'magit-ido-completing-read)
   (setq magit-diff-extra-stat-arguments
         (lambda ()
