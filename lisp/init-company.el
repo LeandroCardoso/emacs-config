@@ -37,7 +37,9 @@
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
 
   (with-eval-after-load "org"
-    (define-key org-mode-map (kbd "<C-tab>") 'company-complete))
+    (define-key org-mode-map (kbd "<C-tab>") 'company-complete)
+    ;; Workaround to avoid the redefinition of <tab>
+    (define-key org-mode-map (kbd "<tab>") 'org-cycle))
 
   (with-eval-after-load "shell"
     (define-key shell-mode-map (kbd "<tab>") 'company-complete))
