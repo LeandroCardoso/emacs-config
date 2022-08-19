@@ -57,6 +57,7 @@
 
   ;; company-search-map
   (define-key company-search-map (kbd "<escape>") 'company-search-abort)
+  (define-key company-search-map (kbd "<return>") 'company-complete-selection)
 
   (global-company-mode)
 
