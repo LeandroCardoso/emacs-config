@@ -1,34 +1,15 @@
 (when (require 'company nil t)
-  (setq company-idle-delay 0.3)
+  (setq company-format-margin-function 'company-text-icons-margin)
   (setq company-lighter-base "comp")
-  (setq company-minimum-prefix-length 3)
   (setq company-search-regexp-function 'company-search-flex-regexp)
   (setq company-selection-wrap-around t)
-  (setq company-show-numbers t)
+  (setq company-show-quick-access t)
   (setq company-tooltip-align-annotations t)
   (setq company-tooltip-margin 2)
   (setq company-tooltip-minimum-width 32)
   (setq company-transformers '(company-sort-by-occurrence))
 
-  (company-tng-configure-default)
-
-  ;; delete semantic and clang from backends list
-  (setq company-backends (delete 'company-semantic company-backends))
-  (setq company-backends (delete 'company-clang company-backends))
-
-  ;; Give company-gtags and company-etags more priority than company-dabbrev-code
-  (let ((backend (member '(company-dabbrev-code company-gtags company-etags company-keywords)
-                         company-backends)))
-    (when backend
-      (setcar backend '(company-gtags company-etags company-dabbrev-code company-keywords))))
-
-  (defun company-use-dabbrev ()
-    "Set `company-mode' to use `company-dabbrev' as default for current buffer."
-    (make-local-variable 'company-backends)
-    (push '(company-dabbrev :with company-yasnippet) company-backends))
-
-  ;; xml mode
-  (add-hook 'nxml-mode-hook 'company-use-dabbrev)
+  (company-tng-mode)
 
   ;; dabbrev
   (setq company-dabbrev-char-regexp "\\sw\\|_\\|-")
@@ -52,39 +33,27 @@
     (setq company-gtags-executable "global"))
 
   ;; keymap
-  ;; <C-S-tab> is used in Windows, <C-S-iso-lefttab> is used in Linux
-
   (define-key prog-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
-  (define-key prog-mode-map (kbd "<C-S-tab>") 'company-dabbrev-code)
-  (define-key prog-mode-map (kbd "<C-S-iso-lefttab>") 'company-dabbrev-code)
-  (define-key text-mode-map (kbd "<C-S-tab>") 'company-dabbrev)
-  (define-key text-mode-map (kbd "<C-S-iso-lefttab>") 'company-dabbrev)
-
-  (with-eval-after-load "yasnippet"
-    (define-key prog-mode-map (kbd "<C-tab>") 'company-yasnippet)
-    (define-key text-mode-map (kbd "<C-tab>") 'company-yasnippet))
 
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "<C-tab>") 'company-complete))
 
   (with-eval-after-load "shell"
-    (define-key shell-mode-map (kbd "<C-tab>") 'company-complete))
+    (define-key shell-mode-map (kbd "<tab>") 'company-complete))
 
-  (add-hook 'eshell-mode-hook (lambda ()
-                                (define-key eshell-mode-map (kbd "<tab>") 'company-complete)))
+  (add-hook 'eshell-mode-hook
+            (lambda () (define-key eshell-mode-map (kbd "<tab>") 'company-complete)))
 
-  (define-key company-active-map (kbd "<C-tab>") 'company-abort)
+  ;; company-active-map
   (define-key company-active-map (kbd "<escape>") 'company-abort)
+  (define-key company-active-map (kbd "<return>") 'company-complete-selection)
   (define-key company-active-map (kbd "<next>") 'company-next-page)
   (define-key company-active-map (kbd "C-v") 'company-next-page)
   (define-key company-active-map (kbd "<prior>") 'company-previous-page)
   (define-key company-active-map (kbd "M-v") 'company-previous-page)
-  (define-key company-active-map (kbd "C-c <tab>") 'company-complete-common)
-  (define-key company-active-map (kbd "<S-tab>") 'company-select-previous) ; workaround for tng in org-mode
-  (define-key company-active-map (kbd "<S-iso-lefttab>") 'company-select-previous) ; workaround for tng in org-mode
-  (define-key company-active-map (kbd "<return>") 'company-complete-selection)
 
+  ;; company-search-map
   (define-key company-search-map (kbd "<escape>") 'company-search-abort)
 
   (global-company-mode)
