@@ -289,3 +289,7 @@ np61 and compiler directories."
       (msvs-generate-compile-command nil "\"Any CPU\"" "Debug" "Build")))))
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
+
+;; Local Variables:
+;; no-native-compile: t
+;; End:

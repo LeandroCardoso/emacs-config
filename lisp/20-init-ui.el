@@ -294,11 +294,6 @@ With \\[universal-argument] \\[universal-argument] as prefix argument, reset the
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
 (setq window-system-default-frame-alist '((x . ((alpha . 98)))))
-;; workaround to set cursor color in new frames
-(add-hook 'after-make-frame-functions
-          (lambda(FRAME)
-            (modify-frame-parameters FRAME `((cursor-color . ,(face-background 'cursor))))))
-
 
 ;; key-bindings
 

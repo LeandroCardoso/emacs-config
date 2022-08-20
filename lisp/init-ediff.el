@@ -1,15 +1,4 @@
 (with-eval-after-load "ediff"
-  ;; Workaround for when system language was not defined as English. I should submit a bugfix
-  ;; upstream.
-  (defun language-workaround-advice (function &rest r)
-    (let ((process-environment process-environment))
-      (push "LANG=en_US.UTF-8" process-environment)
-      (push "LANGUAGE=en_US" process-environment)
-      (apply function r)))
-
-  (advice-add 'ediff-exec-process :around 'language-workaround-advice)
-
-
   ;; Copy AB to C
   ;; Adapted from https://stackoverflow.com/a/29757750
   (defun ediff-copy-AB-to-C (reverse)

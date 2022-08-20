@@ -6,9 +6,6 @@
   (add-to-list 'load-path local-packages)
   (byte-recompile-directory local-packages 0))
 
-(when (< emacs-major-version 27)
-  (package-initialize))
-
 (setq load-prefer-newer t)
 (let ((local-lisp (expand-file-name "lisp" user-emacs-directory)))
   (add-to-list 'load-path local-lisp)
