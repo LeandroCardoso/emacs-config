@@ -19,7 +19,7 @@
            `(help-key-binding ((t :box (:line-width -1 :color ,s-line) :weight bold)))
            `(minibuffer-prompt ((t :foreground ,yellow)))
            `(mode-line ((t :background ,blue-2bg)))
-           `(mode-line-buffer-id ((t :weight bold)))
+           `(mode-line-buffer-id ((t :foreground ,yellow :weight bold)))
            `(mode-line-inactive ((t :background ,base02)))
            `(region ((t :foreground unspecified :background ,blue-2bg :extend t)))
            ;; symbol-overlay - TODO add other faces and send upstream
