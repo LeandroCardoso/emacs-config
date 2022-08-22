@@ -10,6 +10,12 @@
 (let ((local-lisp (expand-file-name "lisp" user-emacs-directory)))
   (add-to-list 'load-path local-lisp)
 
+  ;; Load all elisp files sorted by name. Sub-directories and files starting with underline or dot
+  ;; are ignored
+  (message "Loading elisp source files from %s" local-lisp)
+  (dolist (file (directory-files local-lisp nil "^[^_\\.].*\\.el$"))
+    (load (file-name-sans-extension file)))
+
   ;; Compile all elisp source files (.el)
   (message "Compiling elisp source files from %s" local-lisp)
   (byte-recompile-directory local-lisp 0)
@@ -19,13 +25,7 @@
   (dolist (file (directory-files local-lisp nil ".*\\.elc$"))
     (unless (file-exists-p (expand-file-name (file-name-with-extension file ".el") local-lisp))
       (message "Deleting %s" file)
-      (delete-file (expand-file-name file local-lisp))))
-
-  ;; Load all elisp files sorted by name. Sub-directories and files starting with underline or dot
-  ;; are ignored
-  (message "Loading elisp source files from %s" local-lisp)
-  (dolist (file (directory-files local-lisp nil "^[^_\\.].*\\.el$"))
-    (load (file-name-sans-extension file))))
+      (delete-file (expand-file-name file local-lisp)))))
 
 (setq gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value)))
 (message "emacs started in %s" (emacs-init-time))
