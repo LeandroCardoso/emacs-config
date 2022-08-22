@@ -246,12 +246,6 @@ With \\[universal-argument] \\[universal-argument] as prefix argument, reset the
       (insert (format "%s\n" font)))))
 
 
-;; Workaround for the second frame not becoming maximized after it was restored from fullscreen in
-;; Windows.
-(when (eq system-type 'windows-nt)
-  (advice-add 'toggle-frame-fullscreen :after #'maximize-frame-unless-fullscreen))
-
-
 ;; No need to waste precious desktop space with useless GUI
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
