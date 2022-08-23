@@ -5,6 +5,6 @@
   (setq avy-subword-extra-word-chars nil)
 
   (global-set-key (kbd "C-M-;") 'avy-goto-word-1)
-  (global-set-key (kbd "<C-dead-acute>") 'avy-goto-word-1)
+  (global-set-key (kbd "C-<dead-acute>") 'avy-goto-word-1)
   (global-set-key (kbd "C-M-:") 'avy-goto-char-in-line)
   )

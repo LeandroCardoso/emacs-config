@@ -269,6 +269,7 @@ With \\[universal-argument] \\[universal-argument] as prefix argument, reset the
 ;; Modeline
 (setq column-number-mode t)
 (setq mode-line-default-help-echo nil)
+(setq mode-line-position-column-line-format '(" %l:%c"))
 (set-face-attribute 'mode-line-highlight nil :box 'unspecified)
 
 
@@ -283,7 +284,6 @@ With \\[universal-argument] \\[universal-argument] as prefix argument, reset the
 (setq split-window-preferred-function 'split-window-sensibly-horizontally)
 
 ;; Frame
-(setq frame-title-format (concat "%b - emacs@" (system-name)))
 (setq frame-inhibit-implied-resize t) ;; never resize the frame
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
@@ -304,7 +304,5 @@ With \\[universal-argument] \\[universal-argument] as prefix argument, reset the
 (global-set-key (kbd "C-x o") 'other-frame) ;; default is other-window
 
 (global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
-(global-set-key (kbd "C-x M-t") 'toggle-truncate-lines)
-(global-set-key (kbd "C-x c") 'clone-buffer)
 (global-set-key [remap toggle-frame-fullscreen] 'toggle-frame-fullscreen+)
 (global-set-key (kbd "C-M-=") 'set-frame-font-scale)

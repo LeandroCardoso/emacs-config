@@ -149,7 +149,7 @@ See `sort-regexp-fields'."
 
 ;; key bindings
 (global-set-key (kbd "C-c a") 'align-regexp)
-(global-set-key (kbd "<C-backspace>") 'backward-kill-sexp)
+(global-set-key (kbd "C-<backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "M-#") 'base64-encode)
 (global-set-key (kbd "C-x C-o") 'delete-all-blank-lines) ;; default is delete-blank-lines
 (global-set-key (kbd "C-M-|") 'delete-indentation)
@@ -159,7 +159,7 @@ See `sort-regexp-fields'."
 (global-set-key [remap kill-line] 'kill-line-and-join)
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
-(global-set-key (kbd "M-RET") 'newline-no-break)
+(global-set-key (kbd "M-<return>") 'newline-no-break)
 
 ;; capitalize keys
 (global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word

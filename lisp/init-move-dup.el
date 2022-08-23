@@ -1,5 +1,5 @@
 (when (require 'move-dup nil t)
-  (global-set-key (kbd "<M-down>") 'move-dup-move-lines-down)
+  (global-set-key (kbd "M-<down>") 'move-dup-move-lines-down)
   (global-set-key (kbd "M-n") 'move-dup-move-lines-down)
-  (global-set-key (kbd "<M-up>") 'move-dup-move-lines-up)
+  (global-set-key (kbd "M-<up>") 'move-dup-move-lines-up)
   (global-set-key (kbd "M-p") 'move-dup-move-lines-up))

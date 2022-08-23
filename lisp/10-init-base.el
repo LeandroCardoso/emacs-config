@@ -3,11 +3,19 @@
 (setq ring-bell-function 'ignore)
 (setq undo-limit (* 1 1024 1024))
 (setq undo-strong-limit (truncate (* undo-limit 1.5)))
+(setq use-short-answers t)
+
+;; help.el
+(setq describe-bindings-outline t)
+
+;; help-fns.el
+(setq help-enable-symbol-autoload t)
 
 ;; indent.el
 (setq tab-always-indent 'complete)
 
 ;; minibuffer
+(setq completions-detailed t)
 (setq minibuffer-beginning-of-buffer-movement t)
 (setq minibuffer-eldef-shorten-default t)
 (setq minibuffer-message-clear-timeout t)
@@ -16,6 +24,9 @@
 (global-set-key (kbd "<escape>") 'execute-extended-command)
 (define-key minibuffer-local-map (kbd "<escape>") 'keyboard-escape-quit)
 
+;; mouse.el
+(context-menu-mode)
+
 ;; novice.el
 (setq disabled-command-function nil)
 
@@ -23,6 +34,7 @@
 (setq completion-show-help nil)
 (setq eval-expression-print-length nil)
 (setq kill-do-not-save-duplicates t)
+(setq next-error-message-highlight t)
 (setq normal-erase-is-backspace nil)
 (setq shift-select-mode nil)
 (setq what-cursor-show-names t)
@@ -31,14 +43,11 @@
 (setq initial-scratch-message nil)
 (setq inhibit-startup-screen t)
 
-;; subr.el
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 ;; paragraphs.el
 (setq sentence-end-double-space nil)
 
 ;; key bindings
-(global-set-key (kbd "<C-M-escape>") 'keyboard-quit)
+(global-set-key (kbd "C-M-<escape>") 'keyboard-quit)
 
 ;; iso-transl - This is required for dead keys work in linux
 (require 'iso-transl)

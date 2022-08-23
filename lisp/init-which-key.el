@@ -3,6 +3,6 @@
   (setq which-key-lighter nil)
   (setq which-key-max-description-length 50)
   (setq which-key-sort-order 'which-key-local-then-key-order)
-  (global-set-key (kbd "<f1> x") 'which-key-show-top-level)
-  (global-set-key (kbd "<f1> X") 'which-key-show-major-mode)
+  (global-set-key (kbd "<f1> M-x") 'which-key-show-top-level)
+  (global-set-key (kbd "<f1> M-X") 'which-key-show-major-mode)
   (which-key-mode))

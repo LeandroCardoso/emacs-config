@@ -35,7 +35,7 @@
   ;; local keys
   (define-key dired-mode-map (kbd "<tab>") 'dired-next-line)
   (define-key dired-mode-map (kbd "<backtab>") 'dired-previous-line)
-  (define-key dired-mode-map (kbd "<M-return>") 'dired-up-directory)
+  (define-key dired-mode-map (kbd "M-<return>") 'dired-up-directory)
   (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
   (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename)
   (define-key dired-mode-map (kbd "K") 'dired-do-backup)
