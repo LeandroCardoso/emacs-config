@@ -130,7 +130,9 @@ See `sort-regexp-fields'."
 (defun toggle-indent-tabs-mode ()
   "Toggle the value of `indent-tabs-mode'."
   (interactive)
-  (message "indent-tabs-mode: %S" (setq indent-tabs-mode (not indent-tabs-mode))))
+  (message "Indentation insert: %s"
+           (if (setq indent-tabs-mode (not indent-tabs-mode))
+               "TAB" "Spaces")))
 
 
 ;; settings
