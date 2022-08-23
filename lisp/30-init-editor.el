@@ -160,6 +160,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
 (global-set-key (kbd "M-<return>") 'newline-no-break)
+(global-set-key (kbd "C-c <tab>") 'toggle-indent-tabs-mode)
 
 ;; capitalize keys
 (global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
