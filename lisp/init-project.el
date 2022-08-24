@@ -1,14 +1,6 @@
 (with-eval-after-load 'project
-  ;; Workaround for emacs 27.1 - Emacs 27.1 does not treat a Git submodule as a project root.
-  ;; Unfortunately I need this functionality, so I am restoring the 26.3 implementation until 28.1
-  ;; when an user option is been introduced.
-  (defun project-try-vc-simple (dir)
-    (let* ((backend (ignore-errors (vc-responsible-backend dir)))
-           (root (and backend (ignore-errors
-                                (vc-call-backend backend 'root dir)))))
-      (and root (cons 'vc root))))
-
-  (add-to-list 'project-find-functions 'project-try-vc-simple)
+  ;; settings
+  (setq project-vc-merge-submodules nil)
 
   ;; Custom directory project
 
@@ -49,7 +41,4 @@
   (add-to-list 'project-simple-root-list (file-name-directory (find-library-name "misc")))
 
   ;; Add user's Emacs Lisp packages
-  (add-to-list 'project-root-list (expand-file-name package-user-dir))
-
-  (global-set-key (kbd "C-x C-M-f") 'project-find-file)
-  (global-set-key (kbd "C-x C-M-g") 'project-find-regexp))
+  (add-to-list 'project-root-list (expand-file-name package-user-dir)))
