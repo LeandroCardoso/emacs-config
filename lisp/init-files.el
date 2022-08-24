@@ -63,11 +63,15 @@ See `backup-buffer'."
 (setq make-backup-files nil)
 (setq version-control t)
 
+;; save
+(setq save-some-buffers-default-predicate 'save-some-buffers-root)
+
 ;; misc
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq confirm-kill-processes nil)
 
 ;; key bindings
-(global-set-key (kbd "C-x x r") 'rename-buffer-and-file) ; replace rename-buffer
-(global-set-key (kbd "C-x x k") 'make-backup-buffer)
 (global-set-key (kbd "C-x x w") 'copy-buffer-name-as-kill)
+(global-set-key (kbd "C-x x k") 'make-backup-buffer)
+(global-set-key (kbd "C-x x r") 'rename-buffer-and-file) ; replace rename-buffer
+(global-set-key (kbd "C-x x G") 'revert-buffer-with-fine-grain)

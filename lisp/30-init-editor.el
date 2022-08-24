@@ -45,6 +45,7 @@ See `indent-region'"
   "The maximum region size for examining indentation style with
 `infer-indentation-style'. nil means no limit.")
 
+
 ;; Adapted from: https://www.emacswiki.org/emacs/NoTabs
 (defun infer-indentation-style ()
   "If our source file uses tabs, we use tabs, if spaces spaces,
@@ -55,28 +56,6 @@ and if neither, we use the current `indent-tabs-mode'"
          (tab-count (how-many "^\t" (point-min) point-max)))
     (if (> space-count tab-count) (setq indent-tabs-mode nil))
     (if (> tab-count space-count) (setq indent-tabs-mode t))))
-
-
-(defun insert-from-kill-ring (&optional arg)
-  "Search a past killed text from the `kill-ring' and insert it.
-Put point at the end, and set mark at the beginning without
-activating it. When ARG is non nil, put point at beginning, and
-mark at end.
-
-This command honors the `yank-handled-properties' and
-`yank-excluded-properties' variables, and the `yank-handler' text
-property, as described by the command `yank' (\\[yank])."
-  (interactive "P*")
-  (let ((text (completing-read "Insert: " (seq-uniq kill-ring))))
-    (push-mark)
-    (insert-for-yank text)
-    (if (consp arg)
-        ;; This is like exchange-point-and-mark, but doesn't activate the mark.
-        ;; It is cleaner to avoid activation, even though the command
-        ;; loop would deactivate the mark because we inserted text.
-        (goto-char (prog1 (mark t)
-                     (set-marker (mark-marker) (point) (current-buffer))))))
-  nil)
 
 
 (defun mark-line (&optional n)
@@ -127,21 +106,26 @@ See `sort-regexp-fields'."
   (sort-regexp-fields reverse "[^[:blank:]]+" "\\&" beg end))
 
 
-(defun toggle-indent-tabs-mode ()
-  "Toggle the value of `indent-tabs-mode'."
-  (interactive)
-  (message "Indentation insert: %s"
-           (if (setq indent-tabs-mode (not indent-tabs-mode))
-               "TAB" "Spaces")))
-
-
 ;; settings
 (setq-default abbrev-mode t) ;; enable abbrev-mode by default
 (setq-default fill-column 100)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq kill-whole-line t)
+(setq undo-limit (* 1 1024 1024))
+(setq undo-strong-limit (truncate (* undo-limit 1.5)))
 
+;; indent.el
+(setq tab-always-indent 'complete)
+
+;; simple.el
+(setq copy-region-blink-delay 0.25)
+(setq delete-pair-blink-delay 0.25)
+(setq kill-do-not-save-duplicates t)
+(setq normal-erase-is-backspace nil)
+
+
+;; hooks
 (add-hook 'text-mode-hook 'infer-indentation-style)
 (add-hook 'prog-mode-hook 'infer-indentation-style)
 (add-hook 'conf-mode-hook 'infer-indentation-style)
@@ -156,13 +140,11 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-x C-o") 'delete-all-blank-lines) ;; default is delete-blank-lines
 (global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-c D") 'delete-pair)
-(global-set-key (kbd "C-c C-t") 'indent-tabs-mode)
-(global-set-key (kbd "C-M-y") 'insert-from-kill-ring)
+(global-set-key (kbd "C-c <tab>") 'indent-tabs-mode)
 (global-set-key [remap kill-line] 'kill-line-and-join)
 (global-set-key (kbd "C-c k") 'kill-whole-line)
 (global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
 (global-set-key (kbd "M-<return>") 'newline-no-break)
-(global-set-key (kbd "C-c <tab>") 'toggle-indent-tabs-mode)
 
 ;; capitalize keys
 (global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word

@@ -13,7 +13,8 @@
            theme-name
            `(button ((t :inherit link)))
            `(cursor ((t :background ,yellow)))
-           `(dired-header ((t :inherit dired-directory :underline t :weight bold)))
+           `(custom-button ((t :inherit button)))
+           `(dired-header ((t :inherit dired-directory :weight bold)))
            `(fringe ((t :foreground ,s-line)))
            `(header-line ((t :foreground ,yellow :underline ,yellow :weight bold :extend t)))
            `(help-key-binding ((t :box (:line-width -1 :color ,s-line) :weight bold)))
@@ -22,7 +23,9 @@
            `(mode-line-buffer-id ((t :foreground ,yellow :weight bold)))
            `(mode-line-inactive ((t :background ,base02)))
            `(region ((t :foreground unspecified :background ,blue-2bg :extend t)))
-           ;; symbol-overlay - TODO add other faces and send upstream
+           `(separator-line ((t :height 0.1 :inherit transient-separator)))
+           `(shortdoc-heading ((t :inherit info-title-1)))
+           `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
            `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))
           (custom-theme-set-variables
            theme-name

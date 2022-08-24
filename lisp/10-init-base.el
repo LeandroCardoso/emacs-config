@@ -1,8 +1,6 @@
 (setq frame-resize-pixelwise t)
 (setq highlight-nonselected-windows t)
 (setq ring-bell-function 'ignore)
-(setq undo-limit (* 1 1024 1024))
-(setq undo-strong-limit (truncate (* undo-limit 1.5)))
 (setq use-short-answers t)
 
 ;; help.el
@@ -11,12 +9,10 @@
 ;; help-fns.el
 (setq help-enable-symbol-autoload t)
 
-;; indent.el
-(setq tab-always-indent 'complete)
-
 ;; minibuffer
 (setq completions-detailed t)
 (setq minibuffer-beginning-of-buffer-movement t)
+(setq minibuffer-default-prompt-format " [%s]")
 (setq minibuffer-eldef-shorten-default t)
 (setq minibuffer-message-clear-timeout t)
 (minibuffer-depth-indicate-mode)
@@ -33,9 +29,8 @@
 ;; simple.el
 (setq completion-show-help nil)
 (setq eval-expression-print-length nil)
-(setq kill-do-not-save-duplicates t)
+(setq goto-line-history-local t)
 (setq next-error-message-highlight t)
-(setq normal-erase-is-backspace nil)
 (setq shift-select-mode nil)
 (setq what-cursor-show-names t)
 
@@ -54,10 +49,6 @@
 
 ;; Set coding system to utf-8
 (set-language-environment "UTF-8")
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
 
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
