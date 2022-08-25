@@ -5,7 +5,7 @@
   (setenv "GTAGSFORCECPP" "1")
 
   ;; Redefine without the call to shell-quote-argument to workaround in Windows.
-  (defun gxref--find-symbol (symbol &rest args)
+  (defun gxref--find-symbol-override (symbol &rest args)
     "Run GNU Global to find a symbol SYMBOL.
 Return the results as a list of xref location objects.  ARGS are
 any additional command line arguments to pass to GNU Global."
@@ -13,8 +13,9 @@ any additional command line arguments to pass to GNU Global."
             (append args
                     (list "-x" "-a" symbol)))
            (global-output (gxref--global-to-list process-args)))
-      (mapcar #'gxref--make-xref-from-gtags-x-line global-output)
-      ))
+      (mapcar #'gxref--make-xref-from-gtags-x-line global-output)))
+
+  (advice-add 'gxref--find-symbol :override #'gxref--find-symbol-override)
 
   ;; Redefine to include "-s" parameter
   (cl-defmethod xref-backend-references ((_backend (eql gxref)) symbol)
@@ -24,5 +25,4 @@ any additional command line arguments to pass to GNU Global."
     "Create a GTAGS database in the first root directory
  specified by the `project-roots'."
     (interactive)
-    (gxref-create-db (car (project-roots (project-current t)))))
-  )
+    (gxref-create-db (car (project-roots (project-current t))))))

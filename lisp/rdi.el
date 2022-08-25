@@ -98,14 +98,6 @@
   nil                                ;; FUNCTION-LIST
   )
 
-;; engine
-(when (require 'engine-mode nil t)
-  (defengine jira-rdi
-    "https://jira.rdisoftware.com/jira/secure/QuickSearch.jspa?searchString=%s"
-    :keybinding "j")
-  (defengine jira-mcd
-    "https://us-jira.mcd.com/secure/QuickSearch.jspa?searchString=%s"
-    :keybinding "J"))
 
 ;; flycheck-clang
 (when (require 'flycheck nil t)
@@ -289,7 +281,3 @@ np61 and compiler directories."
       (msvs-generate-compile-command nil "\"Any CPU\"" "Debug" "Build")))))
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
-
-;; Local Variables:
-;; no-native-compile: t
-;; End:

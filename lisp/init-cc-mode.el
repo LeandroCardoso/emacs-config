@@ -1,6 +1,5 @@
 (with-eval-after-load "cc-mode"
   (setq c-guess-region-max 100000)
-  (make-interactive c-or-c++-mode)
 
   (c-add-style "c++-custom" '("stroustrup" (c-offsets-alist (inlambda . 0) (inline-open . 0))))
 
