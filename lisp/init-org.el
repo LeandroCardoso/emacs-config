@@ -30,8 +30,15 @@
   ;; org-export (ox)
   (setq org-export-copy-to-kill-ring 'if-interactive)
   (setq org-export-initial-scope 'subtree)
+  (setq org-export-preserve-breaks t)
+  (setq org-export-with-author nil)
   (setq org-export-with-sub-superscripts nil)
+  (setq org-export-with-title nil)
   (setq org-export-with-toc nil)
+
+  ;; ox-ascii
+  (setq org-ascii-caption-above t)
+  (setq org-ascii-text-width most-positive-fixnum)
 
   ;; org-mode outside org-mode
   (defvar org-out-keymap nil "Keymap for org-mode commands outside org-mode")
