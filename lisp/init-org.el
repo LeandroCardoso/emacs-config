@@ -21,6 +21,18 @@
 
   (define-key org-mode-map (kbd "C-c M-t") 'org-toggle-link-display)
 
+  ;; `set-fill-column' is advised to also set org-tags-column
+  (defun set-org-tags-right-column (ARG)
+    "Set `org-tags-column' to the negative value of the specified argument."
+    (setq org-tags-column (- ARG)))
+  (advice-add 'set-fill-column :after #'set-org-tags-right-column)
+
+  ;; org-export (ox)
+  (setq org-export-copy-to-kill-ring 'if-interactive)
+  (setq org-export-initial-scope 'subtree)
+  (setq org-export-with-sub-superscripts nil)
+  (setq org-export-with-toc nil)
+
   ;; org-mode outside org-mode
   (defvar org-out-keymap nil "Keymap for org-mode commands outside org-mode")
   (setq org-out-keymap
@@ -30,13 +42,4 @@
           (define-key map "s" 'orgalist-mode)
           map))
   (defalias 'org-out-keymap org-out-keymap)
-  (global-set-key (kbd "C-c o") 'org-out-keymap)
-
-
-  ;; `set-fill-column' is advised to also set org-tags-column
-  (defun set-org-tags-right-column (ARG)
-    "Set `org-tags-column' to the negative value of the specified argument."
-    (setq org-tags-column (- ARG)))
-
-  (advice-add 'set-fill-column :after #'set-org-tags-right-column)
-  )
+  (global-set-key (kbd "C-c o") 'org-out-keymap))
