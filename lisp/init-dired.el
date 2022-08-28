@@ -1,8 +1,12 @@
 (with-eval-after-load "dired"
+  (require 'dired-x)
+
   (setq dired-auto-revert-buffer t)
   (setq dired-create-destination-dirs 'ask)
   (setq dired-dwim-target t)
   (setq dired-isearch-filenames 'dwim)
+  (setq dired-kill-when-opening-new-dired-buffer t)
+  (setq dired-maybe-use-globstar t)
 
   (defun dired-do-backup (&optional arg)
     "Make a backup of the marked (or next ARG) files."
@@ -52,12 +56,3 @@ Return the position of the beginning of the filename, or nil if none found."
 
 ;; global keys
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
-
-(autoload 'dired-jump "dired-x"
-  "Jump to Dired buffer corresponding to current buffer." t)
-
-(autoload 'dired-jump-other-window "dired-x"
-  "Like \\[dired-jump] (dired-jump) but in other window." t)
-
-(global-set-key (kbd "C-x C-j") 'dired-jump)
-(global-set-key (kbd "C-x 4 C-j") 'dired-jump-other-window)
