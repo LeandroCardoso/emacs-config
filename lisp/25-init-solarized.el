@@ -11,6 +11,7 @@
         '("My personal solarized theme customizations"
           (custom-theme-set-faces
            theme-name
+           `(bookmark-face ((t :inherit fringe)))
            `(button ((t :inherit link)))
            `(cursor ((t :background ,yellow)))
            `(custom-button ((t :inherit button)))
