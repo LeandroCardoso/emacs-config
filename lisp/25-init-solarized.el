@@ -26,7 +26,9 @@
            `(separator-line ((t :height 0.1 :inherit transient-separator)))
            `(shortdoc-heading ((t :inherit info-title-1)))
            `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
-           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))
+           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta)))
+           `(isearch-group-1 ((t :foreground ,base03 :background ,magenta-1fg :weight bold)))
+           `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold))))
           (custom-theme-set-variables
            theme-name
            `(ibuffer-filter-group-name-face 'link)
