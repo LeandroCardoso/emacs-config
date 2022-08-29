@@ -3,6 +3,9 @@
 ;; .gitignore, so I can ignore the transient files inside this directory.
 (setq eshell-aliases-file (concat user-emacs-directory "eshell_alias"))
 
+(require 'em-hist)
+(setq eshell-hist-ignoredups t)
+
 (require 'em-term)
 (add-to-list 'eshell-visual-commands "watch")
 
