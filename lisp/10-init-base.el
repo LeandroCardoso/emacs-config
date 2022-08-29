@@ -41,6 +41,9 @@
 ;; paragraphs.el
 (setq sentence-end-double-space nil)
 
+;; so-long
+(global-so-long-mode)
+
 ;; key bindings
 (global-set-key (kbd "C-M-<escape>") 'keyboard-quit)
 
