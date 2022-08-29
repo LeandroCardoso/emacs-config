@@ -6,6 +6,7 @@
 ;; git
 (setq vc-git-print-log-follow t)
 
+(define-key vc-prefix-map (kbd "D") 'vc-dir-root) ;default is vc-root-diff
 (define-key vc-prefix-map (kbd "e" ) 'vc-ediff)
-(define-key vc-prefix-map (kbd "H" ) 'vc-region-history)
 (define-key vc-prefix-map (kbd "R" ) 'vc-rename-file)
+(define-key vc-prefix-map (kbd "C-=") 'vc-root-diff)
