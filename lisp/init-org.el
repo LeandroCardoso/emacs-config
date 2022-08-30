@@ -20,6 +20,7 @@
   (setq org-todo-keyword-faces `(("WAITING" . (:foreground ,(face-foreground 'warning) :weight bold))))
 
   (define-key org-mode-map (kbd "C-c M-t") 'org-toggle-link-display)
+  (define-key org-mode-map (kbd "M-<return>") 'org-meta-return) ; workaround to avoid override by a global key
 
   ;; `set-fill-column' is advised to also set org-tags-column
   (defun set-org-tags-right-column (ARG)
