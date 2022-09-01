@@ -1,6 +1,5 @@
 (with-eval-after-load "isearch"
   (setq isearch-allow-motion t)
-  (setq isearch-allow-scroll 'unlimited)
   (setq isearch-lazy-count t)
   (setq isearch-repeat-on-direction-change t)
   (setq lazy-highlight-initial-delay 0)
