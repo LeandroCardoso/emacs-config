@@ -1,5 +1,5 @@
 (setq hscroll-step 0.25)
-(setq scroll-conservatively 5) ;; recenter if scroll more than value
+(setq scroll-conservatively 5) ; recenter if scroll more than value
 ;; (setq scroll-margin 1) scroll-margin does not work nicely with reposition-window
 (setq scroll-preserve-screen-position t)
 

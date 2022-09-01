@@ -98,7 +98,7 @@ If DELTA is negative, shrink selected window by -DELTA."
   (shrink-window+ delta t))
 
 
-(global-set-key (kbd "C-]") 'enlarge-window+) ; default is abort-recursive-edit
+(global-set-key (kbd "C-]") 'enlarge-window+) ; original is abort-recursive-edit
 (global-set-key (kbd "C-}") 'shrink-window+)
 (global-set-key (kbd "C-M-]") 'enlarge-window-horizontally+)
 (global-set-key (kbd "C-M-}") 'shrink-window-horizontally+)

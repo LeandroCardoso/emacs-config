@@ -36,19 +36,16 @@
 (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
 
 ;; np6 log mode
-(define-generic-mode np6-log-mode ;; MODE
-  nil                             ;; COMMENT-LIST
-  nil                             ;; KEYWORD-LIST
+(define-generic-mode np6-log-mode                      ; MODE
+  nil                                                  ; COMMENT-LIST
+  nil                                                  ; KEYWORD-LIST
   '(("^\\<\\(INFO\\|DEBUG\\)\\>" . font-lock-function-name-face)
     ("^\\<WARNING\\>" . compilation-warning-face)
     ("^\\<\\(ERROR\\|FATAL\\)\\>" . compilation-error-face)
     ("\t.*\t" . font-lock-comment-face)
-    ("Legacy [a-zA-Z]+ Log" . font-lock-comment-face)
-    )                                                ;; FONT-LOCK-LIST
-  '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$") ;; AUTO-MODE-LIST
-  nil
-  ;; FUNCTION-LIST
-  )
+    ("Legacy [a-zA-Z]+ Log" . font-lock-comment-face)) ; FONT-LOCK-LIST
+  '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$")   ; AUTO-MODE-LIST
+  nil)                                                 ; FUNCTION-LIST
 
 ;; Ugly hack to disable automatic string highlight. This is disabled due to several malformed
 ;; strings.
@@ -56,33 +53,28 @@
 (setq-mode-local np6-log-mode font-lock-keywords-only t)
 
 ;; np6 production log mode
-(define-generic-mode np6-prod-log-mode ;; MODE
-  nil                                  ;; COMMENT-LIST
-  nil                                  ;; KEYWORD-LIST
+(define-generic-mode np6-prod-log-mode                    ; MODE
+  nil                                                     ; COMMENT-LIST
+  nil                                                     ; KEYWORD-LIST
   '(("\\(INFO\\|FINEST\\|DEBUG\\)" . font-lock-function-name-face)
     ("WARNING" . compilation-warning-face)
     ("\\(ERROR\\|FATAL\\)" . compilation-error-face)
-    ("^[0-9- :]*;" . font-lock-comment-face) ; timestamp
-    ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)
-    )                                                  ;; FONT-LOCK-LIST
-  '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$") ;; AUTO-MODE-LIST
-  nil
-  ;; FUNCTION-LIST
-  )
+    ("^[0-9- :]*;" . font-lock-comment-face)              ; timestamp
+    ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)) ; FONT-LOCK-LIST
+  '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$")    ; AUTO-MODE-LIST
+  nil)                                                    ; FUNCTION-LIST
 
 ;; np6 kiosk log mode
-(define-generic-mode np6-kiosk-log-mode ;; MODE
-  nil                                   ;; COMMENT-LIST
-  nil                                   ;; KEYWORD-LIST
+(define-generic-mode np6-kiosk-log-mode                                 ; MODE
+  nil                                                                   ; COMMENT-LIST
+  nil                                                                   ; KEYWORD-LIST
   '((" \\(INFO\\|DEBUG\\) " . font-lock-function-name-face)
     (" WARN " . compilation-warning-face)
     (" ERROR " . compilation-error-face)
-    ("^[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)
-    )                                                        ;; FONT-LOCK-LIST
-  '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$") ;; AUTO-MODE-LIST
-  nil
-  ;; FUNCTION-LIST
-  )
+    ("^[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)) ; FONT-LOCK-LIST
+  '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$")            ; AUTO-MODE-LIST
+  nil)                                                                  ; FUNCTION-LIST
+
 (setq-mode-local np6-kiosk-log-mode font-lock-keywords-only t)
 
 (add-to-list 'global-auto-revert-ignore-modes 'np6-log-mode)
@@ -90,13 +82,12 @@
 (add-to-list 'global-auto-revert-ignore-modes 'np6-kiosk-log-mode)
 
 ;; .np6 and .npsharp mode
-(define-generic-mode np6-mode        ;; MODE
-  '(";")                             ;; COMMENT-LIST
-  '("|")                             ;; KEYWORD-LIST
-  nil                                ;; FONT-LOCK-LIST
-  '("start.*\\.\\(np6\\|npsharp\\)") ;; AUTO-MODE-LIST
-  nil                                ;; FUNCTION-LIST
-  )
+(define-generic-mode np6-mode        ; MODE
+  '(";")                             ; COMMENT-LIST
+  '("|")                             ; KEYWORD-LIST
+  nil                                ; FONT-LOCK-LIST
+  '("start.*\\.\\(np6\\|npsharp\\)") ; AUTO-MODE-LIST
+  nil)                               ; FUNCTION-LIST
 
 
 ;; flycheck-clang
@@ -105,11 +96,11 @@
   (setq flycheck-clang-warnings '("all" "extra" "no-invalid-token-paste"))
 
   (setq flycheck-clang-definitions nil)
-  (dolist (def '("_MSC_VER=1800" ;used by windows
+  (dolist (def '("_MSC_VER=1800" ; used by windows
                  "_M_IX86"
                  "_WIN32"
-                 "NPMODDEF" ;used by np61
-                 "XP_WIN"   ;used by js180
+                 "NPMODDEF"      ; used by np61
+                 "XP_WIN"        ; used by js180
                  ))
     (push def flycheck-clang-definitions)))
 

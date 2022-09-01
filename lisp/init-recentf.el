@@ -27,6 +27,6 @@ This function works better with a `completing-read' enhancement like `ido'."
   (find-file-other-frame (completing-read "Find recent file: "
                                           (mapcar #'abbreviate-file-name recentf-list) nil t)))
 
-(global-set-key (kbd "C-x C-r") 'recentf-find-file) ; default is find-file-read-only
-(global-set-key (kbd "C-x 4 C-r") 'recentf-find-file-other-window) ; default is find-file-read-only-other-window
-(global-set-key (kbd "C-x 5 C-r") 'recentf-find-file-other-frame) ; default is find-file-read-only-other-frame
+(global-set-key (kbd "C-x C-r") 'recentf-find-file)                ; original is find-file-read-only
+(global-set-key (kbd "C-x 4 C-r") 'recentf-find-file-other-window) ; original is find-file-read-only-other-window
+(global-set-key (kbd "C-x 5 C-r") 'recentf-find-file-other-frame)  ; original is find-file-read-only-other-frame

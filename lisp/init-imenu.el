@@ -10,7 +10,7 @@
   (add-hook 'after-save-hook 'imenu-rescan)
   (add-hook 'find-file-hook 'imenu-rescan)
 
-  (global-set-key (kbd "C-z") 'imenu) ; default is suspend-frame
+  (global-set-key (kbd "C-z") 'imenu) ; original is suspend-frame
   )
 
 (when (require 'imenu-anywhere nil t)

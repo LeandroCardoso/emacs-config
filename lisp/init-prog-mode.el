@@ -29,5 +29,5 @@ one already exists at point."
 
 
 ;; key bindings
-(define-key prog-mode-map (kbd "C-c C-q") 'indent-defun) ;; similar to the c-indent-defun
+(define-key prog-mode-map (kbd "C-c C-q") 'indent-defun) ; similar to the c-indent-defun
 (define-key prog-mode-map (kbd "C-;") 'smart-semicolon)

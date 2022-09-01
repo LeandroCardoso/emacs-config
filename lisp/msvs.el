@@ -191,14 +191,14 @@ used."
 ;; Setup Auto-Modes
 
 ;; Create modes for solution and project files, so we can set the compile command
-(define-generic-mode sln-mode ;; MODE
-  '("#")                      ;; COMMENT-LIST
-  nil                         ;; KEYWORD-LIST
-  nil                         ;; FONT-LOCK-LIST
-  '("\\.sln\\'")              ;; AUTO-MODE-LIST
+(define-generic-mode sln-mode                      ; MODE
+  '("#")                                           ; COMMENT-LIST
+  nil                                              ; KEYWORD-LIST
+  nil                                              ; FONT-LOCK-LIST
+  '("\\.sln\\'")                                   ; AUTO-MODE-LIST
   (list 'msvs-set-compile-command
-        (lambda () (local-set-key (kbd "<f9>") 'compile))
-        ));; FUNCTION-LIST
+        (lambda ()
+          (local-set-key (kbd "<f9>") 'compile)))) ; FUNCTION-LIST
 
 (define-derived-mode vsproj-mode nxml-mode "VS-proj" nil
   (msvs-set-compile-command)

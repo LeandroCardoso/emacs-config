@@ -12,4 +12,4 @@ With a prefix ARG re-open the current file as root."
     (find-file (concat "/sudo:root@localhost:"
                        (read-file-name "Find file (as root): ")))))
 
-(global-set-key (kbd "C-M-o") 'ff-find-other-file) ;; default is split-line
+(global-set-key (kbd "C-M-o") 'ff-find-other-file) ; original is split-line

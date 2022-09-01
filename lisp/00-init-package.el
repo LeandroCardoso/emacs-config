@@ -8,4 +8,4 @@
         ("gnu"          . 1)
         ("melpa stable" . 0)))
 
-(global-set-key (kbd "C-x C-p") 'list-packages) ; default is mark-page
+(global-set-key (kbd "C-x C-p") 'list-packages) ; original is mark-page

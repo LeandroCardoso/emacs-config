@@ -8,7 +8,7 @@
           (define-key map "n" 'whitespace-newline-mode)
           (define-key map "o" 'whitespace-toggle-options)
           (define-key map "r" 'delete-whitespace-rectangle) ; rect.el
-          (define-key map "t" 'delete-trailing-whitespace) ; simple.el
+          (define-key map "t" 'delete-trailing-whitespace)  ; simple.el
           (define-key map "w" 'whitespace-mode)
           map))
   (defalias 'whitespace-keymap whitespace-keymap)

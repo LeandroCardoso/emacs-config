@@ -107,7 +107,7 @@ See `sort-regexp-fields'."
 
 
 ;; settings
-(setq-default abbrev-mode t) ;; enable abbrev-mode by default
+(setq-default abbrev-mode t) ; enable abbrev-mode by default
 (setq-default fill-column 100)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -137,20 +137,20 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-<backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "M-#") 'base64-encode)
-(global-set-key (kbd "C-x C-o") 'delete-all-blank-lines) ;; default is delete-blank-lines
+(global-set-key (kbd "C-x C-o") 'delete-all-blank-lines) ; original is delete-blank-lines
 (global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-c D") 'delete-pair)
 (global-set-key (kbd "C-c <tab>") 'indent-tabs-mode)
 (global-set-key [remap kill-line] 'kill-line-and-join)
 (global-set-key (kbd "C-c k") 'kill-whole-line)
-(global-set-key (kbd "C-h") 'mark-line) ;; default is help prefix, but we have f1 for it
+(global-set-key (kbd "C-h") 'mark-line)                  ; original is help prefix, but we have f1 for it
 (global-set-key (kbd "M-<return>") 'newline-no-break)
 
 ;; capitalize keys
-(global-set-key (kbd "M-c") 'capitalize-dwim) ;; default is capitalize-word
-(global-set-key (kbd "M-l") 'downcase-dwim) ;; default is downcase-word
-(global-set-key (kbd "M-u") 'upcase-dwim) ;; default is upcase-word
+(global-set-key (kbd "M-c") 'capitalize-dwim) ; original is capitalize-word
+(global-set-key (kbd "M-l") 'downcase-dwim)   ; original is downcase-word
+(global-set-key (kbd "M-u") 'upcase-dwim)     ; original is upcase-word
 
 ;; zap - misc.el
 (autoload 'zap-up-to-char "misc")
-(global-set-key (kbd "M-z") 'zap-up-to-char) ;; default is zap-to-char
+(global-set-key (kbd "M-z") 'zap-up-to-char) ; original is zap-to-char

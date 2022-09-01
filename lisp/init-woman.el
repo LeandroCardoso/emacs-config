@@ -3,8 +3,8 @@
   (setq woman-use-symbol-font t))
 
 ;; unset compose-mail keys to use it with woman
-(global-unset-key (kbd "C-x m"))   ;; compose-mail
-(global-unset-key (kbd "C-x 4 m")) ;; compose-mail-other-window
-(global-unset-key (kbd "C-x 5 m")) ;; compose-mail-other-frame
+(global-unset-key (kbd "C-x m"))   ; compose-mail
+(global-unset-key (kbd "C-x 4 m")) ; compose-mail-other-window
+(global-unset-key (kbd "C-x 5 m")) ; compose-mail-other-frame
 
 (global-set-key (kbd "C-x m") 'woman)

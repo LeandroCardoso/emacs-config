@@ -119,5 +119,5 @@ at point or directory of the group at point when using the
   ;; (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
   (add-hook 'ibuffer-mode-hook #'ibuffer-setup-hook))
 
-(global-set-key (kbd "C-x C-b") 'ibuffer) ;; default is list-buffers
+(global-set-key (kbd "C-x C-b") 'ibuffer) ; original is list-buffers
 (global-set-key (kbd "C-x 4 C-b") 'ibuffer-other-window)
