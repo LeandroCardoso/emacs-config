@@ -29,7 +29,8 @@
            `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
            `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta)))
            `(isearch-group-1 ((t :foreground ,base03 :background ,magenta-1fg :weight bold)))
-           `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold))))
+           `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold)))
+           `(diff-error ((t :inherit error))))
           (custom-theme-set-variables
            theme-name
            `(ibuffer-filter-group-name-face 'link)
