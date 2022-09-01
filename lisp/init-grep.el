@@ -1,4 +1,5 @@
 (with-eval-after-load "grep"
+  ;; settings
   (setq grep-save-buffers nil)
 
   (let ((cc "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++")
@@ -20,7 +21,7 @@
 
   (add-hook 'grep-setup-hook #'(lambda () (setq truncate-lines t)))
 
-  ;; Save grep regexp in kill-ring
+  ;; save grep regexp in kill-ring
   (defun grep-save-regexp-advice (regexp &optional files dir confirm)
     (kill-new (car grep-regexp-history)))
 
@@ -28,7 +29,8 @@
   (advice-add 'rgrep :after #'grep-save-regexp-advice)
   (advice-add 'zrgrep :after #'grep-save-regexp-advice)
 
-  (define-key grep-mode-map (kbd "r") 'rename-uniquely)
+  ;; keys
+  (define-key grep-mode-map (kbd "u") 'rename-uniquely)
   (define-key grep-mode-map (kbd "k") 'keep-lines)
   (define-key grep-mode-map (kbd "f") 'flush-lines)
 
