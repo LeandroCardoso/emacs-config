@@ -22,7 +22,8 @@
   (add-hook 'grep-setup-hook #'(lambda () (setq truncate-lines t)))
 
   ;; save grep regexp in kill-ring
-  (defun grep-save-regexp-advice (regexp &optional files dir confirm)
+  (defun grep-save-regexp-advice (regexp &rest r)
+    "Save grep regexp into the kill-ring."
     (kill-new (car grep-regexp-history)))
 
   (advice-add 'lgrep :after #'grep-save-regexp-advice)
