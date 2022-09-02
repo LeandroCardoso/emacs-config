@@ -1,6 +1,8 @@
 (with-eval-after-load "xref"
   ;; settings
-  (setq xref-search-program 'ripgrep)
+  (setq xref-search-program (if (executable-find "rg")
+                                'ripgrep
+                              'grep))
   (setq xref-show-definitions-function 'xref-show-definitions-completing-read)
 
   ;; save the xref id/pattern in kill-ring
