@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t -*-
 (when (eq system-type 'windows-nt)
   (require 'woman)
   (require 'info)

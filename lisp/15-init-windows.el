@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t -*-
 (when (eq system-type 'windows-nt)
   (require 'w32-extra)
   ;; root directories are added in the beginning
