@@ -10,4 +10,4 @@
       (call-interactively 'project-find-regexp)))
 
   ;; keys
-  (global-set-key (kbd "C-x p C-g") 'project-find-regexp-with-arg))
+  (global-set-key (kbd "C-x p M-g") 'project-find-regexp-with-arg))
