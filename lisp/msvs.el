@@ -6,6 +6,8 @@
 ;; - https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
 ;; TODO use Common7\Tools\vsdevcmd.bat to compile
 
+(require 'w32-extra)
+
 ;; Custom
 
 (defcustom msvs-msbuild-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
