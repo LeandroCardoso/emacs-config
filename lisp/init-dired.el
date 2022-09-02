@@ -20,14 +20,48 @@
     (revert-buffer))
 
   (defun dired-do-ediff (&optional arg)
-    "Run `ediff', or `ediff3' with the marked files."
+    "Compare files with `ediff' or `ediff3'.
+
+When there are two or three files marked, compare them without
+prompt.
+
+When there is not file marked, prompt for a file and compare it
+with file at point. When there is no file at point, prompt for
+two files and compare them.
+
+If the file at point has a backup file, use that as the default
+prompt file. If the file at point is a backup file, use its
+original, if that exists and can be found. Note that
+customizations of `backup-directory-alist' and
+`make-backup-file-name-function' change where this function
+searches for the backup file, and affect its ability to find the
+original of a backup file."
     (interactive)
-    (let ((files (dired-get-marked-files nil arg)))
-      (cond ((= (length files) 2)
+    (let* ((files (dired-get-marked-files nil arg))
+           (num-files (length files)))
+      (cond ((= num-files 0)
+             (call-interactively 'ediff-files))
+            ((= num-files 1)
+             (let* ((file-A (dired-get-filename))
+                    ;; Get the latest existing backup file or its original if that exists
+                    (file-backup (if (backup-file-name-p file-A)
+                                     (let ((f (file-name-sans-versions file-A)))
+                                       (when (file-readable-p f)
+                                         f))
+                                   (diff-latest-backup-file file-A))))
+               (ediff-files file-A
+                            (read-file-name (format-prompt "Diff %s with"
+                                                           (when file-backup
+                                                             (file-name-nondirectory file-backup))
+                                                           (file-name-nondirectory file-A))
+                                            (file-name-directory file-A)
+                                            (file-name-nondirectory (or file-backup file-A))
+                                            t))))
+            ((= num-files 2)
              (ediff-files (nth 0 files) (nth 1 files)))
-            ((= (length files) 3)
+            ((= num-files 3)
              (ediff-files3 (nth 0 files) (nth 1 files) (nth 2 files)))
-            (t (error "Invalid number of files marked. Ediff only accept two or three files.")))))
+            (t (error "Invalid number of files marked. Mark two or three files.")))))
 
   (defun dired-eww-open-file ()
     "In Dired, render the file on this line using EWW"
