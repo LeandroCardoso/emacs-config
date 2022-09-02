@@ -50,13 +50,15 @@
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
     (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
 
-  ;; TODO
+  (defun execute-with-bash-shell-command (func &rest args)
+    (let ((shell-file-name (executable-find "bash"))
+          (explicit-bash-args nil)
+          (explicit-bash.exe-args nil))
+      (apply func args)))
+
   (defun shell-bash ()
     "Run `shell' with bash"
     (interactive)
-    (let ((explicit-shell-file-name (executable-find "bash"))
-          (shell-file-name "bash"))
-      (setenv "SHELL" explicit-shell-file-name)
+    (let ((explicit-shell-file-name (executable-find "bash")))
       (setenv "EMACS" "t")
-      (call-interactively 'shell)))
-  )
+      (call-interactively 'shell))))
