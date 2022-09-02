@@ -86,7 +86,7 @@ Return the position of the beginning of the filename, or nil if none found."
   (define-key dired-mode-map (kbd "M-=") 'dired-do-ediff)
 
   (with-eval-after-load "wdired"
-    (define-key wdired-mode-map (kbd "M-m") 'dired-move-to-filename)))
+    (define-key wdired-mode-map (kbd "M-m") 'dired-position-at-filename)))
 
 ;; global keys
 (global-set-key (kbd "C-x M-d") 'find-name-dired)
