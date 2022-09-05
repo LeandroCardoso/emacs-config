@@ -42,7 +42,8 @@
   (defun ibuffer-title-remove-underline (format)
     (ibuffer-assert-ibuffer-mode)
     (save-excursion
-      (goto-line 2)
+      (goto-char (point-min))
+      (forward-line 1)
       (delete-region (point-at-bol) (+ (point-at-eol) 1))))
 
   (advice-add 'ibuffer-update-title-and-summary :after #'ibuffer-title-remove-underline))

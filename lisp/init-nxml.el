@@ -17,7 +17,7 @@ Indentation is done using the `indent-tabs-mode' and
                                "--format" "--recover" "--nowarning" "--encode" "UTF-8" "-")))
     (error "xmllint executable not found")))
 
-;; Original from https://www.emacswiki.org/emacs/NxmlMode
+;; Adapted from https://www.emacswiki.org/emacs/NxmlMode
 (defun xml-context-path ()
   "Display the hierarchy of XML elements the point is on as a path."
   (interactive)
@@ -30,7 +30,7 @@ Indentation is done using the `indent-tabs-mode' and
                     (ignore-errors (progn (nxml-backward-up-element) t)))
           (setq path (cons (xmltok-start-tag-local-name) path)))))
     (setq msg (format "/%s" (mapconcat 'identity path "/")))
-    (if (called-interactively-p)
+    (if (called-interactively-p t)
         (message msg)
       msg)))
 

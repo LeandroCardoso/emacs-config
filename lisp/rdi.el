@@ -135,7 +135,7 @@
 
   (defun np6-config ()
     (interactive)
-    (when (or (called-interactively-p)
+    (when (or (called-interactively-p t)
               (not np6-path))
       (setq np6-path (read-directory-name "NP6 environment directory: " np6-env-path nil t))
       (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
