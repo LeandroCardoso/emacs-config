@@ -47,9 +47,6 @@
 ;; key bindings
 (global-set-key (kbd "C-M-<escape>") 'keyboard-quit)
 
-;; iso-transl - This is required for dead keys work in linux
-(require 'iso-transl)
-
 ;; Set coding system to utf-8
 (set-language-environment "UTF-8")
 

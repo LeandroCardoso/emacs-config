@@ -16,7 +16,7 @@
       (when (or ibuffer-project-include-non-file (ibuffer-buffer-file-name))
         (let ((pr (project-current)))
           (when pr
-            (push (cons (buffer-name) (car (project-roots pr)))
+            (push (cons (buffer-name) (project-root pr))
                   ibuffer-project-root-alist)))))))
 
 (define-ibuffer-filter project

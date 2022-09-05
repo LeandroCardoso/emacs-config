@@ -27,8 +27,8 @@
     (when root
       (cons 'dynamic (abbreviate-file-name root)))))
 
-(cl-defmethod project-roots ((project (head dynamic)))
-  (list (cdr project)))
+(cl-defmethod project-root ((project (head dynamic)))
+  (cdr project))
 
 (add-to-list 'project-find-functions 'project-try-custom-root)
 
