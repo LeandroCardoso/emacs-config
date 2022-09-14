@@ -119,8 +119,8 @@
   (let ((path (or path default-directory))
         (pr (project-current)))
     (when (and np6-np61-src-path pr)
-      (string= (expand-file-name np6-np61-src-path)
-               (expand-file-name (project-root pr))))))
+      (string= (expand-file-name (file-name-as-directory np6-np61-src-path))
+               (expand-file-name (file-name-as-directory (project-root pr)))))))
 
 ;; Environment setup
 (when (eq system-type 'windows-nt)
