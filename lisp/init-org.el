@@ -7,9 +7,7 @@
   (setq org-imenu-depth 3)                           ; maximum level for Imenu access
   (setq org-outline-path-complete-in-steps nil)      ; I don't need this because I have ido-mode
   (setq org-special-ctrl-a/e t)                      ; special headline handling
-  (setq org-src-tab-acts-natively t)                 ; use native major mode TAB in src code block
   (setq org-src-window-setup 'current-window)        ; show edit buffer in the current window
-  (setq org-startup-folded nil)                      ; open org files in unfolded mode
   (setq org-startup-truncated nil)                   ; don't set `truncate-lines', this break long tables
   (setq org-tag-faces `(("doubt" . ,(face-foreground 'warning))
                         ("important" . ,(face-foreground 'org-warning))))
