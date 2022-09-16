@@ -105,7 +105,7 @@
     (push def flycheck-clang-definitions)))
 
 ;; git-link
-(when (featurep 'git-link)
+(with-eval-after-load "git-link"
   (add-to-list 'git-link-remote-alist '("git.rdisoftware.com" git-link-bitbucket)))
 
 (defun np6-plugin-name (&optional path)
