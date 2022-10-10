@@ -1,7 +1,7 @@
 (when (eq system-type 'windows-nt)
   (require 'w32-extra)
   ;; root directories are added in the beginning
-  (w32-add-unix-root-path "c:/msys64/mingw64")
+  (w32-add-unix-root-path "c:/msys64/ucrt64")
   (w32-add-unix-root-path "c:/msys64")
 
   ;; Add windows_bin to PATH and exec-path
