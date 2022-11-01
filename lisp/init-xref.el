@@ -13,6 +13,11 @@
   (advice-add 'xref--find-xrefs :after #'xref-save-id-advice)
   (advice-add 'xref-matches-in-files :after #'xref-save-id-advice) ; used by dired and project
 
+  ;; Use bash shell when calling global, because it doesn't play nice with the windows shell
+  (when (eq system-type 'windows-nt)
+    (advice-add 'xref-matches-in-files :around #'execute-with-bash-shell-command-advice)
+    (advice-add 'xref-matches-in-directory :around #'execute-with-bash-shell-command-advice))
+
   ;; keys
   (define-key xref--xref-buffer-mode-map (kbd "<tab>") 'xref-next-line)
   (define-key xref--xref-buffer-mode-map (kbd "<backtab>") 'xref-prev-line)
