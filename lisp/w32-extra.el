@@ -32,11 +32,17 @@
         (when (file-directory-p (concat path info-dir))
           (add-to-list 'Info-additional-directory-list (concat path info-dir))))))
 
-  (defun execute-with-bash-shell-command-advice (func &rest args)
-    "Execute this function shell's commands with bash shell instead of the default shell.
+  (defun with-bash-shell (func &rest args)
+    "Execute the function FUNC with args ARGS using bash as the default shell.
 
-Usage:
-  (advice-add symbol :around #'execute-with-bash-shell-command-advice)"
+This function fixes the annoying \"^M\" character that can be
+displayed at end of lines in some shell buffer outputs and it can
+be used as an advising function for existing functions.
+
+Advising existing function usage:
+  (advice-add symbol :around #'with-bash-shell)
+
+See `advice-add'."
     (let ((shell-file-name (executable-find "bash"))
           (explicit-bash-args nil)
           (explicit-bash.exe-args nil))

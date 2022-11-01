@@ -13,10 +13,11 @@
   (advice-add 'xref--find-xrefs :after #'xref-save-id-advice)
   (advice-add 'xref-matches-in-files :after #'xref-save-id-advice) ; used by dired and project
 
-  ;; Use bash shell when calling global, because it doesn't play nice with the windows shell
+  ;; Use bash shell when calling grep/ripgrep, because it fixes the annoying "^M" that can be
+  ;; displayed at end of lines.
   (when (eq system-type 'windows-nt)
-    (advice-add 'xref-matches-in-files :around #'execute-with-bash-shell-command-advice)
-    (advice-add 'xref-matches-in-directory :around #'execute-with-bash-shell-command-advice))
+    (advice-add 'xref-matches-in-files :around #'with-bash-shell)
+    (advice-add 'xref-matches-in-directory :around #'with-bash-shell))
 
   ;; keys
   (define-key xref--xref-buffer-mode-map (kbd "<tab>") 'xref-next-line)
