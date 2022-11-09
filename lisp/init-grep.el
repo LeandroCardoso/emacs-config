@@ -36,5 +36,3 @@
   (define-key grep-mode-map (kbd "f") 'flush-lines)
 
   (require 'wgrep nil t))
-
-(global-set-key (kbd "C-M-g") 'rgrep)
