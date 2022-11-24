@@ -88,8 +88,8 @@ Indentation is done using the `indent-tabs-mode' and
 (defun nxml-which-func-setup-hook ()
   (when (and (derived-mode-p 'nxml-mode)
              (< (buffer-size) xml-context-maxout))
-    (which-function-mode t)
-    (setq which-func-mode t)
+    ;; (which-function-mode t)
+    ;; (setq which-func-mode t)
     (add-hook 'which-func-functions 'xml-context-path t t)))
 
 ;; We need this to be run AFTER which-func-ff-hook - the "t" means append
