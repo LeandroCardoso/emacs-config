@@ -272,3 +272,22 @@ np61 and compiler directories."
       (msvs-generate-compile-command nil "\"Any CPU\"" "Debug" "Build")))))
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
+
+
+;; view.xml
+(defun auto-format-view ()
+  "Auto format a view file. This function is intended to be used as a hook.
+
+See `xml-format'"
+  (when (and (string-match-p "\\view.*xml\\'" (or buffer-file-name ""))
+             (save-mark-and-excursion ;only format if file has more than one line
+               (goto-char (point-min))
+               (eq 1 (forward-line 2))))
+    (message "Formatting view file: %s" (buffer-file-name))
+    (save-mark-and-excursion
+      (deactivate-mark)
+      (xml-format))
+    (save-buffer)))
+
+(add-hook 'nxml-mode-hook 'auto-format-view)
+(add-hook 'after-revert-hook 'auto-format-view)
