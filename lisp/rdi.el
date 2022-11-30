@@ -276,32 +276,32 @@ np61 and compiler directories."
 
 
 ;; np6 view
-(defun auto-format-np6-view ()
+(defun np6-view-auto-format ()
   "Auto format a view file. This function is intended to be used as a hook.
 
 See `xml-format'"
   (save-mark-and-excursion
-    (when (and (not (bound-and-true-p ignore-auto-format-np6-view))
+    (when (and (not (bound-and-true-p np6-view-ignore-auto-format))
                (string-match-p ".*view.*\\.xml$" (or buffer-file-name ""))
                (progn ;only format if file has more than one line
                  (goto-char (point-min))
                  (eq 1 (forward-line 2))))
       (message "Formatting np6 view file: %s. %s to view without formatting."
-               (buffer-file-name) (substitute-command-keys "\\[revert-np6-view]"))
+               (buffer-file-name) (substitute-command-keys "\\[np6-view-revert]"))
       (deactivate-mark)
       (with-silent-modifications
         (xml-format)))))
 
-(defun revert-np6-view ()
+(defun np6-view-revert ()
   "Revert the current np6 view buffer without auto-formatting it.
 
-See `auto-format-np6-view'"
+See `np6-view-auto-format'"
   (interactive)
   (when (string-match-p ".*view.*\\.xml$" (or buffer-file-name ""))
-    (setq-local ignore-auto-format-np6-view (not (bound-and-true-p ignore-auto-format-np6-view)))
+    (setq-local np6-view-ignore-auto-format (not (bound-and-true-p np6-view-ignore-auto-format)))
     (revert-buffer-with-fine-grain t t)))
 
-(define-key nxml-mode-map (kbd "C-c C-r") 'revert-np6-view)
+(define-key nxml-mode-map (kbd "C-c C-r") 'np6-view-revert)
 
-(add-hook 'nxml-mode-hook 'auto-format-np6-view)
-(add-hook 'after-revert-hook 'auto-format-np6-view)
+(add-hook 'nxml-mode-hook 'np6-view-auto-format)
+(add-hook 'after-revert-hook 'np6-view-auto-format)
