@@ -71,6 +71,24 @@ Return t when buffer was modified."
       (kill-buffer buf))
     result))
 
+(defun xml-display-embedded-other-window (element)
+  "TODO"
+  (interactive)
+  (save-mark-and-excursion
+    (let* ((case-fold-search t)
+           (wbeg (save-excursion (move-to-window-line 0) (point)))
+           (beg (re-search-backward (format "<\\(%s\\)>" element) wbeg t nil))
+           (end (re-search-forward (format "</\\(%s\\)>" element) (+ (point) 10000) t nil))
+           (content (when (and beg end) (buffer-substring-no-properties beg end))))
+      (message "b:%s e:%s c:%s" beg end content)
+      (when content
+        (with-current-buffer-window
+            (format "*%s-%s*" element (or (uniquify-buffer-base-name) (buffer-name)))
+            nil nil
+          (insert content)
+          (xml-mode)
+          (xml-format))))))
+
 (with-eval-after-load "nxml-mode"
   (define-key nxml-mode-map (kbd "C-c C-q") 'xml-format)
   (define-key nxml-mode-map (kbd "C-c C-M-x") 'xml-remove-declaration))

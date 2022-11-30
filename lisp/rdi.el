@@ -301,6 +301,11 @@ See `np6-view-auto-format'"
     (setq-local np6-view-ignore-auto-format (not (bound-and-true-p np6-view-ignore-auto-format)))
     (revert-buffer-with-fine-grain t t)))
 
+(defun np6-view-display-embedded-other-window ()
+  "TODO"
+  (interactive)
+  (xml-display-embedded-other-window "view"))
+
 (define-key nxml-mode-map (kbd "C-c C-r") 'np6-view-revert)
 
 (add-hook 'nxml-mode-hook 'np6-view-auto-format)
