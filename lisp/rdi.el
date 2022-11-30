@@ -280,14 +280,14 @@ np61 and compiler directories."
   "Auto format a view file. This function is intended to be used as a hook.
 
 See `xml-format'"
-  (when (and (not (bound-and-true-p ignore-auto-format-np6-view))
-             (string-match-p ".*view.*\\.xml$" (or buffer-file-name ""))
-             (save-mark-and-excursion ;only format if file has more than one line
-               (goto-char (point-min))
-               (eq 1 (forward-line 2))))
-    (message "Formatting np6 view file: %s. %s to view without formatting."
-             (buffer-file-name) (substitute-command-keys "\\[revert-np6-view]"))
-    (save-mark-and-excursion
+  (save-mark-and-excursion
+    (when (and (not (bound-and-true-p ignore-auto-format-np6-view))
+               (string-match-p ".*view.*\\.xml$" (or buffer-file-name ""))
+               (progn ;only format if file has more than one line
+                 (goto-char (point-min))
+                 (eq 1 (forward-line 2))))
+      (message "Formatting np6 view file: %s. %s to view without formatting."
+               (buffer-file-name) (substitute-command-keys "\\[revert-np6-view]"))
       (deactivate-mark)
       (with-silent-modifications
         (xml-format)))))

@@ -19,10 +19,9 @@ declaration in the first line from the formatted XML."
 (defun xml-remove-declaration ()
   "Remove an XML declaration at the beginning of buffer."
   (interactive "*")
-  (save-mark-and-excursion
-    (goto-char (point-min))
-    (when (looking-at-p "^<\\?xml")
-      (kill-region (point) (min (1+ (point-at-eol)) (point-max))))))
+  (goto-char (point-min))
+  (when (looking-at-p "^<\\?xml")
+    (kill-region (point) (min (1+ (point-at-eol)) (point-max)))))
 
 (defun xml-format ()
   "Format an XML buffer or region using xmllint (from libxml2).
