@@ -1,22 +1,3 @@
-(defun xml-format ()
-  "Format XML using xmllint (from libxml2).
-
-If the region is active, act on region, otherwise act on the whole buffer.
-
-Indentation is done using the `indent-tabs-mode' and
-`nxml-child-indent' variables."
-  (interactive "*")
-  (if (executable-find "xmllint")
-      (save-mark-and-excursion
-        (make-local-variable 'process-environment)
-        (setenv "XMLLINT_INDENT"
-                (if indent-tabs-mode (make-string 1 9) (make-string nxml-child-indent 32)))
-        (let ((min (if (use-region-p) (region-beginning) (point-min)))
-              (max (if (use-region-p) (region-end) (point-max))))
-          (call-process-region min max "xmllint" t '(t nil) nil
-                               "--format" "--recover" "--nowarning" "--encode" "UTF-8" "-")))
-    (error "xmllint executable not found")))
-
 ;; Adapted from https://www.emacswiki.org/emacs/NxmlMode
 (defun xml-context-path ()
   "Display the hierarchy of XML elements the point is on as a path."
@@ -71,7 +52,6 @@ Indentation is done using the `indent-tabs-mode' and
 (with-eval-after-load "nxml-mode"
   (setq nxml-child-indent 4)
   (setq nxml-slash-auto-complete-flag t)
-  (define-key nxml-mode-map (kbd "C-c C-q") 'xml-format)
   (define-key nxml-mode-map (kbd "C-c C-c") 'xml-context-tree))
 
 (define-minor-mode xml-context-mode

@@ -1,5 +1,6 @@
 (require 'project)
 (require 'msvs)
+(require 'xml-format)
 
 (defconst np6-bugs-path (if (eq system-type 'windows-nt) "~/Documents/bugs/" "~/dev/rdi/bugs/"))
 (defconst np6-env-path (if (eq system-type 'windows-nt) "~/Documents/env/" "~/dev/rdi/env/"))
