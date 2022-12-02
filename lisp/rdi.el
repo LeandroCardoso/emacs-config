@@ -36,6 +36,15 @@
 ;; Force coding system in log files
 (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
 
+;; np6 log keymap
+(defvar np6-log-mode-map
+  (let ((map (make-sparse-keymap)))
+    map)
+  "Keymap used in np6 log buffers.")
+
+(defun np6-log-mode-map-setup ()
+  (use-local-map np6-log-mode-map))
+
 ;; np6 log mode
 (define-generic-mode np6-log-mode                      ; MODE
   nil                                                  ; COMMENT-LIST
@@ -46,7 +55,7 @@
     ("\t.*\t" . font-lock-comment-face)
     ("Legacy [a-zA-Z]+ Log" . font-lock-comment-face)) ; FONT-LOCK-LIST
   '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$")   ; AUTO-MODE-LIST
-  nil)                                                 ; FUNCTION-LIST
+  '(np6-log-mode-map-setup))                           ; FUNCTION-LIST
 
 ;; Ugly hack to disable automatic string highlight. This is disabled due to several malformed
 ;; strings.
@@ -63,7 +72,7 @@
     ("^[0-9- :]*;" . font-lock-comment-face)              ; timestamp
     ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)) ; FONT-LOCK-LIST
   '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$")    ; AUTO-MODE-LIST
-  nil)                                                    ; FUNCTION-LIST
+  '(np6-log-mode-map-setup))                              ; FUNCTION-LIST
 
 ;; np6 kiosk log mode
 (define-generic-mode np6-kiosk-log-mode                                 ; MODE
@@ -74,7 +83,7 @@
     (" ERROR " . compilation-error-face)
     ("^[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)) ; FONT-LOCK-LIST
   '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$")            ; AUTO-MODE-LIST
-  nil)                                                                  ; FUNCTION-LIST
+  '(np6-log-mode-map-setup))                                            ; FUNCTION-LIST
 
 (setq-mode-local np6-kiosk-log-mode font-lock-keywords-only t)
 
@@ -310,3 +319,5 @@ See `np6-view-auto-format'"
 
 (add-hook 'nxml-mode-hook 'np6-view-auto-format)
 (add-hook 'after-revert-hook 'np6-view-auto-format)
+
+(define-key np6-log-mode-map (kbd "C-c C-v") 'np6-view-display-embedded-other-window)

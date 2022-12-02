@@ -71,23 +71,52 @@ Return t when buffer was modified."
       (kill-buffer buf))
     result))
 
+;; TODO keep highlight
 (defun xml-display-embedded-other-window (element)
   "TODO"
   (interactive)
   (save-mark-and-excursion
-    (let* ((case-fold-search t)
-           (wbeg (save-excursion (move-to-window-line 0) (point)))
-           (beg (re-search-backward (format "<\\(%s\\)>" element) wbeg t nil))
-           (end (re-search-forward (format "</\\(%s\\)>" element) (+ (point) 10000) t nil))
+    (let* ((xml-start-tag (format "<%s\\(?: [^>]*>\\|>\\)" element))
+           (xml-end-tag (format "</%s>" element))
+           (search-distance 15000)
+           (case-fold-search t)
+           (win-beg (save-excursion (move-to-window-line 0) (point)))
+           (win-end (save-excursion (move-to-window-line -1) (end-of-line) (point)))
+           (match-back-beg (save-excursion
+                             (end-of-line)
+                             (re-search-backward xml-start-tag (- (point) search-distance) t)))
+           (match-back-end (when match-back-beg
+                             (save-excursion
+                               (goto-char match-back-beg)
+                               (re-search-forward xml-end-tag (+ (point) search-distance) t))))
+           (match-back-found (and match-back-end (> match-back-end win-beg)))
+           (match-forw-beg (unless match-back-found
+                             (save-excursion
+                               (end-of-line)
+                               (when (re-search-forward xml-start-tag win-end t)
+                                 (match-beginning 0)))))
+           (match-forw-end (when match-forw-beg
+                             (save-excursion
+                               (goto-char match-forw-beg)
+                               (re-search-forward xml-end-tag (+ (point) search-distance) t))))
+           (match-forw-found match-forw-end)
+           (beg (if match-back-found
+                    match-back-beg
+                  (if match-forw-found
+                      match-forw-beg)))
+           (end (if match-back-found
+                    match-back-end
+                  (if match-forw-found
+                      match-forw-end)))
            (content (when (and beg end) (buffer-substring-no-properties beg end))))
-      (message "b:%s e:%s c:%s" beg end content)
       (when content
         (with-current-buffer-window
-            (format "*%s-%s*" element (or (uniquify-buffer-base-name) (buffer-name)))
+            (format "*%s/%s*" element (or (uniquify-buffer-base-name) (buffer-name)))
             nil nil
           (insert content)
           (xml-mode)
-          (xml-format))))))
+          (xml-format))
+        (pulse-momentary-highlight-region beg end)))))
 
 (with-eval-after-load "nxml-mode"
   (define-key nxml-mode-map (kbd "C-c C-q") 'xml-format)
