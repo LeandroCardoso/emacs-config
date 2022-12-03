@@ -17,7 +17,7 @@ declaration in the first line from the formatted XML."
     (looking-at-p "<\\?xml")))
 
 (defun xml-remove-declaration ()
-  "Remove an XML declaration at the beginning of buffer."
+  "Remove an XML declaration from the beginning of buffer."
   (interactive "*")
   (goto-char (point-min))
   (when (looking-at-p "^<\\?xml")
