@@ -1,5 +1,6 @@
 (require 'project)
 (require 'msvs)
+(require 'fragment)
 (require 'xml-format)
 
 (defconst np6-bugs-path (if (eq system-type 'windows-nt) "~/Documents/bugs/" "~/dev/rdi/bugs/"))
@@ -310,14 +311,18 @@ See `np6-view-auto-format'"
     (setq-local np6-view-ignore-auto-format (not (bound-and-true-p np6-view-ignore-auto-format)))
     (revert-buffer-with-fine-grain t t)))
 
-(defun np6-view-display-embedded-other-window ()
-  "TODO"
+(defun np6-view-fragment-display-other-window ()
+  "Search for a visible np6 view in the current buffer and display
+it in a temporary buffer in another window.
+
+See `fragment-xml-display-other-window'."
   (interactive)
-  (xml-display-embedded-other-window "view"))
+  (let* ((case-fold-search t)
+         (fragment-xml-display-other-window "view"))))
 
 (define-key nxml-mode-map (kbd "C-c C-r") 'np6-view-revert)
 
 (add-hook 'nxml-mode-hook 'np6-view-auto-format)
 (add-hook 'after-revert-hook 'np6-view-auto-format)
 
-(define-key np6-log-mode-map (kbd "C-c C-v") 'np6-view-display-embedded-other-window)
+(define-key np6-log-mode-map (kbd "C-c C-v") 'np6-view-fragment-display-other-window)
