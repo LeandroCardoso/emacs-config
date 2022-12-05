@@ -11,7 +11,7 @@
 ;; TODO keep source highlight
 ;; TODO inclusive
 ;; TODO act on region
-(defun fragment-display-other-window (begin-regexp end-regexp &optional exclude post-function)
+(defun fragment-display-other-window (begin-regexp end-regexp name-tag &optional exclude post-function)
   "Display a text fragment delimited between BEGIN-REGEXP and
 END-REGEXP in a temporary buffer in another window.
 
@@ -53,7 +53,7 @@ Returns the text fragment or nil when not found."
          (fragment (when match (buffer-substring beg end))))
     (when fragment
       (with-current-buffer-window
-          (format "*%s/%s*" element (or (uniquify-buffer-base-name) (buffer-name)))
+          (format "*%s/%s*" name-tag (or (uniquify-buffer-base-name) (buffer-name)))
           nil nil
         (insert fragment)
         (funcall post-function))
@@ -69,6 +69,7 @@ See `fragment-display-other-window'"
   (interactive)
   (fragment-display-other-window (format "<%s\\(?: [^>]*>\\|>\\)" element)
                                  (format "</%s>" element)
+                                 "view"
                                  nil
                                  '(lambda ()
                                     (xml-mode)
