@@ -317,8 +317,9 @@ it in a temporary buffer in another window.
 
 See `fragment-xml-display-other-window'."
   (interactive)
-  (let* ((case-fold-search t)
-         (fragment-xml-display-other-window "view"))))
+  (let ((case-fold-search t))
+    (unless (fragment-xml-display-other-window "view")
+      (error "no view found"))))
 
 (define-key nxml-mode-map (kbd "C-c C-r") 'np6-view-revert)
 

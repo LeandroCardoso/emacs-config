@@ -11,8 +11,7 @@
 ;; TODO keep source highlight
 ;; TODO inclusive
 ;; TODO act on region
-;; TODO error
-(defun fragment-display-other-window (begin-regexp end-regexp &optional exclude &rest post-functions)
+(defun fragment-display-other-window (begin-regexp end-regexp &optional exclude post-function)
   "Display a text fragment delimited between BEGIN-REGEXP and
 END-REGEXP in a temporary buffer in another window.
 
@@ -21,7 +20,7 @@ least partially visible in the current window. The text matched
 by BEGIN-REGEXP and END-REGEXP are part of the text fragment,
 unless the parameter EXCLUDE is t. The search distance is
 customized by the `fragment-search-distance'. After the text
-fragment is inserted in the new buffer, the POST-FUNCTIONS are
+fragment is inserted in the new buffer, the POST-FUNCTION is
 evaluated in the temporary buffer.
 
 Returns the text fragment or nil when not found."
@@ -59,7 +58,7 @@ Returns the text fragment or nil when not found."
             (format "*%s/%s*" element (or (uniquify-buffer-base-name) (buffer-name)))
             nil nil
           (insert fragment)
-          (progn post-functions))
+          (funcall post-function))
         (pulse-momentary-highlight-region beg end))
       fragment)))
 
@@ -73,7 +72,8 @@ See `fragment-display-other-window'"
   (fragment-display-other-window (format "<%s\\(?: [^>]*>\\|>\\)" element)
                                  (format "</%s>" element)
                                  nil
-                                 (xml-mode)
-                                 (xml-format)))
+                                 '(lambda ()
+                                    (xml-mode)
+                                    (xml-format))))
 
 (provide 'fragment)
