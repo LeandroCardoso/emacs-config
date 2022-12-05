@@ -319,7 +319,7 @@ See `fragment-xml-display-other-window'."
   (interactive)
   (let ((case-fold-search t))
     (unless (fragment-xml-display-other-window "view")
-      (error "no view found"))))
+      (error "No view found in current buffer"))))
 
 (define-key nxml-mode-map (kbd "C-c C-r") 'np6-view-revert)
 

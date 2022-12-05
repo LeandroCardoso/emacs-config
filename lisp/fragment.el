@@ -24,43 +24,41 @@ fragment is inserted in the new buffer, the POST-FUNCTION is
 evaluated in the temporary buffer.
 
 Returns the text fragment or nil when not found."
-  (save-mark-and-excursion
-    (let* ((win-beg (save-excursion (move-to-window-line 0) (point)))
-           (win-end (save-excursion (move-to-window-line -1) (end-of-line) (point)))
-           (match-back-beg (save-excursion
+  (let* ((win-beg (save-excursion (move-to-window-line 0) (point)))
+         (win-end (save-excursion (move-to-window-line -1) (end-of-line) (point)))
+         (match-back-beg (save-excursion
+                           (end-of-line)
+                           (re-search-backward begin-regexp (- (point) fragment-search-distance) t)))
+         (match-back-end (when match-back-beg
+                           (save-excursion
+                             (goto-char match-back-beg)
+                             (re-search-forward end-regexp (+ (point) fragment-search-distance) t))))
+         (match-back-found (and match-back-end (> match-back-end win-beg)))
+         (match-forw-beg (unless match-back-found
+                           (save-excursion
                              (end-of-line)
-                             (re-search-backward begin-regexp (- (point) fragment-search-distance) t)))
-           (match-back-end (when match-back-beg
-                             (save-excursion
-                               (goto-char match-back-beg)
-                               (re-search-forward end-regexp (+ (point) fragment-search-distance) t))))
-           (match-back-found (and match-back-end (> match-back-end win-beg)))
-           (match-forw-beg (unless match-back-found
-                             (save-excursion
-                               (end-of-line)
-                               (when (re-search-forward begin-regexp win-end t)
-                                 (match-beginning 0)))))
-           (match-forw-end (when match-forw-beg
-                             (save-excursion
-                               (goto-char match-forw-beg)
-                               (re-search-forward end-regexp (+ (point) fragment-search-distance) t))))
-           (match-forw-found match-forw-end)
-           (match (if match-back-found
-                       (cons match-back-beg  match-back-end)
-                    (if match-forw-found
-                        (cons match-forw-beg  match-forw-end)
-                      '(nil . nil))))
-           (beg (car match))
-           (end (cdr match))
-           (fragment (when (and beg end) (buffer-substring-no-properties beg end))))
-      (when fragment
-        (with-current-buffer-window
-            (format "*%s/%s*" element (or (uniquify-buffer-base-name) (buffer-name)))
-            nil nil
-          (insert fragment)
-          (funcall post-function))
-        (pulse-momentary-highlight-region beg end))
-      fragment)))
+                             (when (re-search-forward begin-regexp win-end t)
+                               (match-beginning 0)))))
+         (match-forw-end (when match-forw-beg
+                           (save-excursion
+                             (goto-char match-forw-beg)
+                             (re-search-forward end-regexp (+ (point) fragment-search-distance) t))))
+         (match-forw-found match-forw-end)
+         (match (cond (match-back-found
+                       (cons match-back-beg  match-back-end))
+                      (match-forw-found
+                       (cons match-forw-beg  match-forw-end))))
+         (beg (when match (car match)))
+         (end (when match (cdr match)))
+         (fragment (when match (buffer-substring beg end))))
+    (when fragment
+      (with-current-buffer-window
+          (format "*%s/%s*" element (or (uniquify-buffer-base-name) (buffer-name)))
+          nil nil
+        (insert fragment)
+        (funcall post-function))
+      (pulse-momentary-highlight-region beg end))
+    fragment))
 
 (defun fragment-xml-display-other-window (element)
   "Search for a visible XML fragment with root ELEMENT in the
