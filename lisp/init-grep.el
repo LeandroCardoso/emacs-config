@@ -35,4 +35,7 @@
   (define-key grep-mode-map (kbd "k") 'keep-lines)
   (define-key grep-mode-map (kbd "f") 'flush-lines)
 
+  (global-set-key (kbd "C-c g") 'rgrep)
+  (global-set-key (kbd "C-c G") 'zrgrep)
+
   (require 'wgrep nil t))
