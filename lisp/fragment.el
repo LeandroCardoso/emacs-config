@@ -69,7 +69,7 @@ See `fragment-display-other-window'"
   (interactive)
   (fragment-display-other-window (format "<%s\\(?: [^>]*>\\|>\\)" element)
                                  (format "</%s>" element)
-                                 "view"
+                                 element
                                  nil
                                  '(lambda ()
                                     (xml-mode)
