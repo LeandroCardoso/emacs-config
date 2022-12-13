@@ -321,9 +321,20 @@ See `fragment-xml-display-other-window'."
     (unless (fragment-xml-display-other-window "view")
       (error "No view found in current buffer"))))
 
+(defun np6-prodinfo-fragment-display-other-window ()
+  "Search for a visible np6 prodinfo in the current buffer and
+display it in a temporary buffer in another window.
+
+See `fragment-xml-display-other-window'."
+  (interactive)
+  (let ((case-fold-search t))
+    (unless (fragment-xml-display-other-window "prodinfo")
+      (error "No prodinfo found in current buffer"))))
+
 (define-key nxml-mode-map (kbd "C-c C-r") 'np6-view-revert)
 
 (add-hook 'nxml-mode-hook 'np6-view-auto-format)
 (add-hook 'after-revert-hook 'np6-view-auto-format)
 
 (define-key np6-log-mode-map (kbd "C-c C-v") 'np6-view-fragment-display-other-window)
+(define-key np6-log-mode-map (kbd "C-c C-p") 'np6-prodinfo-fragment-display-other-window)
