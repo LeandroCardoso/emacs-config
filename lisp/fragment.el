@@ -2,7 +2,7 @@
 (require 'nxml-mode)
 (require 'xml-format)
 
-(defcustom fragment-search-distance 15000
+(defcustom fragment-search-distance 30000
   "Maximum distance used to search for fragments by `fragment-display-other-window'"
   :type '(choice (integer :tag "Number of characters")
                  (const :tag "Unlimited" nil))
