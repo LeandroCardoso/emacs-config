@@ -30,12 +30,13 @@
   (advice-add 'rgrep :after #'grep-save-regexp-advice)
   (advice-add 'zrgrep :after #'grep-save-regexp-advice)
 
-  ;; keys
+  ;; local keys
   (define-key grep-mode-map (kbd "u") 'rename-uniquely)
   (define-key grep-mode-map (kbd "k") 'keep-lines)
   (define-key grep-mode-map (kbd "f") 'flush-lines)
 
-  (global-set-key (kbd "C-c g") 'rgrep)
-  (global-set-key (kbd "C-c G") 'zrgrep)
-
   (require 'wgrep nil t))
+
+;; global keys
+(global-set-key (kbd "C-c g") 'rgrep)
+(global-set-key (kbd "C-c G") 'zrgrep)
