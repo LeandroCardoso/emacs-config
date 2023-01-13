@@ -2,11 +2,13 @@
 (defvar preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas")
   "A list of preferred fonts.")
 
-
-(defvar reference-font-size '(96 . 10)
+(defvar font-size-reference '(96 . 10)
   "Reference font size.
 
 Value has the form (DPI . POINT-SIZE).")
+
+(defvar font-size-minimum 8
+  "Mininum font size.")
 
 
 ;; functions
@@ -171,7 +173,8 @@ See `frame-monitor-attribute'."
 
 (defun frame-monitor-font-size (&optional frame x y)
   "Return a font size of FRAME's monitor dpi relative to the
-`reference-font-size'.
+`font-size-reference'. The size font returned is never less than
+`font-size-minimum'.
 
 If FRAME is omitted or nil, use currently selected frame.
 
@@ -184,18 +187,19 @@ frame if the frame does not intersect any physical monitors.
 If X and Y are both numbers, then ignore the value of FRAME; the
 monitor is determined to be the physical monitor that contains
 the pixel coordinate (X, Y)."
-  (let* ((ref-font-dpi (car reference-font-size))
-         (ref-font-size (cdr reference-font-size))
-         (font-size (* ref-font-size (sqrt (/ (frame-monitor-dpi frame x y) ref-font-dpi)))))
-    (if (< font-size ref-font-size)
-        (ceiling font-size)
-      (floor font-size))))
+  (let* ((font-dpi-ref (car font-size-reference))
+         (font-size-ref (cdr font-size-reference))
+         (font-size (* font-size-ref (sqrt (/ (frame-monitor-dpi frame x y) font-dpi-ref))))
+         (font-size-round (if (< font-size font-size-ref)
+                              (ceiling font-size)
+                            (floor font-size))))
+    (max font-size-minimum font-size-round)))
 
 
 (defun set-preferred-frame-monitor-font (&optional frame x y)
 "Set the first font from `preferred-font-list' that is available
  in FRAME using a font size of FRAME's monitor dpi relative to
- the `reference-font-size'.
+ the `font-size-reference'.
 
 If FRAME is t, set font in all existing frames. If FRAME is
 omitted or nil, use currently selected frame.
