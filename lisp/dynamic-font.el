@@ -15,6 +15,9 @@ Value has the form (DPI . POINT-SIZE).")
 (defvar font-size-minimum 8
   "Mininum font size.")
 
+(defvar font-size-scale 0.75
+  "Scale power")
+
 ;; functions
 
 ;; | resolution | diagonal | mm-size |    dpi |
@@ -60,7 +63,7 @@ monitor is determined to be the physical monitor that contains
 the pixel coordinate (X, Y)."
   (let* ((font-dpi-ref (car font-size-reference))
          (font-size-ref (cdr font-size-reference))
-         (font-size (* font-size-ref (sqrt (/ (frame-monitor-dpi frame x y) font-dpi-ref))))
+         (font-size (* font-size-ref (expt (/ (frame-monitor-dpi frame x y) font-dpi-ref) font-size-scale)))
          (font-size-round (if (< font-size font-size-ref)
                               (ceiling font-size)
                             (floor font-size))))
