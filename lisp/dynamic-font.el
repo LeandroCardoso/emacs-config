@@ -94,10 +94,14 @@ See `frame-monitor-font-size'."
                                   preferred-font-list))
              (font-size (if (framep frame)
                             (frame-monitor-font-size frame x y)
-                          (frame-monitor-font-size))))
-    (set-frame-font (concat font-name " " (number-to-string font-size)) t
+                          (frame-monitor-font-size)))
+             ;; avoid font size 13 because it usually barely changes compared to size 12
+             (font-size-adjusted (if (= font-size 13)
+                                     14
+                                   font-size)))
+    (set-frame-font (concat font-name " " (number-to-string font-size-adjusted)) t
                     (if (framep frame) (list frame) frame))
-    (message "Setting font to %s-%d" font-name font-size)))
+    (message "Setting font to %s-%d" font-name font-size-adjusted)))
 
 
 (defun set-frame-font-scale (&optional arg)
