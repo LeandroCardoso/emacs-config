@@ -37,13 +37,16 @@
 ;; Force coding system in log files
 (modify-coding-system-alist 'file "\\.log\\'" 'prefer-utf-8-dos)
 
-;; np6 log keymap
+;; np6 log key
 (defvar np6-log-mode-map
   (let ((map (make-sparse-keymap)))
     map)
   "Keymap used in np6 log buffers.")
 
-(defun np6-log-mode-map-setup ()
+(define-key np6-log-mode-map (kbd "C-c C-v") 'np6-view-fragment-display-other-window)
+(define-key np6-log-mode-map (kbd "C-c C-p") 'np6-prodinfo-fragment-display-other-window)
+
+(defun np6-log-mode-setup ()
   (use-local-map np6-log-mode-map))
 
 ;; np6 log mode
@@ -56,7 +59,7 @@
     ("\t.*\t" . font-lock-comment-face)
     ("Legacy [a-zA-Z]+ Log" . font-lock-comment-face)) ; FONT-LOCK-LIST
   '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$")   ; AUTO-MODE-LIST
-  '(np6-log-mode-map-setup))                           ; FUNCTION-LIST
+  '(np6-log-mode-setup))                               ; FUNCTION-LIST
 
 ;; Ugly hack to disable automatic string highlight. This is disabled due to several malformed
 ;; strings.
@@ -73,7 +76,7 @@
     ("^[0-9- :]*;" . font-lock-comment-face)              ; timestamp
     ("\\[com.*\\] Thread: .*$" . font-lock-comment-face)) ; FONT-LOCK-LIST
   '("\\(newposv6\\|np6[a-z]*\\)-[0-9]\\.[0-9]\\.log$")    ; AUTO-MODE-LIST
-  '(np6-log-mode-map-setup))                              ; FUNCTION-LIST
+  '(np6-log-mode-setup))                                  ; FUNCTION-LIST
 
 ;; np6 kiosk log mode
 (define-generic-mode np6-kiosk-log-mode                                 ; MODE
@@ -84,7 +87,7 @@
     (" ERROR " . compilation-error-face)
     ("^[0-9]* [0-9]*\\.[0-9]* \\[[0-9 ]*\\]" . font-lock-comment-face)) ; FONT-LOCK-LIST
   '("\\(Debug\\|Error\\|Info\\|Root\\.All\\|Warn\\)\\.log$")            ; AUTO-MODE-LIST
-  '(np6-log-mode-map-setup))                                            ; FUNCTION-LIST
+  '(np6-log-mode-setup))                                                ; FUNCTION-LIST
 
 (setq-mode-local np6-kiosk-log-mode font-lock-keywords-only t)
 
@@ -93,12 +96,22 @@
 (add-to-list 'global-auto-revert-ignore-modes 'np6-kiosk-log-mode)
 
 ;; .np6 and .npsharp mode
+(defvar np6-mode-map
+  (let ((map (make-sparse-keymap)))
+    map)
+  "Keymap used in np6 buffers.")
+
+(define-key np6-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
+
+(defun np6-mode-setup ()
+  (use-local-map np6-mode-map))
+
 (define-generic-mode np6-mode        ; MODE
   '(";")                             ; COMMENT-LIST
   '("|")                             ; KEYWORD-LIST
   nil                                ; FONT-LOCK-LIST
   '("start.*\\.\\(np6\\|npsharp\\)") ; AUTO-MODE-LIST
-  nil)                               ; FUNCTION-LIST
+  '(np6-mode-setup))                 ; FUNCTION-LIST
 
 
 ;; flycheck-clang
@@ -335,6 +348,3 @@ See `fragment-xml-display-other-window'."
 
 (add-hook 'nxml-mode-hook 'np6-view-auto-format)
 (add-hook 'after-revert-hook 'np6-view-auto-format)
-
-(define-key np6-log-mode-map (kbd "C-c C-v") 'np6-view-fragment-display-other-window)
-(define-key np6-log-mode-map (kbd "C-c C-p") 'np6-prodinfo-fragment-display-other-window)
