@@ -56,12 +56,26 @@ buffer C."
   (add-hook 'ediff-suspend-hook 'ediff-text-scale-reset)
 
 
+  ;; Restore window configuration on quit
+  (defvar ediff-window-configuration nil "Window configuration before ediff setup")
+
+  (defun ediff-save-window-configuration ()
+    (setq ediff-window-configuration (current-window-configuration)))
+
+  (defun ediff-restore-window-configuration ()
+    (set-window-configuration ediff-window-configuration))
+
+  (add-hook 'ediff-before-setup-hook #'ediff-save-window-configuration)
+  (add-hook 'ediff-quit-hook #'ediff-restore-window-configuration)
+
+
+  ;; Settings
   ;; (setq ediff-custom-diff-options "-c -w")
   ;; (setq ediff-diff-options "--binary -w")
   (setq ediff-show-ancestor nil)
   (setq ediff-split-window-function 'split-window-horizontally)
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain) ; everything in one frame
-  )
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)) ; everything in one frame
+
 
 (with-eval-after-load "ediff-mult"
   (add-hook 'ediff-meta-buffer-keymap-setup-hook
@@ -70,7 +84,7 @@ buffer C."
               (define-key ediff-meta-buffer-map (kbd "<backtab>") 'ediff-previous-meta-item))))
 
 
-;; global keymap
+;; Global keymap
 (defvar ediff-keymap nil "Keymap for ediff commands")
 (defvar ediff-merge-keymap nil "Keymap for ediff merge commands")
 (defvar ediff-patch-keymap nil "Keymap for ediff patch commands")
