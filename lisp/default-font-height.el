@@ -89,19 +89,28 @@ on."
                                   (lax-plist-get default-font-height-list
                                                  (default-font-height-get-monitor-id frame)))
                                  ((eq 4 (prefix-numeric-value arg))
-                                  (setq default-font-height-list
-                                        (lax-plist-put default-font-height-list
-                                                       (default-font-height-get-monitor-id frame)
-                                                       current-font-height))
-                                  (default-font-height-write-file)
                                   current-font-height)
                                  (t (error "error: invalid argument")))))
     (if (eq 4 (prefix-numeric-value arg))
-        (message "Saving font height %d for current monitor with frame \"%s\""
-                 current-font-height (frame-parameter frame 'name))
-      (set-frame-font (number-to-string font-height) t (list frame))
-      (message "Setting font height to %d in frame \"%s\""
-               font-height (frame-parameter frame 'name)))))
+        (progn
+          (setq default-font-height-list
+                (lax-plist-put default-font-height-list
+                               (default-font-height-get-monitor-id frame)
+                               current-font-height))
+          (default-font-height-write-file)
+          (message "Saving font height to %d for current monitor with frame \"%s\""
+                   current-font-height (frame-parameter frame 'name)))
+      (unless (eq font-height current-font-height)
+        (set-frame-font (number-to-string font-height) t (list frame))
+        (if (interactive-p)
+            (if (or (null arg) (eq '- arg))
+                (message "Setting font height temporarily to %d\nUse `C-0 %s' to reset the font height, or `%s' to save it to be applied automatically for the current monitor."
+                       font-height
+                       (substitute-command-keys "\\[default-font-height-adjust]")
+                       (substitute-command-keys "\\[universal-argument] \\[default-font-height-adjust]"))
+              (message "Resetting font height to %d" font-height))
+          (message "Setting font height to %d in frame \"%s"
+                   font-height (frame-parameter frame 'name)))))))
 
 (defun default-font-height-reset-frame (&optional frame)
   "Change the default font height of the frame FRAME to the last
