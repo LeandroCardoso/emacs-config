@@ -31,8 +31,7 @@ If FRAME is omitted or nil, use currently selected frame."
   (let* ((frame (if (null frame) (window-frame) frame))
          (monitor-size (frame-monitor-attribute 'mm-size frame))
          (monitor-geometry (frame-monitor-attribute 'geometry frame))
-         (monitor-resolution (list (- (nth 2 monitor-geometry) (nth 0 monitor-geometry))
-                                   (- (nth 3 monitor-geometry) (nth 1 monitor-geometry)))))
+         (monitor-resolution (list (nth 2 monitor-geometry) (nth 3 monitor-geometry))))
     (list monitor-size monitor-resolution)))
 
 (defun default-font-height-list-initialize ()
