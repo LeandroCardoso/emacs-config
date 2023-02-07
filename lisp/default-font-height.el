@@ -103,7 +103,6 @@ on."
       (message "Setting font height to %d in frame \"%s\""
                font-height (frame-parameter frame 'name)))))
 
-(defun default-font-height-frame (&optional frame)
 (defun default-font-height-reset-frame (&optional frame)
   "Change the default font height of the frame FRAME to the last
 saved value for the monitor that the currently selected frame is
@@ -112,7 +111,8 @@ on.
 If FRAME is omitted or nil, use currently selected frame."
   (default-font-height-adjust 0 frame))
 
-(add-hook 'after-make-frame-functions 'default-font-height-reset-frame)
+(add-hook 'window-setup-hook 'default-font-height-reset-frame)
+(add-hook 'move-frame-functions 'default-font-height-reset-frame)
 
 ;; key bidings
 
