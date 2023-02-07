@@ -152,9 +152,23 @@ bottom of the buffer stack."
 
 
 ;; Font
-(require 'dynamic-font)
-(set-preferred-frame-monitor-font t)
-(add-hook 'after-make-frame-functions (lambda (frame) (set-preferred-frame-monitor-font frame)))
+(defcustom preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas")
+  "A list of preferred fonts."
+  :type '(repeat string))
+
+(defun set-preferred-font ()
+  "Set the first font from `preferred-font-list' that is available
+in all frames."
+  (interactive)
+  (when-let ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
+                                  preferred-font-list)))
+    (set-frame-font font-name t t)
+    (message "Setting font to %s" font-name)))
+
+(set-preferred-font)
+
+(require 'default-font-height)
+(default-font-height-frame)
 
 (setq text-scale-mode-step 1.1)
 
