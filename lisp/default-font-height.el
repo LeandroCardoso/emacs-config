@@ -59,8 +59,9 @@ initialized."
       (pp default-font-height-list (current-buffer)))
     (write-region nil nil default-font-height-list-file nil 'silent)))
 
-(defun default-font-height-adjust (&optional arg frame)
-  "Change or save the default font height of the frame FRAME.
+(defun default-font-height-adjust ()
+  "Change or save the height of the default font of the frame
+ FRAME.
 
 If FRAME is omitted or nil, use currently selected frame.
 
@@ -70,58 +71,71 @@ currently selected frame.
 With a negative prefix argument, decrease the font height of the
 currently selected frame.
 
-With a zero as prefix argument, reset the default font height to
-the last saved value for the monitor that the currently selected
-frame is on.
+With a zero as prefix argument, reset the height of the default
+font to the last saved value for the monitor that the currently
+selected frame is on.
 
 With \\[universal-argument] as prefix argument, save the default
 font height for the monitor that the currently selected frame is
 on."
-  (interactive "P")
-  (default-font-height-list-initialize)
-  (when-let* ((frame (if (null frame) (window-frame) frame))
-              (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
-              (font-height (cond ((null arg)
-                                  (1+ current-font-height))
-                                 ((eq '- arg)
-                                  (1- current-font-height))
-                                 ((eq 0 (prefix-numeric-value arg))
-                                  (lax-plist-get default-font-height-list
-                                                 (default-font-height-get-monitor-id frame)))
-                                 ((eq 4 (prefix-numeric-value arg))
-                                  current-font-height)
-                                 (t (error "error: invalid argument")))))
-    (if (eq 4 (prefix-numeric-value arg))
-        (progn
-          (setq default-font-height-list
-                (lax-plist-put default-font-height-list
-                               (default-font-height-get-monitor-id frame)
-                               current-font-height))
-          (default-font-height-write-file)
-          (message "Saving font height to %d for current monitor with frame \"%s\""
-                   current-font-height (frame-parameter frame 'name)))
-      (unless (eq font-height current-font-height)
-        (set-frame-font (number-to-string font-height) t (list frame))
-        (if (interactive-p)
-            (if (or (null arg) (eq '- arg))
-                (message "Setting font height temporarily to %d\nUse `C-0 %s' to reset the font height, or `%s' to save it to be applied automatically for the current monitor."
-                       font-height
-                       (substitute-command-keys "\\[default-font-height-adjust]")
-                       (substitute-command-keys "\\[universal-argument] \\[default-font-height-adjust]"))
-              (message "Resetting font height to %d" font-height))
-          (message "Setting font height to %d in frame \"%s"
-                   font-height (frame-parameter frame 'name)))))))
+  (interactive)
+  (cond ((null current-prefix-arg)
+         (default-font-height-increase 1))
+        ((eq '- current-prefix-arg)
+         (default-font-height-increase -1))
+        ((eq 0 current-prefix-arg)
+         (default-font-height-reset))
+        ((equal '(4) current-prefix-arg)
+         (default-font-height-save))
+        (t (error "error: invalid argument"))))
 
-(defun default-font-height-reset-frame (&optional frame)
-  "Change the default font height of the frame FRAME to the last
-saved value for the monitor that the currently selected frame is
-on.
+(defun default-font-height-increase (inc &optional frame)
+  "Increase the height of the default font of the frame FRAME by
+INC steps.
 
 If FRAME is omitted or nil, use currently selected frame."
-  (default-font-height-adjust 0 frame))
+  (let* ((frame (if (null frame) (window-frame) frame))
+         (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
+         (new-font-height (+ inc current-font-height)))
+    (set-frame-font (number-to-string new-font-height) t (list frame))
+    (message "Setting font height temporarily to %d\nUse `C-0 %s' to reset the font height, or `%s' to save it to be applied automatically for the current monitor."
+             new-font-height
+             (substitute-command-keys "\\[default-font-height-adjust]")
+             (substitute-command-keys "\\[universal-argument] \\[default-font-height-adjust]"))))
 
-(add-hook 'window-setup-hook 'default-font-height-reset-frame)
-(add-hook 'move-frame-functions 'default-font-height-reset-frame)
+(defun default-font-height-reset (&optional frame)
+  "Change the height of the default font of the frame FRAME to the
+last saved value for the monitor that the currently selected
+frame is on.
+
+If FRAME is omitted or nil, use currently selected frame."
+  (default-font-height-list-initialize)
+  (let* ((frame (if (null frame) (window-frame) frame))
+         (new-font-height (lax-plist-get default-font-height-list
+                                         (default-font-height-get-monitor-id frame))))
+    (set-frame-font (number-to-string new-font-height) t (list frame))
+    (message "Resetting font height to %d" new-font-height)))
+
+(defun default-font-height-save (&optional frame)
+  "Save the height of the default font of the frame FRAME for the
+monitor that the currently selected frame is on.
+
+If FRAME is omitted or nil, use currently selected frame."
+  (default-font-height-list-initialize)
+  (let* ((frame (if (null frame) (window-frame) frame))
+         (current-font-height (round (/ (face-attribute 'default :height frame) 10.0))))
+    (setq default-font-height-list
+          (lax-plist-put default-font-height-list
+                         (default-font-height-get-monitor-id frame)
+                         current-font-height))
+    (default-font-height-write-file)
+    (message "Saving font height to %d for current monitor with frame \"%s\""
+             current-font-height (frame-parameter frame 'name))))
+
+;; hooks
+
+(add-hook 'window-setup-hook 'default-font-height-reset)
+(add-hook 'move-frame-functions 'default-font-height-reset)
 
 ;; key bidings
 
