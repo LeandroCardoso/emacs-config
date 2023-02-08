@@ -97,11 +97,15 @@ If FRAME is omitted or nil, use currently selected frame."
   (let* ((frame (if (null frame) (window-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
          (new-font-height (+ inc current-font-height)))
-    (set-frame-font (number-to-string new-font-height) t (list frame))
-    (message "Setting font height temporarily to %d\nUse `C-0 %s' to reset the font height, or `%s' to save it to be applied automatically for the current monitor."
-             new-font-height
-             (substitute-command-keys "\\[default-font-height-adjust]")
-             (substitute-command-keys "\\[universal-argument] \\[default-font-height-adjust]"))))
+    (unless (eq current-font-height new-font-height)
+      (set-frame-font (number-to-string new-font-height) t (list frame))
+      (if (interactive-p)
+          (message "Setting font height temporarily to %d\nUse `C-0 %s' to reset the font height, or `%s' to save it to be applied automatically for the current monitor."
+                   new-font-height
+                   (substitute-command-keys "\\[default-font-height-adjust]")
+                   (substitute-command-keys "\\[universal-argument] \\[default-font-height-adjust]"))
+        (message "Setting font height to %d in frame \"%s"
+                 new-font-height (frame-parameter frame 'name))))))
 
 (defun default-font-height-reset (&optional frame)
   "Change the height of the default font of the frame FRAME to the
@@ -111,10 +115,15 @@ frame is on.
 If FRAME is omitted or nil, use currently selected frame."
   (default-font-height-list-initialize)
   (let* ((frame (if (null frame) (window-frame) frame))
+         (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
          (new-font-height (lax-plist-get default-font-height-list
                                          (default-font-height-get-monitor-id frame))))
-    (set-frame-font (number-to-string new-font-height) t (list frame))
-    (message "Resetting font height to %d" new-font-height)))
+    (unless (eq current-font-height new-font-height)
+      (set-frame-font (number-to-string new-font-height) t (list frame))
+      (if (interactive-p)
+          (message "Resetting font height to %d" new-font-height)
+        (message "Setting font height to %d in frame \"%s"
+                 new-font-height (frame-parameter frame 'name))))))
 
 (defun default-font-height-save (&optional frame)
   "Save the height of the default font of the frame FRAME for the
