@@ -28,7 +28,7 @@ this monitor.")
 is on to be used as a key in the `default-font-height-list'.
 
 If FRAME is omitted or nil, use currently selected frame."
-  (let* ((frame (if (null frame) (window-frame) frame))
+  (let* ((frame (if (null frame) (selected-frame) frame))
          (monitor-size (frame-monitor-attribute 'mm-size frame))
          (monitor-geometry (frame-monitor-attribute 'geometry frame))
          (monitor-resolution (list (nth 2 monitor-geometry) (nth 3 monitor-geometry))))
@@ -97,7 +97,7 @@ reset when the frame is moved."
 INC steps.
 
 If FRAME is omitted or nil, use currently selected frame."
-  (let* ((frame (if (null frame) (window-frame) frame))
+  (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
          (new-font-height (+ inc current-font-height)))
     (unless (eq current-font-height new-font-height)
@@ -113,7 +113,7 @@ frame is on.
 
 If FRAME is omitted or nil, use currently selected frame."
   (default-font-height-list-initialize)
-  (let* ((frame (if (null frame) (window-frame) frame))
+  (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
          (new-font-height (lax-plist-get default-font-height-list
                                          (default-font-height-get-monitor-id frame))))
@@ -127,7 +127,7 @@ monitor that the currently selected frame is on.
 
 If FRAME is omitted or nil, use currently selected frame."
   (default-font-height-list-initialize)
-  (let* ((frame (if (null frame) (window-frame) frame))
+  (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0))))
     (setq default-font-height-list
           (lax-plist-put default-font-height-list
