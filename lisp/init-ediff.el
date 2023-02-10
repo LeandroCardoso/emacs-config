@@ -66,7 +66,8 @@ buffer C."
     (set-window-configuration ediff-window-configuration))
 
   (add-hook 'ediff-before-setup-hook #'ediff-save-window-configuration)
-  (add-hook 'ediff-quit-hook #'ediff-restore-window-configuration)
+  (add-hook 'ediff-after-quit-hook-internal #'ediff-restore-window-configuration 50)
+  (add-hook 'ediff-suspend-hook #'ediff-restore-window-configuration 50)
 
 
   ;; Settings
