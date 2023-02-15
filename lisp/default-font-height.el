@@ -96,10 +96,14 @@ reset when the frame is moved."
   "Increase the height of the default font of the frame FRAME by
 INC steps.
 
+If INC is omitted or nil, increase the height of the default font
+by 1.
+
 If FRAME is omitted or nil, use currently selected frame."
+  (interactive "p")
   (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
-         (new-font-height (+ inc current-font-height)))
+         (new-font-height (+ (or inc 1) current-font-height)))
     (unless (eq current-font-height new-font-height)
       (set-face-attribute 'default frame :height (* 10 new-font-height))
       (message
@@ -112,6 +116,7 @@ last saved value for the monitor that the currently selected
 frame is on.
 
 If FRAME is omitted or nil, use currently selected frame."
+  (interactive)
   (default-font-height-list-initialize)
   (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
@@ -126,6 +131,7 @@ If FRAME is omitted or nil, use currently selected frame."
 monitor that the currently selected frame is on.
 
 If FRAME is omitted or nil, use currently selected frame."
+  (interactive)
   (default-font-height-list-initialize)
   (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0))))
