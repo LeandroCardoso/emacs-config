@@ -103,7 +103,8 @@ If FRAME is omitted or nil, use currently selected frame."
     (unless (eq current-font-height new-font-height)
       (set-face-attribute 'default frame :height (* 10 new-font-height))
       (message
-       (substitute-command-keys "Setting font height temporarily to %d\nUse `\\[default-font-height-adjust]' with zero as a prefix to reset the font height, or use it with `\\[universal-argument]' as prefix to save it to be applied automatically for the current monitor.")
+       (substitute-command-keys "Setting font height temporarily to %d
+Use `\\[default-font-height-adjust]' with zero as prefix to reset the font height. Use `\\[universal-argument]' as prefix to save the font height.")
        new-font-height))))
 
 (defun default-font-height-reset (&optional frame)
