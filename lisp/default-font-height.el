@@ -59,7 +59,7 @@ initialized."
       (pp default-font-height-list (current-buffer)))
     (write-region nil nil default-font-height-list-file nil 'silent)))
 
-(defun default-font-height-adjust ()
+(defun default-font-height-adjust (&optional arg)
   "Change or save the height of the default font of the frame
  FRAME.
 
@@ -81,16 +81,12 @@ on.
 
 The height of the default font of the frame is automatically
 reset when the frame is moved."
-  (interactive)
-  (cond ((null current-prefix-arg)
-         (default-font-height-increase 1))
-        ((eq '- current-prefix-arg)
-         (default-font-height-increase -1))
-        ((eq 0 current-prefix-arg)
-         (default-font-height-reset))
-        ((equal '(4) current-prefix-arg)
+  (interactive "P")
+  (cond ((and arg (listp arg))
          (default-font-height-save))
-        (t (error "error: invalid argument"))))
+        ((eq 0 arg)
+         (default-font-height-reset))
+        (t (default-font-height-increase (prefix-numeric-value arg)))))
 
 (defun default-font-height-increase (inc &optional frame)
   "Increase the height of the default font of the frame FRAME by
