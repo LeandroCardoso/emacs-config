@@ -60,10 +60,8 @@ initialized."
     (write-region nil nil default-font-height-list-file nil 'silent)))
 
 (defun default-font-height-adjust (&optional arg)
-  "Change or save the height of the default font of the frame
- FRAME.
-
-If FRAME is omitted or nil, use currently selected frame.
+  "Change or save the height of the default font of the currently
+selected frame.
 
 With no prefix argument, temporarily increase the height of the
 default font of the currently selected frame.
