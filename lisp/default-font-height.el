@@ -119,10 +119,11 @@ If FRAME is omitted or nil, use currently selected frame."
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
          (new-font-height (lax-plist-get default-font-height-list
                                          (default-font-height-get-monitor-id frame))))
-    (unless (eq current-font-height new-font-height)
-      (set-face-attribute 'default frame :height (* 10 new-font-height))
-      (message "Resetting font height to %d" new-font-height))))
-
+    (if (not new-font-height)
+        (message "No default font height saved for current monitor")
+      (unless (eq current-font-height new-font-height)
+        (set-face-attribute 'default frame :height (* 10 new-font-height))
+        (message "Resetting font height to %d" new-font-height)))))
 (defun default-font-height-save (&optional frame)
   "Save the height of the default font of the frame FRAME for the
 monitor that the currently selected frame is on.
