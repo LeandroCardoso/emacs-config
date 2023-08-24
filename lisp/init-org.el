@@ -3,8 +3,10 @@
   (setq org-blank-before-new-entry
         '((heading . nil) (plain-list-item . nil)))  ; don't automatically put new line chars
   (setq org-ellipsis 'org-ellipsis)                  ; print ellipsis '...' with custom face
-  (setq org-hierarchical-todo-statistics nil)        ; all entries in the subtree are considered.
+  (setq org-fontify-done-headline nil)               ; don't change the face of a headline if it is marked DONE
+  (setq org-hierarchical-todo-statistics nil)        ; all entries in the subtree are considered
   (setq org-imenu-depth 3)                           ; maximum level for Imenu access
+  (setq org-level-color-stars-only t)                ; fontify only the stars in each headline
   (setq org-outline-path-complete-in-steps nil)      ; I don't need this because I have ido-mode
   (setq org-special-ctrl-a/e t)                      ; special headline handling
   (setq org-src-window-setup 'current-window)        ; show edit buffer in the current window
