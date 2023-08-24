@@ -14,8 +14,9 @@
   (setq org-tag-persistent-alist '(("doubt" . ?d) ("important" . ?i)))
   (setq org-tags-column (- fill-column))             ; align tags at the right margin. See `set-org-tags-right-column'
   (setq org-tags-sort-function 'string<)             ; align tags using alphabetic order
-  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
-  (setq org-todo-keyword-faces `(("WAITING" . (:foreground ,(face-foreground 'warning) :weight bold))))
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")))
+  (setq org-todo-keyword-faces `(("WAITING" . (:foreground ,(face-foreground 'warning) :weight bold))
+                                 ("BLOCKED" . (:foreground ,(face-foreground 'warning) :weight bold))))
 
   (define-key org-mode-map (kbd "C-c M-t") 'org-toggle-link-display)
   (define-key org-mode-map (kbd "M-<return>") 'org-meta-return) ; workaround to avoid override by a global key
