@@ -11,7 +11,4 @@
 ;; Don't cleanup the buffer list when I am idle for more than 1 day, like weekends and holidays.
 (advice-add 'clean-buffer-list :before-while #'clean-buffer-list-check-idle-time)
 
-;; Add with DEPTH=-10 because `clean-buffer-list' should run before the `desktop-kill'
-(add-hook 'kill-emacs-hook 'clean-buffer-list -10)
-
 (midnight-mode t)
