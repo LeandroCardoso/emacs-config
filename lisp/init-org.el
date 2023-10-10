@@ -3,8 +3,10 @@
   (setq org-blank-before-new-entry
         '((heading . nil) (plain-list-item . nil)))  ; don't automatically put new line chars
   (setq org-ellipsis 'org-ellipsis)                  ; print ellipsis '...' with custom face
-  (setq org-hierarchical-todo-statistics nil)        ; all entries in the subtree are considered.
+  (setq org-fontify-done-headline nil)               ; don't change the face of a headline if it is marked DONE
+  (setq org-hierarchical-todo-statistics nil)        ; all entries in the subtree are considered
   (setq org-imenu-depth 3)                           ; maximum level for Imenu access
+  (setq org-level-color-stars-only t)                ; fontify only the stars in each headline
   (setq org-outline-path-complete-in-steps nil)      ; I don't need this because I have ido-mode
   (setq org-special-ctrl-a/e t)                      ; special headline handling
   (setq org-src-window-setup 'current-window)        ; show edit buffer in the current window
@@ -14,8 +16,9 @@
   (setq org-tag-persistent-alist '(("doubt" . ?d) ("important" . ?i)))
   (setq org-tags-column (- fill-column))             ; align tags at the right margin. See `set-org-tags-right-column'
   (setq org-tags-sort-function 'string<)             ; align tags using alphabetic order
-  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
-  (setq org-todo-keyword-faces `(("WAITING" . (:foreground ,(face-foreground 'warning) :weight bold))))
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")))
+  (setq org-todo-keyword-faces `(("WAITING" . (:foreground ,(face-foreground 'warning) :weight bold))
+                                 ("BLOCKED" . (:foreground ,(face-foreground 'warning) :weight bold))))
 
   (define-key org-mode-map (kbd "C-c M-t") 'org-toggle-link-display)
   (define-key org-mode-map (kbd "M-<return>") 'org-meta-return) ; workaround to avoid override by a global key
