@@ -4,7 +4,7 @@
     "https://jira.rdisoftware.com/jira/secure/QuickSearch.jspa?searchString=%s"
     :keybinding "j")
   (defengine jira-mcd
-    "https://us-jira.mcd.com/secure/QuickSearch.jspa?searchString=%s"
+    "https://mcd-tools.atlassian.net/jira/search?searchString=%s"
     :keybinding "J"))
 ;; Local Variables:
 ;; no-native-compile: t
