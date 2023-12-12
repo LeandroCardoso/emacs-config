@@ -10,6 +10,7 @@
 
   ;; Add Git For Windows to exec-path
   (add-to-list 'exec-path "C:/Program Files/Git/cmd")
+  (add-to-list 'exec-path (expand-file-name (concat user-emacs-directory  "nuget/")))
 
   ;; Workaround for ssh
   (setenv "SSH_ASKPASS" "c:/msys64/usr/bin/sshpass.exe")

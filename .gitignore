@@ -14,6 +14,7 @@ elpa/
 eshell/
 fonts
 ido.last
+nuget/
 omnisharp/
 org-persist/
 places

@@ -137,8 +137,7 @@ used."
   (interactive)
   (let* ((solution-file-list (locate-dominating-file-match default-directory msvs-solution-regexp))
          (default-directory (when solution-file-list
-                              (file-name-directory (car solution-file-list))))
-         (exec-path (cons "./.nuget" exec-path)))
+                              (file-name-directory (car solution-file-list)))))
     (if (not solution-file-list)
         (error "Solution file not found"))
     (if (not (executable-find "nuget"))
