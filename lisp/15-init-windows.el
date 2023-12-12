@@ -4,13 +4,13 @@
   (w32-add-unix-root-path "c:/msys64/mingw64")
   (w32-add-unix-root-path "c:/msys64")
 
-  ;; Add windows_bin to PATH and exec-path
-  (w32-add-to-path (expand-file-name "windows_bin/" user-emacs-directory))
-  (add-to-list 'exec-path (expand-file-name "windows_bin/" user-emacs-directory))
-
-  ;; Add Git For Windows to exec-path
-  (add-to-list 'exec-path "C:/Program Files/Git/cmd")
-  (add-to-list 'exec-path (expand-file-name (concat user-emacs-directory  "nuget/")))
+  ;; Add external utilities to PATH and exec-path
+  (dolist (path (list "C:/Program Files/Git/cmd/"
+                      (expand-file-name "nuget/" user-emacs-directory)
+                      (expand-file-name "omnisharp/" user-emacs-directory)
+                      (expand-file-name "windows_bin/" user-emacs-directory)))
+    (w32-add-to-path path)
+    (add-to-list 'exec-path path))
 
   ;; Workaround for ssh
   (setenv "SSH_ASKPASS" "c:/msys64/usr/bin/sshpass.exe")
