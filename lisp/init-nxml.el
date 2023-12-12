@@ -78,3 +78,5 @@
 ;; TODO imenu - See libxml-parse-xml-region
 ;; TODO Use eldoc, instead of echo message
 ;; TODO show xml-context-tree in top of window. See how which-key do it in the bottom.
+
+(add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
