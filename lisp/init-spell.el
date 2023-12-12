@@ -4,12 +4,12 @@
   (setenv "DICTIONARY" ispell-dictionary)
   (setq ispell-help-in-bufferp 'electric)
   (setq ispell-personal-dictionary
-        (expand-file-name (concat user-emacs-directory "dict_" ispell-dictionary)))
+        (expand-file-name (concat "dict_" ispell-dictionary) user-emacs-directory))
   (setq ispell-program-name "hunspell")
   (setq ispell-query-replace-choices t)
   (setq ispell-silently-savep t)
 
-  (let ((word-dict (expand-file-name (concat user-emacs-directory "words.txt"))))
+  (let ((word-dict (expand-file-name "words.txt" user-emacs-directory)))
     (when (file-exists-p word-dict)
       (setq ispell-complete-word-dict word-dict)))
 
