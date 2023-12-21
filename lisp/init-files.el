@@ -13,7 +13,7 @@ current buffer name to the kill ring."
   (interactive "P")
   (let ((name (if buffer-file-name
                   (if arg
-                      buffer-file-name
+                      (file-local-name buffer-file-name)
                     (file-name-nondirectory buffer-file-name))
                 (buffer-name))))
   (kill-new name)
@@ -30,7 +30,7 @@ With parameter ARG, convert the directory to absolute, and
 canonicalize it."
   (interactive "P")
   (let* ((dir (if buffer-file-name
-                  (file-name-directory buffer-file-name)
+                  (file-name-directory (file-local-name buffer-file-name))
                 default-directory))
          (dir-exp (if arg
                       (expand-file-name dir)

@@ -77,14 +77,14 @@ option `msvs-msbuild-default-parameters'.")
          ;; If the current buffer is a project file, then use it as project-file, else look up in
          ;; the directory hierarchy for a directory containing a project file.
          (project-file (if (string-match-p msvs-project-regexp (or buffer-file-name ""))
-                           buffer-file-name
+                           (file-local-name buffer-file-name)
                          (car (locate-dominating-file-match default-directory msvs-project-regexp))))
          (project-directory (when project-file
                               (file-name-directory project-file)))
          ;; If the current buffer is a solution file, then use it as solution-file, else look up in
          ;; the directory hierarchy for a directory containing a solution file.
          (solution-file (if (string-match-p msvs-solution-regexp (or buffer-file-name ""))
-                            buffer-file-name
+                            (file-local-name buffer-file-name)
                           (car (locate-dominating-file-match default-directory msvs-solution-regexp))))
          (solution-directory (when solution-file
                                (file-name-directory solution-file)))
