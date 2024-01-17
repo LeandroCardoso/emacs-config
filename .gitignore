@@ -25,4 +25,5 @@ server/
 session.*
 tramp
 transient/
+tree-sitter/
 url/
