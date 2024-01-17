@@ -1,7 +1,6 @@
 #!/bin/sh
 pacman -S \
 msys/man-db \
-msys/sshpass \
 msys/unzip \
 msys/zip \
 mingw64/mingw-w64-x86_64-clang \

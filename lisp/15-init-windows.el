@@ -12,8 +12,8 @@
     (w32-add-to-path path)
     (add-to-list 'exec-path path))
 
-  ;; Workaround for ssh
-  (setenv "SSH_ASKPASS" "c:/msys64/usr/bin/sshpass.exe")
+  ;; Required to enter password for git
+  (setenv "SSH_ASKPASS" "c:/Program Files (x86)/GitExtensions/GitExtSshAskPass.exe")
 
   ;; nodejs
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
