@@ -14,6 +14,7 @@
 ;; Project
 (add-to-list 'project-root-list np6-bugs-path)
 (add-to-list 'project-root-list np6-env-path)
+(add-to-list 'project-root-list "~/Documents/new hires")
 
 ;; nps
 (when (featurep 'js2-mode)
