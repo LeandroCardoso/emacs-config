@@ -119,9 +119,11 @@ If FRAME is omitted or nil, use currently selected frame."
                                          (default-font-height-get-monitor-id frame))))
     (if (not new-font-height)
         (message "No default font height saved for current monitor")
-      (unless (eq current-font-height new-font-height)
+      (if (eq current-font-height new-font-height)
+          (message "Current font height is %d" current-font-height)
         (set-face-attribute 'default frame :height (* 10 new-font-height))
         (message "Resetting font height to %d" new-font-height)))))
+
 (defun default-font-height-save (&optional frame)
   "Save the height of the default font of the frame FRAME for the
 monitor that the currently selected frame is on.
