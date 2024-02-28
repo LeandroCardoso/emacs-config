@@ -4,7 +4,7 @@
   "List of directories that are a root directory of a project.")
 
 (defcustom project-root-list nil
-  "List of directories where every sub-directory is a root directory of a project.")
+  "List of directories where each subdirectory is a root directory of a project.")
 
 (defun project-try-custom-root (filename)
   (let* ((exfilename (expand-file-name filename))
