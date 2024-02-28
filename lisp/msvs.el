@@ -177,7 +177,7 @@ used."
 
 ;; project
 (with-eval-after-load "project"
-  (add-to-list 'project-vc-extra-root-markers msvs-solution-regexp))
+  (add-to-list 'project-vc-extra-root-markers "*.sln"))
 
 ;; grep
 (with-eval-after-load "grep"
