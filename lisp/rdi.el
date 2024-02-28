@@ -12,8 +12,8 @@
   "Source code path for np61 core")
 
 ;; Project
-(add-to-list 'project-root-directory-list np6-bugs-path)
-(add-to-list 'project-root-directory-list np6-env-path)
+(add-to-list 'project-root-up-directory-list np6-bugs-path)
+(add-to-list 'project-root-up-directory-list np6-env-path)
 
 ;; nps
 (when (featurep 'js2-mode)
