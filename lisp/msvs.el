@@ -175,6 +175,10 @@ used."
   (when msvs-platform-sdk
     (add-to-list 'company-c-headers-path-system msvs-platform-sdk)))
 
+;; project
+(with-eval-after-load "project"
+  (add-to-list 'project-vc-extra-root-markers msvs-solution-regexp))
+
 ;; grep
 (with-eval-after-load "grep"
   (add-to-list 'grep-files-aliases
@@ -182,7 +186,7 @@ used."
   (dolist (file '("*.pdb" ".vs"))
     (add-to-list 'grep-find-ignored-files file)))
 
-;; Set compile command
+;; compile
 (when (eq system-type 'windows-nt)
   (add-hook 'c-mode-hook 'msvs-set-compile-command)
   (add-hook 'c++-mode-hook 'msvs-set-compile-command)
