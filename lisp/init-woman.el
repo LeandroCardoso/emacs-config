@@ -7,4 +7,4 @@
 (global-unset-key (kbd "C-x 4 m")) ; compose-mail-other-window
 (global-unset-key (kbd "C-x 5 m")) ; compose-mail-other-frame
 
-(global-set-key (kbd "C-x m") 'woman)
+(define-key ctl-x-map (kbd "m") 'woman)

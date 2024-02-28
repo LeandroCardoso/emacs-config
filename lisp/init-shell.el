@@ -7,8 +7,8 @@ one."
     (other-window 1))
   (shell buffer))
 
-(global-set-key (kbd "C-x $") 'shell) ; original is set-selective-display
-(global-set-key (kbd "C-x 4 $") 'shell-other-window)
+(define-key ctl-x-map (kbd "$") 'shell) ; original is set-selective-display
+(define-key ctl-x-4-map (kbd "$") 'shell-other-window)
 
 (when (require 'bash-completion nil t)
   (add-hook 'shell-dynamic-complete-functions 'bash-completion-dynamic-complete))

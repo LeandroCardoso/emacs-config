@@ -17,8 +17,8 @@ See `gtags-mode-create'."
   ;; Force .h files to be treated as a C++
   (setenv "GTAGSFORCECPP" "1")
 
-  (global-set-key (kbd "C-x p T") 'gtags-mode-update)
-  (global-set-key (kbd "C-x p t") 'gtags-mode-project-create)
+  (define-key project-prefix-map (kbd "T") 'gtags-mode-update)
+  (define-key project-prefix-map (kbd "t") 'gtags-mode-project-create)
 
   ;; Use bash shell when calling global, because it fixes the annoying "^M" that can be displayed at
   ;; end of lines.

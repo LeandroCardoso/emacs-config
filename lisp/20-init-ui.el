@@ -212,7 +212,6 @@ in all frames."
   (global-set-key (kbd "M-o") 'other-window)
   (global-set-key (kbd "M-O") 'other-window-backward))
 
-(global-set-key (kbd "C-x o") 'other-frame) ; original is other-window
-
-(global-set-key (kbd "C-x 4 k") 'kill-other-buffer-and-window)
+(define-key ctl-x-map (kbd "o") 'other-frame) ; original is other-window
+(define-key ctl-x-4-map (kbd "k") 'kill-other-buffer-and-window)
 (global-set-key [remap toggle-frame-fullscreen] 'toggle-frame-fullscreen+)

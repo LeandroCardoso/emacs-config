@@ -18,5 +18,5 @@ one."
     (other-window 1))
   (eshell arg))
 
-(global-set-key (kbd "C-x C-$") 'eshell)
-(global-set-key (kbd "C-x 4 C-$") 'eshell-other-window)
+(define-key ctl-x-map (kbd "C-$") 'eshell)
+(define-key ctl-x-4-map (kbd "C-$") 'eshell-other-window)

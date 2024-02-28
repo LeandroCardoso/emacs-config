@@ -137,7 +137,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-<backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "M-#") 'base64-encode)
-(global-set-key (kbd "C-x C-o") 'delete-all-blank-lines) ; original is delete-blank-lines
+(global-set-key [remap delete-blank-lines] 'delete-all-blank-lines)
 (global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-c D") 'delete-pair)
 (global-set-key (kbd "C-c <tab>") 'indent-tabs-mode)
@@ -147,10 +147,10 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "M-<return>") 'newline-no-break)
 
 ;; capitalize keys
-(global-set-key (kbd "M-c") 'capitalize-dwim) ; original is capitalize-word
-(global-set-key (kbd "M-l") 'downcase-dwim)   ; original is downcase-word
-(global-set-key (kbd "M-u") 'upcase-dwim)     ; original is upcase-word
+(global-set-key [remap capitalize-word] 'capitalize-dwim)
+(global-set-key [remap downcase-word] 'downcase-dwim)
+(global-set-key [remap upcase-word] 'upcase-dwim)
 
 ;; zap - misc.el
 (autoload 'zap-up-to-char "misc")
-(global-set-key (kbd "M-z") 'zap-up-to-char) ; original is zap-to-char
+(global-set-key [remap zap-to-char] 'zap-up-to-char)

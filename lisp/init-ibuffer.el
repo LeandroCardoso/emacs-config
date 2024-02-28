@@ -48,5 +48,5 @@
 
   (advice-add 'ibuffer-update-title-and-summary :after #'ibuffer-title-remove-underline))
 
-(global-set-key (kbd "C-x C-b") 'ibuffer) ; original is list-buffers
-(global-set-key (kbd "C-x 4 C-b") 'ibuffer-other-window)
+(global-set-key [remap list-buffers] 'ibuffer)
+(define-key ctl-x-4-map (kbd "C-b") 'ibuffer-other-window)

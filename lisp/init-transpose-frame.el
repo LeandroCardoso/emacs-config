@@ -1,3 +1,3 @@
 (when (require 'transpose-frame nil t)
-  (global-set-key (kbd "C-x |") 'rotate-frame-clockwise)
-  (global-set-key (kbd "C-x \\") 'rotate-frame))
+  (define-key ctl-x-map (kbd "|") 'rotate-frame-clockwise)
+  (define-key ctl-x-map (kbd "\\") 'rotate-frame))

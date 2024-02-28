@@ -84,8 +84,8 @@ See `backup-buffer'."
 (setq confirm-kill-processes nil)
 
 ;; key bindings
-(global-set-key (kbd "C-x x w") 'copy-file-or-buffer-name-as-kill)
-(global-set-key (kbd "C-x x W") 'copy-file-or-buffer-name-directory-as-kill)
-(global-set-key (kbd "C-x x k") 'make-backup-buffer)
-(global-set-key (kbd "C-x x r") 'rename-buffer-and-file) ; replace rename-buffer
-(global-set-key (kbd "C-x x G") 'revert-buffer-with-fine-grain)
+(define-key ctl-x-x-map (kbd "w") 'copy-file-or-buffer-name-as-kill)
+(define-key ctl-x-x-map (kbd "W") 'copy-file-or-buffer-name-directory-as-kill)
+(define-key ctl-x-x-map (kbd "k") 'make-backup-buffer)
+(define-key ctl-x-x-map (kbd "G") 'revert-buffer-with-fine-grain)
+(global-set-key [remap rename-buffer] 'rename-buffer-and-file) ; replace rename-buffer

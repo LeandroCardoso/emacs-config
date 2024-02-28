@@ -132,4 +132,4 @@ buffer C."
         (define-key map "p" 'ediff-patch-keymap)
         map))
 (defalias 'ediff-keymap ediff-keymap)
-(global-set-key (kbd "C-x M-e") 'ediff-keymap)
+(define-key ctl-x-map (kbd "M-e") 'ediff-keymap)
