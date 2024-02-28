@@ -29,7 +29,7 @@ option `msvs-msbuild-default-parameters'.")
 
 (defconst msvs-cpp-project-regexp ".*vcxproj$")
 (defconst msvs-cs-project-regexp ".*csproj$")
-(defconst msvs-project-regexp ".*\\(vcx\\|cs\\)proj$")
+(defconst msvs-all-projects-regexp ".*\\(vcx\\|cs\\)proj$")
 (defconst msvs-solution-regexp ".*sln$")
 
 (defconst msvs-program-files
@@ -76,9 +76,9 @@ option `msvs-msbuild-default-parameters'.")
                               (not (string-match-p msvs-solution-regexp (or buffer-file-name "")))))
          ;; If the current buffer is a project file, then use it as project-file, else look up in
          ;; the directory hierarchy for a directory containing a project file.
-         (project-file (if (string-match-p msvs-project-regexp (or buffer-file-name ""))
+         (project-file (if (string-match-p msvs-all-projects-regexp (or buffer-file-name ""))
                            (file-local-name buffer-file-name)
-                         (car (locate-dominating-file-match default-directory msvs-project-regexp))))
+                         (car (locate-dominating-file-match default-directory msvs-all-projects-regexp))))
          (project-directory (when project-file
                               (file-name-directory project-file)))
          ;; If the current buffer is a solution file, then use it as solution-file, else look up in
@@ -124,9 +124,9 @@ used."
                               (funcall msvs-compile-command-function))
                             (msvs-compile-command-default-function))))
       (setq-local compile-command command)
-      ;; If the project directory is different than the default-directory then compilation-search-path
-      ;; needs to be set.
-      (let ((project-file (car (locate-dominating-file-match default-directory msvs-project-regexp))))
+      ;; If the project directory is different than the default-directory then
+      ;; compilation-search-path needs to be set.
+      (let ((project-file (car (locate-dominating-file-match default-directory msvs-all-projects-regexp))))
         (when project-file
           (add-to-list (make-local-variable 'compilation-search-path)
                        (file-name-directory project-file)))))))
