@@ -13,8 +13,8 @@
     "https://www.google.com/search?q=%s"
     :keybinding "g")
 
-  (defengine msdn
-    "https://social.msdn.microsoft.com/search/en-US/windows?query=%s"
+  (defengine microsoft
+    "https://learn.microsoft.com/en-us/search/?category=Documentation&terms=%s"
     :keybinding "m")
 
   (defengine csharp
