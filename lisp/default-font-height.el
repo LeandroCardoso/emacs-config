@@ -83,7 +83,7 @@ reset when the frame is moved."
   (cond ((and arg (listp arg))
          (default-font-height-save))
         ((eq 0 arg)
-         (default-font-height-reset))
+         (default-font-height-reset nil t))
         (t (default-font-height-increase (prefix-numeric-value arg)))))
 
 (defun default-font-height-increase (inc &optional frame)
@@ -105,12 +105,14 @@ If FRAME is omitted or nil, use currently selected frame."
 Use `\\[default-font-height-adjust]' with zero as prefix to reset the font height. Use `\\[universal-argument]' as prefix to save the font height.")
        new-font-height))))
 
-(defun default-font-height-reset (&optional frame)
+(defun default-font-height-reset (&optional frame verbose)
   "Change the height of the default font of the frame FRAME to the
 last saved value for the monitor that the currently selected
 frame is on.
 
-If FRAME is omitted or nil, use currently selected frame."
+If FRAME is omitted or nil, use currently selected frame.
+
+If VERBOSE is t, increase the quantity of messages displayed."
   (interactive)
   (default-font-height-list-initialize)
   (let* ((frame (if (null frame) (selected-frame) frame))
@@ -118,9 +120,11 @@ If FRAME is omitted or nil, use currently selected frame."
          (new-font-height (lax-plist-get default-font-height-list
                                          (default-font-height-get-monitor-id frame))))
     (if (not new-font-height)
-        (message "No default font height saved for current monitor")
+        (when verbose
+          (message "No default font height saved for current monitor"))
       (if (eq current-font-height new-font-height)
-          (message "Current font height is %d" current-font-height)
+          (when verbose
+            (message "Current font height is %d" current-font-height))
         (set-face-attribute 'default frame :height (* 10 new-font-height))
         (message "Resetting font height to %d" new-font-height)))))
 
