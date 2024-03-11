@@ -168,7 +168,7 @@ in all frames."
 (set-preferred-font)
 
 (require 'default-font-height)
-(default-font-height-reset)
+(default-font-height-reset nil t)
 
 (setq text-scale-mode-step 1.1)
 
