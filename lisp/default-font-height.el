@@ -147,7 +147,11 @@ If FRAME is omitted or nil, use currently selected frame."
 
 ;; hooks
 
-(add-hook 'window-setup-hook 'default-font-height-reset)
+;; Set font height for the initial frame
+(add-hook 'emacs-startup-hook 'default-font-height-reset)
+;; Set font height for new frames
+(add-hook 'after-make-frame-functions 'default-font-height-reset)
+;; Set font height when a frame moves to a different monitor
 (add-hook 'move-frame-functions 'default-font-height-reset)
 
 ;; key bidings
