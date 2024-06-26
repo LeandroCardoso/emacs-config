@@ -13,6 +13,7 @@
     (push `("cx" . ,(concat cc " " hh " " cext)) grep-files-aliases))
 
   (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
+  (add-to-list 'grep-files-aliases '("web" . "*.css *.htm[l] *.js *.json *.ts"))
 
   (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"                           ;tags
                   "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css" ;minified files
