@@ -129,9 +129,34 @@
     (push def flycheck-clang-definitions)))
 
 ;; git-link
-(with-eval-after-load "git-link"
-  (add-to-list 'git-link-remote-alist '("git.rdisoftware.com" git-link-bitbucket)))
+(defun git-link-bitbucket-rdi (hostname dirname filename _branch commit start end)
+  (format "https://%s/%s/browse/%s?%s%s"
+          hostname
+          (string-replace "scm/np" "projects/NP/repos"                             ;np61
+                          (string-replace "scm/npl" "projects/NPL/repos" dirname)) ;np#
+          filename
+          (if _branch
+              (concat "at=refs%2Fheads%2F" _branch)
+            (concat "at=" commit))
+          (if start
+            (if end
+                (format "#%s-%s" start end)
+              (format "#%s" start))
+            "")))
 
+(defun git-link-commit-bitbucket-rdi (hostname dirname commit)
+  (format "https://%s/%s/commits/%s"
+	  hostname
+      (string-replace "scm/np" "projects/NP/repos"                             ;np61
+                      (string-replace "scm/npl" "projects/NPL/repos" dirname)) ;np#
+	  commit))
+
+(with-eval-after-load "git-link"
+  (add-to-list 'git-link-remote-alist '("git.rdisoftware.com" git-link-bitbucket-rdi))
+  (add-to-list 'git-link-commit-remote-alist '("git.rdisoftware.com" git-link-commit-bitbucket-rdi))
+  (add-to-list 'git-link-homepage-remote-alist '("git.rdisoftware.com" git-link-homepage-github)))
+
+;; newpos
 (defun np6-plugin-name (&optional path)
   (let ((path (or path default-directory)))
     (when (and np6-plugins-src-path
