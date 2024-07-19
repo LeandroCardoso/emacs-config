@@ -1,4 +1,7 @@
 (when (require 'git-link nil t)
+  (setq git-link-use-commit t)
+
+  ;; keys
   (defvar git-link-keymap nil "Keymap for git-link commands")
   (setq git-link-keymap
         (let ((map (make-sparse-keymap)))
