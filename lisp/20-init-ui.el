@@ -195,7 +195,7 @@ in all frames."
 (setq frame-inhibit-implied-resize t) ;; never resize the frame
 (setq initial-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 (setq default-frame-alist initial-frame-alist)
-(setq window-system-default-frame-alist '((x . ((alpha . 95)))))
+(setq window-system-default-frame-alist '((x . ((alpha . 99)))))
 
 ;; key-bindings
 
