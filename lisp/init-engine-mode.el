@@ -9,6 +9,10 @@
     "https://duckduckgo.com/?q=site:emacswiki.org+%s"
     :keybinding "e")
 
+  (defengine duckduckgo
+    "https://duckduckgo.com/%s"
+    :keybinding "d")
+
   (defengine google
     "https://www.google.com/search?q=%s"
     :keybinding "g")
