@@ -13,7 +13,8 @@
     (add-to-list 'exec-path path))
 
   ;; Required to enter password for git
-  (setenv "SSH_ASKPASS" "c:/Program Files (x86)/GitExtensions/GitExtSshAskPass.exe")
+  (setenv "SSH_ASKPASS" "c:/Program Files/Git/mingw64/bin/git-askpass.exe")
+
   ;; map AltGr to Alt using AutoHotKey
   (if (executable-find "altgr2alt")
       (progn
