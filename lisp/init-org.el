@@ -7,7 +7,7 @@
   (setq org-hierarchical-todo-statistics nil)        ; all entries in the subtree are considered
   (setq org-imenu-depth 3)                           ; maximum level for Imenu access
   (setq org-level-color-stars-only t)                ; fontify only the stars in each headline
-  (setq org-outline-path-complete-in-steps nil)      ; I don't need this because I have ido-mode
+  (setq org-outline-path-complete-in-steps nil)      ; display everything
   (setq org-special-ctrl-a/e t)                      ; special headline handling
   (setq org-src-window-setup 'current-window)        ; show edit buffer in the current window
   (setq org-startup-truncated nil)                   ; don't set `truncate-lines', this break long tables

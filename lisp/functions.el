@@ -1,9 +1,3 @@
-(defun ido-push-current-directory ()
-  "Put the current directory in the ido working directory list"
-  (interactive)
-  (push default-directory ido-work-directory-list))
-
-
 (defun create-dir-local-file (directory)
   "Create a `dir-locals-file' in the DIRECTORY if it does not exist yet."
   (let ((full-dir-locals-file (concat directory dir-locals-file)))

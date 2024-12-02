@@ -4,25 +4,19 @@
 (recentf-mode)
 
 (defun recentf-find-file ()
-  "Edit file from the `recentf-list'.
-
-This function works better with a `completing-read' enhancement like `ido'."
+  "Edit file from the `recentf-list'."
   (interactive)
   (find-file (completing-read "Find recent file: "
                               (mapcar #'abbreviate-file-name recentf-list) nil t)))
 
 (defun recentf-find-file-other-window ()
-  "Edit file from the `recentf-list', in another window.
-
-This function works better with a `completing-read' enhancement like `ido'."
+  "Edit file from the `recentf-list', in another window."
   (interactive)
   (find-file-other-window (completing-read "Find recent file: "
                                            (mapcar #'abbreviate-file-name recentf-list) nil t)))
 
 (defun recentf-find-file-other-frame ()
-  "Edit file from the `recentf-list', in another frame.
-
-This function works better with a `completing-read' enhancement like `ido'."
+  "Edit file from the `recentf-list', in another frame."
   (interactive)
   (find-file-other-frame (completing-read "Find recent file: "
                                           (mapcar #'abbreviate-file-name recentf-list) nil t)))

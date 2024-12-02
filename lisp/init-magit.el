@@ -1,6 +1,5 @@
 (when (require 'magit nil t)
   ;; settings
-  (setq magit-completing-read-function 'magit-ido-completing-read)
   (setq magit-diff-extra-stat-arguments
         (lambda ()
           (when-let ((window (get-buffer-window (current-buffer) 'visible)))
