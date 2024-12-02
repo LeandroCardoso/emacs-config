@@ -14,6 +14,13 @@
 
   ;; Required to enter password for git
   (setenv "SSH_ASKPASS" "c:/Program Files (x86)/GitExtensions/GitExtSshAskPass.exe")
+  ;; map AltGr to Alt using AutoHotKey
+  (if (executable-find "altgr2alt")
+      (progn
+        (message "Starting altgr2alt")
+        (start-process "altgr2alt" (messages-buffer) "altgr2alt")
+        nil)
+    (message "Error: altgr2alt not found!"))
 
   ;; nodejs
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
