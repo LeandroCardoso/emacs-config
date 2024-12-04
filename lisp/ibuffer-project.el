@@ -23,17 +23,17 @@
     "Limit current view to buffers with project root directory matching QUALIFIER."
   (:description "project root directory"
                 :reader (read-from-minibuffer "Filter by project root directory: "))
-  (ibuffer-awhen
-   (with-current-buffer buf
-     (cdr (assoc (buffer-name) ibuffer-project-root-alist)))
-   (equal qualifier it)))
+  (when-let
+      (it (with-current-buffer buf
+            (cdr (assoc (buffer-name) ibuffer-project-root-alist))))
+    (equal qualifier it)))
 
 (defun ibuffer-set-filter-groups-by-project ()
   "Set the current filter groups to filter by project root directory."
   (interactive)
   (ibuffer-project-generate-root-alist)
   (setq ibuffer-filter-groups
-        (ibuffer-remove-duplicates
+        (seq-uniq
          (mapcar (lambda (pr)
                    (cons (format "%s" (cdr pr)) `((project . ,(cdr pr)))))
                  ibuffer-project-root-alist)))

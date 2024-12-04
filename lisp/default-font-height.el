@@ -117,8 +117,9 @@ If QUIET is t, increase the quantity of messages displayed."
   (default-font-height-list-initialize)
   (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
-         (new-font-height (lax-plist-get default-font-height-list
-                                         (default-font-height-get-monitor-id frame))))
+         (new-font-height (plist-get default-font-height-list
+                                     (default-font-height-get-monitor-id frame)
+                                     'equal)))
     (if (not new-font-height)
         (unless quiet
           (message "No default font height saved for current monitor"))
@@ -142,9 +143,10 @@ If FRAME is omitted or nil, use currently selected frame."
   (let* ((frame (if (null frame) (selected-frame) frame))
          (current-font-height (round (/ (face-attribute 'default :height frame) 10.0))))
     (setq default-font-height-list
-          (lax-plist-put default-font-height-list
-                         (default-font-height-get-monitor-id frame)
-                         current-font-height))
+          (plist-put default-font-height-list
+                     (default-font-height-get-monitor-id frame)
+                     current-font-height
+                     'equal))
     (default-font-height-write-file)
     (message "Saving font height to %d for current monitor with frame \"%s\""
              current-font-height (frame-parameter frame 'name))))

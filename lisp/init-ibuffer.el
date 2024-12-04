@@ -44,7 +44,7 @@
     (save-excursion
       (goto-char (point-min))
       (forward-line 1)
-      (delete-region (point-at-bol) (+ (point-at-eol) 1))))
+      (delete-region (pos-bol) (+ (pos-eol) 1))))
 
   (advice-add 'ibuffer-update-title-and-summary :after #'ibuffer-title-remove-underline))
 

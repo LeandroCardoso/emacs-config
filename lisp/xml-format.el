@@ -21,7 +21,7 @@ declaration in the first line from the formatted XML."
   (interactive "*")
   (goto-char (point-min))
   (when (looking-at-p "^<\\?xml")
-    (kill-region (point) (min (1+ (point-at-eol)) (point-max)))))
+    (kill-region (point) (min (1+ (pos-eol)) (point-max)))))
 
 (defun xml-format ()
   "Format an XML buffer or region using xmllint (from libxml2).
@@ -65,7 +65,7 @@ Return t when buffer was modified."
             ;; Add a new line when region does not begin on the beginning of the line
             (save-mark-and-excursion
               (goto-char beg)
-              (when (> beg (point-at-bol))
+              (when (> beg (pos-bol))
                 (insert "\n"))))
         (message "XML invalid"))
       (kill-buffer buf))
