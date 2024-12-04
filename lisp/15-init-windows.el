@@ -25,4 +25,7 @@
 
   ;; nodejs
   (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
-    (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\""))))
+    (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
+
+  ;; Workaround for signature error when managing elpa packages
+  (setq package-check-signature nil))
