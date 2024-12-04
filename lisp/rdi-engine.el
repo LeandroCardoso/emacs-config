@@ -6,7 +6,7 @@
   (defengine jira-mcd
     "https://mcd-tools.atlassian.net/jira/search?searchString=%s"
     :keybinding "j"))
+
 ;; Local Variables
-:
 ;; no-native-compile: t
 ;; End:
