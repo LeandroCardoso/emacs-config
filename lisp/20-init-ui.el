@@ -152,6 +152,8 @@ bottom of the buffer stack."
 
 
 ;; Font
+(setq inhibit-compacting-font-caches t)
+
 (defcustom preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas")
   "A list of preferred fonts."
   :type '(repeat string))
