@@ -1,6 +1,5 @@
 (when (require 'company nil t)
   (setq company-format-margin-function 'company-text-icons-margin)
-  (setq company-lighter-base "comp")
   (setq company-search-regexp-function 'company-search-flex-regexp)
   (setq company-selection-wrap-around t)
   (setq company-show-quick-access t)
