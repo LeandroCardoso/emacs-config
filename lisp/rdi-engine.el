@@ -1,4 +1,4 @@
-;; engine
+;; -*- no-byte-compile: t -*-
 (when (require 'engine-mode nil t)
   (engine-mode t)
 
@@ -9,7 +9,3 @@
   (defengine jira-mcd
     "https://mcd-tools.atlassian.net/jira/search?searchString=%s"
     :keybinding "j"))
-
-;; Local Variables
-;; no-native-compile: t
-;; End:

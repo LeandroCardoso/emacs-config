@@ -1,3 +1,4 @@
+;; -*- no-byte-compile: t -*-
 (when (require 'engine-mode nil t)
   (engine-mode t)
 
@@ -36,7 +37,3 @@
   (defengine wiktionary
     "https://en.wiktionary.org/w/index.php?search=%s"
     :keybinding "y"))
-
-;; Local Variables:
-;; no-native-compile: t
-;; End:
