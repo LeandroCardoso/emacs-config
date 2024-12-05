@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: user mail address
+# key: email
+# --
+`(insert user-mail-address)`

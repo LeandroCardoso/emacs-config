@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: user full name
+# key: user
+# --
+`(insert user-full-name)`
