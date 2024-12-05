@@ -1,6 +1,7 @@
 (when (and (require 'solarized nil t) (display-graphic-p))
   (require 'solarized-palettes)
   (setq solarized-distinct-doc-face t)
+  (setq solarized-scale-outline-headlines nil)
   (setq solarized-scale-org-headlines nil)
   (setq solarized-use-more-italic t)
   (setq solarized-use-variable-pitch nil)
