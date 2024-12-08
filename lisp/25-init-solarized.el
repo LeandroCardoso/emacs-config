@@ -12,14 +12,18 @@
         '("My personal solarized theme customizations"
           (custom-theme-set-faces
            theme-name
+           `(Info-quoted ((t :foreground ,orange :inherit font-lock-string-face)))
            `(bookmark-face ((t :inherit fringe)))
            `(button ((t :inherit link)))
            `(cursor ((t :background ,yellow)))
            `(custom-button ((t :inherit button)))
+           `(diff-error ((t :inherit error)))
            `(dired-header ((t :inherit dired-directory :weight bold)))
            `(fringe ((t :foreground ,s-line)))
            `(header-line ((t :foreground ,yellow :underline ,yellow :weight bold :extend t)))
            `(help-key-binding ((t :box (:line-width -1 :color ,s-line) :weight bold)))
+           `(isearch-group-1 ((t :foreground ,base03 :background ,magenta-1fg :weight bold)))
+           `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold)))
            `(minibuffer-prompt ((t :foreground ,yellow)))
            `(mode-line ((t :background ,blue-2bg)))
            `(mode-line-buffer-id ((t :foreground ,yellow :weight bold)))
@@ -28,10 +32,7 @@
            `(separator-line ((t :height 0.1 :inherit transient-separator)))
            `(shortdoc-heading ((t :inherit info-title-1)))
            `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
-           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta)))
-           `(isearch-group-1 ((t :foreground ,base03 :background ,magenta-1fg :weight bold)))
-           `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold)))
-           `(diff-error ((t :inherit error))))
+           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))
           (custom-theme-set-variables
            theme-name
            `(ibuffer-filter-group-name-face 'link)
