@@ -18,6 +18,7 @@ places
 projects
 recentf
 server/
+session.*
 tramp
 transient/
 tree-sitter/
