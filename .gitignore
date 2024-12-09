@@ -11,6 +11,7 @@ eln-cache
 elpa/
 eshell/
 fonts
+nuget.exe
 omnisharp/
 org-persist/
 places

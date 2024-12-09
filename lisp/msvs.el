@@ -65,6 +65,8 @@ option `msvs-msbuild-default-parameters'.")
   (when msvs-program-files
     (concat msvs-program-files "Windows Kits/8.1/Include/um")))
 
+(defconst msvs-nuget-buffer "*nuget*")
+
 
 ;; Functions
 
@@ -109,7 +111,7 @@ option `msvs-msbuild-default-parameters'.")
 (defun msvs-compile-command-default-function ()
   "Default function to generate a compilation command for msvs
 solution, project or file."
-  (msvs-generate-compile-command t "\"Mixed Platforms\'" "Debug" "Build"))
+  (msvs-generate-compile-command t "\"Mixed Platforms\"" "Debug" "Build"))
 
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs solution, project or file.
@@ -132,18 +134,39 @@ used."
                        (file-name-directory project-file)))))))
 
 ;; NuGet
+(defun nuget-execute (&rest program-args)
+  "Start a nuget subprocess. The arguments PROGRAM-ARGS are strings
+to give nuget as arguments."
+  (unless (executable-find "nuget")
+    (error "Nuget executable not found"))
+  (apply 'start-process "nuget" msvs-nuget-buffer "nuget" program-args)
+  (view-buffer msvs-nuget-buffer))
+
+(defun nuget-install ()
+  "Download and install nuget."
+  (interactive)
+  (let ((url "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe")
+        (default-directory (expand-file-name "windows_bin/" user-emacs-directory)))
+    (message "Downloading nuget")
+    (unless (executable-find "curl")
+      (error "Curl executable not found"))
+    (unless (start-process "curl" (messages-buffer) "curl" "-s" "-O" url)
+      (message "Error: Nuget could not be downloaded"))))
+
+(defun nuget-update ()
+  "Update the installed nuget."
+  (interactive)
+  (nuget-execute "update" "-self"))
+
 (defun nuget-restore()
-  "Restore nuget packages of the current solution."
+  "Restore nuget packages for the current solution."
   (interactive)
   (let* ((solution-file-list (locate-dominating-file-match default-directory msvs-solution-regexp))
          (default-directory (when solution-file-list
                               (file-name-directory (car solution-file-list)))))
-    (if (not solution-file-list)
-        (error "Solution file not found"))
-    (if (not (executable-find "nuget"))
-        (error "Nuget executable not found"))
-    (start-process "nuget" "*nuget*" "nuget" "restore" "-NonInteractive")
-    (view-buffer "*nuget*")))
+    (unless solution-file-list
+      (error "Solution file not found"))
+    (nuget-execute "restore" "-NonInteractive")))
 
 
 ;; Setup
