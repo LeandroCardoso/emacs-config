@@ -1,10 +1,12 @@
 (when (require 'company nil t)
+  (global-company-mode)
+  (company-tng-mode)
+
   (setq company-format-margin-function 'company-text-icons-margin)
 
   ;; dabbrev
   (setq company-dabbrev-char-regexp "\\sw\\|_\\|-")
   (setq company-dabbrev-downcase nil)
-  (setq company-dabbrev-ignore-buffers nil)
 
   ;; dabbrev code
   (setq company-dabbrev-code-everywhere t)
@@ -22,9 +24,6 @@
 
   ;; company-search-map
   (define-key company-search-map (kbd "<escape>") 'company-search-abort)
-
-  (company-tng-mode)
-  (global-company-mode)
 
   (when (require 'company-flx nil t)
     (company-flx-mode +1))
