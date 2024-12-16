@@ -1,4 +1,6 @@
 (when (require 'magit nil t)
+  (require 'magit-extras)
+
   ;; settings
   (setq magit-diff-extra-stat-arguments
         (lambda ()
