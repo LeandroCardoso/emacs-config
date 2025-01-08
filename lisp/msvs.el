@@ -205,7 +205,7 @@ to give nuget as arguments."
 ;; grep
 (with-eval-after-load "grep"
   (add-to-list 'grep-files-aliases
-               '("msvs" . "*.sln *proj *proj.filters *.props *.targets packages.config app.config"))
+               '("msvs" . "*.nuspec *.props *.sln *.targets *proj *proj.filters app.config packages.config"))
   (dolist (file '("*.pdb" ".vs"))
     (add-to-list 'grep-find-ignored-files file)))
 
