@@ -6,13 +6,29 @@
     (let ((pr (flatten-list (project-current))))
       (message "%s" (mapconcat 'prin1-to-string (nconc (butlast pr) (list ':) (last pr)) " "))))
 
-  (defun project-query-regexp ()
+  ;; Implementation based on project-find-regexp with universal-argument prefix. This version has a
+  ;; workaround to use the default-directory, instead of the caller-dir when the caller-dir is not
+  ;; inside of the default-directory, which is required to use this function as an option in the
+  ;; project-switch-commands.
+  (defun project-query-regexp (regexp)
     "Find all matches for REGEXP in the current project.
 
 See `project-find-regexp'."
-    (interactive)
-    (let ((current-prefix-arg '(4)))
-      (call-interactively 'project-find-regexp)))
+    (interactive (list (project--read-regexp)))
+    (require 'xref)
+    (require 'grep)
+    (let* ((caller-dir default-directory)
+           (pr (project-current t))
+           (default-directory (project-root pr))
+           (dir (read-directory-name "Base directory: "
+                                     (if (file-in-directory-p caller-dir default-directory)
+                                         caller-dir
+                                       default-directory)
+                                     nil t))
+           (files (project--files-in-directory dir nil (grep-read-files regexp))))
+      (xref-show-xrefs
+       (apply-partially #'project--find-regexp-in-files regexp files)
+       nil)))
 
   ;; settings
   (setq project-vc-merge-submodules nil)
