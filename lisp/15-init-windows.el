@@ -6,6 +6,7 @@
 
   ;; Add external utilities to PATH and exec-path
   (dolist (path (list "C:/Program Files/Git/cmd/"
+                      "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
                       (expand-file-name "omnisharp/" user-emacs-directory)
                       (expand-file-name "windows_bin/" user-emacs-directory)))
     (w32-add-to-path path)
