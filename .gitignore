@@ -15,6 +15,7 @@ nuget.exe
 omnisharp/
 org-persist/
 places
+plantuml/
 projects
 recentf
 server/
