@@ -6,8 +6,6 @@
                               (car (directory-files plantuml-dir t "plantuml.*jar"))))
     (setq plantuml-default-exec-mode (if plantuml-jar-path 'jar 'server)))
 
-  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-
   ;; Workaround for fix plantuml server url encode. See
   ;; https://github.com/skuro/plantuml-mode/pull/172/commits/88ec2b989b9e7c8ccef5d9c3aa2800758c24e7f5
 
