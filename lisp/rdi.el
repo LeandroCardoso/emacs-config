@@ -323,6 +323,19 @@ np61 and compiler directories."
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
 
 
+;; RDI Nuget
+(defconst nuget-rdi-source-name "RDI")
+(defconst nuget-rdi-username "lcardoso")
+
+(defun nuget-rdi-update-password ()
+  "Update the RDI nuget password"
+  (interactive)
+  (nuget-execute "sources" "update"
+                 "-Name" nuget-rdi-source-name
+                 "-User" nuget-rdi-username
+                 "-pass" (read-passwd "Enter the new password for RDI Nuget source: ")))
+
+
 ;; np6 view
 (defun np6-view-auto-format ()
   "Auto format a view file. This function is intended to be used as a hook.
