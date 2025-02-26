@@ -31,6 +31,7 @@ See `project-find-regexp'."
        nil)))
 
   ;; settings
+  (setq project-switch-use-entire-map t)
   (setq project-vc-merge-submodules nil)
 
   ;; Add project-query-regexp, when it is not present, to the project-switch-project after the
