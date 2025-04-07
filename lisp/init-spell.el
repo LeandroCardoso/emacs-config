@@ -20,8 +20,6 @@
 ;; flyspell
 (with-eval-after-load "flyspell"
   (setq flyspell-issue-welcome-flag nil)
-  (setq flyspell-persistent-highlight nil) ; make flyspell less annoying
-  (setq flyspell-mode-line-string nil)
   (setq flyspell-use-meta-tab nil)
 
   ;; Redefine flyspell-mode-map, I hate the default keybindings.
@@ -30,6 +28,4 @@
   )
 
 ;; enable flyspell
-;; (unless (eq system-type 'windows-nt)
-;;   (add-hook 'org-mode-hook 'flyspell-mode)
-;;   (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
