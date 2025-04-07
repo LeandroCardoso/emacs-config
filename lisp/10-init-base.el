@@ -26,6 +26,10 @@
 ;; novice.el
 (setq disabled-command-function nil)
 
+;; shortdoc.el
+(add-hook 'help-fns-describe-function-functions
+          #'shortdoc-help-fns-examples-function)
+
 ;; simple.el
 (setq completion-show-help nil)
 (setq eval-expression-print-length nil)

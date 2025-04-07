@@ -63,11 +63,6 @@ original of a backup file."
              (ediff-files3 (nth 0 files) (nth 1 files) (nth 2 files)))
             (t (error "Invalid number of files marked. Mark two or three files.")))))
 
-  (defun dired-eww-open-file ()
-    "In Dired, render the file on this line using EWW"
-    (interactive)
-    (eww-open-file (dired-get-file-for-visit)))
-
   (defun dired-position-at-filename ()
     "Move to the beginning of the filename on the current line.
 Return the position of the beginning of the filename, or nil if none found."
@@ -81,7 +76,6 @@ Return the position of the beginning of the filename, or nil if none found."
   (define-key dired-mode-map (kbd "C-=") 'dired-compare-directories)
   (define-key dired-mode-map (kbd "M-m") 'dired-position-at-filename)
   (define-key dired-mode-map (kbd "K") 'dired-do-backup)
-  (define-key dired-mode-map (kbd "E") 'dired-eww-open-file)
   (define-key dired-mode-map (kbd "C-+") 'dired-create-empty-file)
   (define-key dired-mode-map (kbd "M-=") 'dired-do-ediff)
 

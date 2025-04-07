@@ -79,6 +79,10 @@ See `backup-buffer'."
 ;; save
 (setq save-some-buffers-default-predicate 'save-some-buffers-root)
 
+;; trusted content
+(add-to-list 'trusted-content (expand-file-name "lisp/" user-emacs-directory))
+(add-to-list 'trusted-content (expand-file-name "packages/" user-emacs-directory))
+
 ;; misc
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq confirm-kill-processes nil)

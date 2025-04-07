@@ -1,6 +1,7 @@
 (with-eval-after-load "grep"
   ;; settings
   (setq grep-save-buffers nil)
+  (setq grep-use-headings t)
 
   (let ((cc "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++")
         (hh "*.hxx *.hpp *.[Hh] *.HH *.h++")

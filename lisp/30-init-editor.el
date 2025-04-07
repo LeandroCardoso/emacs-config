@@ -140,6 +140,7 @@ See `sort-regexp-fields'."
 (global-set-key [remap delete-blank-lines] 'delete-all-blank-lines)
 (global-set-key (kbd "C-M-|") 'delete-indentation)
 (global-set-key (kbd "C-c D") 'delete-pair)
+(global-set-key (kbd "C-c d") 'duplicate-dwim)
 (global-set-key (kbd "C-c <tab>") 'indent-tabs-mode)
 (global-set-key [remap kill-line] 'kill-line-and-join)
 (global-set-key (kbd "C-c k") 'kill-whole-line)
