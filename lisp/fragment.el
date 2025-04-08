@@ -1,27 +1,47 @@
+;;; fragment.el --- Extract and display fragments of text in other window -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
 (require 'pulse)
 (require 'nxml-mode)
 (require 'xml-format)
 
+;;; user options
+
 (defcustom fragment-search-distance 30000
-  "Maximum distance used to search for fragments by `fragment-display-other-window'"
+  "Distance used to search for fragments.
+Maximum distance used to search for fragments by
+`fragment-display-other-window'."
   :type '(choice (integer :tag "Number of characters")
                  (const :tag "Unlimited" nil))
   :group 'fragment)
 
-;; TODO keep source highlight
-;; TODO inclusive
-;; TODO act on region
-(defun fragment-display-other-window (begin-regexp end-regexp name-tag &optional exclude post-function)
-  "Display a text fragment delimited between BEGIN-REGEXP and
-END-REGEXP in a temporary buffer in another window.
+;;; functions
 
-The text fragment will be momentary highlighted and it must be at
-least partially visible in the current window. The text matched
-by BEGIN-REGEXP and END-REGEXP are part of the text fragment,
-unless the parameter EXCLUDE is t. The search distance is
-customized by the `fragment-search-distance'. After the text
-fragment is inserted in the new buffer, the POST-FUNCTION is
-evaluated in the temporary buffer.
+(defun fragment-display-other-window (begin-regexp end-regexp name-tag &optional post-function)
+  "Display a text fragment in other window.
+Display a text fragment delimited between BEGIN-REGEXP and END-REGEXP in
+a temporary buffer in another window.
+
+The temporary buffer will be name using the NAME-TAG and the original
+buffer name.
+
+The text fragment will be momentary highlighted and it must be at least
+partially visible in the current window.
+
+The text matched by BEGIN-REGEXP and END-REGEXP are part of the text
+fragment.
+
+The search distance is customized by the `fragment-search-distance'.
+
+After the text fragment is inserted in the new buffer, the POST-FUNCTION
+is evaluated in the temporary buffer.
 
 Returns the text fragment or nil when not found."
   (let* ((win-beg (save-excursion (move-to-window-line 0) (point)))
@@ -61,7 +81,8 @@ Returns the text fragment or nil when not found."
     fragment))
 
 (defun fragment-xml-display-other-window (element)
-  "Search for a visible XML fragment with root ELEMENT in the
+  "Display a XML fragment in other window.
+Search for a visible XML fragment with root ELEMENT in the
 current buffer and display it in a temporary buffer in another
 window.
 
@@ -70,9 +91,10 @@ See `fragment-display-other-window'"
   (fragment-display-other-window (format "<%s\\(?: [^>]*>\\|>\\)" element)
                                  (format "</%s>" element)
                                  element
-                                 nil
                                  '(lambda ()
                                     (xml-mode)
                                     (xml-format))))
 
 (provide 'fragment)
+
+;;; fragment.el ends here
