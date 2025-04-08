@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: file-name
+# key: filename
+# --
+`(insert (file-name-nondirectory (buffer-file-name)))`
