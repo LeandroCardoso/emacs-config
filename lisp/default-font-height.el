@@ -1,31 +1,42 @@
+;;; default-font-height.el --- Set the font height of frames by monitor -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
 (require 'faces)
 (require 'files)
 (require 'frame)
 (require 'seq)
 
-;; user options
+;;; user options
 
 (defcustom default-font-height-list-file (locate-user-emacs-file "default-font-height")
-  "File in which to save the list of default fonts height for
-different monitors."
+  "Save file for default font heights.
+File in which to save the list of default fonts height for different
+monitors."
   :type 'file
   :group 'default-font-height)
 
-;; variables
+;;; variables
 
 (defvar default-font-height-list 'unset
-  "A property list of default fonts height for different
-monitors.
+  "A property list of default fonts height for different monitors.
 
 The property list maps a monitor idenfification returned by
-`default-font-height-get-monitor-id' to a default font height for
-this monitor.")
+`default-font-height-get-monitor-id' to a default font height for this
+monitor.")
 
-;; functions
+;;; functions
 
 (defun default-font-height-get-monitor-id (&optional frame)
-  "Return a monitor identification for the monitor that frame FRAME
-is on to be used as a key in the `default-font-height-list'.
+  "Get a monitor identification.
+Return a monitor identification for the monitor that frame FRAME is on
+to be used as a key in the `default-font-height-list'.
 
 If FRAME is omitted or nil, use currently selected frame."
   (let* ((frame (if (null frame) (selected-frame) frame))
@@ -35,13 +46,14 @@ If FRAME is omitted or nil, use currently selected frame."
     (list monitor-size monitor-resolution)))
 
 (defun default-font-height-list-initialize ()
-  "Initialize `default-font-height-list' if it isn't already
-initialized."
+  "Initialize `default-font-height-list'.
+Initialize `default-font-height-list' if it isn't already initialized."
   (when (eq default-font-height-list 'unset)
     (default-font-height-read-file)))
 
 (defun default-font-height-read-file ()
-  "Initialize `default-font-height-list' using contents of
+  "Initialize `default-font-height-list' from file.
+Initialize `default-font-height-list' using contents of
 `default-font-height-list-file'."
   (setq default-font-height-list
         (when (file-exists-p default-font-height-list-file)
@@ -50,7 +62,8 @@ initialized."
             (read (current-buffer))))))
 
 (defun default-font-height-write-file ()
-  "Save `default-font-height-list' contents into
+  "Save `default-font-height-list' to file.
+Save `default-font-height-list' contents into
 `default-font-height-list-file'."
   (with-temp-buffer
     (insert ";;; -*- lisp-data -*-\n")
@@ -60,25 +73,25 @@ initialized."
     (write-region nil nil default-font-height-list-file nil 'silent)))
 
 (defun default-font-height-adjust (&optional arg)
-  "Change or save the height of the default font of the currently
-selected frame.
+  "Adjust the font height.
+Change or save the height of the default font of the currently selected
+frame.
 
-With no prefix argument, temporarily increase the height of the
+With no argument ARG, temporarily increase the height of the default
+font of the currently selected frame.
+
+With a negative argument ARG, temporarily decrease the height of the
 default font of the currently selected frame.
 
-With a negative prefix argument, temporarily decrease the height
-of the default font of the currently selected frame.
-
-With a zero as prefix argument, reset the height of the default
-font to the last saved value for the monitor that the currently
-selected frame is on.
-
-With \\[universal-argument] as prefix argument, save the default
-font height for the monitor that the currently selected frame is
+With a zero as argument ARG, reset the height of the default font to the
+last saved value for the monitor that the currently selected frame is
 on.
 
-The height of the default font of the frame is automatically
-reset when the frame is moved."
+With \\[universal-argument] as argument ARG, save the default font
+height for the monitor that the currently selected frame is on.
+
+The height of the default font of the frame is automatically reset when
+the frame is moved."
   (interactive "P")
   (cond ((and arg (listp arg))
          (default-font-height-save))
@@ -87,11 +100,10 @@ reset when the frame is moved."
         (t (default-font-height-increase (prefix-numeric-value arg)))))
 
 (defun default-font-height-increase (inc &optional frame)
-  "Increase the height of the default font of the frame FRAME by
-INC steps.
+  "Increase the font height.
+Increase the height of the default font of the frame FRAME by INC steps.
 
-If INC is omitted or nil, increase the height of the default font
-by 1.
+If INC is omitted or nil, increase the height of the default font by 1.
 
 If FRAME is omitted or nil, use currently selected frame."
   (interactive "p")
@@ -106,9 +118,9 @@ Use `\\[default-font-height-adjust]' with zero as prefix to reset the font heigh
        new-font-height))))
 
 (defun default-font-height-reset (&optional frame quiet)
-  "Change the height of the default font of the frame FRAME to the
-last saved value for the monitor that the currently selected
-frame is on.
+  "Reset the font height.
+Change the height of the default font of the frame FRAME to the last
+saved value for the monitor that the currently selected frame is on.
 
 If FRAME is omitted or nil, use currently selected frame.
 
@@ -130,11 +142,19 @@ If QUIET is t, increase the quantity of messages displayed."
         (message "Resetting font height to %d" new-font-height)))))
 
 (defun default-font-height-reset-quiet (&optional frame)
-  "Quiet version of `default-font-height-reset'."
+  "Quietly reset the font height.
+
+Change the height of the default font of the frame FRAME to the last
+saved value for the monitor that the currently selected frame is on.
+
+If FRAME is omitted or nil, use currently selected frame.
+
+Quiet version of `default-font-height-reset'."
   (default-font-height-reset frame t))
 
 (defun default-font-height-save (&optional frame)
-  "Save the height of the default font of the frame FRAME for the
+  "Save the font height.
+Save the height of the default font of the frame FRAME for the
 monitor that the currently selected frame is on.
 
 If FRAME is omitted or nil, use currently selected frame."
@@ -151,7 +171,7 @@ If FRAME is omitted or nil, use currently selected frame."
     (message "Saving font height to %d for current monitor with frame \"%s\""
              current-font-height (frame-parameter frame 'name))))
 
-;; hooks
+;;; hooks
 
 ;; Set font height for the initial frame
 (add-hook 'emacs-startup-hook 'default-font-height-reset)
@@ -160,8 +180,10 @@ If FRAME is omitted or nil, use currently selected frame."
 ;; Set font height when a frame moves to a different monitor
 (add-hook 'move-frame-functions 'default-font-height-reset-quiet)
 
-;; key bidings
+;;; key bidings
 
 (global-set-key (kbd "C-M-=") 'default-font-height-adjust)
 
 (provide 'default-font-height)
+
+;;; default-font-height.el ends here
