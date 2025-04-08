@@ -1,15 +1,36 @@
+;;; ibuffer-project.el --- Integrate project.el with ibuffer.el -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
 (require 'ibuffer)
 (require 'project)
 (require 'ibuf-ext)
 
+;;; user options
+
 (defcustom ibuffer-project-include-non-file nil
-  "Whether non-file buffers are included in the project groups
-    when using the `ibuffer-set-filter-groups-by-project'")
+  "Whether non-file buffers are included.
+Whether non-file buffers are included in the project groups when using
+    the `ibuffer-set-filter-groups-by-project'"
+  :type 'boolean
+  :group 'ibuffer-project)
+
+;;; variables
 
 (defvar ibuffer-project-root-alist nil
-  "Alist of cached buffers to project root directory.")
+  "Alist of buffers by project root directory.")
+
+;;; functions
 
 (defun ibuffer-project-generate-root-alist ()
+  "Generate a list of buffers by project root directory.
+Result is saved in `ibuffer-project-root-alist'."
   (setq ibuffer-project-root-alist nil)
   (dolist (buf (reverse (buffer-list)))
     (with-current-buffer buf
@@ -40,9 +61,13 @@
   (ibuffer-update nil t))
 
 (defun ibuffer-find-file+ (file &optional wildcards)
-  "Like `find-file', but default to the directory of the buffer
-at point or directory of the group at point when using the
-`ibuffer-set-filter-groups-by-project'."
+  "Find file in project.
+Like `ibuffer-find-file', but default to the directory of the buffer at
+point or directory of the group at point when using the
+`ibuffer-set-filter-groups-by-project'.
+
+FILE and WILDCARDS are here only for compatibility with
+`ibuffer-find-file'."
   (interactive
    (let ((default-directory (let ((buf (ibuffer-current-buffer))
                                   (group (get-text-property (point) 'ibuffer-filter-group-name)))
@@ -56,8 +81,15 @@ at point or directory of the group at point when using the
            t)))
   (find-file file wildcards))
 
+;;; hooks
+
 (add-hook 'ibuffer-hook #'ibuffer-set-filter-groups-by-project)
+
+;;; key bidings
+
 (define-key ibuffer-mode-map [remap ibuffer-find-file] 'ibuffer-find-file+)
 (define-key ibuffer-mode-map (kbd "/ @") 'ibuffer-filter-by-project)
 
 (provide 'ibuffer-project)
+
+;;; ibuffer-project.el ends here
