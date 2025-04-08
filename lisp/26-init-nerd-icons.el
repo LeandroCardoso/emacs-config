@@ -1,1 +1,1 @@
-(when (require 'nerd-icons nil t))
+(require 'nerd-icons nil t)

@@ -40,7 +40,7 @@ displayed at end of lines in some shell buffer outputs and it can
 be used as an advising function for existing functions.
 
 Advising existing function usage:
-  (advice-add symbol :around #'with-bash-shell)
+  (advice-add symbol :around #\\='with-bash-shell)
 
 See `advice-add'."
     (let ((shell-file-name (executable-find "bash"))

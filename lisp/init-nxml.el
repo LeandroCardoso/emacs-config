@@ -61,7 +61,7 @@
   (setq xml-context-tree-update-timer nil)
   (when xml-context-mode
     (setq xml-context-tree-update-timer
-          (run-with-idle-timer idle-update-delay t #'xml-context-tree-update))))
+          (run-with-idle-timer which-func-update-delay t #'xml-context-tree-update))))
 
 ;; which-func integration
 ;; See https://www.emacswiki.org/emacs/WhichFuncMode Non-standard languages (TL;DR;)
