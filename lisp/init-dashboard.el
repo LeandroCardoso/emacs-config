@@ -1,7 +1,9 @@
 (use-package dashboard
   :ensure t
   :init
-  (setopt dashboard-icon-type 'nerd-icons)
+  (setopt dashboard-icon-type (if (eq system-type 'windows-nt)
+                                  nil
+                                'nerd-icons))
   :config
   (defun dashboard-insert-desktop (list-size)
     "Add a list of LIST-SIZE items of desktop files to load."
