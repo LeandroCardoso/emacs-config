@@ -26,6 +26,9 @@
 (require 'dashboard)
 (require 'desktop)
 
+(defvar dashboard-desktop-alist nil
+  "Alist records shorten's desktop files and it's full paths.")
+
 (defun dashboard-insert-desktop (list-size)
   "Add a list of LIST-SIZE items of desktop files to load."
   (dashboard-insert-section
@@ -48,8 +51,8 @@
 ;; FIXME
 ;; (add-to-list 'dashboard-heading-icons
 ;;              (pcase dashboard-icon-type
-;;                ('all-the-icons '(desktop . "desktop"))
-;;                ('nerd-icons '(desktop . "nf-oct-desktop"))))
+;;                ('all-the-icons '(desktop . "device_desktop"))
+;;                ('nerd-icons '(desktop . "nf-oct-device_desktop"))))
 (add-to-list 'dashboard-item-generators '(desktop . dashboard-insert-desktop))
 (add-to-list 'dashboard-item-shortcuts '(desktop . "d"))
 
