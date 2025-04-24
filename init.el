@@ -44,6 +44,47 @@
   :config
   (setopt calc-multiplication-has-precedence nil))
 
+(use-package calendar
+  :defer t
+  :config
+  (calendar-set-date-style 'european))
+
+(use-package cc-mode
+  :defer t
+  :config
+  (setopt c-guess-region-max 100000)
+
+  (c-add-style "c++-custom" '("stroustrup" (c-offsets-alist (inlambda . 0) (inline-open . 0))))
+  (add-to-list 'c-default-style '(c++-mode . "c++-custom"))
+  (add-to-list 'c-default-style '(c-mode . "c++-custom"))
+
+  (add-to-list 'c-font-lock-extra-types "BOOL")
+  (add-to-list 'c++-font-lock-extra-types "BOOL")
+
+  (defun c-setup ()
+    (c-toggle-comment-style -1))
+
+  (defun c++-setup ())
+
+  (defun c-c++-setup ()
+    (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
+  
+  :hook
+  (c-mode . c-setup)
+  (c-mode . c-c++-setup)
+  (c++-mode . c++-setup)
+  (c++-mode . c-c++-setup))
+
+(use-package compile
+  :defer t
+  :config
+  (setopt compilation-scroll-output 'first-error)
+  (setopt compilation-error-screen-columns nil)
+
+  :bind
+  (:map prog-mode-map
+        ("<f9>" . compile)))
+
 (use-package desktop
   :defer t
   :config
@@ -59,6 +100,20 @@
   ;; I am enabling the desktop-save-mode *after* a desktop session is loaded by the `desktop-read'
   ;; command to avoid loading a desktop session on Emacs initialization
   (desktop-after-read . desktop-save-mode-on))
+
+(use-package eglot
+  :hook
+  (csharp-mode . eglot-ensure))
+
+(use-package eldoc
+  :defer t
+  :config
+  (setopt eldoc-echo-area-use-multiline-p t)
+  (global-eldoc-mode))
+
+(use-package find-file
+  :config
+  (setopt cc-search-directories '("." "./*" "../*" "/usr/include" "/usr/local/include/*")))
 
 (use-package help
   :defer t
