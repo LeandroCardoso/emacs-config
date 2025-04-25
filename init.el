@@ -6,7 +6,9 @@
 
 ;;; Code:
 
-;; Initialization
+;;;;;;;;;;;;;;;;;;;;
+;; Initialization ;;
+;;;;;;;;;;;;;;;;;;;;
 
 (setopt custom-file (concat user-emacs-directory "custom-variables.el"))
 (setopt gc-cons-threshold (* 32 1024 1024))
@@ -14,7 +16,9 @@
 ;; We must require the 'use-package' at the beginning, so the `use-package-verbose' works properly
 (require 'use-package)
 
-;; Emacs packages
+;;;;;;;;;;;;;;;;;;;;
+;; Emacs packages ;;
+;;;;;;;;;;;;;;;;;;;;
 
 (use-package emacs
   :config
@@ -356,7 +360,10 @@
   ("M-p" . move-dup-move-lines-up))
 
 
-;; Local packages
+
+;;;;;;;;;;;;;;;;;;;;
+;; Local packages ;;
+;;;;;;;;;;;;;;;;;;;;
 
 (let ((local-packages (expand-file-name "packages" user-emacs-directory)))
   (add-to-list 'load-path local-packages)
@@ -384,7 +391,9 @@
       (delete-file (expand-file-name file local-lisp)))))
 
 
-;; Finalization
+;;;;;;;;;;;;;;;;;;
+;; Finalization ;;
+;;;;;;;;;;;;;;;;;;
 
 (setopt gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value)))
 (message "Emacs %s started in %s" emacs-version (emacs-init-time))
