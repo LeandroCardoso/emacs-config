@@ -68,11 +68,14 @@
   (add-to-list 'c++-font-lock-extra-types "BOOL")
 
   (defun c-setup ()
+    "Setup `c-mode'.  Provided for use in hooks."
     (c-toggle-comment-style -1))
 
-  (defun c++-setup ())
+  (defun c++-setup ()
+    "Setup `c++-mode'.  Provided for use in hooks.")
 
   (defun c-c++-setup ()
+    "Setup `c-mode' and `c++-mode'.  Provided for use in hooks."
     (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
   
   :hook
@@ -219,7 +222,9 @@
   (setopt use-package-enable-imenu-support t)
   (setopt use-package-verbose t))
 
-;; External packages
+;;;;;;;;;;;;;;;;;;;;;;;
+;; External packages ;;
+;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package amx
   :ensure t
