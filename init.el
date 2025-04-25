@@ -106,20 +106,58 @@
   (csharp-mode . eglot-ensure))
 
 (use-package eldoc
-  :defer t
   :config
   (setopt eldoc-echo-area-use-multiline-p t)
   (global-eldoc-mode))
 
+(use-package elec-pair
+  :config
+  (electric-pair-mode))
+
+(use-package elisp-mode
+  :defer t
+  :config
+  (require 'mode-local)
+  (setq-mode-local emacs-lisp-mode sentence-end-double-space t)
+
+  :bind
+  (:map emacs-lisp-mode-map
+        ;; eval-defun is also in C-M-x)
+        ("C-c C-c" . eval-defun)))
+
 (use-package find-file
+  :defer t
   :config
   (setopt cc-search-directories '("." "./*" "../*" "/usr/include" "/usr/local/include/*")))
+
+(use-package goto-addr
+  :config
+  (global-goto-address-mode))
 
 (use-package help
   :defer t
   :config
   (setopt describe-bindings-outline t)
   (setopt help-enable-symbol-autoload t))
+
+(use-package hi-lock
+  :config
+  (global-hi-lock-mode))
+
+(use-package hi-line
+  :config
+  ;; hl-line-mode causes slowness when scrolling down repeatedly, this is a workaround for it
+  (setq auto-window-vscroll nil)
+  :hook
+  ((archive-mode
+    dashboard-mode
+    dired-mode
+    grep-mode
+    ibuffer-mode
+    occur-mode
+    proced-mode
+    tabulated-list-mode
+    tar-mode) . hl-line-mode))
 
 (use-package mule
   :config
@@ -167,7 +205,6 @@
   (setopt x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
 (use-package so-long
-  :defer t
   :config
   (global-so-long-mode))
 
@@ -191,6 +228,45 @@
   ("C-M-;" . avy-goto-word-1)
   ("C-<dead-acute>" . avy-goto-word-1)
   ("C-M-:" . avy-goto-char-in-line))
+
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode)
+  (company-tng-mode)
+
+  (setopt company-format-margin-function 'company-text-icons-margin)
+
+  ;; dabbrev
+  (setopt company-dabbrev-char-regexp "\\sw\\|_\\|-")
+  (setopt company-dabbrev-downcase nil)
+
+  ;; dabbrev code
+  (setopt company-dabbrev-code-everywhere t)
+
+  :bind
+  (:map prog-mode-map
+        ("C-<tab>" . company-indent-or-complete-common))
+  (:map text-mode-map
+        ("C-<tab>" . company-indent-or-complete-common))
+  (:map company-active-map
+        ("<escape>" . company-abort)
+        ("<next>" . company-next-page)
+        ("C-v" . company-next-page)
+        ("<prior>" . company-previous-page)
+        ("M-v" . company-previous-page))
+  (:map company-search-map
+        ("<escape>" . company-search-abort)))
+
+(use-package company-flx
+  :ensure t
+  :config
+  (company-flx-mode +1))
+
+(use-package company-c-headers
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-c-headers))
 
 (use-package dashboard
   :ensure t
@@ -220,6 +296,57 @@
   (engine-mode t)
   (load (expand-file-name "engine-mode/config" user-emacs-directory))
   (load (expand-file-name "engine-mode/config-rdi" user-emacs-directory)))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (setopt flycheck-check-syntax-automatically (if (eq system-type 'windows-nt)
+                                                  '(save idle-change idle-buffer-switch)
+                                                '(save idle-change mode-enabled)))
+  (setopt flycheck-checker-error-threshold nil)
+  (setopt flycheck-global-modes '(c-mode
+                                  c++-mode
+                                  csharp-mode
+                                  emacs-lisp-mode
+                                  js-mode
+                                  typescript-mode))
+  (setopt flycheck-idle-buffer-switch-delay (if (eq system-type 'windows-nt) 30 5))
+  (setopt flycheck-idle-change-delay (if (eq system-type 'windows-nt) 30 5))
+
+  ;; clang
+  (flycheck-add-next-checker 'c/c++-clang 'c/c++-cppcheck)
+
+  ;; cppcheck
+  ;; unusedStructMember is annoying in header files
+  (setopt flycheck-cppcheck-suppressions '("unusedStructMember"))
+
+  (global-flycheck-mode))
+
+(use-package goto-chg
+  :ensure t
+  :bind
+  ("C-." . goto-last-change)
+  ("C-," . goto-last-change-reverse))
+
+(use-package highlight-parentheses
+  :ensure t
+  :config
+  (global-highlight-parentheses-mode)
+  :hook
+  (minibuffer-setup . highlight-parentheses-minibuffer-setup))
+
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1))
+
+(use-package move-dup
+  :ensure t
+  :bind
+  ("M-<down>" . move-dup-move-lines-down)
+  ("M-n" . move-dup-move-lines-down)
+  ("M-<up>" . move-dup-move-lines-up)
+  ("M-p" . move-dup-move-lines-up))
 
 
 ;; Local packages

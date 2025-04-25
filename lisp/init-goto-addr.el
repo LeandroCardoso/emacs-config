@@ -1,1 +1,0 @@
-(global-goto-address-mode)

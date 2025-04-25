@@ -1,1 +1,0 @@
-(global-hi-lock-mode)
