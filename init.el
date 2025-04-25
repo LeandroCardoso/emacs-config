@@ -10,7 +10,7 @@
 ;; Initialization ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(setopt custom-file (concat user-emacs-directory "custom-variables.el"))
+(setopt custom-file (expand-file-name "custom-variables.el" user-emacs-directory))
 (setopt gc-cons-threshold (* 32 1024 1024))
 
 ;; We must require the 'use-package' at the beginning, so the `use-package-verbose' works properly
@@ -29,6 +29,8 @@
   (setopt ring-bell-function 'ignore)
   (setopt sentence-end-double-space nil)
   (setopt use-short-answers t)
+  (setopt user-full-name "Leandro Cardoso")
+  (setopt user-mail-address "leandrocardoso@gmail.com")
 
   ;; Hack to set the major mode automatically with new buffers not associated with a file
   ;; http://thread.gmane.org/gmane.emacs.devel/115520/focus=115794
@@ -37,6 +39,7 @@
                                (fundamental-mode)
                              (let ((buffer-file-name (buffer-name)))
                                (set-auto-mode)))))
+
   :bind
   ("<escape>" . execute-extended-command))
 
@@ -157,6 +160,7 @@
   :config
   ;; hl-line-mode causes slowness when scrolling down repeatedly, this is a workaround for it
   (setq auto-window-vscroll nil)
+
   :hook
   ((archive-mode
     dashboard-mode
@@ -167,6 +171,20 @@
     proced-mode
     tabulated-list-mode
     tar-mode) . hl-line-mode))
+
+(use-package isearch
+  :defer t
+  :config
+  (setopt isearch-allow-motion t)
+  (setopt isearch-allow-scroll 'unlimited)
+  (setopt isearch-lazy-count t)
+  (setopt isearch-repeat-on-direction-change t)
+  (setopt lazy-highlight-initial-delay 0)
+
+  :bind
+  (:map isearch-mode-map
+        ("<escape>" . isearch-abort)
+        ("M-y" . isearch-yank-pop)))
 
 (use-package mule
   :config
@@ -181,6 +199,19 @@
   :config
   (setq disabled-command-function nil))
 
+(use-package newcomment
+  :config
+  (setq-default comment-column 0)
+
+  (defun comment-column-setup ()
+    "Setup `comment-column' to the default value."
+    (setopt comment-column (default-value 'comment-column)))
+
+  :hook
+  ;; Some modes (like emacs-lisp-mode) have the bad habit of overwriting comment-column. This
+  ;; workaround this behavior.
+  (prog-mode . comment-column-setup))
+
 (use-package package
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -191,14 +222,40 @@
             ("nongnu"       . 2)
             ("gnu"          . 1)
             ("melpa stable" . 0)))
+
   :bind
   ;; original is mark-page
-  ("C-x C-p" . list-packages))
+  (:map ctl-x-map
+        ("C-p" . list-packages)))
+
+(use-package replace
+  :defer t
+  :config
+  (defun truncate-lines-on ()
+    "Enable `truncate-lines'.  Provided for use in hooks.
+
+This function disable the `truncate-lines' when `visual-line-mode' is
+turned on, as it could produce confusing results."
+    (setq truncate-lines (not visual-line-mode)))
+
+  :hook
+  (occur-mode . truncate-lines-on)
+
+  :bind
+  (:map occur-mode-map
+        ("<tab>" . occur-next)
+        ("<backtab>" . occur-prev)
+        ("k" . keep-lines)
+        ("f" . flush-lines)))
+
+(use-package saveplace
+  :config
+  (save-place-mode))
 
 (use-package shortdoc
   :defer t
   :config
-  (add-hook 'help-fns-describe-function-functions #'shortdoc-help-fns-examples-function))
+  (add-hook 'help-fns-describe-function-functions 'shortdoc-help-fns-examples-function))
 
 (use-package simple
   :config
@@ -213,14 +270,94 @@
   ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
   (setopt x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
+(use-package server
+  :config
+  (unless noninteractive
+    (if (server-running-p)
+        (message "Server already running")
+      (message "Starting server")
+      (server-start))))
+
 (use-package so-long
   :config
   (global-so-long-mode))
+
+(use-package sql
+  :defer t
+  :config
+  (setopt sql-input-ring-file-name  (expand-file-name "sql-history" user-emacs-directory)))
+
+(use-package subword
+  :config
+  (global-subword-mode))
 
 (use-package use-package
   :config
   (setopt use-package-enable-imenu-support t)
   (setopt use-package-verbose t))
+
+(use-package tooltip
+  :config
+  (setopt tooltip-resize-echo-area t)
+  (tooltip-mode -1))
+
+(use-package tramp
+  :defer t
+  :config
+  (setopt tramp-verbose 2))
+
+(use-package uniquify
+  :config
+  (setopt uniquify-buffer-name-style 'post-forward))
+
+(use-package vc
+  :defer t
+  :config
+  (setopt diff-font-lock-prettify t)
+  (setopt vc-command-messages t)
+  (setopt vc-find-revision-no-save t)
+  (setopt vc-follow-symlinks t)
+
+  ;; git
+  (setopt vc-git-print-log-follow t)
+
+  :bind
+  (:map vc-prefix-map
+        ("C-d" . vc-dir-root)
+        ("e" . 'vc-ediff)
+        ("R" . 'vc-rename-file)))
+
+(use-package which-key
+  :demand t
+  :config
+  (setopt which-key-max-description-length 64)
+  (setopt which-key-sort-order 'which-key-local-then-key-order)
+  (setopt which-key-idle-secondary-delay 0.0)
+  (which-key-mode)
+
+  :bind
+  (:map help-map
+        ("M-x" . which-key-show-top-level)
+        ("M-X" . which-key-show-major-mode)))
+
+(use-package windmove
+  :config
+  ;; See `framemove' for frame related functionality
+
+  ;; Enable windmove - CTRL was chosen because it is the only modifier not used by org-mode
+  (windmove-default-keybindings 'ctrl)
+  (windmove-swap-states-default-keybindings '(ctrl shift)))
+
+(use-package winner
+  :demand t
+  :config
+  (winner-mode)
+
+  :bind
+  (:map winner-mode-map
+        ("C-c [" . winner-undo)
+        ("C-c ]" . winner-redo)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; External packages ;;
@@ -240,6 +377,7 @@
   (setopt avy-dispatch-alist nil)
   (setopt avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?\; ?q ?w ?e ?r ?t ?y ?u ?i ?o ?p ?z ?x ?c ?v ?b ?n ?m ?, ?. ?/))
   (setopt avy-subword-extra-word-chars nil)
+
   :bind
   ("C-M-;" . avy-goto-word-1)
   ("C-<dead-acute>" . avy-goto-word-1)
@@ -338,18 +476,20 @@
 
   (global-flycheck-mode))
 
-(use-package goto-chg
-  :ensure t
-  :bind
-  ("C-." . goto-last-change)
-  ("C-," . goto-last-change-reverse))
-
 (use-package highlight-parentheses
   :ensure t
   :config
   (global-highlight-parentheses-mode)
+
   :hook
   (minibuffer-setup . highlight-parentheses-minibuffer-setup))
+
+(use-package isearch-dabbrev
+  :ensure t
+  :defer t
+  :bind
+  (:map isearch-mode-map
+        ("<tab>" . isearch-dabbrev-expand)))
 
 (use-package ivy
   :ensure t
@@ -364,6 +504,35 @@
   ("M-<up>" . move-dup-move-lines-up)
   ("M-p" . move-dup-move-lines-up))
 
+(use-package page-break-lines
+  :ensure t
+  :config
+  (global-page-break-lines-mode))
+
+(use-package symbol-overlay
+  :ensure t
+  :defer t
+  :hook
+  (prog-mode . symbol-overlay-mode))
+
+(use-package transpose-frame
+  :ensure t
+  :defer t
+  :bind
+  (:map ctl-x-map
+        ("|" . rotate-frame-clockwise)
+        ("\\" . rotate-frame)))
+
+(use-package treesit-auto
+  :ensure t
+  :config
+  (setopt treesit-auto-install t)
+  (global-treesit-auto-mode))
+
+(use-package volatile-highlights
+  :ensure t
+  :config
+  (volatile-highlights-mode))
 
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -394,6 +563,16 @@
     (unless (file-exists-p (expand-file-name (file-name-with-extension file ".el") local-lisp))
       (message "Deleting %s" file)
       (delete-file (expand-file-name file local-lisp)))))
+
+(use-package framemove
+  :config
+  ;; This requires windmove
+  (setq framemove-hook-into-windmove t))
+
+(use-package goto-chg
+  :bind
+  ("C-." . goto-last-change)
+  ("C-," . goto-last-change-reverse))
 
 
 ;;;;;;;;;;;;;;;;;;
