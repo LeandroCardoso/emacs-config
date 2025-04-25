@@ -11,6 +11,8 @@
 (setopt custom-file (concat user-emacs-directory "custom-variables.el"))
 (setopt gc-cons-threshold (* 32 1024 1024))
 
+;; We must require the 'use-package' at the beginning, so the `use-package-verbose' works properly
+(require 'use-package)
 
 ;; Emacs packages
 
@@ -207,6 +209,11 @@
 (use-package so-long
   :config
   (global-so-long-mode))
+
+(use-package use-package
+  :config
+  (setopt use-package-enable-imenu-support t)
+  (setopt use-package-verbose t))
 
 ;; External packages
 
