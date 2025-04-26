@@ -48,13 +48,15 @@
       (desktop-read (dashboard-expand-path-alist ,el dashboard-desktop-alist)))
    (format "%s" (dashboard-expand-path-alist el dashboard-desktop-alist))))
 
-
+;; FIXME face is not been applied
 (defun dashboard-desktop-insert-heading-advice (args)
   "Advice function to insert the desktop icon in the heading.
 
-ARGS parameter is the same as the `dashboard-insert-heading' : (heading
+Argument ARGS is the same as the `dashboard-insert-heading' : (heading
 shortcut icon)."
   (if (equal (car args) "Desktop:")
+      ;; Add the desktop icon defined in `dashboard-heading-icons' as the third parameter to the
+      ;; `dashboard-insert-heading'.
       (list (nth 0 args)
             (nth 1 args)
             (dashboard-octicon (cdr (assoc 'desktop dashboard-heading-icons))
