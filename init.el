@@ -32,13 +32,14 @@
   (setopt user-full-name "Leandro Cardoso")
   (setopt user-mail-address "leandrocardoso@gmail.com")
 
-  ;; Hack to set the major mode automatically with new buffers not associated with a file
-  ;; http://thread.gmane.org/gmane.emacs.devel/115520/focus=115794
-  (setq-default major-mode
-                (lambda () (if buffer-file-name
-                               (fundamental-mode)
-                             (let ((buffer-file-name (buffer-name)))
-                               (set-auto-mode)))))
+  (defun major-mode-set-auto-mode ()
+    "Set major mode appropriate for new buffers not visiting a file."
+    (if buffer-file-name
+        (fundamental-mode)
+      (let ((buffer-file-name (buffer-name)))
+        (set-auto-mode))))
+
+  (setq-default major-mode 'major-mode-set-auto-mode)
 
   :bind
   ("<escape>" . execute-extended-command))
@@ -80,7 +81,7 @@
   (defun c-c++-setup ()
     "Setup `c-mode' and `c++-mode'.  Provided for use in hooks."
     (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
-  
+
   :hook
   (c-mode . c-setup)
   (c-mode . c-c++-setup)
