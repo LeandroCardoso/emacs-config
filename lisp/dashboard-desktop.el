@@ -11,9 +11,9 @@
 ;; (add-to-list 'dashboard-items '(desktop . 5))
 
 ;; Note: loading this package causes the 'desktop' package to be loaded, which may cause a desktop
-;; session to be automatically loaded by the 'desktop' package itself when the `desktop-save-mode'
-;; is enabled on Emacs initialization.  If this behavior is undesirable, my recommendation is to
-;; only enable the `desktop-save-mode' after a desktop session is loaded:
+;; session to be automatically loaded by the 'desktop' package when the `desktop-save-mode' is
+;; enabled.  If this behavior is undesirable, my recommendation is to only enable the
+;; `desktop-save-mode' after a desktop session is loaded:
 ;;
 ;; (defun desktop-save-mode-on ()
 ;;     "Enable `desktop-save-mode'.  Provided for use in hooks."
@@ -50,10 +50,10 @@
 
 
 (defun dashboard-desktop-insert-heading-advice (args)
-  "Advice function to workaround insertion of the icon in the heading.
+  "Advice function to insert the desktop icon in the heading.
 
-ARGS parameter is the same as `dashboard-insert-heading' ; heading
-shortcut icon."
+ARGS parameter is the same as the `dashboard-insert-heading' : (heading
+shortcut icon)."
   (if (equal (car args) "Desktop:")
       (list (nth 0 args)
             (nth 1 args)
