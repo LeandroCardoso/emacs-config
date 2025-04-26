@@ -359,6 +359,21 @@ turned on, as it could produce confusing results."
         ("C-c [" . winner-undo)
         ("C-c ]" . winner-redo)))
 
+(use-package woman
+  :init
+  ;; unset compose-mail keys to use it with woman
+  (global-unset-key (kbd "C-x m"))   ; compose-mail
+  (global-unset-key (kbd "C-x 4 m")) ; compose-mail-other-window
+  (global-unset-key (kbd "C-x 5 m")) ; compose-mail-other-frame
+
+  :defer t
+  :config
+  (setopt woman-fill-frame t)
+
+  :bind
+  (:map ctl-x-map
+        ("m" . woman)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; External packages ;;
@@ -497,6 +512,10 @@ turned on, as it could produce confusing results."
   :config
   (ivy-mode 1))
 
+(use-package markdown-mode
+  :ensure t
+  :defer t)
+
 (use-package move-dup
   :ensure t
   :bind
@@ -509,6 +528,10 @@ turned on, as it could produce confusing results."
   :ensure t
   :config
   (global-page-break-lines-mode))
+
+(use-package rainbow-mode
+  :ensure t
+  :defer t)
 
 (use-package symbol-overlay
   :ensure t
@@ -535,6 +558,41 @@ turned on, as it could produce confusing results."
   :config
   (volatile-highlights-mode))
 
+(use-package ws-butler
+  :ensure t
+  :config
+  (setopt ws-butler-keep-whitespace-before-point nil)
+
+  (defun ws-butler-mode-on ()
+    "Enable `ws-butler-mode'.  Provided for use in hooks."
+    (when (and ws-butler-global-mode
+               (not (derived-mode-p ws-butler-global-exempt-modes)))
+      (ws-butler-mode 1)))
+
+  (defun ws-butler-mode-off ()
+    "Disable `ws-butler-mode'.  Provided for use in hooks."
+    (ws-butler-mode -1))
+
+  (ws-butler-global-mode)
+
+  :hook
+  ;; Disable `ws-butler' when a buffer is being edited by ediff and re-enable when quitting ediff
+  (ediff-cleanup . ws-butler-mode-on)
+  (ediff-startup . ws-butler-mode-off))
+
+(use-package yaml-mode
+  :ensure t
+  :defer t)
+
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :config
+  (setopt yas-wrap-around-region t)
+  (yas-reload-all)
+
+  :hook
+  ((prog-mode text-mode) . yas-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Local packages ;;
