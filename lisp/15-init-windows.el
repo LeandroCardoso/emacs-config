@@ -9,8 +9,7 @@
                       "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
                       (expand-file-name "omnisharp/" user-emacs-directory)
                       (expand-file-name "windows_bin/" user-emacs-directory)))
-    (w32-add-to-path path)
-    (add-to-list 'exec-path path))
+    (w32-add-to-path path))
 
   ;; Required to enter password for git
   (setenv "SSH_ASKPASS" "c:/Program Files/Git/mingw64/bin/git-askpass.exe")
@@ -28,4 +27,5 @@
     (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
 
   ;; Workaround for signature error when managing elpa packages
-  (setq package-check-signature nil))
+  (require 'package)
+  (setopt package-check-signature nil))

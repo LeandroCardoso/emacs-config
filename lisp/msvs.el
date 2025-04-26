@@ -174,8 +174,7 @@ to give nuget as arguments."
 ;; Add Visual Studio to PATH
 (when msvs-root-directory
   ;; Add Visual Studio binary directories to PATH
-  (w32-add-to-path (concat msvs-root-directory "/Common7/Tools"))
-  (add-to-list 'exec-path (concat msvs-root-directory "/Common7/Tools")))
+  (w32-add-to-path (concat msvs-root-directory "/Common7/Tools")))
 
 ;; c/c++ fast header/implementation switch
 (with-eval-after-load "find-file"
