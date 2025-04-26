@@ -48,11 +48,27 @@
       (desktop-read (dashboard-expand-path-alist ,el dashboard-desktop-alist)))
    (format "%s" (dashboard-expand-path-alist el dashboard-desktop-alist))))
 
-;; FIXME
-;; (add-to-list 'dashboard-heading-icons
-;;              (pcase dashboard-icon-type
-;;                ('all-the-icons '(desktop . "device_desktop"))
-;;                ('nerd-icons '(desktop . "nf-oct-device_desktop"))))
+
+(defun dashboard-desktop-insert-heading-advice (args)
+  "Advice function to workaround insertion of the icon in the heading.
+
+ARGS parameter is the same as `dashboard-insert-heading' ; heading
+shortcut icon."
+  (if (equal (car args) "Desktop:")
+      (list (nth 0 args)
+            (nth 1 args)
+            (dashboard-octicon (cdr (assoc 'desktop dashboard-heading-icons))
+                               `( :height   ,dashboard-heading-icon-height
+                                  :v-adjust ,dashboard-heading-icon-v-adjust
+                                  :face     dashboard-heading)))
+    args))
+
+(advice-add 'dashboard-insert-heading :filter-args 'dashboard-desktop-insert-heading-advice)
+
+(add-to-list 'dashboard-heading-icons
+             (pcase dashboard-icon-type
+               ('all-the-icons '(desktop . "device_desktop"))
+               ('nerd-icons '(desktop . "nf-oct-device_desktop"))))
 (add-to-list 'dashboard-item-generators '(desktop . dashboard-insert-desktop))
 (add-to-list 'dashboard-item-shortcuts '(desktop . "d"))
 
