@@ -1,4 +1,4 @@
-(when (eq system-type 'windows-nt)
+(when (eq system-type 'windows-nt) ; remove this line after finish rework init.el
   (require 'w32-extra)
   ;; root directories are added in the beginning
   (w32-add-unix-root-path "c:/msys64/ucrt64")

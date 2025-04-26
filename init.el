@@ -41,6 +41,9 @@
 
   (setq-default major-mode 'major-mode-set-auto-mode)
 
+  (when (eq system-type 'windows-nt)
+    (load (expand-file-name "lisp/config-windows" user-emacs-directory)))
+
   :bind
   ("<escape>" . execute-extended-command))
 
