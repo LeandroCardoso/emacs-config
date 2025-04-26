@@ -206,7 +206,7 @@
 
   (defun comment-column-setup ()
     "Setup `comment-column' to the default value."
-    (setopt comment-column (default-value 'comment-column)))
+    (setq comment-column (default-value 'comment-column)))
 
   :hook
   ;; Some modes (like emacs-lisp-mode) have the bad habit of overwriting comment-column. This
@@ -229,7 +229,7 @@
   (:map ctl-x-map
         ("C-p" . list-packages)))
 
-(use-package replace
+(use-package replace ; occur
   :defer t
   :config
   (defun truncate-lines-on ()
@@ -237,7 +237,7 @@
 
 This function disable the `truncate-lines' when `visual-line-mode' is
 turned on, as it could produce confusing results."
-    (setq truncate-lines (not visual-line-mode)))
+    (setopt truncate-lines (not visual-line-mode)))
 
   :hook
   (occur-mode . truncate-lines-on)
@@ -567,7 +567,7 @@ turned on, as it could produce confusing results."
 
 (use-package framemove
   :config
-  ;; This requires windmove
+  ;; This requires `windmove'
   (setq framemove-hook-into-windmove t))
 
 (use-package goto-chg
