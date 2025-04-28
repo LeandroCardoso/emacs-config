@@ -22,15 +22,27 @@
 
 (use-package emacs
   :config
+  (setopt copy-region-blink-delay 0.25)
+  (setopt delete-pair-blink-delay 0.25)
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
   (setopt inhibit-startup-screen t)
   (setopt initial-scratch-message nil)
+  (setopt kill-do-not-save-duplicates t)
+  (setopt kill-whole-line t)
+  (setopt normal-erase-is-backspace nil)
   (setopt ring-bell-function 'ignore)
   (setopt sentence-end-double-space nil)
+  (setopt tab-always-indent 'complete)
+  (setopt undo-limit (* 1 1024 1024))
+  (setopt undo-strong-limit (truncate (* undo-limit 1.5)))
   (setopt use-short-answers t)
   (setopt user-full-name "Leandro Cardoso")
   (setopt user-mail-address "leandrocardoso@gmail.com")
+  (setq-default abbrev-mode t) ; enable abbrev-mode by default
+  (setq-default fill-column 100)
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
 
   (defun major-mode-set-auto-mode ()
     "Set major mode appropriate for new buffers not visiting a file."
@@ -43,6 +55,10 @@
 
   (when (eq system-type 'windows-nt)
     (load (expand-file-name "lisp/config-windows" user-emacs-directory)))
+
+  :hook
+  ((text-mode prog-mode conf-mode) . infer-indentation-style)
+  (after-save . executable-make-buffer-file-executable-if-script-p)
 
   :bind
   ("<escape>" . execute-extended-command))

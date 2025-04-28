@@ -106,33 +106,6 @@ See `sort-regexp-fields'."
   (sort-regexp-fields reverse "[^[:blank:]]+" "\\&" beg end))
 
 
-;; settings
-(setq-default abbrev-mode t) ; enable abbrev-mode by default
-(setq-default fill-column 100)
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq kill-whole-line t)
-(setq undo-limit (* 1 1024 1024))
-(setq undo-strong-limit (truncate (* undo-limit 1.5)))
-
-;; indent.el
-(setq tab-always-indent 'complete)
-
-;; simple.el
-(setq copy-region-blink-delay 0.25)
-(setq delete-pair-blink-delay 0.25)
-(setq kill-do-not-save-duplicates t)
-(setq normal-erase-is-backspace nil)
-
-
-;; hooks
-(add-hook 'text-mode-hook 'infer-indentation-style)
-(add-hook 'prog-mode-hook 'infer-indentation-style)
-(add-hook 'conf-mode-hook 'infer-indentation-style)
-
-(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
-
-
 ;; key bindings
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-<backspace>") 'backward-kill-sexp)
