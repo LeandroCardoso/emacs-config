@@ -57,11 +57,19 @@
     (load (expand-file-name "lisp/config-windows" user-emacs-directory)))
 
   :hook
-  ((text-mode prog-mode conf-mode) . infer-indentation-style)
   (after-save . executable-make-buffer-file-executable-if-script-p)
 
   :bind
-  ("<escape>" . execute-extended-command))
+  ("<escape>" . execute-extended-command)
+  ("C-<backspace>" . backward-kill-sexp)
+  ("C-c D" . delete-pair)
+  ("C-c d" . duplicate-dwim)
+  ([remap zap-to-char] . zap-up-to-char))
+
+(use-package align
+  :defer t
+  :bind
+  ("C-c a" . align-regexp))
 
 (use-package autorevert
   :config
@@ -283,7 +291,15 @@ turned on, as it could produce confusing results."
   (setopt goto-line-history-local t)
   (setopt next-error-message-highlight t)
   (setopt shift-select-mode nil)
-  (setopt what-cursor-show-names t))
+  (setopt what-cursor-show-names t)
+
+  :bind
+  ("C-c <tab>" . indent-tabs-mode)
+  ("C-c k" . kill-whole-line)
+  ;; capitalize keys
+  ([remap capitalize-word] . capitalize-dwim)
+  ([remap downcase-word] . downcase-dwim)
+  ([remap upcase-word] . upcase-dwim))
 
 (use-package select
   :config
@@ -379,13 +395,13 @@ turned on, as it could produce confusing results."
         ("C-c ]" . winner-redo)))
 
 (use-package woman
+  :defer t
   :init
   ;; unset compose-mail keys to use it with woman
   (global-unset-key (kbd "C-x m"))   ; compose-mail
   (global-unset-key (kbd "C-x 4 m")) ; compose-mail-other-window
   (global-unset-key (kbd "C-x 5 m")) ; compose-mail-other-frame
 
-  :defer t
   :config
   (setopt woman-fill-frame t)
 
@@ -651,6 +667,18 @@ turned on, as it could produce confusing results."
   :bind
   ("C-." . goto-last-change)
   ("C-," . goto-last-change-reverse))
+
+(use-package edit-extra
+  :hook
+  ((text-mode prog-mode conf-mode) . infer-indentation-style)
+
+  :bind
+  ("M-#" . base64-encode-dwim)
+  ([remap delete-blank-lines] . delete-all-blank-lines)
+  ("C-M-|" . delete-indentation)
+  ([remap kill-line] . kill-line-and-join)
+  ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
+  ("M-<return>" . newline-no-break))
 
 
 ;;;;;;;;;;;;;;;;;;
