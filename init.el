@@ -44,15 +44,6 @@
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
 
-  (defun major-mode-set-auto-mode ()
-    "Set major mode appropriate for new buffers not visiting a file."
-    (if buffer-file-name
-        (fundamental-mode)
-      (let ((buffer-file-name (buffer-name)))
-        (set-auto-mode))))
-
-  (setq-default major-mode 'major-mode-set-auto-mode)
-
   (when (eq system-type 'windows-nt)
     (load (expand-file-name "lisp/config-windows" user-emacs-directory)))
 
@@ -669,6 +660,9 @@ turned on, as it could produce confusing results."
   ("C-," . goto-last-change-reverse))
 
 (use-package edit-extra
+  :config
+  (setq-default major-mode 'set-auto-mode+)
+
   :hook
   ((text-mode prog-mode conf-mode) . infer-indentation-style)
 

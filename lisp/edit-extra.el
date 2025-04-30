@@ -96,7 +96,7 @@ Examines in the region up to `infer-indentation-style-region-max'.
 
 This function can be used in hooks to automatically setup:
 
-  (add-hook 'prog-mode-hook 'infer-indentation-style)"
+  (add-hook \='prog-mode-hook \='infer-indentation-style)"
   (interactive)
   (let* ((point-max (min (or infer-indentation-style-region-max (point-max)) (point-max)))
          (space-count (how-many "^  " (point-min) point-max))
@@ -151,6 +151,25 @@ prefix arg."
         (kill-line arg)
         (just-one-space))
     (kill-line arg)))
+
+
+(defun set-auto-mode+ ()
+  "Select major mode appropriate for current buffer.
+
+Differently from `set-auto-mode' this function works on non file
+visiting buffers too.
+
+This function may be used as the default value for `major-mode' to
+select the major mode appropriate for new buffers not visiting a file:
+
+  (setq-default major-mode \='set-auto-mode-for-major-mode)
+
+See `set-auto-mode'."
+  (interactive)
+  (if buffer-file-name
+      (fundamental-mode)
+    (let ((buffer-file-name (buffer-name)))
+      (set-auto-mode))))
 
 
 ;; Adapted from: https://www.emacswiki.org/emacs/SortWords
