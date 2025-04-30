@@ -83,7 +83,7 @@ See `indent-region'."
   "The maximum region size for examining indentation style information with
 `infer-indentation-style'.  nil means no limit."
   :type 'integer
-  :group 'edit-extra)
+  :group 'indent)
 
 ;; Adapted from: https://www.emacswiki.org/emacs/NoTabs
 (defun infer-indentation-style ()
@@ -92,7 +92,11 @@ See `indent-region'."
 If our source file uses tabs, we use tabs, if spaces spaces, and if
 neither, we use the current `indent-tabs-mode'.
 
-Examines in the region up to `infer-indentation-style-region-max'."
+Examines in the region up to `infer-indentation-style-region-max'.
+
+This function can be used in hooks to automatically setup:
+
+  (add-hook 'prog-mode-hook 'infer-indentation-style)"
   (interactive)
   (let* ((point-max (min (or infer-indentation-style-region-max (point-max)) (point-max)))
          (space-count (how-many "^  " (point-min) point-max))
