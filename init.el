@@ -16,6 +16,33 @@
 ;; We must require the 'use-package' at the beginning, so the `use-package-verbose' works properly
 (require 'use-package)
 
+;; TODO move key bindings in local maps to their appropriated use-package section
+
+;; TODO create a function to compile a directory and delete old files, only the load-path must be
+;; here in the initialization
+
+(let ((local-packages (expand-file-name "packages" user-emacs-directory)))
+  (add-to-list 'load-path local-packages)
+
+  ;; Compile all elisp source files
+  (message "Compiling elisp source files from %s" local-packages)
+  (byte-recompile-directory local-packages 0))
+
+(let ((local-lisp (expand-file-name "lisp" user-emacs-directory)))
+  (add-to-list 'load-path local-lisp)
+
+  ;; Compile all elisp source files
+  (message "Compiling elisp source files from %s" local-lisp)
+  (byte-recompile-directory local-lisp 0)
+
+  ;; Delete old elisp compiled files (.elc) that doesn't have a eslisp source file (.el) associated
+  (message "Deleting unused elisp compiled files from %s" local-lisp)
+  (dolist (file (directory-files local-lisp nil ".*\\.elc$"))
+    (unless (file-exists-p (expand-file-name (file-name-with-extension file ".el") local-lisp))
+      (message "Deleting %s" file)
+      (delete-file (expand-file-name file local-lisp)))))
+
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; Emacs packages ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -30,6 +57,7 @@
   (setopt initial-scratch-message nil)
   (setopt kill-do-not-save-duplicates t)
   (setopt kill-whole-line t)
+  (setopt load-prefer-newer t)
   (setopt normal-erase-is-backspace nil)
   (setopt ring-bell-function 'ignore)
   (setopt sentence-end-double-space nil)
@@ -45,7 +73,7 @@
   (setq-default tab-width 4)
 
   (when (eq system-type 'windows-nt)
-    (load (expand-file-name "lisp/config-windows" user-emacs-directory)))
+    (load (expand-file-name "lisp/config-mswindows" user-emacs-directory)))
 
   :hook
   (after-save . executable-make-buffer-file-executable-if-script-p)
@@ -106,6 +134,13 @@
   (c++-mode . c++-setup)
   (c++-mode . c-c++-setup))
 
+(use-package comint
+  :defer t
+  :config
+  (setopt comint-completion-autolist t)
+  (setopt comint-input-ignoredups t)
+  (setopt comint-prompt-read-only t))
+
 (use-package compile
   :defer t
   :config
@@ -131,6 +166,49 @@
   ;; I am enabling the desktop-save-mode *after* a desktop session is loaded by the `desktop-read'
   ;; command to avoid loading a desktop session on Emacs initialization
   (desktop-after-read . desktop-save-mode-on))
+
+(use-package dired
+  ;; See dired-extra
+  :defer t
+  :config
+  (require 'dired-x)
+
+  (setopt dired-auto-revert-buffer t)
+  (setopt dired-create-destination-dirs 'ask)
+  (setopt dired-dwim-target t)
+  (setopt dired-isearch-filenames 'dwim)
+  (setopt dired-kill-when-opening-new-dired-buffer t)
+  (setopt dired-maybe-use-globstar t)
+
+  :bind
+  (:map dired-mode-map
+        ("<tab>" . dired-next-line)
+        ("<backtab>" . dired-previous-line)
+        ("M-<return>" . dired-up-directory)
+        ("C-=" . dired-compare-directories)
+        ("C-+" . dired-create-empty-file))
+  (:map ctl-x-map
+        ("M-d" . find-name-dired)))
+
+(use-package ediff
+  ;; See ediff-extra
+  :defer t
+  :config
+  (setopt ediff-show-ancestor nil)
+  (setopt ediff-split-window-function 'split-window-horizontally)
+  ;; everything in one frame)
+  (setopt ediff-window-setup-function 'ediff-setup-windows-plain))
+
+(use-package ediff-mult
+  :defer t
+  :config
+  (defun ediff-meta-buffer-map-setup ()
+    "Setup \"<tab>\" and \"<backtab\" keys. Provided for use in hooks."
+    (define-key ediff-meta-buffer-map (kbd "<tab>") 'ediff-next-meta-item)
+    (define-key ediff-meta-buffer-map (kbd "<backtab>") 'ediff-previous-meta-item))
+
+  :hook
+  (ediff-meta-buffer-keymap-setup-hook . ediff-meta-buffer-map-setup))
 
 (use-package eglot
   :hook
@@ -368,9 +446,8 @@ turned on, as it could produce confusing results."
         ("M-X" . which-key-show-major-mode)))
 
 (use-package windmove
-  :config
   ;; See `framemove' for frame related functionality
-
+  :config
   ;; Enable windmove - CTRL was chosen because it is the only modifier not used by org-mode
   (windmove-default-keybindings 'ctrl)
   (windmove-swap-states-default-keybindings '(ctrl shift)))
@@ -624,40 +701,32 @@ turned on, as it could produce confusing results."
 ;; Local packages ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(let ((local-packages (expand-file-name "packages" user-emacs-directory)))
-  (add-to-list 'load-path local-packages)
-  (byte-recompile-directory local-packages 0))
-
-(setopt load-prefer-newer t)
 (let ((local-lisp (expand-file-name "lisp" user-emacs-directory)))
-  (add-to-list 'load-path local-lisp)
-
   ;; Load all elisp files sorted by name. Sub-directories and files starting with underline or dot
   ;; are ignored
   (message "Loading elisp source files from %s" local-lisp)
   (dolist (file (directory-files local-lisp nil "^[^_\\.].*\\.el$"))
-    (load (file-name-sans-extension file)))
+    (load (file-name-sans-extension file))))
 
-  ;; Compile all elisp source files (.el)
-  (message "Compiling elisp source files from %s" local-lisp)
-  (byte-recompile-directory local-lisp 0)
-
-  ;; Delete old elisp compiled files (.elc) that doesn't have a eslisp source file (.el) associated
-  (message "Deleting unused elisp compiled files from %s" local-lisp)
-  (dolist (file (directory-files local-lisp nil ".*\\.elc$"))
-    (unless (file-exists-p (expand-file-name (file-name-with-extension file ".el") local-lisp))
-      (message "Deleting %s" file)
-      (delete-file (expand-file-name file local-lisp)))))
-
-(use-package framemove
-  :config
-  ;; This requires `windmove'
-  (setq framemove-hook-into-windmove t))
-
-(use-package goto-chg
+(use-package dired-extra
+  ;; This extends dired and wdired
+  :defer t
   :bind
-  ("C-." . goto-last-change)
-  ("C-," . goto-last-change-reverse))
+  (:map dired-mode-map
+        ("K" . dired-do-backup)
+        ("M-=" . dired-do-ediff)
+        ("M-m" . dired-position-at-filename))
+  (:map wdired-mode-map
+        ("M-m" . dired-position-at-filename)))
+
+(use-package ediff-extra
+  ;; This extends ediff
+  :defer t
+  :config
+  (ediff-extra-setup-copy-AB-to-C)
+  (ediff-extra-setup-text-scale)
+  (ediff-extra-setup-window-configuration)
+  (ediff-extra-setup-global-keymap))
 
 (use-package edit-extra
   :config
@@ -673,6 +742,16 @@ turned on, as it could produce confusing results."
   ([remap kill-line] . kill-line-and-join)
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
   ("M-<return>" . newline-no-break))
+
+(use-package framemove
+  :config
+  ;; This requires `windmove'
+  (setq framemove-hook-into-windmove t))
+
+(use-package goto-chg
+  :bind
+  ("C-." . goto-last-change)
+  ("C-," . goto-last-change-reverse))
 
 
 ;;;;;;;;;;;;;;;;;;
