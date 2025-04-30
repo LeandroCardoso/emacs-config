@@ -17,31 +17,31 @@
       (setq start (match-end 0)))
     file-name))
 
-(defun w32-add-to-path (new-path)
-  "Add NEW-PATH to the path of the system.
+(defun w32-add-to-path (directory)
+  "Add DIRECTORY to the path of the system.
 
-Add NEW-PATH to the environment variable \"PATH\" and to the variable
+Add DIRECTORY to the environment variable \"PATH\" and to the variable
 `exec-path'."
   (let ((current-path (getenv "PATH"))
-        (w32-new-path (w32-convert-filename new-path)))
-    (unless (string-match-p (regexp-quote w32-new-path) (or current-path ""))
-      (setenv "PATH" (concat w32-new-path path-separator current-path))))
-  (add-to-list 'exec-path new-path))
+        (w32-dir (w32-convert-filename directory)))
+    (unless (string-match-p (regexp-quote w32-dir) (or current-path ""))
+      (setenv "PATH" (concat w32-dir path-separator current-path))))
+  (add-to-list 'exec-path directory))
 
-(defun w32-add-unix-root-path (path)
-  "Set Emacs to use an additional custom Unix root PATH."
+(defun w32-add-unix-root-dir (directory)
+  "Set Emacs to use an additional custom Unix root DIRECTORY."
   (require 'woman)
   (require 'info)
-  (when (file-directory-p path)
+  (when (file-directory-p directory)
     (dolist (bin-dir '("/usr/bin" "/bin"))
-      (when (file-directory-p (concat path bin-dir))
-        (w32-add-to-path (concat path bin-dir))))
+      (when (file-directory-p (concat directory bin-dir))
+        (w32-add-to-path (concat directory bin-dir))))
     (dolist (man-dir '("/usr/share/man" "/share/man" "/usr/local/man" "/local/man"))
-      (when (file-directory-p (concat path man-dir))
-        (add-to-list 'woman-manpath (concat path man-dir))))
+      (when (file-directory-p (concat directory man-dir))
+        (add-to-list 'woman-manpath (concat directory man-dir))))
     (dolist (info-dir '("/usr/share/info" "/share/info" "/usr/local/info" "/local/info"))
-      (when (file-directory-p (concat path info-dir))
-        (add-to-list 'Info-additional-directory-list (concat path info-dir))))))
+      (when (file-directory-p (concat directory info-dir))
+        (add-to-list 'Info-additional-directory-list (concat directory info-dir))))))
 
 (defun with-bash-shell (func &rest args)
   "Execute the function FUNC with arguments ARGS using bash.
