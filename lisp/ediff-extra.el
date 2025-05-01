@@ -32,7 +32,8 @@
 (defun ediff-copy-AB-to-C (reverse)
   "Copy current difference region from buffers A and B to buffer C.
 
-With ARG, copy in reverse order - buffer A past buffer B to buffer C."
+With parameter REVERSE, copy in reverse order - buffer A past buffer B
+to buffer C."
   (interactive "P")
   (ediff-barf-if-not-control-buffer)
   (ediff-copy-diff ediff-current-difference nil 'C nil
@@ -51,7 +52,8 @@ With ARG, copy in reverse order - buffer A past buffer B to buffer C."
   (define-key ediff-mode-map (kbd "d") 'ediff-copy-AB-to-C))
 
 (defun ediff-extra-setup-copy-AB-to-C ()
-  "Setup a new action in ediff mode to copy current difference region from buffers A and B to buffer C."
+  "Setup a new action in ediff mode to copy current difference region from
+buffers A and B to buffer C."
   (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map))
 
 
@@ -78,7 +80,7 @@ See `ediff-text-scale-decrease' and `ediff-text-scale-reset'."
 (defun ediff-text-scale-decrease (dec)
     "Decrease the font size of the current ediff session temporarily.
 
-All ediff buffers font size will be decreased by INC steps.  A negative
+All ediff buffers font size will be decreased by DEC steps.  A negative
 number of steps increases the font size by the same amount.  As a
 special case, an argument of 0 will remove any scaling currently active.
 
@@ -109,7 +111,7 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
 ;; Restore window configuration on quit ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar ediff-window-configuration nil "Window configuration before ediff setup")
+(defvar ediff-window-configuration nil "Window configuration before ediff setup.")
 
 (defun ediff-save-window-configuration ()
   (setq ediff-window-configuration (current-window-configuration)))
@@ -128,9 +130,9 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
 ;; Global keymap ;;
 ;;;;;;;;;;;;;;;;;;;
 
-(defvar ediff-keymap nil "Keymap for ediff commands")
-(defvar ediff-merge-keymap nil "Keymap for ediff merge commands")
-(defvar ediff-patch-keymap nil "Keymap for ediff patch commands")
+(defvar ediff-keymap nil "Keymap for ediff commands.")
+(defvar ediff-merge-keymap nil "Keymap for ediff merge commands.")
+(defvar ediff-patch-keymap nil "Keymap for ediff patch commands.")
 
 (setq ediff-merge-keymap
       (let ((map (make-sparse-keymap)))
@@ -176,7 +178,7 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
 (defalias 'ediff-keymap ediff-keymap)
 
 (defun ediff-extra-setup-global-keymap ()
-  "Setup a global keymap to ediff commands in \"C-x M-e\"."
+  "Setup a global keymap to ediff commands in \\[ediff-keymap]."
   (define-key ctl-x-map (kbd "M-e") 'ediff-keymap))
 
 
