@@ -11,37 +11,53 @@
 ;;;;;;;;;;;;;;;;;;;;
 
 (setopt custom-file (expand-file-name "custom-variables.el" user-emacs-directory))
-(setopt gc-cons-threshold (* 32 1024 1024))
+(setopt gc-cons-threshold (* 32 1024 1024)) ; Increase GC threshold for performance
 
 ;; We must require the 'use-package' at the beginning, so the `use-package-verbose' works properly
 (require 'use-package)
 
-;; TODO move key bindings in local maps to their appropriated use-package section
+;; TODO move this function to another file
+;; TODO clean up subdirectories
+(defun byte-recompile-and-cleanup-directory (directory &optional force follow-symlinks)
+  "Recompile and clean eslip files in DIRECTORY.
 
-;; TODO create a function to compile a directory and delete old files, only the load-path must be
-;; here in the initialization
+Recompile every ‘.el’ file in DIRECTORY that needs recompilation.  This
+happens when a '.elc' file doesn't exist, or it exists but is older than
+the '.el' file.  Files in subdirectories of DIRECTORY are processed
+also.
 
-(let ((local-packages (expand-file-name "packages" user-emacs-directory)))
-  (add-to-list 'load-path local-packages)
+After recompilation, delete old stale '.elc' files that don't have a
+corresponding '.el' associated file.
 
-  ;; Compile all elisp source files
-  (message "Compiling elisp source files from %s" local-packages)
-  (byte-recompile-directory local-packages 0))
+If the argument FORCE is non-nil, recompile every '.el'.
 
-(let ((local-lisp (expand-file-name "lisp" user-emacs-directory)))
-  (add-to-list 'load-path local-lisp)
-
-  ;; Compile all elisp source files
-  (message "Compiling elisp source files from %s" local-lisp)
-  (byte-recompile-directory local-lisp 0)
+This command will normally not follow symlinks when compiling files.  If
+FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
+  (require 'bytecomp)
+  ;; Compile all elisp files
+  (message "Compiling elisp files in %s..." directory)
+  (byte-recompile-directory directory 0 force follow-symlinks)
 
   ;; Delete old elisp compiled files (.elc) that doesn't have a eslisp source file (.el) associated
-  (message "Deleting unused elisp compiled files from %s" local-lisp)
-  (dolist (file (directory-files local-lisp nil ".*\\.elc$"))
-    (unless (file-exists-p (expand-file-name (file-name-with-extension file ".el") local-lisp))
-      (message "Deleting %s" file)
-      (delete-file (expand-file-name file local-lisp)))))
+  (message "Cleaning stale elisp compiled files in %s..." directory)
+  (let ((deleted 0)
+        (skipped 0))
+    (dolist (f (directory-files directory t ".*\\.elc$"))
+      (let ((file (expand-file-name f directory)))
+        (unless (file-exists-p (file-name-with-extension file ".el"))
+          (message "Deleting file: %s" file)
+          (delete-file file))
+        (if (file-exists-p file)
+            (setq skipped (1+ skipped))
+          (setq deleted (1+ deleted)))))
+    (message "Done (Total of %d files deleted, %d skipped)" deleted skipped)))
 
+
+(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+(byte-recompile-and-cleanup-directory (expand-file-name "packages" user-emacs-directory))
+
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(byte-recompile-and-cleanup-directory (expand-file-name "lisp" user-emacs-directory))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Emacs packages ;;
@@ -145,11 +161,7 @@
   :defer t
   :config
   (setopt compilation-scroll-output 'first-error)
-  (setopt compilation-error-screen-columns nil)
-
-  :bind
-  (:map prog-mode-map
-        ("<f9>" . compile)))
+  (setopt compilation-error-screen-columns nil))
 
 (use-package desktop
   :defer t
@@ -208,7 +220,7 @@
     (define-key ediff-meta-buffer-map (kbd "<backtab>") 'ediff-previous-meta-item))
 
   :hook
-  (ediff-meta-buffer-keymap-setup-hook . ediff-meta-buffer-map-setup))
+  (ediff-meta-buffer-keymap-setup . ediff-meta-buffer-map-setup))
 
 (use-package eglot
   :hook
@@ -247,7 +259,12 @@
   :defer t
   :config
   (setopt describe-bindings-outline t)
-  (setopt help-enable-symbol-autoload t))
+  (setopt help-enable-symbol-autoload t)
+
+  :bind
+  (:map help-map
+        ("M-x" . which-key-show-top-level)
+        ("M-X" . which-key-show-major-mode)))
 
 (use-package hi-lock
   :config
@@ -325,6 +342,14 @@
   (:map ctl-x-map
         ("C-p" . list-packages)))
 
+(use-package prog-mode
+  :defer t
+  
+  :bind
+  (:map prog-mode-map
+        ("<f9>" . compile)
+        ("C-<tab>" . company-indent-or-complete-common)))
+
 (use-package replace ; occur
   :defer t
   :config
@@ -396,6 +421,12 @@ turned on, as it could produce confusing results."
   :config
   (global-subword-mode))
 
+(use-package text-mode
+  :defer t
+  :bind
+  (:map text-mode-map
+        ("C-<tab>" . company-indent-or-complete-common)))
+
 (use-package use-package
   :config
   (setopt use-package-enable-imenu-support t)
@@ -438,12 +469,7 @@ turned on, as it could produce confusing results."
   (setopt which-key-max-description-length 64)
   (setopt which-key-sort-order 'which-key-local-then-key-order)
   (setopt which-key-idle-secondary-delay 0.0)
-  (which-key-mode)
-
-  :bind
-  (:map help-map
-        ("M-x" . which-key-show-top-level)
-        ("M-X" . which-key-show-major-mode)))
+  (which-key-mode))
 
 (use-package windmove
   ;; See `framemove' for frame related functionality
@@ -518,10 +544,6 @@ turned on, as it could produce confusing results."
   (setopt company-dabbrev-code-everywhere t)
 
   :bind
-  (:map prog-mode-map
-        ("C-<tab>" . company-indent-or-complete-common))
-  (:map text-mode-map
-        ("C-<tab>" . company-indent-or-complete-common))
   (:map company-active-map
         ("<escape>" . company-abort)
         ("<next>" . company-next-page)
@@ -711,6 +733,9 @@ turned on, as it could produce confusing results."
 (use-package dired-extra
   ;; This extends dired and wdired
   :defer t
+  :config
+  (require 'wdired)
+
   :bind
   (:map dired-mode-map
         ("K" . dired-do-backup)
