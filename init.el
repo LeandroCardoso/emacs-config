@@ -13,7 +13,8 @@
 (setopt custom-file (expand-file-name "custom-variables.el" user-emacs-directory))
 (setopt gc-cons-threshold (* 32 1024 1024)) ; Increase GC threshold for performance
 
-;; We must require the 'use-package' at the beginning, so the `use-package-verbose' works properly
+;; We must require the 'use-package' at the beginning, so the `use-package-compute-statistics' and
+;; `use-package-verbose' works properly
 (require 'use-package)
 
 ;; TODO move this function to another file
@@ -68,7 +69,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (setopt frame-inhibit-implied-resize t) ;; never resize the frame
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
-  (setopt inhibit-startup-screen t)
+  ;; (setopt inhibit-startup-screen t)
   (setopt initial-scratch-message nil)
   (setopt load-prefer-newer t)
   (setopt ring-bell-function 'ignore)
@@ -459,6 +460,7 @@ turned on, as it could produce confusing results."
 
 (use-package use-package
   :config
+  (setopt use-package-compute-statistics t) ; view the statistical report using `use-package-report'
   (setopt use-package-enable-imenu-support t)
   (setopt use-package-verbose t))
 

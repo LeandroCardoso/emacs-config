@@ -3,11 +3,13 @@
 ;;; Code:
 
 ;; Emacs reads your main init file after creating the initial frame, so setting there won’t have the
-;; expected effect.
-(setopt default-frame-alist '((fullscreen . maximized) (vertical-scroll-bars . nil)))
-(setopt initial-frame-alist default-frame-alist)
+;; expected effect on initial frame settings.
+(setopt default-frame-alist '((fullscreen . maximized)))
+(setopt initial-frame-alist (nconc default-frame-alist (list '(visibility . nil))))
 (setopt window-system-default-frame-alist '((x . ((alpha . 96)))
                                             (pgtk . ((alpha . 96)))))
+
+(add-hook 'after-init-hook 'make-frame-visible)
 
 ;; No need to waste precious desktop space with useless GUI elements
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
