@@ -169,13 +169,24 @@ With a numeric parameter ARG, switch to the Nth most recent buffer.  ARG
           (buffer-list)))))))
 
 ;;;###autoload
-(defun display-fonts ()
-  "Display a buffer with a list of available fonts."
-  (interactive)
-  (with-current-buffer-window "*fonts*" nil nil
-    (dolist (font (x-list-fonts "*"))
-      (insert (format "%s\n" font)))))
+(defun display-fonts (&optional only-mono)
+  "Display a buffer with a list of all available fonts.
 
+When ONLY-MONO parameter is non-nil, only display monospaced fonts."
+  (interactive "P")
+  (with-current-buffer-window "*fonts*" nil nil
+    (let ((text "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 01213456789")
+          (font-name-length 30)
+          (font-name-propertize t))
+      (dolist (font (seq-uniq (seq-sort #'string< (font-family-list))))
+        (when (or (not only-mono)
+                  (eq 'mono (font-get (find-font (font-spec :family font)) :adstyle)))
+          (if font-name-propertize
+              (insert (propertize font 'face `(:family ,font)))
+            (insert (substring font 0 (min (1- font-name-length) (length font)))))
+          (insert (propertize " " 'display `(space :align-to ,font-name-length)))
+          (insert (propertize text 'face `(:family ,font)))
+          (newline)))))) 
 
 (defcustom preferred-font-list nil
   "A list of preferred fonts to be set by `set-preferred-font'."
