@@ -17,6 +17,10 @@
 ;; `use-package-verbose' works properly
 (require 'use-package)
 
+(setopt load-prefer-newer t)
+(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
 ;; TODO move this function to another file
 ;; TODO clean up subdirectories
 (defun byte-recompile-and-cleanup-directory (directory &optional force follow-symlinks)
@@ -53,11 +57,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
           (setq deleted (1+ deleted)))))
     (message "Done (Total of %d files deleted, %d skipped)" deleted skipped)))
 
-
-(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 (byte-recompile-and-cleanup-directory (expand-file-name "packages" user-emacs-directory))
-
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (byte-recompile-and-cleanup-directory (expand-file-name "lisp" user-emacs-directory))
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -69,9 +69,8 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (setopt frame-inhibit-implied-resize t) ;; never resize the frame
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
-  ;; (setopt inhibit-startup-screen t)
-  (setopt initial-scratch-message nil)
-  (setopt load-prefer-newer t)
+  (setopt inhibit-startup-screen t)
+  (setopt initial-scratch-message nil)  
   (setopt ring-bell-function 'ignore)
   (setopt use-short-answers t)
   (setopt x-underline-at-descent-line t)
@@ -648,6 +647,7 @@ turned on, as it could produce confusing results."
 
 (use-package doom-modeline
   :ensure t
+  :demand t
   :config
   (setopt doom-modeline-buffer-file-name-style 'file-name-with-project)
   (setopt doom-modeline-height 30)
@@ -892,7 +892,6 @@ See `gtags-mode-create' and `project-root'."
   :defer t
   :config
   (setopt yas-wrap-around-region t)
-  (yas-reload-all)
 
   :hook
   ((prog-mode text-mode) . yas-minor-mode))
