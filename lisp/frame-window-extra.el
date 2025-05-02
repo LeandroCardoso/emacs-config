@@ -168,6 +168,9 @@ With a numeric parameter ARG, switch to the Nth most recent buffer.  ARG
               (list buf)))
           (buffer-list)))))))
 
+(define-derived-mode display-fonts-mode special-mode "Fonts"
+  "Major mode used in the \"*fonts*\" buffer.")
+
 ;;;###autoload
 (defun display-fonts (&optional only-mono)
   "Display a buffer with a list of all available fonts.
@@ -186,7 +189,8 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
             (insert (substring font 0 (min (1- font-name-length) (length font)))))
           (insert (propertize " " 'display `(space :align-to ,font-name-length)))
           (insert (propertize text 'face `(:family ,font)))
-          (newline)))))) 
+          (newline))))
+    (display-fonts-mode)))
 
 (defcustom preferred-font-list nil
   "A list of preferred fonts to be set by `set-preferred-font'."
