@@ -65,29 +65,44 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package emacs
   :config
-  (setopt copy-region-blink-delay 0.25)
-  (setopt delete-pair-blink-delay 0.25)
+  (setopt frame-inhibit-implied-resize t) ;; never resize the frame
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
   (setopt inhibit-startup-screen t)
   (setopt initial-scratch-message nil)
-  (setopt kill-do-not-save-duplicates t)
-  (setopt kill-whole-line t)
   (setopt load-prefer-newer t)
-  (setopt normal-erase-is-backspace nil)
   (setopt ring-bell-function 'ignore)
+  (setopt use-short-answers t)
+  (setopt x-underline-at-descent-line t)
+  (setq inhibit-compacting-font-caches t)
+  (setq-default cursor-type 'bar)
+
+  ;; Edit
+  (setopt delete-pair-blink-delay 0.25)
   (setopt sentence-end-double-space nil)
   (setopt tab-always-indent 'complete)
-  (setopt undo-limit (* 1 1024 1024))
-  (setopt undo-strong-limit (truncate (* undo-limit 1.5)))
-  (setopt use-short-answers t)
-  (setopt user-full-name "Leandro Cardoso")
-  (setopt user-mail-address "leandrocardoso@gmail.com")
   (setq-default abbrev-mode t) ; enable abbrev-mode by default
   (setq-default fill-column 100)
-  (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
 
+  ;; Fringe
+  (setq-default indicate-empty-lines t)
+  (setopt next-error-highlight 'fringe-arrow)
+
+  ;; Modeline
+  (setopt column-number-mode t)
+  (setopt mode-line-default-help-echo nil)
+  (setopt mode-line-position-column-line-format '(" %l:%c"))
+
+  ;; Undo
+  (setopt undo-limit (* 1 1024 1024))
+  (setopt undo-strong-limit (truncate (* undo-limit 1.5)))
+
+  ;; User
+  (setopt user-full-name "Leandro Cardoso")
+  (setopt user-mail-address "leandrocardoso@gmail.com")
+
+  ;; Platform specific settings
   (when (eq system-type 'windows-nt)
     (load (expand-file-name "lisp/config-mswindows" user-emacs-directory)))
 
@@ -246,6 +261,11 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
         ;; eval-defun is also in C-M-x)
         ("C-c C-c" . eval-defun)))
 
+(use-package face-remap
+  :defer t
+  :config
+  (setopt text-scale-mode-step 1.1))
+
 (use-package find-file
   :defer t
   :config
@@ -344,11 +364,16 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package prog-mode
   :defer t
-  
+
   :bind
   (:map prog-mode-map
         ("<f9>" . compile)
         ("C-<tab>" . company-indent-or-complete-common)))
+
+(use-package project
+  :defer t
+  :config
+  (setopt project-vc-merge-submodules nil))
 
 (use-package replace ; occur
   :defer t
@@ -381,11 +406,16 @@ turned on, as it could produce confusing results."
 
 (use-package simple
   :config
+  (setopt copy-region-blink-delay 0.25)
   (setopt eval-expression-print-length nil)
   (setopt goto-line-history-local t)
+  (setopt kill-do-not-save-duplicates t)
+  (setopt kill-whole-line t)
   (setopt next-error-message-highlight t)
+  (setopt normal-erase-is-backspace nil)
   (setopt shift-select-mode nil)
   (setopt what-cursor-show-names t)
+  (setq-default indent-tabs-mode nil)
 
   :bind
   ("C-c <tab>" . indent-tabs-mode)
@@ -442,6 +472,11 @@ turned on, as it could produce confusing results."
   :config
   (setopt tramp-verbose 2))
 
+(use-package transient
+  :defer t
+  :config
+  (setopt transient-default-level 7))
+
 (use-package uniquify
   :config
   (setopt uniquify-buffer-name-style 'post-forward))
@@ -470,6 +505,30 @@ turned on, as it could produce confusing results."
   (setopt which-key-sort-order 'which-key-local-then-key-order)
   (setopt which-key-idle-secondary-delay 0.0)
   (which-key-mode))
+
+(use-package window
+  :config
+  (setopt split-height-threshold nil)
+  (setopt split-width-threshold 200))
+
+(use-package whitespace
+  :defer t
+  :init
+  (defvar whitespace-keymap (make-sparse-keymap) "Keymap for whitespace commands")
+  (defalias 'whitespace-keymap whitespace-keymap)
+
+  :config
+  (setopt whitespace-line-column nil) ; use `fill-column' value
+
+  :bind
+  (("C-c w" . whitespace-keymap)
+   (:map whitespace-keymap
+         ("c" . whitespace-cleanup)
+         ("n" . whitespace-newline-mode)
+         ("o" . whitespace-toggle-options)
+         ("r" . delete-whitespace-rectangle) ; rect.el
+         ("t" . delete-trailing-whitespace)  ; simple.el
+         ("w" . whitespace-mode))))
 
 (use-package windmove
   ;; See `framemove' for frame related functionality
@@ -585,6 +644,30 @@ turned on, as it could produce confusing results."
   :hook
   (dashboard-after-initialize . dashboard-jump-to-desktop))
 
+(use-package doom-modeline
+  :ensure t
+  :config
+  (setopt doom-modeline-buffer-file-name-style 'file-name-with-project)
+  (setopt doom-modeline-height 30)
+  (setopt doom-modeline-indent-info t)
+  (setopt doom-modeline-vcs-max-length 22)
+  (doom-modeline-mode 1)
+
+  :custom-face
+  ;; FIXME
+  (doom-modeline-bar ((t (:background ,(face-foreground 'mode-line-buffer-id))))))
+
+(use-package edit-server
+  :ensure t
+  :config
+  (setopt edit-server-default-major-mode 'org-mode)
+  (setopt edit-server-new-frame-alist
+        '((name . "Edit Server")
+          (width . 0.5)
+          (height . 0.5)
+          (fullscreen . nil)))
+  (edit-server-start))
+
 (use-package engine-mode
   :ensure t
   :config
@@ -617,6 +700,54 @@ turned on, as it could produce confusing results."
 
   (global-flycheck-mode))
 
+(use-package git-link
+  :ensure t
+  :defer t
+  :init
+  (defvar git-link-keymap (make-sparse-keymap) "Keymap for git-link commands")
+  (defalias 'git-link-keymap git-link-keymap)
+
+  :config
+  (setopt git-link-use-commit t)
+
+  :bind
+  ("C-c l" . git-link-keymap)
+  (:map git-link-keymap
+        ("l" . git-link)
+        ("c" . git-link-commit)
+        ("h" . git-link-homepage)))
+
+(use-package gtags-mode
+  :ensure t
+  :commands gtags-mode-project-create
+  :config
+  (require 'project)
+  (defun gtags-mode-project-create ()
+    "Create a GLOBAL GTAGS file in the root directory of the current project asynchronously.
+
+When no project is found, ask the user for a directory.
+
+See `gtags-mode-create' and `project-root'."
+    (interactive)
+    (gtags-mode-create (project-root (project-current t))))
+
+  ;; Force .h files to be treated as a C++
+  (setenv "GTAGSFORCECPP" "1")
+
+  (gtags-mode)
+
+  ;; Use bash shell when calling global, because it fixes the annoying "^M" that can be displayed at
+  ;; end of lines.
+  (when (eq system-type 'windows-nt)
+    (require 'w32-extra)
+    (advice-add 'gtags-mode--exec-sync :around #'with-bash-shell)
+    (advice-add 'gtags-mode--exec-async :around #'with-bash-shell))
+
+  :bind
+  (:map project-prefix-map
+        ("T" . gtags-mode-update)
+        ("t" . gtags-mode-project-create)))
+
 (use-package highlight-parentheses
   :ensure t
   :config
@@ -637,6 +768,48 @@ turned on, as it could produce confusing results."
   :config
   (ivy-mode 1))
 
+(use-package magit
+  :ensure t
+  :defer t
+  :init
+  (require 'magit-extras)
+
+  :config
+  (defun magit-diff-extra-stat-arguments-setup ()
+    "Setup `magit-diff-extra-stat-arguments'."
+    (when-let ((window (get-buffer-window (current-buffer) 'visible)))
+      (list (format "--stat-width=%d" (window-width))
+            (format "--stat-graph-width=%d" (/ (window-width) 5))
+            "--compact-summary")))
+
+  (setopt magit-diff-extra-stat-arguments 'magit-diff-extra-stat-arguments-setup)
+  (setopt magit-ediff-dwim-show-on-hunks t)
+  (setopt magit-update-other-window-delay 1)
+
+  ;; Windows specific settings
+  (when (eq system-type 'windows-nt)
+    (setopt magit-process-connection-type nil)
+    (setopt magit-refresh-status-buffer nil)
+
+    ;; experimental performance settings
+    (setopt magit-diff-highlight-indentation nil)
+    (setopt magit-diff-highlight-trailing nil)
+    (setopt magit-diff-paint-whitespace nil)
+    (setopt magit-diff-highlight-hunk-body nil)
+    (setopt magit-diff-refine-hunk nil)
+    (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+    (remove-hook 'server-switch-hook 'magit-commit-diff)) ; remove diff output from commit
+
+  :bind
+  (:map magit-mode-map
+        ("M-u" . magit-section-up)
+        ([remap previous-line] . magit-previous-line)
+        ([remap next-line] . magit-next-line))
+  (:map magit-file-section-map
+        ("SPC" . magit-diff-visit-file-other-window))
+  (:map magit-hunk-section-map
+        ("SPC" . magit-diff-visit-file-other-window)))
+
 (use-package markdown-mode
   :ensure t
   :defer t)
@@ -648,6 +821,9 @@ turned on, as it could produce confusing results."
   ("M-n" . move-dup-move-lines-down)
   ("M-<up>" . move-dup-move-lines-up)
   ("M-p" . move-dup-move-lines-up))
+
+(use-package nerd-icons
+  :ensure t)
 
 (use-package page-break-lines
   :ensure t
@@ -734,6 +910,7 @@ turned on, as it could produce confusing results."
   ;; This extends dired and wdired
   :defer t
   :config
+  (require 'dired)
   (require 'wdired)
 
   :bind
@@ -768,6 +945,23 @@ turned on, as it could produce confusing results."
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
   ("M-<return>" . newline-no-break))
 
+(use-package frame-window-extra
+  :defer t
+  :config
+  (setopt split-window-preferred-function 'split-window-sensibly-horizontally)
+
+  (setopt preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas"))
+  (set-preferred-font)
+
+  :bind
+  ("M-o" . other-window)
+  ("M-O" . other-window-backward)
+  ([remap toggle-frame-fullscreen] . toggle-frame-fullscreen+)
+  (:map ctl-x-map
+        ("o" . other-frame)) ; original is other-window
+  (:map ctl-x-4-map
+        ("k" . kill-other-buffer-and-window)))
+
 (use-package framemove
   :config
   ;; This requires `windmove'
@@ -777,6 +971,17 @@ turned on, as it could produce confusing results."
   :bind
   ("C-." . goto-last-change)
   ("C-," . goto-last-change-reverse))
+
+(use-package project-extra
+  :demand t
+  :config
+  (require 'project)
+
+  :bind
+  ("C-M-g" . project-query-regexp)
+  (:map project-prefix-map
+        ("i" . project-info)
+        ("q" . project-query-regexp)))
 
 
 ;;;;;;;;;;;;;;;;;;
