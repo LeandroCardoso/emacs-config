@@ -391,9 +391,7 @@ turned on, as it could produce confusing results."
   :bind
   (:map occur-mode-map
         ("<tab>" . occur-next)
-        ("<backtab>" . occur-prev)
-        ("k" . keep-lines)
-        ("f" . flush-lines)))
+        ("<backtab>" . occur-prev)))
 
 (use-package saveplace
   :config
@@ -420,6 +418,11 @@ turned on, as it could produce confusing results."
   :bind
   ("C-c <tab>" . indent-tabs-mode)
   ("C-c k" . kill-whole-line)
+  ;; special mode like occur and xref
+  (:map special-mode-map
+        ("f" . flush-lines)
+        ("k" . keep-lines)
+        ("u" . rename-uniquely))
   ;; capitalize keys
   ([remap capitalize-word] . capitalize-dwim)
   ([remap downcase-word] . downcase-dwim)

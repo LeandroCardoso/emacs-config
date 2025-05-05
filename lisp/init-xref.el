@@ -22,8 +22,4 @@
   ;; keys
   (define-key xref--xref-buffer-mode-map (kbd "<tab>") 'xref-next-line)
   (define-key xref--xref-buffer-mode-map (kbd "<backtab>") 'xref-prev-line)
-  (define-key xref--xref-buffer-mode-map (kbd "M-<return>") 'xref-quit-and-goto-xref)
-
-  (define-key xref--xref-buffer-mode-map (kbd "u") 'rename-uniquely)
-  (define-key xref--xref-buffer-mode-map (kbd "k") 'keep-lines)
-  (define-key xref--xref-buffer-mode-map (kbd "f") 'flush-lines))
+  (define-key xref--xref-buffer-mode-map (kbd "M-<return>") 'xref-quit-and-goto-xref))
