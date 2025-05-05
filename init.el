@@ -773,10 +773,12 @@ See `gtags-mode-create' and `project-root'."
 (use-package magit
   :ensure t
   :defer t
-  :init
-  (require 'magit-extras)
-
   :config
+
+  (defun magit-load ()
+    "Load magit.  Provided for use in hooks."
+    (require 'magit-extras))
+
   (defun magit-diff-extra-stat-arguments-setup ()
     "Setup `magit-diff-extra-stat-arguments'."
     (when-let ((window (get-buffer-window (current-buffer) 'visible)))
@@ -801,6 +803,9 @@ See `gtags-mode-create' and `project-root'."
     (setopt magit-diff-refine-hunk nil)
     (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
     (remove-hook 'server-switch-hook 'magit-commit-diff)) ; remove diff output from commit
+
+  :hook
+  (after-init . magit-load)
 
   :bind
   (:map magit-mode-map
