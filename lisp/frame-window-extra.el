@@ -183,7 +183,9 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
           (font-name-propertize t))
       (dolist (font (seq-uniq (seq-sort #'string< (font-family-list))))
         (when (or (not only-mono)
-                  (eq 'mono (font-get (find-font (font-spec :family font)) :adstyle)))
+                  ;; Linux reports spacing=100 and MS Windows reports adstyle=mono
+                  (eq 'mono (font-get (find-font (font-spec :family font)) :adstyle))
+                  (eq 100 (font-get (find-font (font-spec :family font)) :spacing)))
           (if font-name-propertize
               (insert (propertize font 'face `(:family ,font)))
             (insert (substring font 0 (min (1- font-name-length) (length font)))))
