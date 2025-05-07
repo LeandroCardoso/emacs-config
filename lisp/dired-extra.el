@@ -20,6 +20,7 @@
 ;;; Code:
 
 (require 'dired)
+(require 'wdired)
 
 ;;;###autoload
 (defun dired-do-backup (&optional arg)
@@ -87,7 +88,6 @@ Return the position of the beginning of the filename, or nil if none
 found."
   (interactive)
   (dired-move-to-filename))
-
 
 (provide 'dired-extra)
 

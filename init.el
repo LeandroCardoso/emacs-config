@@ -126,6 +126,16 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (setopt auto-revert-verbose nil)
   (global-auto-revert-mode))
 
+(use-package arc-mode
+  :defer t
+  :config
+  (setopt archive-visit-single-files t)
+
+  :bind
+  (:map archive-mode-map
+        ("<tab>" . archive-next-line)
+        ("<backtab>" . archive-previous-line)))
+
 (use-package calc
   :defer t
   :config
@@ -195,11 +205,8 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (desktop-after-read . desktop-save-mode-on))
 
 (use-package dired
-  ;; See dired-extra
   :defer t
   :config
-  (require 'dired-x)
-
   (setopt dired-auto-revert-buffer t)
   (setopt dired-create-destination-dirs 'ask)
   (setopt dired-dwim-target t)
@@ -218,7 +225,6 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
         ("M-d" . find-name-dired)))
 
 (use-package ediff
-  ;; See ediff-extra
   :defer t
   :config
   (setopt ediff-show-ancestor nil)
@@ -252,8 +258,8 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package elisp-mode
   :defer t
+  :after mode-local
   :config
-  (require 'mode-local)
   (setq-mode-local emacs-lisp-mode sentence-end-double-space t)
 
   :bind
@@ -274,6 +280,41 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 (use-package goto-addr
   :config
   (global-goto-address-mode))
+
+(use-package grep
+  :defer t
+  :config
+  (setopt grep-save-buffers nil)
+  (setopt grep-use-headings t)
+
+  (let ((cc "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++")
+        (hh "*.hxx *.hpp *.[Hh] *.HH *.h++")
+        (cext "*.def *.rc"))
+    (setq grep-files-aliases (assoc-delete-all "cc" grep-files-aliases))
+    (setq grep-files-aliases (assoc-delete-all "cchh" grep-files-aliases))
+    (setq grep-files-aliases (assoc-delete-all "cx" grep-files-aliases))
+    (push `("cc" . ,cc) grep-files-aliases)
+    (push `("cchh" . ,(concat cc " " hh)) grep-files-aliases)
+    (push `("cx" . ,(concat cc " " hh " " cext)) grep-files-aliases))
+
+  (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
+  (add-to-list 'grep-files-aliases '("web" . "*.css *.htm[l] *.js *.json *.ts"))
+
+  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"                           ;tags
+                  "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css" ;minified
+                  "*.cache" "*.exe" "*.nupkg" "*.so" "*.zip"))               ;misc
+    (add-to-list 'grep-find-ignored-files file))
+
+  :hook
+  (grep-setup . truncate-lines-on)
+
+  :bind
+  ("C-c g" . rgrep)
+  ("C-c G" . zrgrep)
+  (:map grep-mode-map
+        ("u" . rename-uniquely)
+        ("k" . keep-lines)
+        ("f" . flush-lines)))
 
 (use-package help
   :defer t
@@ -364,7 +405,6 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package prog-mode
   :defer t
-
   :bind
   (:map prog-mode-map
         ("<f9>" . compile)
@@ -377,14 +417,6 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package replace ; occur
   :defer t
-  :config
-  (defun truncate-lines-on ()
-    "Enable `truncate-lines'.  Provided for use in hooks.
-
-This function disable the `truncate-lines' when `visual-line-mode' is
-turned on, as it could produce confusing results."
-    (setopt truncate-lines (not visual-line-mode)))
-
   :hook
   (occur-mode . truncate-lines-on)
 
@@ -404,6 +436,13 @@ turned on, as it could produce confusing results."
 
 (use-package simple
   :config
+  (defun truncate-lines-on ()
+    "Enable `truncate-lines'.  Provided for use in hooks.
+
+This function disable the `truncate-lines' when `visual-line-mode' is
+turned on, as it could produce confusing results."
+    (setopt truncate-lines (not visual-line-mode)))
+
   (setopt copy-region-blink-delay 0.25)
   (setopt eval-expression-print-length nil)
   (setopt goto-line-history-local t)
@@ -634,19 +673,14 @@ turned on, as it could produce confusing results."
                                 'nerd-icons))
 
   :config
-  (require 'dashboard-desktop)
-  (setopt dashboard-items '((desktop . 5)
-                            (recents . 5)
+  (setopt dashboard-items '((recents . 5)
                             (bookmarks . 5)
                             (projects . 5)
                             (agenda . 5)))
   (setopt dashboard-set-file-icons t)
   (setopt dashboard-set-heading-icons t)
   (setopt dashboard-startup-banner 'logo)
-  (dashboard-setup-startup-hook)
-
-  :hook
-  (dashboard-after-initialize . dashboard-jump-to-desktop))
+  (dashboard-setup-startup-hook))
 
 (use-package doom-modeline
   :ensure t
@@ -724,18 +758,8 @@ turned on, as it could produce confusing results."
 
 (use-package gtags-mode
   :ensure t
-  :commands gtags-mode-project-create
+  :after w32-extra
   :config
-  (require 'project)
-  (defun gtags-mode-project-create ()
-    "Create a GLOBAL GTAGS file in the root directory of the current project asynchronously.
-
-When no project is found, ask the user for a directory.
-
-See `gtags-mode-create' and `project-root'."
-    (interactive)
-    (gtags-mode-create (project-root (project-current t))))
-
   ;; Force .h files to be treated as a C++
   (setenv "GTAGSFORCECPP" "1")
 
@@ -744,14 +768,12 @@ See `gtags-mode-create' and `project-root'."
   ;; Use bash shell when calling global, because it fixes the annoying "^M" that can be displayed at
   ;; end of lines.
   (when (eq system-type 'windows-nt)
-    (require 'w32-extra)
     (advice-add 'gtags-mode--exec-sync :around #'with-bash-shell)
     (advice-add 'gtags-mode--exec-async :around #'with-bash-shell))
 
   :bind
   (:map project-prefix-map
-        ("T" . gtags-mode-update)
-        ("t" . gtags-mode-project-create)))
+        ("T" . gtags-mode-update)))
 
 (use-package highlight-parentheses
   :ensure t
@@ -869,6 +891,11 @@ See `gtags-mode-create' and `project-root'."
   :config
   (volatile-highlights-mode))
 
+(use-package wgrep
+  :ensure t
+  :defer t
+  :after grep)
+
 (use-package ws-butler
   :ensure t
   :config
@@ -915,13 +942,24 @@ See `gtags-mode-create' and `project-root'."
   (dolist (file (directory-files local-lisp nil "^[^_\\.].*\\.el$"))
     (load (file-name-sans-extension file))))
 
-(use-package dired-extra
-  ;; This extends dired and wdired
+(use-package arc-mode-extra
   :defer t
-  :config
-  (require 'dired)
-  (require 'wdired)
+  :after arc-mode
+  :bind
+  (:map archive-mode-map
+        ("M-m" . archive-move-to-filename)))
 
+(use-package dashboard-desktop
+  :after dashboard
+  :config
+  (add-to-list 'dashboard-items '(desktop . 5))
+
+  :hook
+  (dashboard-after-initialize . dashboard-jump-to-desktop))
+
+(use-package dired-extra
+  :defer t
+  :after dired
   :bind
   (:map dired-mode-map
         ("K" . dired-do-backup)
@@ -972,8 +1010,8 @@ See `gtags-mode-create' and `project-root'."
         ("k" . kill-other-buffer-and-window)))
 
 (use-package framemove
+  :after windmove
   :config
-  ;; This requires `windmove'
   (setq framemove-hook-into-windmove t))
 
 (use-package goto-chg
@@ -981,16 +1019,29 @@ See `gtags-mode-create' and `project-root'."
   ("C-." . goto-last-change)
   ("C-," . goto-last-change-reverse))
 
+(use-package grep-extra
+  :defer t
+  :after grep
+  :config
+  (grep-kill-ring-setup))
+
+(use-package gtags-mode-extra
+  :defer t
+  :after gtags-mode
+  :bind
+  (:map project-prefix-map
+        ("t" . gtags-mode-project-create)))
+
 (use-package project-extra
   :demand t
   :config
-  (require 'project)
-
   :bind
   ("C-M-g" . project-query-regexp)
   (:map project-prefix-map
         ("i" . project-info)
         ("q" . project-query-regexp)))
+
+(use-package w32-extra)
 
 
 ;;;;;;;;;;;;;;;;;;
