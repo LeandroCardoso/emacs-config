@@ -357,7 +357,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
                                   " " (size 9 -1 :right)
                                   " " (mode 16 16 :left :elide)
                                   " " filename-and-process)
-                            (mark " " (name 16 -1) " " filename)))
+                            (mark " " (name 48 48) " " filename)))
   (setopt ibuffer-marked-char ?*)
   (setopt ibuffer-modified-char ?M)
   (setopt ibuffer-read-only-char ?R)
@@ -935,6 +935,29 @@ turned on, as it could produce confusing results."
 
 (use-package nerd-icons
   :ensure t)
+
+(use-package nerd-icons-dired
+  :ensure t
+  :defer t
+  :after (dired nerd-icons)
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+(use-package nerd-icons-ibuffer
+  :ensure t
+  :defer t
+  :after (ibuffer nerd-icons)
+  :config
+  (setopt nerd-icons-ibuffer-formats '((mark modified read-only locked
+                                             " " (name 48 48 :left :elide)
+                                             " " (size-h 6 -1 :right)
+                                             " " (icon 2 2)
+                                             (mode 16 16 :left :elide)
+                                             " " filename-and-process+)
+                                       (mark " " (name 48 48) " " filename)))
+
+  :hook
+  (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 (use-package ox-jira ; org export jira
   :ensure t
