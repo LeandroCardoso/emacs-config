@@ -305,6 +305,11 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
                   "*.cache" "*.exe" "*.nupkg" "*.so" "*.zip"))               ;misc
     (add-to-list 'grep-find-ignored-files file))
 
+  ;; Enable saving the latest regexp into the `kill-ring'
+  (advice-add 'lgrep :after 'kill-new-advice)
+  (advice-add 'rgrep :after 'kill-new-advice)
+  (advice-add 'zrgrep :after 'kill-new-advice)
+
   :hook
   (grep-setup . truncate-lines-on)
 
@@ -522,6 +527,15 @@ This function disable the `truncate-lines' when `visual-line-mode' is
 turned on, as it could produce confusing results."
     (setopt truncate-lines (not visual-line-mode)))
 
+  (defun kill-new-advice (string &rest r)
+    "Make STRING the latest kill in the kill ring.
+
+This function is intended to be used as an advice.  Parameter R exists
+for compatibility only.
+
+See `kill-new' for details."
+    (kill-new string))
+
   (setopt copy-region-blink-delay 0.25)
   (setopt eval-expression-print-length nil)
   (setopt goto-line-history-local t)
@@ -684,6 +698,28 @@ turned on, as it could produce confusing results."
   (:map ctl-x-map
         ("m" . woman)))
 
+(use-package xref
+  :defer t
+  :after w32-extra
+  :config
+  (setopt xref-search-program (if (executable-find "rg") 'ripgrep 'grep))
+  (setopt xref-show-definitions-function 'xref-show-definitions-completing-read)
+
+  ;; Use bash shell when calling grep/ripgrep, because it fixes the annoying "^M" that can be
+  ;; displayed at end of lines.
+  (when (eq system-type 'windows-nt)
+    (advice-add 'xref-matches-in-files :around 'with-bash-shell)
+    (advice-add 'xref-matches-in-directory :around 'with-bash-shell))
+
+  ;; Enable saving the latest regexp into the `kill-ring'
+  (advice-add 'xref--find-xrefs :after 'kill-new-advice)
+  (advice-add 'xref-matches-in-files :after 'kill-new-advice)
+
+  :bind
+  (:map xref--xref-buffer-mode-map
+        ("<tab>" . xref-next-line)
+        ("<backtab>" . xref-prev-line)
+        ("M-<return>" . xref-quit-and-goto-xref)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; External packages ;;
@@ -847,8 +883,8 @@ turned on, as it could produce confusing results."
   ;; Use bash shell when calling global, because it fixes the annoying "^M" that can be displayed at
   ;; end of lines.
   (when (eq system-type 'windows-nt)
-    (advice-add 'gtags-mode--exec-sync :around #'with-bash-shell)
-    (advice-add 'gtags-mode--exec-async :around #'with-bash-shell))
+    (advice-add 'gtags-mode--exec-sync :around 'with-bash-shell)
+    (advice-add 'gtags-mode--exec-async :around 'with-bash-shell))
 
   :bind
   (:map project-prefix-map
@@ -1134,12 +1170,6 @@ the plist used as a communication channel."
   :bind
   ("C-." . goto-last-change)
   ("C-," . goto-last-change-reverse))
-
-(use-package grep-extra
-  :defer t
-  :after grep
-  :config
-  (grep-kill-ring-setup))
 
 (use-package gtags-mode-extra
   :defer t
