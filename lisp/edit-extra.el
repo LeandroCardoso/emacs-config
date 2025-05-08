@@ -19,9 +19,9 @@ buffer.
 
 Return the length of the decoded data.
 
-See `base64-encode-dwim'."
+See `base64-encode-dwim' for details."
   (interactive "*")
-  (base64-encode t))
+  (base64-encode-dwim t))
 
 
 (defun base64-encode-dwim (&optional arg)
