@@ -70,7 +70,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
   (setopt inhibit-startup-screen t)
-  (setopt initial-scratch-message nil)  
+  (setopt initial-scratch-message nil)
   (setopt ring-bell-function 'ignore)
   (setopt use-short-answers t)
   (setopt x-underline-at-descent-line t)
@@ -347,6 +347,27 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
     tabulated-list-mode
     tar-mode) . hl-line-mode))
 
+(use-package ibuffer
+  :defer t
+  :config
+  (setopt ibuffer-display-summary nil)
+  ;; increase the name size
+  (setopt ibuffer-formats '((mark modified read-only locked
+                                  " " (name 48 48 :left :elide)
+                                  " " (size 9 -1 :right)
+                                  " " (mode 16 16 :left :elide)
+                                  " " filename-and-process)
+                            (mark " " (name 16 -1) " " filename)))
+  (setopt ibuffer-marked-char ?*)
+  (setopt ibuffer-modified-char ?M)
+  (setopt ibuffer-read-only-char ?R)
+
+
+  :bind
+  ([remap list-buffers] . ibuffer)
+  (:map ctl-x-4-map
+        ("C-b" . ibuffer-other-window)))
+
 (use-package isearch
   :defer t
   :config
@@ -386,6 +407,64 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   ;; Some modes (like emacs-lisp-mode) have the bad habit of overwriting comment-column. This
   ;; workaround this behavior.
   (prog-mode . comment-column-setup))
+
+(use-package org
+  :defer t
+  :init
+  (defvar org-out-keymap (make-sparse-keymap) "Keymap for org-mode commands outside org-mode")
+  (defalias 'org-out-keymap org-out-keymap)
+
+  :config
+  (setopt org-M-RET-may-split-line '((default . nil)))           ; don't split the line at the cursor position when ALT+ENTER
+  (setopt org-blank-before-new-entry '((heading . nil)
+                                       (plain-list-item . nil))) ; don't automatically put new line chars
+  (setopt org-fontify-done-headline nil)                         ; don't change the face of a headline if it is marked DONE
+  (setopt org-hierarchical-todo-statistics nil)                  ; all entries in the subtree are considered
+  (setopt org-imenu-depth 3)                                     ; maximum level for Imenu access
+  (setopt org-level-color-stars-only t)                          ; fontify only the stars in each headline
+  (setopt org-outline-path-complete-in-steps nil)                ; display everything
+  (setopt org-special-ctrl-a/e t)                                ; special headline handling
+  (setopt org-src-window-setup 'current-window)                  ; show edit buffer in the current window
+  (setopt org-startup-truncated nil)                             ; don't set `truncate-lines', this break long tables
+  (setopt org-tag-faces `(("doubt" . ,(face-foreground 'warning))
+                        ("important" . ,(face-foreground 'org-warning))))
+  (setopt org-tag-persistent-alist '(("doubt" . ?d)
+                                     ("important" . ?i)))        ; tags always available in Org files
+  (setopt org-tags-column (- fill-column))                       ; align tags at the right margin
+  (setopt org-tags-sort-function 'string<)                       ; align tags using alphabetic order
+  (setopt org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")))
+  (setopt org-todo-keyword-faces `(("WAITING" . (:foreground ,(face-foreground 'warning) :weight bold))
+                                   ("BLOCKED" . (:foreground ,(face-foreground 'warning) :weight bold))))
+
+  :bind
+  (:map org-mode-map
+        ("C-c M-t" . org-toggle-link-display)
+        ;; workaround to avoid override by a global key
+        ("M-<return>" . org-meta-return))
+  ("C-c o" . org-out-keymap)
+  (:map org-out-keymap
+        ("l" . org-store-link)
+        ("t" . orgtbl-mode)
+        ("s" . orgalist-mode)))
+
+(use-package ox ; org export
+  :defer t
+  :after org
+  :config
+  (setopt org-export-copy-to-kill-ring 'if-interactive)
+  (setopt org-export-initial-scope 'subtree)
+  (setopt org-export-preserve-breaks t)
+  (setopt org-export-with-author nil)
+  (setopt org-export-with-sub-superscripts nil)
+  (setopt org-export-with-title nil)
+  (setopt org-export-with-toc nil))
+
+(use-package ox-ascii ; org export ascii
+  :defer t
+  :after ox
+  :config
+  (setopt org-ascii-caption-above t)
+  (setopt org-ascii-text-width most-positive-fixnum))
 
 (use-package package
   :config
@@ -857,6 +936,20 @@ turned on, as it could produce confusing results."
 (use-package nerd-icons
   :ensure t)
 
+(use-package ox-jira ; org export jira
+  :ensure t
+  :defer t
+  :after ox
+  :config
+  ;; Override to preserve newlines in paragraphs
+  (defun ox-jira-paragraph-override (paragraph contents info)
+    "Transcode a PARAGRAPH element from Org to JIRA.
+CONTENTS is the contents of the paragraph, as a string.  INFO is
+the plist used as a communication channel."
+    (replace-regexp-in-string "\n\\([^\']\\)" " \n\\1" contents))
+
+  (advice-add 'ox-jira-paragraph :override #'ox-jira-paragraph-override))
+
 (use-package page-break-lines
   :ensure t
   :config
@@ -1032,6 +1125,16 @@ turned on, as it could produce confusing results."
   (:map project-prefix-map
         ("t" . gtags-mode-project-create)))
 
+(use-package ibuffer-extra
+  :defer t
+  :after ibuffer
+  :config
+  (ibuffer-remove-title-underline-setup))
+
+(use-package ibuffer-project
+  :defer t
+  :after ibuffer)
+
 (use-package project-extra
   :demand t
   :config
@@ -1040,6 +1143,26 @@ turned on, as it could produce confusing results."
   (:map project-prefix-map
         ("i" . project-info)
         ("q" . project-query-regexp)))
+
+(use-package rotate-text
+  :defer t
+  :config
+  (setopt rotate-text-words
+        '(("height" "width")
+          ("left" "right" "top" "bottom")
+          ("active" "inactive")
+          ("enable" "disable")
+          ("enabled" "disabled")
+          ("true" "false")
+          ("yes" "no")))
+  (setopt rotate-text-symbols
+        '(("private" "protected" "public")
+          ("on" "off")
+          ("t" "nil")))
+
+  :bind
+  ("C-=" . rotate-text)
+  ("C-+" . rotate-text-backward))
 
 (use-package w32-extra)
 
