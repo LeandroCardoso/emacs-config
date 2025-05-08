@@ -373,6 +373,16 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (:map ctl-x-4-map
         ("C-b" . ibuffer-other-window)))
 
+(use-package imenu
+  :defer t
+  :config
+  (setopt imenu-auto-rescan t)
+  (setopt imenu-flatten 'prefix)
+  (setopt imenu-max-item-length nil) ; don't truncate Imenu entries
+
+  :bind
+  ("C-z" . imenu)) ; original is suspend-frame
+
 (use-package isearch
   :defer t
   :config
@@ -898,6 +908,13 @@ See `kill-new' for details."
   :hook
   (minibuffer-setup . highlight-parentheses-minibuffer-setup))
 
+(use-package imenu-anywhere
+  :ensure t
+  :defer t
+  :after imenu
+  :config
+  (add-to-list 'imenu-anywhere-friendly-modes '(c-mode c++-mode)))
+
 (use-package isearch-dabbrev
   :ensure t
   :defer t
@@ -1106,7 +1123,7 @@ the plist used as a communication channel."
   :after arc-mode
   :bind
   (:map archive-mode-map
-        ("M-m" . archive-move-to-filename)))
+        ([remap back-to-indentation] . archive-move-to-filename)))
 
 (use-package dashboard-desktop
   :after dashboard
@@ -1123,9 +1140,9 @@ the plist used as a communication channel."
   (:map dired-mode-map
         ("K" . dired-do-backup)
         ("M-=" . dired-do-ediff)
-        ("M-m" . dired-position-at-filename))
+        ([remap back-to-indentation] . dired-position-at-filename))
   (:map wdired-mode-map
-        ("M-m" . dired-position-at-filename)))
+        ([remap back-to-indentation] . dired-position-at-filename)))
 
 (use-package ediff-extra
   ;; This extends ediff
@@ -1194,6 +1211,12 @@ the plist used as a communication channel."
 (use-package ibuffer-project
   :defer t
   :after ibuffer)
+
+(use-package imenu-anywhere-extra
+  :defer t
+  :after imenu-anywhere
+  :bind
+  ([remap imenu] . imenu-anywhere-dwim))
 
 (use-package project-extra
   :demand t
