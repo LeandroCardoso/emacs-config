@@ -972,6 +972,13 @@ See `kill-new' for details."
 (use-package nerd-icons
   :ensure t)
 
+(use-package nerd-icons-completion
+  :ensure t
+  :defer t
+  :after nerd-icons
+  :config
+  (nerd-icons-completion-mode))
+
 (use-package nerd-icons-dired
   :ensure t
   :defer t
