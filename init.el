@@ -808,7 +808,12 @@ See `kill-new' for details."
   (setopt dashboard-set-file-icons t)
   (setopt dashboard-set-heading-icons t)
   (setopt dashboard-startup-banner 'logo)
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+
+  :bind
+  (:map dashboard-mode-map
+        ("C-<tab>" . dashboard-next-section)
+        ("C-<iso-lefttab>" . dashboard-previous-section)))
 
 (use-package doom-modeline
   :ensure t
