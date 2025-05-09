@@ -9,8 +9,6 @@
 (setopt window-system-default-frame-alist '((x . ((alpha . 96)))
                                             (pgtk . ((alpha . 96)))))
 
-(add-hook 'after-init-hook 'make-frame-visible)
-
 ;; No need to waste precious desktop space with useless GUI elements
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))

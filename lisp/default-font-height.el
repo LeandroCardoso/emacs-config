@@ -72,6 +72,7 @@ Save `default-font-height-list' contents into
       (pp default-font-height-list (current-buffer)))
     (write-region nil nil default-font-height-list-file nil 'silent)))
 
+;;;###autoload
 (defun default-font-height-adjust (&optional arg)
   "Adjust the font height.
 Change or save the height of the default font of the currently selected
@@ -99,6 +100,7 @@ the frame is moved."
          (default-font-height-reset))
         (t (default-font-height-increase (prefix-numeric-value arg)))))
 
+;;;###autoload
 (defun default-font-height-increase (inc &optional frame)
   "Increase the font height.
 Increase the height of the default font of the frame FRAME by INC steps.
@@ -117,6 +119,7 @@ If FRAME is omitted or nil, use currently selected frame."
 Use `\\[default-font-height-adjust]' with zero as prefix to reset the font height. Use `\\[universal-argument]' as prefix to save the font height.")
        new-font-height))))
 
+;;;###autoload
 (defun default-font-height-reset (&optional frame quiet)
   "Reset the font height.
 Change the height of the default font of the frame FRAME to the last
@@ -152,6 +155,7 @@ If FRAME is omitted or nil, use currently selected frame.
 Quiet version of `default-font-height-reset'."
   (default-font-height-reset frame t))
 
+;;;###autoload
 (defun default-font-height-save (&optional frame)
   "Save the font height.
 Save the height of the default font of the frame FRAME for the
@@ -171,18 +175,15 @@ If FRAME is omitted or nil, use currently selected frame."
     (message "Saving font height to %d for current monitor with frame \"%s\""
              current-font-height (frame-parameter frame 'name))))
 
-;;; hooks
-
-;; Set font height for the initial frame
-(add-hook 'emacs-startup-hook 'default-font-height-reset)
-;; Set font height for new frames
-(add-hook 'after-make-frame-functions 'default-font-height-reset)
-;; Set font height when a frame moves to a different monitor
-(add-hook 'move-frame-functions 'default-font-height-reset-quiet)
-
-;;; key bidings
-
-(global-set-key (kbd "C-M-=") 'default-font-height-adjust)
+;;;###autoload
+(defun default-font-height-setup ()
+  "Setup to automatically set the default font height."
+  ;; Set font height for the initial frame
+  (add-hook 'emacs-startup-hook 'default-font-height-reset)
+  ;; Set font height for new frames
+  (add-hook 'after-make-frame-functions 'default-font-height-reset)
+  ;; Set font height when a frame moves to a different monitor
+  (add-hook 'move-frame-functions 'default-font-height-reset-quiet))
 
 (provide 'default-font-height)
 

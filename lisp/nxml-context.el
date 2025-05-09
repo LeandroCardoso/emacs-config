@@ -1,3 +1,17 @@
+;;; nxml-context.el --- Display XML context in modeline and which-func -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
+(require 'nxml-mode)
+
+;; TODO integrate in `header-line-format' usign :eval
+
 ;; Adapted from https://www.emacswiki.org/emacs/NxmlMode
 (defun xml-context-path ()
   "Display the hierarchy of XML elements the point is on as a path."
@@ -49,34 +63,24 @@
              (< (buffer-size) xml-context-maxout))
     (xml-context-tree)))
 
-(with-eval-after-load "nxml-mode"
-  (setq nxml-child-indent 4)
-  (setq nxml-slash-auto-complete-flag t)
-  (define-key nxml-mode-map (kbd "C-c C-c") 'xml-context-tree))
-
 (define-minor-mode xml-context-mode
-  nil :global t
+  nil
+  :global t
+  (require 'timer)
   (when (timerp xml-context-tree-update-timer)
     (cancel-timer 'xml-context-tree-update-timer))
   (setq xml-context-tree-update-timer nil)
   (when xml-context-mode
     (setq xml-context-tree-update-timer
-          (run-with-idle-timer which-func-update-delay t #'xml-context-tree-update))))
+          (run-with-idle-timer which-func-update-delay t 'xml-context-tree-update))))
 
 ;; which-func integration
 ;; See https://www.emacswiki.org/emacs/WhichFuncMode Non-standard languages (TL;DR;)
-(defun nxml-which-func-setup-hook ()
-  (when (and (derived-mode-p 'nxml-mode)
-             (< (buffer-size) xml-context-maxout))
-    ;; (which-function-mode t)
-    ;; (setq which-func-mode t)
+(defun nxml-which-func-setup ()
+  (require 'which-func)
+  (when (< (buffer-size) xml-context-maxout)
     (add-hook 'which-func-functions 'xml-context-path t t)))
 
-;; We need this to be run AFTER which-func-ff-hook - the "t" means append
-(add-hook 'find-file-hook 'nxml-which-func-setup-hook t)
+(provide 'nxml-context)
 
-;; TODO imenu - See libxml-parse-xml-region
-;; TODO Use eldoc, instead of echo message
-;; TODO show xml-context-tree in top of window. See how which-key do it in the bottom.
-
-(add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
+;;; nxml-context.el ends here

@@ -21,6 +21,57 @@
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
+(use-package solarized
+  :ensure solarized-theme
+  :demand t
+  :config
+  (setopt solarized-distinct-doc-face t)
+  (setopt solarized-scale-outline-headlines nil)
+  (setopt solarized-scale-org-headlines nil)
+  (setopt solarized-use-more-italic t)
+  (setopt solarized-use-variable-pitch nil)
+
+  (load-theme 'solarized-dark t)
+
+  (require 'solarized-palettes)
+
+  (setq solarized-custom-faces
+        '("My personal solarized theme customizations"
+          (custom-theme-set-faces
+           theme-name
+           `(Info-quoted ((t :foreground ,orange :inherit font-lock-string-face)))
+           `(bookmark-face ((t :inherit fringe)))
+           `(button ((t :inherit link)))
+           `(cursor ((t :background ,yellow)))
+           `(custom-button ((t :inherit button)))
+           `(diff-error ((t :inherit error)))
+           `(dired-header ((t :inherit dired-directory :weight bold)))
+           `(fringe ((t :foreground ,s-line)))
+           `(header-line ((t :foreground ,yellow :underline ,yellow :weight bold :extend t)))
+           `(help-key-binding ((t :box (:line-width -1 :color ,s-line) :weight bold)))
+           `(isearch-group-1 ((t :foreground ,base03 :background ,magenta-1fg :weight bold)))
+           `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold)))
+           `(minibuffer-prompt ((t :foreground ,yellow)))
+           `(mode-line ((t :background ,blue-2bg)))
+           `(mode-line-buffer-id ((t :foreground ,yellow :weight bold)))
+           `(mode-line-inactive ((t :background ,base02)))
+           `(region ((t :foreground unspecified :background ,blue-2bg :extend t)))
+           `(separator-line ((t :height 0.1 :inherit transient-separator)))
+           `(shortdoc-heading ((t :inherit info-title-1)))
+           `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
+           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))
+          (custom-theme-set-variables
+           theme-name
+           `(ibuffer-filter-group-name-face 'link)
+           `(ibuffer-title-face 'header-line))))
+
+  (solarized-with-color-variables
+    'dark 'solarized-dark solarized-dark-color-palette-alist solarized-custom-faces))
+
+;; TODO Set font and font size
+
+(make-frame-visible)
+
 ;; TODO move this function to another file
 ;; TODO clean up subdirectories
 (defun byte-recompile-and-cleanup-directory (directory &optional force follow-symlinks)
@@ -60,6 +111,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 (byte-recompile-and-cleanup-directory (expand-file-name "packages" user-emacs-directory))
 (byte-recompile-and-cleanup-directory (expand-file-name "lisp" user-emacs-directory))
 
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; Emacs packages ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -423,6 +475,13 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   ;; workaround this behavior.
   (prog-mode . comment-column-setup))
 
+(use-package nxml-mode
+  :defer t
+  :mode "\\.xaml\\'"
+  :config
+  (setopt nxml-child-indent (default-value 'tab-width))
+  (setopt nxml-slash-auto-complete-flag t))
+
 (use-package org
   :defer t
   :init
@@ -734,6 +793,7 @@ See `kill-new' for details."
         ("<backtab>" . xref-prev-line)
         ("M-<return>" . xref-quit-and-goto-xref)))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; External packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -813,7 +873,8 @@ See `kill-new' for details."
   :bind
   (:map dashboard-mode-map
         ("C-<tab>" . dashboard-next-section)
-        ("C-<iso-lefttab>" . dashboard-previous-section)))
+        ("C-<iso-lefttab>" . dashboard-previous-section)
+        ("C-S-<tab>" . dashboard-previous-section)))
 
 (use-package doom-modeline
   :ensure t
@@ -935,15 +996,34 @@ See `kill-new' for details."
   :config
   (ivy-mode 1))
 
-(use-package magit
+;; TODO review js2 and typescript modes
+(use-package js2-mode
+  :disabled t
   :ensure t
   :defer t
   :config
+  ;; Use js2-minor-mode for syntax highlight, jump-to-definition and imenu
+  ;; (defun js2-minor-mode-setup ()
+  ;;   (setq-local imenu-create-index-function #'js2-mode-create-imenu-index))
+  ;; (add-hook 'js2-minor-mode-hook 'js2-minor-mode-setup)
+  ;; (define-key js2-minor-mode-map [remap js-find-symbol] #'js2-jump-to-definition)
+  (setopt js2-missing-semi-one-line-override t)
+  (setopt js2-mode-assume-strict t)
 
-  (defun magit-load ()
-    "Load magit.  Provided for use in hooks."
-    (require 'magit-extras))
+  :hook
+  (js-mode . js2-minor-mode))
 
+(use-package magit
+  :ensure t
+  :defer t
+  :after project
+  :init
+  ;; Snippet from magit-extra package, copied here so I don't need to load magit before I need to
+  ;; use it.
+  (keymap-set project-prefix-map "m" 'magit-project-status)
+  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+
+  :config
   (defun magit-diff-extra-stat-arguments-setup ()
     "Setup `magit-diff-extra-stat-arguments'."
     (when-let ((window (get-buffer-window (current-buffer) 'visible)))
@@ -968,9 +1048,6 @@ See `kill-new' for details."
     (setopt magit-diff-refine-hunk nil)
     (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
     (remove-hook 'server-switch-hook 'magit-commit-diff)) ; remove diff output from commit
-
-  :hook
-  (after-init . magit-load)
 
   :bind
   (:map magit-mode-map
@@ -1039,12 +1116,34 @@ CONTENTS is the contents of the paragraph, as a string.  INFO is
 the plist used as a communication channel."
     (replace-regexp-in-string "\n\\([^\']\\)" " \n\\1" contents))
 
-  (advice-add 'ox-jira-paragraph :override #'ox-jira-paragraph-override))
+  (advice-add 'ox-jira-paragraph :override 'ox-jira-paragraph-override))
 
 (use-package page-break-lines
   :ensure t
   :config
   (global-page-break-lines-mode))
+
+(use-package plantuml-mode
+  :ensure t
+  :defer t
+  :config
+  (setopt plantuml-indent-level 4)
+  (setopt plantuml-jar-path (let ((plantuml-dir (expand-file-name "plantuml" user-emacs-directory)))
+                              (when (file-directory-p plantuml-dir)
+                                (car (directory-files plantuml-dir t "plantuml.*jar")))))
+  (setopt plantuml-default-exec-mode (if plantuml-jar-path 'jar 'server))
+
+  ;; Workaround for fix plantuml server url encode. See
+  ;; https://github.com/skuro/plantuml-mode/pull/172/commits/88ec2b989b9e7c8ccef5d9c3aa2800758c24e7f5
+  (defun plantuml-server-encode-url-override (string)
+    "Encode the string STRING into a URL suitable for PlantUML server interactions."
+    (let* ((coding-system (or buffer-file-coding-system
+                              "utf8"))
+           (str (encode-coding-string string coding-system))
+           (encoded-string (mapconcat (lambda(x)(format "%02X" x)) str ) ))
+      (concat plantuml-server-url "/" plantuml-output-type "/~h" encoded-string)))
+
+  (advice-add 'plantuml-server-encode-url :override 'plantuml-server-encode-url-override))
 
 (use-package rainbow-mode
   :ensure t
@@ -1055,6 +1154,31 @@ the plist used as a communication channel."
   :defer t
   :hook
   (prog-mode . symbol-overlay-mode))
+
+;; TODO review js2 and typescript modes
+(use-package tide
+  :disabled t
+  :ensure t
+  :defer t
+  :config
+  (setopt tide-completion-detailed t)
+  (setopt tide-imenu-flatten t)
+  (setopt tide-server-max-response-length 10240000)
+
+  (defun tide-setup-hook ()
+    (tide-setup))
+
+  ;; format the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'typescript-mode-hook 'tide-setup-hook)
+
+  ;; Force bundled tide tsserver
+  (defun tide-force-bundled-tsserver ()
+    "Force use of bundled tide tsserver.
+See `tide-tsserver-executable'."
+    (interactive)
+    (setopt tide-tsserver-executable
+            (car (directory-files-recursively (concat user-emacs-directory "elpa/") tide--tsserver)))))
 
 (use-package transpose-frame
   :ensure t
@@ -1115,6 +1239,7 @@ the plist used as a communication channel."
   :hook
   ((prog-mode text-mode) . yas-minor-mode))
 
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; Local packages ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -1140,6 +1265,13 @@ the plist used as a communication channel."
 
   :hook
   (dashboard-after-initialize . dashboard-jump-to-desktop))
+
+(use-package default-font-height
+  :config
+  (default-font-height-setup)
+
+  :bind
+  ("C-M-=" . default-font-height-adjust))
 
 (use-package dired-extra
   :defer t
@@ -1226,6 +1358,16 @@ the plist used as a communication channel."
   :bind
   ([remap imenu] . imenu-anywhere-dwim))
 
+(use-package nxml-context
+  :defer t
+  :after nxml-mode
+  :hook
+  (nxml . nxml-which-func-setup)
+
+  :bind
+  (:map nxml-mode-map
+        ("C-c C-c" . xml-context-tree)))
+
 (use-package project-extra
   :demand t
   :config
@@ -1257,7 +1399,7 @@ the plist used as a communication channel."
 
 (use-package w32-extra)
 
-
+
 ;;;;;;;;;;;;;;;;;;
 ;; Finalization ;;
 ;;;;;;;;;;;;;;;;;;
