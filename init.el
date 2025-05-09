@@ -531,9 +531,9 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 (use-package simple
   :config
   (defun truncate-lines-on ()
-    "Enable `truncate-lines'.  Provided for use in hooks.
+    "Enable `truncate-lines' in the current buffer.  Provided for use in hooks.
 
-This function disable the `truncate-lines' when `visual-line-mode' is
+This function enables `truncate-lines', unless `visual-line-mode' is
 turned on, as it could produce confusing results."
     (setopt truncate-lines (not visual-line-mode)))
 
