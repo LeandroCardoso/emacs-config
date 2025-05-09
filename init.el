@@ -725,6 +725,9 @@ See `kill-new' for details."
   (advice-add 'xref--find-xrefs :after 'kill-new-advice)
   (advice-add 'xref-matches-in-files :after 'kill-new-advice)
 
+  :hook
+  (xref--xref-buffer-mode . truncate-lines-on)
+
   :bind
   (:map xref--xref-buffer-mode-map
         ("<tab>" . xref-next-line)
