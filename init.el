@@ -24,8 +24,6 @@
   (setopt use-package-enable-imenu-support t)
   (setopt use-package-verbose t))
 
-;; Load UI packages before `make-frame-visible'
-
 (use-package solarized
   :ensure solarized-theme
   :demand t
@@ -121,7 +119,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package emacs
   :config
-  (setopt frame-inhibit-implied-resize t) ;; never resize the frame
+  (setopt frame-inhibit-implied-resize t) ; never resize the frame
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
   (setopt inhibit-startup-screen t)
@@ -148,6 +146,10 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (setopt column-number-mode t)
   (setopt mode-line-default-help-echo nil)
   (setopt mode-line-position-column-line-format '(" %l:%c"))
+
+  ;; Scroll
+  (setopt scroll-conservatively 10) ; scroll up to this many lines without recentering
+  (setopt scroll-preserve-screen-position t)
 
   ;; Undo
   (setopt undo-limit (* 1 1024 1024))
@@ -248,7 +250,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   :config
   (defun desktop-save-mode-on ()
     "Enable `desktop-save-mode'.  Provided for use in hooks."
-    (desktop-save-mode 1))
+    (desktop-save-mode))
 
   (setopt desktop-save 'ask-if-exists)
   (add-to-list 'desktop-locals-to-save 'buffer-display-time)
@@ -452,6 +454,11 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
         ("<escape>" . isearch-abort)
         ("M-y" . isearch-yank-pop)))
 
+(use-package midnight
+  :config
+  (setopt clean-buffer-list-delay-general 2)
+  (midnight-mode))
+
 (use-package mule
   :config
   ;; Set coding system to utf-8
@@ -571,6 +578,11 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   :config
   (setopt project-vc-merge-submodules nil))
 
+(use-package recentf
+  :config
+  (setopt recentf-max-saved-items 200)
+  (recentf-mode))
+
 (use-package replace ; occur
   :defer t
   :hook
@@ -664,6 +676,13 @@ See `kill-new' for details."
   (:map text-mode-map
         ("C-<tab>" . company-indent-or-complete-common)))
 
+(use-package time
+  :defer t
+  :config
+  (setopt display-time-24hr-format t)
+  (setopt display-time-interval 15)
+  (setopt display-time-load-average-threshold 0.30))
+
 (use-package tooltip
   :config
   (setopt tooltip-resize-echo-area t)
@@ -711,7 +730,13 @@ See `kill-new' for details."
 (use-package window
   :config
   (setopt split-height-threshold nil)
-  (setopt split-width-threshold 200))
+  (setopt split-width-threshold 200)
+
+  :bind
+  ("S-<up>" . scroll-down-line)
+  ("C-S-p" . scroll-down-line)
+  ("S-<down>" . scroll-up-line)
+  ("C-S-n" . scroll-up-line))
 
 (use-package whitespace
   :defer t
@@ -881,7 +906,7 @@ See `kill-new' for details."
   (setopt doom-modeline-height 30)
   (setopt doom-modeline-indent-info t)
   (setopt doom-modeline-vcs-max-length 22)
-  (doom-modeline-mode 1))
+  (doom-modeline-mode))
 
 (use-package edit-server
   :ensure t
@@ -897,7 +922,7 @@ See `kill-new' for details."
 (use-package engine-mode
   :ensure t
   :config
-  (engine-mode t)
+  (engine-mode)
   (load (expand-file-name "engine-mode/config" user-emacs-directory))
   (load (expand-file-name "engine-mode/config-rdi" user-emacs-directory)))
 
@@ -987,7 +1012,7 @@ See `kill-new' for details."
 (use-package ivy
   :ensure t
   :config
-  (ivy-mode 1))
+  (ivy-mode))
 
 ;; TODO review js2 and typescript modes
 (use-package js2-mode
@@ -1206,7 +1231,7 @@ See `tide-tsserver-executable'."
     "Enable `ws-butler-mode'.  Provided for use in hooks."
     (when (and ws-butler-global-mode
                (not (derived-mode-p ws-butler-global-exempt-modes)))
-      (ws-butler-mode 1)))
+      (ws-butler-mode)))
 
   (defun ws-butler-mode-off ()
     "Disable `ws-butler-mode'.  Provided for use in hooks."
@@ -1306,9 +1331,6 @@ See `tide-tsserver-executable'."
   :config
   (setopt split-window-preferred-function 'split-window-sensibly-horizontally)
 
-  (setopt preferred-font-list '("Source Code Pro" "Cascadia Mono" "Consolas"))
-  (set-preferred-font)
-
   :bind
   ("M-o" . other-window)
   ("M-O" . other-window-backward)
@@ -1351,6 +1373,17 @@ See `tide-tsserver-executable'."
   :bind
   ([remap imenu] . imenu-anywhere-dwim))
 
+(use-package misc-extra
+  :config
+  (set-first-font '("Source Code Pro" "Cascadia Mono" "Consolas"))
+
+  ;; Display a clock when Emacs is in fullscreen
+  (smart-display-time-mode)
+  (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
+
+  ;; Don't cleanup the buffer list when Emacs is idle during weekends and holidays
+  (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice))
+
 (use-package nxml-context
   :defer t
   :after nxml-mode
@@ -1361,6 +1394,16 @@ See `tide-tsserver-executable'."
   (:map nxml-mode-map
         ("C-c C-c" . xml-context-tree)))
 
+(use-package prog-mode-extra
+  :defer t
+  :hook
+  (prog-mode . font-lock-todo-setup)
+
+  :bind
+  (:map prog-mode-map
+        ("C-c C-q" . indent-defun)
+        ("C-;" . smart-semicolon)))
+
 (use-package project-extra
   :demand t
   :config
@@ -1369,6 +1412,16 @@ See `tide-tsserver-executable'."
   (:map project-prefix-map
         ("i" . project-info)
         ("q" . project-query-regexp)))
+
+(use-package recentf-extra
+  :defer t
+  :bind
+  (:map ctl-x-map
+        ("C-r" . recentf-find-file))              ; original is find-file-read-only
+  (:map ctl-x-4-map
+        ("C-r" . recentf-find-file-other-window)) ; original is find-file-read-only-other-window
+  (:map ctl-x-5-map
+        ("C-r" . recentf-find-file-other-frame))) ; original is find-file-read-only-other-frame
 
 (use-package rotate-text
   :defer t

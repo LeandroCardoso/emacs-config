@@ -146,67 +146,6 @@ See also `toggle-frame-fullscreen'."
               (toggle-frame-fullscreen)))))
     (toggle-frame-fullscreen)))
 
-
-;; From obsolete lucid.el
-;;;###autoload
-(defun switch-to-other-buffer (arg)
-  "Switch to the previous buffer.
-
-With a numeric parameter ARG, switch to the Nth most recent buffer.  ARG
-0 means buries the current buffer at the bottom of the buffer stack."
-  (interactive "p")
-  (if (eq arg 0)
-      (bury-buffer (current-buffer)))
-  (switch-to-buffer
-   (if (<= arg 1) (other-buffer (current-buffer))
-     (nth arg
-      (apply 'nconc
-         (mapcar
-          (lambda (buf)
-            (if (= ?\  (string-to-char (buffer-name buf)))
-            nil
-              (list buf)))
-          (buffer-list)))))))
-
-(define-derived-mode display-fonts-mode special-mode "Fonts"
-  "Major mode used in the \"*fonts*\" buffer.")
-
-;;;###autoload
-(defun display-fonts (&optional only-mono)
-  "Display a buffer with a list of all available fonts.
-
-When ONLY-MONO parameter is non-nil, only display monospaced fonts."
-  (interactive "P")
-  (with-current-buffer-window "*fonts*" nil nil
-    (let ((text "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 01213456789")
-          (font-name-length 30)
-          (font-name-propertize t))
-      (dolist (font (seq-uniq (seq-sort #'string< (font-family-list))))
-        (when (or (not only-mono)
-                  ;; Linux reports spacing=100 and MS Windows reports adstyle=mono
-                  (eq 'mono (font-get (find-font (font-spec :family font)) :adstyle))
-                  (eq 100 (font-get (find-font (font-spec :family font)) :spacing)))
-          (if font-name-propertize
-              (insert (propertize font 'face `(:family ,font)))
-            (insert (substring font 0 (min (1- font-name-length) (length font)))))
-          (insert (propertize " " 'display `(space :align-to ,font-name-length)))
-          (insert (propertize text 'face `(:family ,font)))
-          (newline))))
-    (display-fonts-mode)))
-
-(defcustom preferred-font-list nil
-  "A list of preferred fonts to be set by `set-preferred-font'."
-  :type '(repeat string)
-  :group 'font-selection)
-
-(defun set-preferred-font ()
-  "Set the first font from `preferred-font-list' that is available in all frames."
-  (require 'seq)
-  (when-let ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
-                                  preferred-font-list)))
-    (set-frame-font font-name t t)
-    (message "Setting font to %s" font-name)))
-
 (provide 'frame-window-extra)
 
 ;;; frame-window-extra.el ends here
