@@ -12,63 +12,66 @@
 
 (setopt custom-file (expand-file-name "custom-variables.el" user-emacs-directory))
 (setopt gc-cons-threshold (* 32 1024 1024)) ; Increase GC threshold for performance
-
-;; We must require the 'use-package' at the beginning, so the `use-package-compute-statistics' and
-;; `use-package-verbose' works properly
-(require 'use-package)
-
 (setopt load-prefer-newer t)
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+;; We must config use-package at the beginning, so the `use-package-compute-statistics' and
+;; `use-package-verbose' works properly
+(use-package use-package
+  :config
+  (setopt use-package-compute-statistics t) ; view the statistical report using `use-package-report'
+  (setopt use-package-enable-imenu-support t)
+  (setopt use-package-verbose t))
+
+;; Load UI packages before `make-frame-visible'
 
 (use-package solarized
   :ensure solarized-theme
   :demand t
   :config
   (setopt solarized-distinct-doc-face t)
-  (setopt solarized-scale-outline-headlines nil)
   (setopt solarized-scale-org-headlines nil)
+  (setopt solarized-scale-outline-headlines nil)
   (setopt solarized-use-more-italic t)
   (setopt solarized-use-variable-pitch nil)
 
+  (require 'solarized-palettes) ; must be before `solarized-dark-color-palette-alist' reference
+  (defun set-custom-faces-solarized-dark-theme ()
+    "Set custom faces in solarized dark theme"
+    (solarized-with-color-variables
+      'dark 'solarized-dark solarized-dark-color-palette-alist
+      '((custom-theme-set-faces
+         theme-name
+         `(Info-quoted ((t :foreground ,orange :inherit font-lock-string-face)))
+         `(bookmark-face ((t :inherit fringe)))
+         `(button ((t :inherit link)))
+         `(cursor ((t :background ,yellow)))
+         `(custom-button ((t :inherit button)))
+         `(diff-error ((t :inherit error)))
+         `(dired-header ((t :inherit dired-directory :weight bold)))
+         `(fringe ((t :foreground ,s-line)))
+         `(header-line ((t :foreground ,yellow :underline ,yellow :weight bold :extend t)))
+         `(help-key-binding ((t :box (:line-width -1 :color ,s-line) :weight bold)))
+         `(isearch-group-1 ((t :foreground ,base03 :background ,magenta-1fg :weight bold)))
+         `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold)))
+         `(minibuffer-prompt ((t :foreground ,yellow)))
+         `(mode-line ((t :background ,blue-2bg)))
+         `(mode-line-buffer-id ((t :foreground ,yellow :weight bold)))
+         `(mode-line-inactive ((t :background ,base02)))
+         `(region ((t :foreground unspecified :background ,blue-2bg :extend t)))
+         `(separator-line ((t :height 0.1 :inherit transient-separator)))
+         `(shortdoc-heading ((t :inherit info-title-1)))
+         `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
+         `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta)))
+         `(doom-modeline-bar ((t (:background ,yellow)))))
+        (custom-theme-set-variables
+         theme-name
+         `(ibuffer-filter-group-name-face 'link)
+         `(ibuffer-title-face 'header-line)))))
+
   (load-theme 'solarized-dark t)
-
-  (require 'solarized-palettes)
-
-  (setq solarized-custom-faces
-        '("My personal solarized theme customizations"
-          (custom-theme-set-faces
-           theme-name
-           `(Info-quoted ((t :foreground ,orange :inherit font-lock-string-face)))
-           `(bookmark-face ((t :inherit fringe)))
-           `(button ((t :inherit link)))
-           `(cursor ((t :background ,yellow)))
-           `(custom-button ((t :inherit button)))
-           `(diff-error ((t :inherit error)))
-           `(dired-header ((t :inherit dired-directory :weight bold)))
-           `(fringe ((t :foreground ,s-line)))
-           `(header-line ((t :foreground ,yellow :underline ,yellow :weight bold :extend t)))
-           `(help-key-binding ((t :box (:line-width -1 :color ,s-line) :weight bold)))
-           `(isearch-group-1 ((t :foreground ,base03 :background ,magenta-1fg :weight bold)))
-           `(isearch-group-2 ((t :foreground ,base03 :background ,magenta-2fg :weight bold)))
-           `(minibuffer-prompt ((t :foreground ,yellow)))
-           `(mode-line ((t :background ,blue-2bg)))
-           `(mode-line-buffer-id ((t :foreground ,yellow :weight bold)))
-           `(mode-line-inactive ((t :background ,base02)))
-           `(region ((t :foreground unspecified :background ,blue-2bg :extend t)))
-           `(separator-line ((t :height 0.1 :inherit transient-separator)))
-           `(shortdoc-heading ((t :inherit info-title-1)))
-           `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
-           `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta))))
-          (custom-theme-set-variables
-           theme-name
-           `(ibuffer-filter-group-name-face 'link)
-           `(ibuffer-title-face 'header-line))))
-
-  (solarized-with-color-variables
-    'dark 'solarized-dark solarized-dark-color-palette-alist solarized-custom-faces))
-
-;; TODO Set font and font size
+  (set-custom-faces-solarized-dark-theme))
 
 (make-frame-visible)
 
@@ -661,12 +664,6 @@ See `kill-new' for details."
   (:map text-mode-map
         ("C-<tab>" . company-indent-or-complete-common)))
 
-(use-package use-package
-  :config
-  (setopt use-package-compute-statistics t) ; view the statistical report using `use-package-report'
-  (setopt use-package-enable-imenu-support t)
-  (setopt use-package-verbose t))
-
 (use-package tooltip
   :config
   (setopt tooltip-resize-echo-area t)
@@ -884,11 +881,7 @@ See `kill-new' for details."
   (setopt doom-modeline-height 30)
   (setopt doom-modeline-indent-info t)
   (setopt doom-modeline-vcs-max-length 22)
-  (doom-modeline-mode 1)
-
-  :custom-face
-  ;; FIXME
-  (doom-modeline-bar ((t (:background ,(face-foreground 'mode-line-buffer-id))))))
+  (doom-modeline-mode 1))
 
 (use-package edit-server
   :ensure t
