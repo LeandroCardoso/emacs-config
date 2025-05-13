@@ -26,6 +26,18 @@ function:
   (< (round (float-time (or (current-idle-time) '(0 0 0))))
      (* clean-buffer-list-delay-general 24 60 60)))
 
+;;;###autoload
+(defmacro define-other-window-command (command)
+  "Define a version of COMMAND which execute in the another window.
+
+The new function will be named \='COMMAND-other-window\='."
+  `(defun ,(intern (concat (symbol-name command) "-other-window")) ();
+     ,(format "Like `%s', but in other window." command)
+     (interactive)
+     (let ((display-buffer-overriding-action '((display-buffer-pop-up-window)
+                                               (inhibit-same-window . t))))
+       (call-interactively ',command))))
+
 (define-derived-mode display-fonts-mode special-mode "Fonts"
   "Major mode used in the \"*fonts*\" buffer.")
 

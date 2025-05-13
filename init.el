@@ -332,7 +332,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package eshell
   :defer t
-  :after frame-window-extra
+  :after misc-extra
   :config
   (define-other-window-command eshell)
 
@@ -629,7 +629,7 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package shell
   :defer t
-  :after frame-window-extra
+  :after misc-extra
   :config
   (define-other-window-command shell)
 
