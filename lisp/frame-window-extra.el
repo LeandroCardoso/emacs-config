@@ -13,6 +13,18 @@
 (require 'window)
 
 ;;;###autoload
+(defmacro define-other-window-command (command)
+  "Define a version of COMMAND which executes in the another window.
+
+The new function will be named 'COMMAND-other-window'."
+  `(defun ,(intern (concat (symbol-name command) "-other-window")) ();
+     ,(format "Like `%s', but in other window." command)
+     (interactive)
+     (let ((display-buffer-overriding-action '((display-buffer-pop-up-window)
+                                               (inhibit-same-window . t))))
+       (call-interactively ',command))))
+
+;;;###autoload
 (defun split-window-sensibly-horizontally (&optional window)
   "Split WINDOW in a way suitable for `display-buffer'.
 

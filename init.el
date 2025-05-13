@@ -332,9 +332,15 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package eshell
   :defer t
+  :after frame-window-extra
+  :config
+  (define-other-window-command eshell)
+
   :bind
   (:map ctl-x-map
-        ("C-$" . eshell)))
+        ("C-$" . eshell))
+  (:map ctl-x-4-map
+        ("C-$" . eshell-other-window)))
 
 (use-package em-hist ; eshell history
   :defer t
@@ -1361,13 +1367,6 @@ See `tide-tsserver-executable'."
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
   ("M-<return>" . newline-no-break)
   ("C-c S" . sort-words))
-
-(use-package eshell-extra
-  :defer t
-  :after eshell
-  :bind
-  (:map ctl-x-4-map
-        ("C-$" . eshell-other-window)))
 
 (use-package frame-window-extra
   :defer t
