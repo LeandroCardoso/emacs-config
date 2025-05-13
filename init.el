@@ -62,7 +62,13 @@
          `(shortdoc-heading ((t :inherit info-title-1)))
          `(shortdoc-section ((t :inherit info-title-1 :weight normal)))
          `(symbol-overlay-default-face ((t :inherit unspecified :foreground ,magenta)))
-         `(doom-modeline-bar ((t (:background ,yellow)))))
+         `(doom-modeline-bar ((t (:background ,yellow))))
+         `(tldr-title ((t :inherit info-title-1)))
+         `(tldr-introduction ((t :inherit default)))
+         `(tldr-description ((t :inherit info-title-2)))
+         `(tldr-command-itself ((t :foreground ,blue :slant italic :weight bold)))
+         `(tldr-command-argument ((t :foreground ,blue)))
+         `(tldr-code-block ((t :foreground ,blue :weight bold))))
         (custom-theme-set-variables
          theme-name
          `(ibuffer-filter-group-name-face 'link)
@@ -1202,6 +1208,12 @@ See `tide-tsserver-executable'."
     (interactive)
     (setopt tide-tsserver-executable
             (car (directory-files-recursively (concat user-emacs-directory "elpa/") tide--tsserver)))))
+
+(use-package tldr
+  :ensure t
+  :defer t
+  :config
+  (setopt tldr-enabled-categories '("common" "linux")))
 
 (use-package transpose-frame
   :ensure t
