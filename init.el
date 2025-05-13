@@ -627,6 +627,18 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   :config
   (save-place-mode))
 
+(use-package shell
+  :defer t
+  :after frame-window-extra
+  :config
+  (define-other-window-command shell)
+
+  :bind
+  (:map ctl-x-map
+        ("$" . shell))
+  (:map ctl-x-4-map
+        ("$" . shell-other-window)))
+
 (use-package shortdoc
   :defer t
   :config
@@ -874,6 +886,13 @@ See `kill-new' for details."
   ("C-M-;" . avy-goto-word-1)
   ("C-<dead-acute>" . avy-goto-word-1)
   ("C-M-:" . avy-goto-char-in-line))
+
+(use-package bash-completion
+  :ensure t
+  :defer t
+  :after shell
+  :config
+  (add-hook 'shell-dynamic-complete-functions 'bash-completion-dynamic-complete))
 
 (use-package company
   :ensure t
