@@ -33,3 +33,7 @@
 (defengine wiktionary
   "https://en.wiktionary.org/w/index.php?search=%s"
   :keybinding "y")
+
+(defengine git
+  "https://git-scm.com/search/results?search=%s&language=en"
+  :keybinding "G")
