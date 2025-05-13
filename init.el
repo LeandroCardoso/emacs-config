@@ -357,9 +357,9 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
   (add-to-list 'grep-files-aliases '("web" . "*.css *.htm[l] *.js *.json *.ts"))
 
-  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"                           ;tags
-                  "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css" ;minified
-                  "*.cache" "*.exe" "*.nupkg" "*.so" "*.zip"))               ;misc
+  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"                           ; tags
+                  "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css" ; minified
+                  "*.cache" "*.exe" "*.nupkg" "*.so" "*.zip"))               ; misc
     (add-to-list 'grep-find-ignored-files file))
 
   ;; Enable saving the latest regexp into the `kill-ring'
@@ -660,6 +660,11 @@ See `kill-new' for details."
 (use-package so-long
   :config
   (global-so-long-mode))
+
+(use-package sort
+  :defer t
+  :bind
+  ("C-c s" . sort-lines))
 
 (use-package sql
   :defer t
@@ -1324,7 +1329,8 @@ See `tide-tsserver-executable'."
   ("C-M-|" . delete-indentation)
   ([remap kill-line] . kill-line-and-join)
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
-  ("M-<return>" . newline-no-break))
+  ("M-<return>" . newline-no-break)
+  ("C-c S" . sort-words))
 
 (use-package frame-window-extra
   :defer t
