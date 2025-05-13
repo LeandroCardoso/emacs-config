@@ -11,7 +11,6 @@ eln-cache
 elpa/
 eshell/
 fonts
-nuget.exe
 omnisharp/
 org-persist/
 places
@@ -24,3 +23,4 @@ tramp
 transient/
 tree-sitter/
 url/
+windows_bin/nuget.exe
