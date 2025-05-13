@@ -9,7 +9,8 @@ custom-variables.el
 default-font-height
 eln-cache
 elpa/
-eshell/
+eshell/history
+eshell/lastdir
 fonts
 omnisharp/
 org-persist/

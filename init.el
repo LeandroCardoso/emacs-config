@@ -330,6 +330,24 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
         ;; eval-defun is also in C-M-x)
         ("C-c C-c" . eval-defun)))
 
+(use-package eshell
+  :defer t
+  :bind
+  (:map ctl-x-map
+        ("C-$" . eshell)))
+
+(use-package em-hist ; eshell history
+  :defer t
+  :after eshell
+  :config
+  (setopt eshell-hist-ignoredups t))
+
+(use-package em-term ; eshell visual commands
+  :defer t
+  :after eshell
+  :config
+  (add-to-list 'eshell-visual-commands "watch"))
+
 (use-package face-remap
   :defer t
   :config
@@ -727,8 +745,8 @@ See `kill-new' for details."
   :bind
   (:map vc-prefix-map
         ("C-d" . vc-dir-root)
-        ("e" . 'vc-ediff)
-        ("R" . 'vc-rename-file)))
+        ("e" . vc-ediff)
+        ("R" . vc-rename-file)))
 
 (use-package which-key
   :demand t
@@ -1343,6 +1361,13 @@ See `tide-tsserver-executable'."
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
   ("M-<return>" . newline-no-break)
   ("C-c S" . sort-words))
+
+(use-package eshell-extra
+  :defer t
+  :after eshell
+  :bind
+  (:map ctl-x-4-map
+        ("C-$" . eshell-other-window)))
 
 (use-package frame-window-extra
   :defer t
