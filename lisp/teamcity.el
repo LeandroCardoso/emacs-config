@@ -1,4 +1,16 @@
-;; Team City log mode
+;;; teamcity.el --- TeamCity log mode for Emacs -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
+(require 'generic)
+(require 'mode-local)
+
 (define-generic-mode teamcity-log-mode       ; MODE
   nil                                        ; COMMENT-LIST
   nil                                        ; KEYWORD-LIST
@@ -15,3 +27,7 @@
 ;; strings.
 (require 'mode-local)
 (setq-mode-local teamcity-log-mode font-lock-keywords-only t)
+
+(provide 'teamcity)
+
+;;; teamcity.el ends here

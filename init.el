@@ -1522,6 +1522,7 @@ See `tide-tsserver-executable'."
   ("C-+" . rotate-text-backward))
 
 (use-package w32-extra)
+(use-package teamcity)
 (use-package xml-format
   :defer t
   :after nxml-mode
