@@ -280,8 +280,8 @@
         (message "Updating np61-update-include-path-list...")
         (let ((start-time (current-time))
               (pr np6-np61-src-directory))
-          (dolist (dir (nconc (directory-list (concat pr "src/"))
-                               (directory-list (concat pr "extSrc/"))))
+          (dolist (dir (nconc (list-directories (concat pr "src/") t t)
+                              (list-directories (concat pr "extSrc/") t t)))
             ;; Skip directories that do not have header files
             (when (directory-files dir nil "\\.h.*" t)
               (push dir np61-include-path-list)))
