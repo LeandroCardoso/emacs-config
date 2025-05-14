@@ -10,6 +10,7 @@
 
 (require 'project)
 
+(require 'files-extra)
 (require 'fragment)
 (require 'msvs)
 (require 'project-root-dir)

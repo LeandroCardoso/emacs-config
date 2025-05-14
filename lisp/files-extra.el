@@ -27,7 +27,8 @@ FOLLOW-SYMLINKS is non-nil, symlinked directories will also be followed."
       (setq directory (expand-file-name (car directories)))
       (message "Checking %s..." directory)
       (dolist (f (directory-files directory t ".*\\.elc$"))
-        (message "Checking %s..." directory)
+        (unless noninteractive
+          (message "Checking %s..." directory))
         (let ((file (expand-file-name f directory)))
           (unless (file-exists-p (file-name-with-extension file ".el"))
             (message "Deleting file: %s" file)
@@ -60,6 +61,7 @@ If the argument FORCE is non-nil, recompile every '.el'.
 
 This command will normally not follow symlinks.  If FOLLOW-SYMLINKS is
 non-nil, symlinked directories will also be followed."
+  (interactive "DRecompile and clean up eslip files in directory: \nP")
   (require 'bytecomp)
   ;; Compile all elisp files
   (message "Compiling elisp files in %s..." directory)
@@ -69,11 +71,17 @@ non-nil, symlinked directories will also be followed."
   (message "Cleaning up elisp compiled files in %s..." directory)
   (cleanup-compiled-elisp directory follow-symlinks))
 
-(defun list-directories-fast (directory)
-  "Return a list of subdirectories in DIRECTORY."
+(defun list-directories-fast (directory &optional follow-symlinks)
+  "Return a list of subdirectories in DIRECTORY.
+
+This function works recursively and it uses the external `find-program'
+to list subdirectories.
+
+If FOLLOW-SYMLINKS is non-nil, symbolic links that point to directories
+are followed.  Note that this can lead to infinite recursion."
   (require 'grep)
   (when (file-directory-p directory)
-    (process-lines find-program (expand-file-name directory) "-type" "d")))
+    (process-lines find-program (expand-file-name directory) "-type" "d" (when follow-symlinks "-L"))))
 
 (defun list-directories (directory &optional full recursive follow-symlinks)
   "Return a list of subdirectories in DIRECTORY.
