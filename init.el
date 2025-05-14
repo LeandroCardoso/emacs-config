@@ -13,8 +13,8 @@
 (setopt custom-file (expand-file-name "custom-variables.el" user-emacs-directory))
 (setopt gc-cons-threshold (* 32 1024 1024)) ; Increase GC threshold for performance
 (setopt load-prefer-newer t)
-(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 
 ;; We must config use-package at the beginning, so the `use-package-compute-statistics' and
 ;; `use-package-verbose' works properly
@@ -79,45 +79,6 @@
 
 (make-frame-visible)
 
-;; TODO move this function to another file
-;; TODO clean up subdirectories
-(defun byte-recompile-and-cleanup-directory (directory &optional force follow-symlinks)
-  "Recompile and clean eslip files in DIRECTORY.
-
-Recompile every ‘.el’ file in DIRECTORY that needs recompilation.  This
-happens when a '.elc' file doesn't exist, or it exists but is older than
-the '.el' file.  Files in subdirectories of DIRECTORY are processed
-also.
-
-After recompilation, delete old stale '.elc' files that don't have a
-corresponding '.el' associated file.
-
-If the argument FORCE is non-nil, recompile every '.el'.
-
-This command will normally not follow symlinks when compiling files.  If
-FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
-  (require 'bytecomp)
-  ;; Compile all elisp files
-  (message "Compiling elisp files in %s..." directory)
-  (byte-recompile-directory directory 0 force follow-symlinks)
-
-  ;; Delete old elisp compiled files (.elc) that doesn't have a eslisp source file (.el) associated
-  (message "Cleaning stale elisp compiled files in %s..." directory)
-  (let ((deleted 0)
-        (skipped 0))
-    (dolist (f (directory-files directory t ".*\\.elc$"))
-      (let ((file (expand-file-name f directory)))
-        (unless (file-exists-p (file-name-with-extension file ".el"))
-          (message "Deleting file: %s" file)
-          (delete-file file))
-        (if (file-exists-p file)
-            (setq skipped (1+ skipped))
-          (setq deleted (1+ deleted)))))
-    (message "Done (Total of %d files deleted, %d skipped)" deleted skipped)))
-
-(byte-recompile-and-cleanup-directory (expand-file-name "packages" user-emacs-directory))
-(byte-recompile-and-cleanup-directory (expand-file-name "lisp" user-emacs-directory))
-
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Emacs packages ;;
@@ -125,18 +86,34 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 
 (use-package emacs
   :config
+  (setopt confirm-kill-emacs 'y-or-n-p)
+  (setopt confirm-kill-processes nil)
   (setopt frame-inhibit-implied-resize t) ; never resize the frame
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
   (setopt inhibit-startup-screen t)
   (setopt initial-scratch-message nil)
   (setopt ring-bell-function 'ignore)
+  (setopt save-some-buffers-default-predicate 'save-some-buffers-root)
   (setopt use-short-answers t)
   (setopt x-underline-at-descent-line t)
   (setq inhibit-compacting-font-caches t)
   (setq-default cursor-type 'bar)
 
-  ;; Edit
+  ;; auto-save
+  (defconst auto-save-dir (expand-file-name "auto-save" user-emacs-directory)
+    "Directory to save auto-save files.")
+  (setopt auto-save-file-name-transforms `((".*" ,(concat auto-save-dir "/\\1") t)))
+  (unless (file-directory-p auto-save-dir)
+    (make-directory auto-save-dir))
+
+  ;; backup
+  (setopt backup-by-copying t)
+  (setopt delete-old-versions t)
+  (setopt make-backup-files nil)
+  (setopt version-control t)
+
+  ;; edit
   (setopt delete-pair-blink-delay 0.25)
   (setopt sentence-end-double-space nil)
   (setopt tab-always-indent 'complete)
@@ -144,28 +121,32 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (setq-default fill-column 100)
   (setq-default tab-width 4)
 
-  ;; Fringe
+  ;; fringe
   (setq-default indicate-empty-lines t)
   (setopt next-error-highlight 'fringe-arrow)
 
-  ;; Modeline
+  ;; modeline
   (setopt column-number-mode t)
   (setopt mode-line-default-help-echo nil)
   (setopt mode-line-position-column-line-format '(" %l:%c"))
 
-  ;; Scroll
+  ;; scroll
   (setopt scroll-conservatively 10) ; scroll up to this many lines without recentering
   (setopt scroll-preserve-screen-position t)
 
-  ;; Undo
+  ;; trusted lisp files
+  (add-to-list 'trusted-content (expand-file-name "lisp/" user-emacs-directory))
+  (add-to-list 'trusted-content (expand-file-name "packages/" user-emacs-directory))
+
+  ;; undo
   (setopt undo-limit (* 1 1024 1024))
   (setopt undo-strong-limit (truncate (* undo-limit 1.5)))
 
-  ;; User
+  ;; user
   (setopt user-full-name "Leandro Cardoso")
   (setopt user-mail-address "leandrocardoso@gmail.com")
 
-  ;; Platform specific settings
+  ;; platform specific settings
   (when (eq system-type 'windows-nt)
     (load (expand-file-name "lisp/config-mswindows" user-emacs-directory)))
 
@@ -177,7 +158,9 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   ("C-<backspace>" . backward-kill-sexp)
   ("C-c D" . delete-pair)
   ("C-c d" . duplicate-dwim)
-  ([remap zap-to-char] . zap-up-to-char))
+  ([remap zap-to-char] . zap-up-to-char)
+  (:map ctl-x-x-map
+        ("G" . revert-buffer-with-fine-grain)))
 
 (use-package align
   :defer t
@@ -362,7 +345,11 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
 (use-package find-file
   :defer t
   :config
-  (setopt cc-search-directories '("." "./*" "../*" "/usr/include" "/usr/local/include/*")))
+  (setopt cc-search-directories '("." "./*" "../*" "/usr/include" "/usr/local/include/*"))
+  (setopt ff-case-fold-search t)
+
+  :bind
+  ("C-M-o" . ff-find-other-file))
 
 (use-package goto-addr
   :config
@@ -948,6 +935,7 @@ See `kill-new' for details."
 
 (use-package dashboard
   :ensure t
+  :demand t
   :init
   (setopt dashboard-icon-type (if (eq system-type 'windows-nt)
                                   nil
@@ -1339,13 +1327,6 @@ See `tide-tsserver-executable'."
 ;; Local packages ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(let ((local-lisp (expand-file-name "lisp" user-emacs-directory)))
-  ;; Load all elisp files sorted by name. Sub-directories and files starting with underline or dot
-  ;; are ignored
-  (message "Loading elisp source files from %s" local-lisp)
-  (dolist (file (directory-files local-lisp nil "^[^_\\.].*\\.el$"))
-    (load (file-name-sans-extension file))))
-
 (use-package arc-mode-extra
   :defer t
   :after arc-mode
@@ -1362,6 +1343,7 @@ See `tide-tsserver-executable'."
   (dashboard-after-initialize . dashboard-jump-to-desktop))
 
 (use-package default-font-height
+  :demand t
   :config
   (default-font-height-setup)
 
@@ -1380,8 +1362,7 @@ See `tide-tsserver-executable'."
         ([remap back-to-indentation] . dired-position-at-filename)))
 
 (use-package ediff-extra
-  ;; This extends ediff
-  :defer t
+  :demand t
   :config
   (ediff-extra-setup-copy-AB-to-C)
   (ediff-extra-setup-text-scale)
@@ -1403,6 +1384,14 @@ See `tide-tsserver-executable'."
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
   ("M-<return>" . newline-no-break)
   ("C-c S" . sort-words))
+
+(use-package files-extra
+  :bind
+  ([remap rename-buffer] . rename-buffer-and-file)
+  (:map ctl-x-x-map
+        ("w" . copy-file-or-buffer-name-as-kill)
+        ("W" . copy-file-or-buffer-name-directory-as-kill)
+        ("k" . make-backup-buffer)))
 
 (use-package fragment
   :defer t)
@@ -1427,6 +1416,7 @@ See `tide-tsserver-executable'."
   (setq framemove-hook-into-windmove t))
 
 (use-package goto-chg
+  :defer t
   :bind
   ("C-." . goto-last-change)
   ("C-," . goto-last-change-reverse))
@@ -1465,6 +1455,9 @@ See `tide-tsserver-executable'."
   ;; Don't cleanup the buffer list when Emacs is idle during weekends and holidays
   (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice))
 
+(use-package msvs
+  :if (eq system-type 'windows-nt))
+
 (use-package nxml-context
   :defer t
   :after nxml-mode
@@ -1477,6 +1470,7 @@ See `tide-tsserver-executable'."
 
 (use-package prog-mode-extra
   :defer t
+  :after prog-mode
   :hook
   (prog-mode . font-lock-todo-setup)
 
@@ -1494,8 +1488,16 @@ See `tide-tsserver-executable'."
         ("i" . project-info)
         ("q" . project-query-regexp)))
 
+(use-package project-root-dir
+  :defer t
+  :after project)
+
+(use-package rdi
+  :if (eq system-type 'windows-nt))
+
 (use-package recentf-extra
   :defer t
+  :after recentf
   :bind
   (:map ctl-x-map
         ("C-r" . recentf-find-file))              ; original is find-file-read-only
@@ -1511,6 +1513,7 @@ See `tide-tsserver-executable'."
   ("C-}" . shrink-window+)
   ("C-M-]" . enlarge-window-horizontally+)
   ("C-M-}" . shrink-window-horizontally+))
+
 (use-package rotate-text
   :defer t
   :config
@@ -1531,8 +1534,11 @@ See `tide-tsserver-executable'."
   ("C-=" . rotate-text)
   ("C-+" . rotate-text-backward))
 
-(use-package w32-extra)
 (use-package teamcity)
+
+(use-package w32-extra
+  :if (eq system-type 'windows-nt))
+
 (use-package xml-format
   :defer t
   :after nxml-mode
@@ -1545,6 +1551,11 @@ See `tide-tsserver-executable'."
 ;;;;;;;;;;;;;;;;;;
 ;; Finalization ;;
 ;;;;;;;;;;;;;;;;;;
+
+;; Recompile and cleanup lisp source files
+(require 'files-extra)
+(byte-recompile-and-cleanup-directory (expand-file-name "packages" user-emacs-directory))
+(byte-recompile-and-cleanup-directory (expand-file-name "lisp" user-emacs-directory))
 
 (setopt gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value)))
 (message "Emacs %s started in %s" emacs-version (emacs-init-time))
