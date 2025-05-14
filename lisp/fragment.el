@@ -80,6 +80,7 @@ Returns the text fragment or nil when not found."
       (pulse-momentary-highlight-region beg end))
     fragment))
 
+;;;###autoload
 (defun fragment-xml-display-other-window (element)
   "Display a XML fragment in other window.
 Search for a visible XML fragment with root ELEMENT in the

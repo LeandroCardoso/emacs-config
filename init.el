@@ -1404,6 +1404,9 @@ See `tide-tsserver-executable'."
   ("M-<return>" . newline-no-break)
   ("C-c S" . sort-words))
 
+(use-package fragment
+  :defer t)
+
 (use-package frame-window-extra
   :defer t
   :config
