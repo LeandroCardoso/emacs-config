@@ -13,8 +13,12 @@
 (setopt custom-file (expand-file-name "custom-variables.el" user-emacs-directory))
 (setopt gc-cons-threshold (* 32 1024 1024)) ; Increase GC threshold for performance
 (setopt load-prefer-newer t)
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+
+(defconst user-lisp-directory (expand-file-name "lisp" user-emacs-directory)
+  "Directory where user's Emacs *.el and *.elc Lisp files are installed.")
+
+(add-to-list 'load-path user-lisp-directory)
+(add-to-list 'load-path (expand-file-name "packages" user-lisp-directory))
 
 ;; We must config use-package at the beginning, so the `use-package-compute-statistics' and
 ;; `use-package-verbose' works properly
@@ -135,8 +139,7 @@
   (setopt scroll-preserve-screen-position t)
 
   ;; trusted lisp files
-  (add-to-list 'trusted-content (expand-file-name "lisp/" user-emacs-directory))
-  (add-to-list 'trusted-content (expand-file-name "packages/" user-emacs-directory))
+  (add-to-list 'trusted-content (file-name-as-directory user-lisp-directory))
 
   ;; undo
   (setopt undo-limit (* 1 1024 1024))
@@ -148,7 +151,7 @@
 
   ;; platform specific settings
   (when (eq system-type 'windows-nt)
-    (load (expand-file-name "lisp/config-mswindows" user-emacs-directory)))
+    (load (expand-file-name "config-mswindows" user-lisp-directory)))
 
   :hook
   (after-save . executable-make-buffer-file-executable-if-script-p)
@@ -1387,6 +1390,17 @@ See `tide-tsserver-executable'."
   ("C-c S" . sort-words))
 
 (use-package files-extra
+  :config
+  (defun recompile-user-lisp-files ()
+    "Recompile and clean up eslip files in `user-lisp-directory'.
+
+See `byte-recompile-and-cleanup-directory'."
+    (interactive)
+    (byte-recompile-and-cleanup-directory user-lisp-directory))
+
+  :hook
+  (emacs-startup . recompile-user-lisp-files)
+  
   :bind
   ([remap rename-buffer] . rename-buffer-and-file)
   (:map ctl-x-x-map
@@ -1552,11 +1566,6 @@ See `tide-tsserver-executable'."
 ;;;;;;;;;;;;;;;;;;
 ;; Finalization ;;
 ;;;;;;;;;;;;;;;;;;
-
-;; Recompile and cleanup lisp source files
-(require 'files-extra)
-(byte-recompile-and-cleanup-directory (expand-file-name "packages" user-emacs-directory))
-(byte-recompile-and-cleanup-directory (expand-file-name "lisp" user-emacs-directory))
 
 (setopt gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value)))
 (message "Emacs %s started in %s" emacs-version (emacs-init-time))
