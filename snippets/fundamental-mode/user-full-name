@@ -2,4 +2,4 @@
 # name: user full name
 # key: user
 # --
-`(insert user-full-name)`
+`user-full-name`

@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: release notes
-# key: release-notes
-# --
-* Root Case
-* Affected Features
-* Affected Components
-* Local Script Changes
-* XML Configuration Changes

@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: jira parameter
-# key: parameter
-# --
-Name: $1
-Location: $2
-Description: $3
-Possible Values: $4
-Default Value: $5
