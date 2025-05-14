@@ -1335,6 +1335,7 @@ See `tide-tsserver-executable'."
         ([remap back-to-indentation] . archive-move-to-filename)))
 
 (use-package dashboard-desktop
+  :demand t
   :after dashboard
   :config
   (add-to-list 'dashboard-items '(desktop . 5))

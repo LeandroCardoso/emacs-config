@@ -1,11 +1,21 @@
-;; Add support to MS Visual Studio
-;;
+;;; msvs.el --- Add support to MS Visual Studio -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
 ;; References:
+
 ;; - https://walbourn.github.io/a-brief-history-of-windows-sdks/
 ;; - https://en.wikipedia.org/wiki/Microsoft_Windows_SDK
 ;; - https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
 ;; TODO use Common7\Tools\vsdevcmd.bat to compile
 
+(require 'files-extra)
 (require 'w32-extra)
 
 ;; Custom
@@ -72,6 +82,7 @@ option `msvs-msbuild-default-parameters'.")
 
 (defun msvs-generate-compile-command (useProjectFile platform configuration target &rest rest-parameters)
   "Return a string for compile a msvs solution, project or file."
+  (require 'subr-x)  
   (let* (
          ;; Ignore useProjectFile parameter when the current buffer is a solution file.
          (useProjectFile (and useProjectFile
@@ -137,6 +148,7 @@ used."
 (defun nuget-execute (&rest program-args)
   "Start a nuget subprocess. The arguments PROGRAM-ARGS are strings
 to give nuget as arguments."
+  (require 'view)
   (unless (executable-find "nuget")
     (error "Nuget executable not found"))
   (apply 'start-process "nuget" msvs-nuget-buffer "nuget" program-args)
@@ -209,13 +221,16 @@ to give nuget as arguments."
     (add-to-list 'grep-find-ignored-files file)))
 
 ;; compile
-(when (eq system-type 'windows-nt)
+(with-eval-after-load "cc-mode"
   (add-hook 'c-mode-hook 'msvs-set-compile-command)
-  (add-hook 'c++-mode-hook 'msvs-set-compile-command)
-  (with-eval-after-load "csharp-mode" (add-hook 'csharp-mode-hook 'msvs-set-compile-command)))
+  (add-hook 'c++-mode-hook 'msvs-set-compile-command))
+(with-eval-after-load "csharp-mode"
+  (add-hook 'csharp-mode-hook 'msvs-set-compile-command))
 
 
 ;; Setup Auto-Modes
+(require 'derived)
+(require 'generic)
 
 ;; Create modes for solution and project files, so we can set the compile command
 (define-generic-mode sln-mode                      ; MODE
@@ -238,7 +253,8 @@ to give nuget as arguments."
 
 ;; An ungly hack to idenfity c++ extensionless files as c++ file. Thanks ISO c++, a file without
 ;; extension was a great idea!
-(when (eq system-type 'windows-nt)
-  (add-to-list 'auto-mode-alist '("[Ii]nclude" . c++-mode) t))
+(add-to-list 'auto-mode-alist '("[Ii]nclude" . c++-mode) t)
 
 (provide 'msvs)
+
+;; msvs.el ends here

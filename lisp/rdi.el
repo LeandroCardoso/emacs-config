@@ -1,20 +1,24 @@
+;;; rdi.el --- Extra commands for Emacs -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
 (require 'project)
-(require 'msvs)
+
 (require 'fragment)
+(require 'msvs)
+(require 'project-root-dir)
 (require 'xml-format)
 
-(defconst np6-bugs-root-directory
-  (if (eq system-type 'windows-nt) "~/Documents/bugs/" "~/dev/rdi/bugs/")
-  "Development bugs root directory")
-(defconst np6-env-root-directory
-  (if (eq system-type 'windows-nt) "~/Documents/env/" "~/dev/rdi/env/")
-  "Development environment root directory")
-(defconst np6-plugins-src-directory
-  (if (eq system-type 'windows-nt) "c:/Dev/NpSharpRoot/Plugins/" "~/dev/rdi/src/NpSharpRoot/Plugins/")
-  "Source code directory for np# plugins")
-(defconst np6-np61-src-directory
-  (if (eq system-type 'windows-nt) "c:/Dev/np61/" "~/dev/rdi/src/np61/")
-  "Source code directory for np61 core")
+(defconst np6-bugs-root-directory "~/Documents/bugs/" "Development bugs root directory")
+(defconst np6-env-root-directory "~/Documents/env/" "Development environment root directory")
+(defconst np6-plugins-src-directory "c:/Dev/NpSharpRoot/Plugins/" "Source code directory for np# plugins")
+(defconst np6-np61-src-directory "c:/Dev/np61/" "Source code directory for np61 core")
 
 ;; Project
 (add-to-list 'project-root-up-directory-list np6-bugs-root-directory)
@@ -55,6 +59,8 @@
   (use-local-map np6-log-mode-map))
 
 ;; np6 log mode
+(require 'generic)
+
 (define-generic-mode np6-log-mode                      ; MODE
   nil                                                  ; COMMENT-LIST
   nil                                                  ; KEYWORD-LIST
@@ -393,3 +399,7 @@ See `fragment-xml-display-other-window'."
 
 (add-hook 'nxml-mode-hook 'np6-view-auto-format)
 (add-hook 'after-revert-hook 'np6-view-auto-format)
+
+(provide 'rdi)
+
+;;; rdi.el ends here
