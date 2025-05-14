@@ -10,17 +10,47 @@
 
 (require 'simple)
 
-;; TODO move this function to another file
-;; TODO clean up subdirectories
+(defun cleanup-compiled-elisp (directory)
+  "Clean up compiled elisp files in DIRECTORY.
+
+Delete old '.elc' files that don't have a corresponding '.el' associated
+file."
+  (let* ((directories (directory-list directory))
+         (delete-count 0)
+         (skip-count 0)
+         (dir-count 0)
+         last-dir)
+    (while directories
+      (setq directory (expand-file-name (car directories)))
+      (message "Checking %s..." directory)
+      (dolist (f (directory-files directory t ".*\\.elc$"))
+        (message "Checking %s..." directory)
+        (let ((file (expand-file-name f directory)))
+          (unless (file-exists-p (file-name-with-extension file ".el"))
+            (message "Deleting file: %s" file)
+            (delete-file file))
+          (if (file-exists-p file)
+              (setq skip-count (1+ skip-count))
+            (setq delete-count (1+ delete-count)))
+          (if (not (eq last-dir directory))
+              (setq last-dir directory
+                    dir-count (1+ dir-count)))))
+      (setq directories (cdr directories)))
+    (message "Done (Total of %d file%s deleted%s%s)"
+	         delete-count (if (= delete-count 1) "" "s")
+	         (if (> skip-count 0) (format ", %d skipped" skip-count) "")
+	         (if (> dir-count 1)
+                 (format " in %d directories" dir-count) ""))))
+
 (defun byte-recompile-and-cleanup-directory (directory &optional force follow-symlinks)
-  "Recompile and clean eslip files in DIRECTORY.
+  "Recompile and clean up eslip files in DIRECTORY.
 
 Recompile every ‘.el’ file in DIRECTORY that needs recompilation.  This
 happens when a '.elc' file doesn't exist, or it exists but is older than
 the '.el' file.  Files in subdirectories of DIRECTORY are processed
 also.
 
-After recompilation, delete old stale '.elc' files that don't have a
+After recompilation, delete old '.elc' files that don't have a
 corresponding '.el' associated file.
 
 If the argument FORCE is non-nil, recompile every '.el'.
@@ -33,18 +63,8 @@ FOLLOW-SYMLINKS is non-nil, symlinked '.el' files will also be compiled."
   (byte-recompile-directory directory 0 force follow-symlinks)
 
   ;; Delete old elisp compiled files (.elc) that doesn't have a eslisp source file (.el) associated
-  (message "Cleaning stale elisp compiled files in %s..." directory)
-  (let ((deleted 0)
-        (skipped 0))
-    (dolist (f (directory-files directory t ".*\\.elc$"))
-      (let ((file (expand-file-name f directory)))
-        (unless (file-exists-p (file-name-with-extension file ".el"))
-          (message "Deleting file: %s" file)
-          (delete-file file))
-        (if (file-exists-p file)
-            (setq skipped (1+ skipped))
-          (setq deleted (1+ deleted)))))
-    (message "Done (Total of %d files deleted, %d skipped)" deleted skipped)))
+  (message "Cleaning up elisp compiled files in %s..." directory)
+  (cleanup-compiled-elisp directory))
 
 (defun directory-list (directory)
   "Find all directories in DIRECTORY."
