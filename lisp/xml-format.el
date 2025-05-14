@@ -1,13 +1,25 @@
+;;; xml-format.el --- XML format commands for Emacs -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
 (require 'env)
 (require 'files)
 (require 'nxml-mode)
+(require 'simple)
+(require 'subr-x)
 
 (defcustom xml-format-declaration 'keep
   "Wheter `xml-format' will keep, remove or insert an XML
 declaration in the first line from the formatted XML."
   :type '(choice (const :tag "Keep an XML declaration when present in original XML" keep)
                  (const :tag "Remove the XML declaration in the formatted XML" nil)
-                 (const :tag "Insert an XML declaration in the formatted XML") t)
+                 (const :tag "Insert an XML declaration in the formatted XML" t))
   :group 'xml-format)
 
 (defun xml-declaration-p (&optional begin)
@@ -16,6 +28,7 @@ declaration in the first line from the formatted XML."
     (goto-char (or begin (point-min)))
     (looking-at-p "<\\?xml")))
 
+;;;###autoload
 (defun xml-remove-declaration ()
   "Remove an XML declaration from the beginning of buffer."
   (interactive "*")
@@ -23,6 +36,7 @@ declaration in the first line from the formatted XML."
   (when (looking-at-p "^<\\?xml")
     (kill-region (point) (min (1+ (pos-eol)) (point-max)))))
 
+;;;###autoload
 (defun xml-format ()
   "Format an XML buffer or region using xmllint (from libxml2).
 
@@ -71,8 +85,6 @@ Return t when buffer was modified."
       (kill-buffer buf))
     result))
 
-(with-eval-after-load "nxml-mode"
-  (define-key nxml-mode-map (kbd "C-c C-q") 'xml-format)
-  (define-key nxml-mode-map (kbd "C-c C-M-x") 'xml-remove-declaration))
-
 (provide 'xml-format)
+
+;;; xml-format.el ends here

@@ -1522,6 +1522,13 @@ See `tide-tsserver-executable'."
   ("C-+" . rotate-text-backward))
 
 (use-package w32-extra)
+(use-package xml-format
+  :defer t
+  :after nxml-mode
+  :bind
+  (:map nxml-mode-map
+        ("C-c C-q" . xml-format)
+        ("C-c C-M-x" . xml-remove-declaration)))
 
 
 ;;;;;;;;;;;;;;;;;;
