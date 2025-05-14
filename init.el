@@ -1501,6 +1501,13 @@ See `tide-tsserver-executable'."
   (:map ctl-x-5-map
         ("C-r" . recentf-find-file-other-frame))) ; original is find-file-read-only-other-frame
 
+(use-package resize-window
+  :defer t
+  :bind
+  ("C-]" . enlarge-window+)
+  ("C-}" . shrink-window+)
+  ("C-M-]" . enlarge-window-horizontally+)
+  ("C-M-}" . shrink-window-horizontally+))
 (use-package rotate-text
   :defer t
   :config

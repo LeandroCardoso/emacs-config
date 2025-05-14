@@ -1,3 +1,15 @@
+;;; resize-window.el --- Extra resize window commands for Emacs -*- lexical-binding:t -*-
+
+;;; Copyright: Leandro Cardoso
+
+;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+
+;;; Commentary:
+
+;;; Code:
+
+(require 'window)
+
 (defcustom resize-window-vertical-step 0.1
   "Default step for `enlarge-window+',
 `enlarge-window-horizontally+', `shrink-window+' and
@@ -8,7 +20,6 @@ fraction of the current window height)."
   :type 'float
   :group 'resize-window)
 
-
 (defcustom resize-window-horizontal-step 0.1
   "Default step for `enlarge-window-horizontally+' and
 `shrink-window-horizontally+'. Value specifies either an
@@ -18,7 +29,7 @@ fraction of the current window width)."
   :type 'float
   :group 'resize-window)
 
-
+;;;###autoload
 (defun enlarge-window+ (delta &optional horizontal)
   "If DELTA is an integer, make the selected window DELTA lines taller.
 If DELTA is a float between 0.1 and 0.9 make the selected window
@@ -49,7 +60,7 @@ If DELTA is negative, shrink selected window by -DELTA."
                       delta-or-default)
                     horizontal)))
 
-
+;;;###autoload
 (defun shrink-window+ (delta &optional horizontal)
   "If DELTA is an integer, make the selected window DELTA lines shorter.
 If DELTA is a float between 0.1 and 0.9 make the selected window
@@ -72,7 +83,7 @@ If DELTA is negative, enlarge selected window by -DELTA."
                          (t '-))
                    horizontal))
 
-
+;;;###autoload
 (defun enlarge-window-horizontally+ (delta)
   "If DELTA is an integer make selected window wider by DELTA
 columns. If DELTA is a float between 0.1 and 0.9 make the
@@ -85,7 +96,7 @@ If DELTA is negative, shrink selected window by -DELTA."
   (interactive "P")
   (enlarge-window+ delta t))
 
-
+;;;###autoload
 (defun shrink-window-horizontally+ (delta)
   "If DELTA is an integer make selected window narrower by DELTA
 columns. If DELTA is a float between 0.1 and 0.9 make the
@@ -98,10 +109,6 @@ If DELTA is negative, shrink selected window by -DELTA."
   (interactive "P")
   (shrink-window+ delta t))
 
-
-(global-set-key (kbd "C-]") 'enlarge-window+) ; original is abort-recursive-edit
-(global-set-key (kbd "C-}") 'shrink-window+)
-(global-set-key (kbd "C-M-]") 'enlarge-window-horizontally+)
-(global-set-key (kbd "C-M-}") 'shrink-window-horizontally+)
-
 (provide 'resize-window)
+
+;;; resize-window.el ends here
