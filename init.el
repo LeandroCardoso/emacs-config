@@ -952,6 +952,15 @@ See `kill-new' for details."
   (setopt dashboard-startup-banner 'logo)
   (dashboard-setup-startup-hook)
 
+  (defun dashboard-move-to-first-item ()
+    "Move to the first item on dashboard."
+    (beginning-of-buffer)
+    (widget-forward 1))
+
+  :hook
+  ;; Move to the first item on initialization
+  (dashboard-after-initialize . dashboard-move-to-first-item)
+
   :bind
   (:map dashboard-mode-map
         ("C-<tab>" . dashboard-next-section)
@@ -1344,10 +1353,7 @@ See `tide-tsserver-executable'."
   :demand t
   :after dashboard
   :config
-  (add-to-list 'dashboard-items '(desktop . 5))
-
-  :hook
-  (dashboard-after-initialize . dashboard-jump-to-desktop))
+  (add-to-list 'dashboard-items '(desktop . 5)))
 
 (use-package default-font-height
   :demand t
