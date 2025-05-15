@@ -26,7 +26,9 @@
   :config
   (setopt use-package-compute-statistics t) ; view the statistical report using `use-package-report'
   (setopt use-package-enable-imenu-support t)
-  (setopt use-package-verbose t))
+  (setopt use-package-verbose t)
+  ;; Workaround for signature error when managing elpa packages
+  (setopt package-check-signature (not (eq system-type 'windows-nt))))
 
 (use-package solarized
   :ensure solarized-theme
@@ -148,10 +150,6 @@
   ;; user
   (setopt user-full-name "Leandro Cardoso")
   (setopt user-mail-address "leandrocardoso@gmail.com")
-
-  ;; platform specific settings
-  (when (eq system-type 'windows-nt)
-    (load (expand-file-name "config-mswindows" user-lisp-directory)))
 
   :hook
   (after-save . executable-make-buffer-file-executable-if-script-p)
@@ -1400,7 +1398,7 @@ See `byte-recompile-and-cleanup-directory'."
 
   :hook
   (emacs-startup . recompile-user-lisp-files)
-  
+
   :bind
   ([remap rename-buffer] . rename-buffer-and-file)
   (:map ctl-x-x-map
@@ -1552,7 +1550,32 @@ See `byte-recompile-and-cleanup-directory'."
 (use-package teamcity)
 
 (use-package w32-extra
-  :if (eq system-type 'windows-nt))
+  :if (eq system-type 'windows-nt)
+  :config
+  ;; Root directories are added in the beginning
+  (w32-add-unix-root-dir "c:/msys64/ucrt64")
+  (w32-add-unix-root-dir "c:/msys64")
+
+  ;; Add external utilities to PATH and exec-path
+  (dolist (path (list "C:/Program Files/Git/cmd/"
+                      "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
+                      (expand-file-name "omnisharp/" user-emacs-directory)
+                      (expand-file-name "windows_bin/" user-emacs-directory)))
+    (w32-add-to-path path))
+
+  ;; Required to enter password for git
+  (setenv "SSH_ASKPASS" "c:/Program Files/Git/mingw64/bin/git-askpass.exe")
+
+  ;; nodejs
+  (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
+    (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
+
+  ;; map AltGr to Alt using AutoHotKey
+  (if (executable-find "altgr2alt")
+      (progn
+        (message "Starting altgr2alt")
+        (start-process "altgr2alt" (messages-buffer) "altgr2alt"))
+    (message "Error: altgr2alt not found!")))
 
 (use-package xml-format
   :defer t
