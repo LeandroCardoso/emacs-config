@@ -28,7 +28,9 @@
   (setopt use-package-enable-imenu-support t)
   (setopt use-package-verbose t)
   ;; Workaround for signature error when managing elpa packages
-  (setopt package-check-signature (not (eq system-type 'windows-nt))))
+  (setopt package-check-signature (if (eq system-type 'windows-nt)
+                                      nil
+                                    'allow-unsigned)))
 
 (use-package solarized
   :ensure solarized-theme
