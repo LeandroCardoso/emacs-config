@@ -1323,6 +1323,11 @@ See `tide-tsserver-executable'."
   :hook
   ((prog-mode text-mode) . yas-minor-mode))
 
+(use-package yasnippet-snippets
+  :ensure t
+  :defer t
+  :after yasnippet)
+
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Local packages ;;
