@@ -81,7 +81,10 @@ If FOLLOW-SYMLINKS is non-nil, symbolic links that point to directories
 are followed.  Note that this can lead to infinite recursion."
   (require 'grep)
   (when (file-directory-p directory)
-    (process-lines find-program (expand-file-name directory) "-type" "d" (when follow-symlinks "-L"))))
+    (let ((program-args (list (expand-file-name directory) "-type" "d")))
+      (when follow-symlinks
+        (push "-L" program-args))
+      (apply 'process-lines find-program program-args))))
 
 (defun list-directories (directory &optional full recursive follow-symlinks)
   "Return a list of subdirectories in DIRECTORY.
