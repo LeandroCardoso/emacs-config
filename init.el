@@ -1427,7 +1427,9 @@ See `byte-recompile-and-cleanup-directory'."
   (:map ctl-x-x-map
         ("w" . copy-file-or-buffer-name-as-kill)
         ("W" . copy-file-or-buffer-name-directory-as-kill)
-        ("k" . make-backup-buffer)))
+        ("k" . make-backup-buffer))
+  (:map emacs-lisp-mode-map
+        ("C-c C-u" . recompile-user-lisp-files)))
 
 (use-package fragment
   :defer t)
