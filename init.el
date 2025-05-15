@@ -1467,7 +1467,6 @@ See `byte-recompile-and-cleanup-directory'."
         ("t" . gtags-mode-project-create)))
 
 (use-package ibuffer-extra
-  :defer t
   :after ibuffer
   :config
   (ibuffer-remove-title-underline-setup))
