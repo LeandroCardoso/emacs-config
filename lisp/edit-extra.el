@@ -122,37 +122,6 @@ marked."
     (end-of-line n)))
 
 
-(defun newline-no-break (&optional arg)
-  "Insert a new line without breaking.
-
-Insert a newline using the `newline' command after the current line
-without breaking.
-
-With ARG, insert that many newlines."
-  (interactive "*P")
-  (move-end-of-line nil)
-  (newline arg t))
-
-
-(defun kill-line-and-join (&optional arg)
-  "Kill the rest of the current line.
-
-If at end of line, kill thru newline and keep just one space.
-
-With prefix argument ARG, kill that many lines from point.  Negative
-arguments kill lines backward.  With zero argument, kills the text
-before point on the current line.
-
-When calling from a program, nil means \"no arg\", a number counts as a
-prefix arg."
-  (interactive "P")
-  (if (and (eolp) (not (bolp)))
-      (progn
-        (kill-line arg)
-        (just-one-space))
-    (kill-line arg)))
-
-
 (defun set-auto-mode+ ()
   "Select major mode appropriate for current buffer.
 

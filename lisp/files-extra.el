@@ -150,22 +150,6 @@ canonicalize it."
     (message "Directory %s" dir-exp)))
 
 ;;;###autoload
-(defun rename-buffer-and-file ()
-  "Rename the current buffer and the file name when it is
-visiting a file."
-  (interactive)
-  (require 'vc)
-  (let ((filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (let ((new-name (read-string "Rename buffer: " (buffer-name))))
-          (rename-buffer new-name))
-      (let ((new-name (read-file-name "Rename file: " nil nil nil (file-name-nondirectory filename))))
-        (if (vc-backend filename)
-            (vc-rename-file filename new-name)
-          (rename-file filename new-name 1)
-          (set-visited-file-name new-name t t))))))
-
-;;;###autoload
 (defun make-backup-buffer ()
   "Make a backup of the disk file visited by the current buffer.
 See `backup-buffer'."
@@ -178,19 +162,6 @@ See `backup-buffer'."
       (backup-buffer)
       (when buffer-backed-up
         (message "Created backup for buffer %s" (file-name-nondirectory buffer-file-name))))))
-
-;;;###autoload
-(defun sudo-find-file (&optional arg)
-  "Like `find-file', but as root.
-
-With a prefix ARG re-open the current file as root."
-  (interactive "P")
-  (if (and arg buffer-file-name)
-      (let ((p (point)))
-        (find-file (concat "/sudo:root@localhost:" buffer-file-name))
-        (goto-char p))
-    (find-file (concat "/sudo:root@localhost:"
-                       (read-file-name "Find file (as root): ")))))
 
 (defun create-dir-local-file (directory)
   "Create a `dir-locals-file' in the DIRECTORY if it does not exist yet."

@@ -542,7 +542,7 @@
   (setopt org-src-window-setup 'current-window)                  ; show edit buffer in the current window
   (setopt org-startup-truncated nil)                             ; don't set `truncate-lines', this break long tables
   (setopt org-tag-faces `(("doubt" . ,(face-foreground 'warning))
-                        ("important" . ,(face-foreground 'org-warning))))
+                          ("important" . ,(face-foreground 'org-warning))))
   (setopt org-tag-persistent-alist '(("doubt" . ?d)
                                      ("important" . ?i)))        ; tags always available in Org files
   (setopt org-tags-column (- fill-column))                       ; align tags at the right margin
@@ -675,8 +675,8 @@ See `kill-new' for details."
   (setq-default indent-tabs-mode nil)
 
   :bind
+  ("C-M-|" . delete-indentation)
   ("C-c <tab>" . indent-tabs-mode)
-  ("C-c k" . kill-whole-line)
   ;; special mode like occur and xref
   (:map special-mode-map
         ("f" . flush-lines)
@@ -930,6 +930,27 @@ See `kill-new' for details."
   :config
   (add-to-list 'company-backends 'company-c-headers))
 
+(use-package crux
+  :ensure t
+  :defer t
+  :bind
+  ;; edit
+  ("C-c C-q" . crux-indent-defun)
+  ([remap kill-line] . crux-kill-and-join-forward)
+  ("C-S-<backspace>" . crux-kill-line-backwards)
+  ("C-c k" . crux-kill-whole-line)
+  ("M-<return>" . crux-smart-open-line)
+  ("M-S-<return>" . crux-smart-open-line-above)
+  ;; misc
+  ("C-c C-S-k" . crux-indent-rigidly-and-copy-to-clipboard)
+  ([remap keyboard-quit] . crux-keyboard-quit-dwim)
+  ([remap rename-buffer] . crux-rename-buffer-and-file)
+  (:map ctl-x-map
+        ("I" . crux-find-user-init-file))
+  (:map ctl-x-x-map
+        ("D" . crux-delete-file-and-buffer)
+        ("s" . crux-sudo-edit)))
+
 (use-package dashboard
   :ensure t
   :demand t
@@ -978,10 +999,10 @@ See `kill-new' for details."
   :config
   (setopt edit-server-default-major-mode 'org-mode)
   (setopt edit-server-new-frame-alist
-        '((name . "Edit Server")
-          (width . 0.5)
-          (height . 0.5)
-          (fullscreen . nil)))
+          '((name . "Edit Server")
+            (width . 0.5)
+            (height . 0.5)
+            (fullscreen . nil)))
   (edit-server-start))
 
 (use-package engine-mode
@@ -1385,10 +1406,7 @@ See `tide-tsserver-executable'."
   :bind
   ("M-#" . base64-encode-dwim)
   ([remap delete-blank-lines] . delete-all-blank-lines)
-  ("C-M-|" . delete-indentation)
-  ([remap kill-line] . kill-line-and-join)
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
-  ("M-<return>" . newline-no-break)
   ("C-c S" . sort-words))
 
 (use-package files-extra
@@ -1404,7 +1422,6 @@ See `byte-recompile-and-cleanup-directory'."
   (emacs-startup . recompile-user-lisp-files)
 
   :bind
-  ([remap rename-buffer] . rename-buffer-and-file)
   (:map ctl-x-x-map
         ("w" . copy-file-or-buffer-name-as-kill)
         ("W" . copy-file-or-buffer-name-directory-as-kill)
@@ -1535,17 +1552,17 @@ See `byte-recompile-and-cleanup-directory'."
   :defer t
   :config
   (setopt rotate-text-words
-        '(("height" "width")
-          ("left" "right" "top" "bottom")
-          ("active" "inactive")
-          ("enable" "disable")
-          ("enabled" "disabled")
-          ("true" "false")
-          ("yes" "no")))
+          '(("height" "width")
+            ("left" "right" "top" "bottom")
+            ("active" "inactive")
+            ("enable" "disable")
+            ("enabled" "disabled")
+            ("true" "false")
+            ("yes" "no")))
   (setopt rotate-text-symbols
-        '(("private" "protected" "public")
-          ("on" "off")
-          ("t" "nil")))
+          '(("private" "protected" "public")
+            ("on" "off")
+            ("t" "nil")))
 
   :bind
   ("C-=" . rotate-text)
