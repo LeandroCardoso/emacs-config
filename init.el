@@ -238,10 +238,6 @@
 (use-package desktop
   :defer t
   :config
-  (defun desktop-save-mode-on ()
-    "Enable `desktop-save-mode'.  Provided for use in hooks."
-    (desktop-save-mode))
-
   (setopt desktop-save 'ask-if-exists)
   (add-to-list 'desktop-locals-to-save 'buffer-display-time)
 
@@ -249,7 +245,7 @@
   (desktop-after-read . clean-buffer-list)
   ;; I am enabling the desktop-save-mode *after* a desktop session is loaded by the `desktop-read'
   ;; command to avoid loading a desktop session on Emacs initialization
-  (desktop-after-read . desktop-save-mode-on))
+  (desktop-after-read . desktop-save-mode))
 
 (use-package dired
   :defer t
@@ -1252,12 +1248,9 @@ the plist used as a communication channel."
   (setopt tide-imenu-flatten t)
   (setopt tide-server-max-response-length 10240000)
 
-  (defun tide-setup-hook ()
-    (tide-setup))
-
   ;; format the buffer before saving
   (add-hook 'before-save-hook 'tide-format-before-save)
-  (add-hook 'typescript-mode-hook 'tide-setup-hook)
+  (add-hook 'typescript-mode-hook 'tide-setup)
 
   ;; Force bundled tide tsserver
   (defun tide-force-bundled-tsserver ()
@@ -1306,7 +1299,7 @@ See `tide-tsserver-executable'."
     "Enable `ws-butler-mode'.  Provided for use in hooks."
     (when (and ws-butler-global-mode
                (not (derived-mode-p ws-butler-global-exempt-modes)))
-      (ws-butler-mode)))
+      (ws-butler-mode 1)))
 
   (defun ws-butler-mode-off ()
     "Disable `ws-butler-mode'.  Provided for use in hooks."

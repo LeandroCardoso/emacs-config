@@ -15,11 +15,7 @@
 ;; enabled.  If this behavior is undesirable, my recommendation is to only enable the
 ;; `desktop-save-mode' after a desktop session is loaded:
 ;;
-;; (defun desktop-save-mode-on ()
-;;     "Enable `desktop-save-mode'.  Provided for use in hooks."
-;;     (desktop-save-mode 1))
-;; 
-;; (add-hook 'desktop-after-read-hook 'desktop-save-mode-on)
+;; (add-hook 'desktop-after-read-hook 'desktop-save-mode)
 
 ;;; Code:
 
