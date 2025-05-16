@@ -11,13 +11,11 @@
 (require 'faces)
 (require 'files)
 (require 'frame)
-(require 'seq)
+(require 'map)
 
 ;; TODO rename to auto-font-size or dynamic-font-size.
 ;;
 ;; TODO create a mode to enable/disable
-;;
-;; TODO change default-font-height-list to alist
 
 ;;; user options
 
@@ -36,9 +34,9 @@ monitors."
 ;;; variables
 
 (defvar default-font-height-list 'unset
-  "A property list of default fonts height for different monitors.
+  "An association list of default fonts height for different monitors.
 
-The property list maps a monitor idenfification returned by
+This list maps a monitor idenfification returned by
 `default-font-height-get-monitor-id' to a default font height for this
 monitor.")
 
@@ -96,6 +94,10 @@ Set the height of the default font of the frame FRAME to FONT-HEIGHT."
                        'default-font-height-monitor-id
                        (default-font-height-get-monitor-id frame)))
 
+(defun default-font-height-get-font-height (frame)
+  "Return the current height of the font in frame FRAME."
+  (round (/ (face-attribute 'default :height frame) 10.0)))
+
 ;;;###autoload
 (defun default-font-height-adjust (&optional arg)
   "Adjust the font height.
@@ -136,7 +138,7 @@ If INC is omitted or nil, increase the height of the default font by 1.
 If FRAME is omitted or nil, use currently selected frame."
   (interactive "p")
   (let* ((frame (if (null frame) (selected-frame) frame))
-         (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
+         (current-font-height (default-font-height-get-font-height frame))
          (new-font-height (+ (or inc 1) current-font-height)))
     (unless (eq current-font-height new-font-height)
       (default-font-height-set-font-height frame new-font-height)
@@ -156,16 +158,15 @@ If FRAME is omitted or nil, use currently selected frame."
   (interactive)
   (default-font-height-list-initialize)
   (let* ((frame (if (null frame) (selected-frame) frame))
-         (current-font-height (round (/ (face-attribute 'default :height frame) 10.0)))
-         (new-font-height (plist-get default-font-height-list
-                                     (default-font-height-get-monitor-id frame)
-                                     'equal)))
+         (current-font-height (default-font-height-get-font-height frame))
+         (new-font-height (map-elt default-font-height-list
+                                   (default-font-height-get-monitor-id frame))))
     (if (not new-font-height)
-        (message "No default font height saved for current monitor"))
+        (message "No default font height saved for current monitor")
       (if (eq current-font-height new-font-height)
-          (message "Current font height is %d" current-font-height))
+          (message "Current font height is %d" current-font-height)
         (default-font-height-set-font-height frame new-font-height)
-        (message "Resetting font height to %d" new-font-height)))
+        (message "Resetting font height to %d" new-font-height)))))
 
 ;;;###autoload
 (defun default-font-height-save (&optional frame)
@@ -178,12 +179,11 @@ If FRAME is omitted or nil, use currently selected frame."
   (interactive)
   (default-font-height-list-initialize)
   (let* ((frame (if (null frame) (selected-frame) frame))
-         (current-font-height (round (/ (face-attribute 'default :height frame) 10.0))))
-    (setq default-font-height-list
-          (plist-put default-font-height-list
-                     (default-font-height-get-monitor-id frame)
-                     current-font-height
-                     'equal))
+         (monitor-id (default-font-height-get-monitor-id frame))
+         (current-font-height (default-font-height-get-font-height frame)))
+    (if default-font-height-list
+        (map-put! default-font-height-list monitor-id current-font-height)
+      (setq default-font-height-list (list (cons monitor-id current-font-height))))
     (default-font-height-write-file)
     (message "Saving font height to %d for current monitor with frame \"%s\""
              current-font-height (frame-parameter frame 'name))))
