@@ -19,7 +19,7 @@
 Whether non-file buffers are included in the project groups when using
     the `ibuffer-set-filter-groups-by-project'"
   :type 'boolean
-  :group 'ibuffer-project)
+  :group 'ibuffer)
 
 ;;; variables
 

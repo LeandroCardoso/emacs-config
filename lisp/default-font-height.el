@@ -21,6 +21,10 @@
 
 ;;; user options
 
+(defgroup default-font-height nil
+  "Default Font Height."
+  :group 'faces)
+
 (defcustom default-font-height-list-file (expand-file-name "default-font-height" user-emacs-directory)
   "Save file for default font heights.
 

@@ -20,6 +20,10 @@
 
 ;; Custom
 
+(defgroup msvs nil
+  "Ms Visual Studio integration"
+  :group 'tools)
+
 (defcustom msvs-msbuild-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
   "Default parameters for msbuild used by `msvs-generate-compile-command'.
 

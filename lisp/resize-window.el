@@ -12,22 +12,24 @@
 
 (defcustom resize-window-vertical-step 0.1
   "Default step for `enlarge-window+',
+
 `enlarge-window-horizontally+', `shrink-window+' and
 `shrink-window-horizontally+'. Value specifies either an
 integer (the number of lines to enlarge or shrink the selected
 window), a floating point number between 0.1 and 0.9 (the
 fraction of the current window height)."
   :type 'float
-  :group 'resize-window)
+  :group 'windows)
 
 (defcustom resize-window-horizontal-step 0.1
   "Default step for `enlarge-window-horizontally+' and
+
 `shrink-window-horizontally+'. Value specifies either an
 integer (the number of columns to enlarge or shrink the selected
 window), a floating point number between 0.1 and 0.9 (the
 fraction of the current window width)."
   :type 'float
-  :group 'resize-window)
+  :group 'windows)
 
 ;;;###autoload
 (defun enlarge-window+ (delta &optional horizontal)

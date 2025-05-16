@@ -20,7 +20,7 @@ declaration in the first line from the formatted XML."
   :type '(choice (const :tag "Keep an XML declaration when present in original XML" keep)
                  (const :tag "Remove the XML declaration in the formatted XML" nil)
                  (const :tag "Insert an XML declaration in the formatted XML" t))
-  :group 'xml-format)
+  :group 'nxml)
 
 (defun xml-declaration-p (&optional begin)
   "Return t when the buffer begins with a XML declaration."

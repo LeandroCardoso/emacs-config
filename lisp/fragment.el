@@ -14,6 +14,10 @@
 
 ;;; user options
 
+(defgroup fragment nil
+  "Extract and display fragments of text in other window."
+  :group 'convenience)
+
 (defcustom fragment-search-distance 30000
   "Distance used to search for fragments.
 Maximum distance used to search for fragments by
