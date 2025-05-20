@@ -1371,13 +1371,13 @@ See `tide-tsserver-executable'."
   :config
   (add-to-list 'dashboard-items '(desktop . 5)))
 
-(use-package default-font-height
+(use-package dynamic-font-size
   :demand t
   :config
-  (default-font-height-setup)
+  (dynamic-font-size-mode)
 
   :bind
-  ("C-M-=" . default-font-height-adjust))
+  ("C-M-=" . dynamic-font-size-adjust))
 
 (use-package dired-extra
   :defer t

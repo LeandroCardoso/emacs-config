@@ -6,7 +6,7 @@ auto-save-list/
 auto-save/
 bookmarks
 custom-variables.el
-default-font-height
+dynamic-font-size
 eln-cache
 elpa/
 eshell/history
