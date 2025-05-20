@@ -1,10 +1,13 @@
-;;; dynamic-font-size.el --- Set the font size automatically -*- lexical-binding:t -*-
+;;; dynamic-font-size.el --- Automatically adjust font size per monitor -*- lexical-binding: t -*-
 
-;;; Copyright: Leandro Cardoso
-
-;;; Maintainer: Leandro Cardoso - leandrocardoso@gmail.com
+;; Copyright (C) Leandro Cardoso
+;; Maintainer: Leandro Cardoso <leandrocardoso@gmail.com>
 
 ;;; Commentary:
+
+;; This package automatically adjusts the font size of frames based on the monitor they are
+;; displayed on.  It saves user preferences per monitor and applies the corresponding font size when
+;; frames are created or moved.
 
 ;;; Code:
 
@@ -13,199 +16,160 @@
 (require 'frame)
 (require 'map)
 
-;;; user options
+;;; Customization
 
 (defgroup dynamic-font-size nil
-  "Dynamic font size."
+  "Automatically adjust font size based on monitor."
   :group 'faces)
 
-(defcustom dynamic-font-size-list-file
-  (expand-file-name "dynamic-font-size" user-emacs-directory)
-  "Save file for default font size.
-
-File in which to save the list of default fonts size for different
-monitors."
+(defcustom dynamic-font-size-data-file
+  (expand-file-name "dynamic-font-size-data.el" user-emacs-directory)
+  "File where font sizes per monitor are saved."
   :type 'file
   :group 'dynamic-font-size)
 
-;;; variables
+;;; Internal Variables
 
 (defvar dynamic-font-size-list 'unset
-  "An association list of default fonts size for different monitors.
+  "Alist mapping monitor identifiers to default font sizes.
 
-This list maps a monitor idenfification returned by
-`dynamic-font-size-get-monitor-id' to a default font size for this
-monitor.")
+Monitor identifiers are computed by `dynamic-font-size-get-monitor-id'.")
 
-;;; functions
+;;; Utility Functions
 
 (defun dynamic-font-size-get-monitor-id (&optional frame)
-  "Get a monitor identification.
+  "Return an identifier for the monitor displaying FRAME.
 
-Return a monitor identification for the monitor that frame FRAME is on
-to be used as a key in the `dynamic-font-size-list'.
+This ID is used as a key in `dynamic-font-size-list'.
 
-If FRAME is omitted or nil, use currently selected frame."
-  (let* ((frame (if (null frame) (selected-frame) frame))
-         (monitor-size (frame-monitor-attribute 'mm-size frame))
-         (monitor-geometry (frame-monitor-attribute 'geometry frame))
-         (monitor-resolution (list (nth 2 monitor-geometry) (nth 3 monitor-geometry))))
-    (list monitor-size monitor-resolution)))
+If FRAME is nil, use the selected frame."
+  (let* ((frame (or frame (selected-frame)))
+         (size (frame-monitor-attribute 'mm-size frame))
+         (geom (frame-monitor-attribute 'geometry frame))
+         (res  (list (nth 2 geom) (nth 3 geom))))
+    (list size res)))
 
 (defun dynamic-font-size-list-initialize ()
-  "Initialize `dynamic-font-size-list'.
-
-Initialize `dynamic-font-size-list' if it isn't already initialized."
+  "Initialize `dynamic-font-size-list' from file if needed."
   (when (eq dynamic-font-size-list 'unset)
     (dynamic-font-size-read-file)))
 
 (defun dynamic-font-size-read-file ()
-  "Initialize `dynamic-font-size-list' from file.
-
-Initialize `dynamic-font-size-list' using contents of
-`dynamic-font-size-list-file'."
+  "Read `dynamic-font-size-list' from `dynamic-font-size-data-file'."
   (setq dynamic-font-size-list
-        (when (file-exists-p dynamic-font-size-list-file)
+        (when (file-exists-p dynamic-font-size-data-file)
           (with-temp-buffer
-            (insert-file-contents dynamic-font-size-list-file)
+            (insert-file-contents dynamic-font-size-data-file)
             (read (current-buffer))))))
 
 (defun dynamic-font-size-write-file ()
-  "Save `dynamic-font-size-list' to file.
-
-Save `dynamic-font-size-list' contents into
-`dynamic-font-size-list-file'."
+  "Save `dynamic-font-size-list' to `dynamic-font-size-data-file'."
   (with-temp-buffer
     (insert ";;; -*- lisp-data -*-\n")
     (let ((print-length nil)
           (print-level nil))
       (pp dynamic-font-size-list (current-buffer)))
-    (write-region nil nil dynamic-font-size-list-file nil 'silent)))
+    (write-region nil nil dynamic-font-size-data-file nil 'silent)))
 
 (defun dynamic-font-size-get-font-size (frame)
-  "Return the current size of the font in frame FRAME."
+  "Return current default font size in FRAME."
   (round (/ (face-attribute 'default :height frame) 10.0)))
 
-(defun dynamic-font-size-set-font-size (frame font-size)
-  "Set the size of the default font.
-
-Set the size of the default font of the frame FRAME to FONT-SIZE."
-  (set-face-attribute 'default frame :height (* 10 font-size))
-  (set-frame-parameter frame
-                       'dynamic-font-size-monitor-id
+(defun dynamic-font-size-set-font-size (frame size)
+  "Set default font size in FRAME to SIZE."
+  (set-face-attribute 'default frame :height (* 10 size))
+  (set-frame-parameter frame 'dynamic-font-size-monitor-id
                        (dynamic-font-size-get-monitor-id frame)))
+
+;;; Interactive Commands
+
+;;;###autoload
+(defun dynamic-font-size-adjust (&optional arg)
+  "Adjust the font size of the current frame.
+
+- With no ARG: increase font size.
+- With a negative ARG: decrease font size.
+- With ARG = 0: reset to saved size for this monitor.
+- With \\[universal-argument]: save current font size as default for this monitor."
+  (interactive "P")
+  (cond
+   ((and arg (listp arg))
+    (dynamic-font-size-save))
+   ((eq arg 0)
+    (dynamic-font-size-reset))
+   (t
+    (dynamic-font-size-increase (prefix-numeric-value arg)))))
 
 ;;;###autoload
 (defun dynamic-font-size-save (&optional frame)
-  "Save the font size.
+  "Save current font size of FRAME as default for its monitor.
 
-Save the size of the default font of the frame FRAME for the monitor
-that the currently selected frame is on.
-
-If FRAME is omitted or nil, use currently selected frame."
+If FRAME is nil, use the selected frame."
   (interactive)
   (dynamic-font-size-list-initialize)
-  (let* ((frame (if (null frame) (selected-frame) frame))
+  (let* ((frame (or frame (selected-frame)))
          (frame-name (if (eq frame (selected-frame))
                          "current frame"
                        (format "frame %s" (frame-parameter frame 'name))))
          (monitor-id (dynamic-font-size-get-monitor-id frame))
-         (current-font-size (dynamic-font-size-get-font-size frame)))
+         (current-size (dynamic-font-size-get-font-size frame)))
     (if dynamic-font-size-list
-        (map-put! dynamic-font-size-list monitor-id current-font-size)
-      (setq dynamic-font-size-list (list (cons monitor-id current-font-size))))
+        (map-put! dynamic-font-size-list monitor-id current-size)
+      (setq dynamic-font-size-list (list (cons monitor-id current-size))))
     (dynamic-font-size-write-file)
-    (message "Saving font size to %d for monitor with %s" current-font-size frame-name)))
-
-;;;###autoload
-(defun dynamic-font-size-adjust (&optional arg)
-  "Adjust the font size.
-
-Change or save the size of the font of the currently selected frame.
-
-With no argument ARG, temporarily increase the size of the font of the
-currently selected frame.
-
-With a negative argument ARG, temporarily decrease the size of the font
- of the currently selected frame.
-
-With a zero as argument ARG, reset the size of the font to the last
-saved value for the monitor that the currently selected frame is on.
-
-With \\[universal-argument] as argument ARG, save the font size for the
-monitor that the currently selected frame is on as the default font size
-for frames on this monitor."
-  (interactive "P")
-  (cond ((and arg (listp arg))
-         (dynamic-font-size-save))
-        ((eq 0 arg)
-         (dynamic-font-size-reset))
-        (t (dynamic-font-size-increase (prefix-numeric-value arg)))))
+    (message "Saved font size %d for monitor in %s" current-size frame-name)))
 
 ;;;###autoload
 (defun dynamic-font-size-increase (inc &optional frame)
-  "Increase the font size.
+  "Increase font size of FRAME by INC steps.
 
-Increase the size of the font of the frame FRAME by INC steps.
-
-If INC is omitted or nil, increase the size of the font by 1.
-
-If FRAME is omitted or nil, use currently selected frame."
+If FRAME is nil, use the selected frame."
   (interactive "p")
-  (let* ((frame (if (null frame) (selected-frame) frame))
-         (current-font-size (dynamic-font-size-get-font-size frame))
-         (new-font-size (+ (or inc 1) current-font-size)))
-    (unless (eq current-font-size new-font-size)
-      (dynamic-font-size-set-font-size frame new-font-size)
-      (message
-       (substitute-command-keys "Setting font size temporarily to %d
-Use `\\[dynamic-font-size-adjust]' with zero as prefix to reset the font size.
-Use `\\[dynamic-font-size-adjust]' with `\\[universal-argument]' as prefix to save the font size.")
-       new-font-size))))
+  (let* ((frame (or frame (selected-frame)))
+         (current-size (dynamic-font-size-get-font-size frame))
+         (new-size (+ (or inc 1) current-size)))
+    (unless (eq current-size new-size)
+      (dynamic-font-size-set-font-size frame new-size)
+      (message (substitute-command-keys
+                "Set font size to %d temporarily. Use `\\[dynamic-font-size-adjust]' with 0 to reset. Use `\\[dynamic-font-size-adjust]' with `\\[universal-argument]' to save.")
+               new-size))))
 
 ;;;###autoload
 (defun dynamic-font-size-reset (&optional frame)
-  "Reset the font size.
+  "Reset font size of FRAME to the saved value for its monitor.
 
-Change the size of the font of the frame FRAME to the last saved value
-for the monitor that the currently selected frame is on.
-
-If FRAME is omitted or nil, use currently selected frame."
+If FRAME is nil, use the selected frame."
   (interactive)
   (dynamic-font-size-list-initialize)
-  (let* ((frame (if (null frame) (selected-frame) frame))
+  (let* ((frame (or frame (selected-frame)))
          (frame-name (if (eq frame (selected-frame))
                          "current frame"
                        (format "frame %s" (frame-parameter frame 'name))))
-         (current-font-size (dynamic-font-size-get-font-size frame))
-         (new-font-size (map-elt dynamic-font-size-list (dynamic-font-size-get-monitor-id frame))))
-    (if (not new-font-size)
-        (message "No default font size saved for monitor with %s" frame-name)
-      (if (eq current-font-size new-font-size)
-          (message "Font size is %d in %s" current-font-size frame-name)
-        (dynamic-font-size-set-font-size frame new-font-size)
-        (message "Resetting font size to %d in %s" new-font-size frame-name)))))
+         (monitor-id (dynamic-font-size-get-monitor-id frame))
+         (saved-size (map-elt dynamic-font-size-list monitor-id))
+         (current-size (dynamic-font-size-get-font-size frame)))
+    (if (not saved-size)
+        (message "No saved font size for monitor in %s" frame-name)
+      (if (eq current-size saved-size)
+          (message "Font size already %d in %s" current-size frame-name)
+        (dynamic-font-size-set-font-size frame saved-size)
+        (message "Reset font size to %d in %s" saved-size frame-name)))))
 
 (defun dynamic-font-size-reset-when-monitor-change (&optional frame)
-  "Reset the font size when a frame move to a different monitor.
+  "Reset font size of FRAME when moved to a different monitor.
 
-When the frame FRAME moves to a different monitor, change the size of
-the font to the last saved value for the monitor that the currently
-selected frame is on.
-
-If FRAME is omitted or nil, use currently selected frame."
-  (unless (equal (dynamic-font-size-get-monitor-id frame)
-                 (frame-parameter frame 'dynamic-font-size-monitor-id))
-    (dynamic-font-size-reset frame)))
+If FRAME is nil, use the selected frame."
+  (let ((frame (or frame (selected-frame))))
+    (unless (equal (dynamic-font-size-get-monitor-id frame)
+                   (frame-parameter frame 'dynamic-font-size-monitor-id))
+      (dynamic-font-size-reset frame))))
 
 ;;;###autoload
 (define-minor-mode dynamic-font-size-mode
-  "Toggle Dynamic Font Size Mode.
+  "Toggle Dynamic Font Size mode.
 
-When Dynamic Font Size Mode is enabled, the font size for existing and
-new frames is set to the value saved for the monitor where the frame is
-on, or it was created.  It also change the font size for a frame when it
-moves to a different monitor."
+When enabled, font size is adjusted automatically based on the monitor
+a frame is displayed on."
   :global t
   :group 'dynamic-font-size
   (if dynamic-font-size-mode
