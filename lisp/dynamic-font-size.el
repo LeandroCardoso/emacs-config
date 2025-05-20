@@ -37,10 +37,6 @@ This list maps a monitor idenfification returned by
 `dynamic-font-size-get-monitor-id' to a default font size for this
 monitor.")
 
-(defvar dynamic-font-size-mode nil
-  "Non-nil when dynamic-font-size Mode is active.
-Never set this variable directly, use the command `dynamic-font-size-mode' instead.")
-
 ;;; functions
 
 (defun dynamic-font-size-get-monitor-id (&optional frame)
@@ -191,7 +187,7 @@ If FRAME is omitted or nil, use currently selected frame."
         (message "Resetting font size to %d in %s" new-font-size frame-name)))))
 
 (defun dynamic-font-size-reset-when-monitor-change (&optional frame)
-  "Reset the font size when a frame moves to a different monitor.
+  "Reset the font size when a frame move to a different monitor.
 
 When the frame FRAME moves to a different monitor, change the size of
 the font to the last saved value for the monitor that the currently
@@ -206,36 +202,22 @@ If FRAME is omitted or nil, use currently selected frame."
 (define-minor-mode dynamic-font-size-mode
   "Toggle Dynamic Font Size Mode.
 
-dynamic-font-size-mode is a global minor mode that set the font size for
-existing and new frames to the value saved for the monitor where the
-frame is or it is created.  It also change the font size for a frame
-when the frame moves to a different monitor.
-
-The defined mode command takes one optional (prefix) argument.
-Interactively with no prefix argument, it toggles the mode.  A prefix
-argument enables the mode if the argument is positive, and disables it
-otherwise.
-
-When called from Lisp, the mode command toggles the mode if the argument
-is ‘toggle’, disables the mode if the argument is a non-positive
-integer, and enables the mode otherwise (including if the argument is
-omitted or nil or a positive integer)."
+When Dynamic Font Size Mode is enabled, the font size for existing and
+new frames is set to the value saved for the monitor where the frame is
+on, or it was created.  It also change the font size for a frame when it
+moves to a different monitor."
   :global t
   :group 'dynamic-font-size
   (if dynamic-font-size-mode
       (progn
-        ;; Set font size for all the existing frames
+        ;; Set font size of all the existing frames
         (dolist (frame (frame-list))
           (dynamic-font-size-reset frame))
-        ;; Set font size for the initial frame in case this mode is been enabled in the init.el
-        (add-hook 'emacs-startup-hook 'dynamic-font-size-reset)
-        ;; Set font size for new frames
+        ;; Set font size of new frames
         (add-hook 'after-make-frame-functions 'dynamic-font-size-reset)
         ;; Set font size when a frame moves to a different monitor
         (add-hook 'move-frame-functions 'dynamic-font-size-reset-when-monitor-change))
-    ;; Unset font size for the initial frame
-    (remove-hook 'emacs-startup-hook 'dynamic-font-size-reset)
-    ;; Unset font size for new frames
+    ;; Unset font size of new frames
     (remove-hook 'after-make-frame-functions 'dynamic-font-size-reset)
     ;; Unset font size when a frame moves to a different monitor
     (remove-hook 'move-frame-functions 'dynamic-font-size-reset-when-monitor-change)))
