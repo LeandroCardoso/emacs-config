@@ -107,6 +107,7 @@
   (setopt x-underline-at-descent-line t)
   (setq inhibit-compacting-font-caches t)
   (setq-default cursor-type 'bar)
+  (setq-default truncate-lines nil)
 
   ;; auto-save
   (defconst auto-save-dir (expand-file-name "auto-save" user-emacs-directory)
