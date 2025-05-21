@@ -170,9 +170,10 @@ If FRAME is nil, use the selected frame."
   "Reset font size if FRAME moved to a different monitor.
 
 If FRAME is nil, use the selected frame."
-  (unless (equal (dynamic-font-size-get-monitor-id frame)
-                 (frame-parameter frame 'dynamic-font-size-monitor-id))
-    (dynamic-font-size-reset frame)))
+  (let ((frame (or frame (selected-frame))))
+    (unless (equal (dynamic-font-size-get-monitor-id frame)
+                   (frame-parameter frame 'dynamic-font-size-monitor-id))
+      (dynamic-font-size-reset frame))))
 
 ;;;###autoload
 (define-minor-mode dynamic-font-size-mode
