@@ -57,11 +57,13 @@ Monitor identifiers are computed by `dynamic-font-size-get-monitor-id'.")
 This ID is used as a key in `dynamic-font-size-list'.
 
 If FRAME is nil, use the selected frame."
-  (let* ((frame (or frame (selected-frame)))
-         (size (frame-monitor-attribute 'mm-size frame))
-         (geom (frame-monitor-attribute 'geometry frame))
-         (res  (list (nth 2 geom) (nth 3 geom))))
-    (list size res)))
+  (if-let* ((frame (or frame (selected-frame)))
+            (size (frame-monitor-attribute 'mm-size frame))
+            (geom (frame-monitor-attribute 'geometry frame))
+            (res  (list (nth 2 geom) (nth 3 geom))))
+      (list size res)
+    (error "Warning: Monitor information incomplete")
+    nil))
 
 (defun dynamic-font-size-list-initialize ()
   "Initialize `dynamic-font-size-list' from file if needed."
