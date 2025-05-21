@@ -394,8 +394,6 @@
   (grep-setup . truncate-lines-on)
 
   :bind
-  ("C-c g" . rgrep)
-  ("C-c G" . zrgrep)
   (:map grep-mode-map
         ("u" . rename-uniquely)
         ("k" . keep-lines)
