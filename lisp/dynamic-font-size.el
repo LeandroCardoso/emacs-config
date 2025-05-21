@@ -9,6 +9,15 @@
 ;; displayed on.  It saves user preferences per monitor and applies the corresponding font size when
 ;; frames are created or moved.
 
+;; Setup using use-package:
+;;
+;; (use-package dynamic-font-size
+;;   :ensure t
+;;   :demand t
+;;   :config
+;;   (dynamic-font-size-mode 1)
+;;   :bind ("C-M-=" . dynamic-font-size-adjust))
+
 ;;; Code:
 
 (require 'faces)
