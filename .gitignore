@@ -11,6 +11,7 @@ eln-cache
 elpa/
 eshell/history
 eshell/lastdir
+flycheck_init.el
 fonts
 omnisharp/
 org-persist/
