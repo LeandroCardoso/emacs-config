@@ -1514,7 +1514,6 @@ See `byte-recompile-and-cleanup-directory'."
 
   :bind
   (:map prog-mode-map
-        ("C-c C-q" . indent-defun)
         ("C-;" . smart-semicolon)))
 
 (use-package project-extra

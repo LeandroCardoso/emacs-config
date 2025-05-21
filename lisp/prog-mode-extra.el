@@ -23,21 +23,6 @@
    '(("\\<\\(BUG\\|FIXME\\|TODO\\)\\>" 1 font-lock-warning-face t))))
 
 ;;;###autoload
-(defun indent-defun ()
-  "Indent the current function.
-
-See `indent-region'"
-  (interactive "*")
-  (save-excursion
-    (let ((begin nil)
-          (end nil))
-      (beginning-of-defun)
-      (setq begin (point))
-      (end-of-defun)
-      (setq end (point))
-      (indent-region begin end))))
-
-;;;###autoload
 (defun smart-semicolon ()
   "Go to end of line, delete trailing whitespace and insert a \";\".
 
