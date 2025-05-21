@@ -37,11 +37,6 @@
   :type 'file
   :group 'dynamic-font-size)
 
-(defcustom dynamic-font-size-prompt-to-save t
-  "Whether to prompt to save font size when switching to an unknown monitor."
-  :type 'boolean
-  :group 'dynamic-font-size)
-
 ;;; Internal Variables
 
 (defvar dynamic-font-size-list 'unset
@@ -169,36 +164,15 @@ If FRAME is nil, use the selected frame."
       (if (eq current-size saved-size)
           (message "Font size already %d in %s" current-size monitor-str)
         (dynamic-font-size-set-font-size frame saved-size)
-        (message "Reset font size to %d in %s" saved-size monitor-str)))))
+        (message "Restored saved font size %d in %s" saved-size monitor-str)))))
 
 (defun dynamic-font-size-reset-when-monitor-change (&optional frame)
   "Reset font size if FRAME moved to a different monitor.
 
-If no saved font size exists for the new monitor, optionally prompt to
-save the current font size as the default, depending on
-`dynamic-font-size-prompt-to-save'.
-
 If FRAME is nil, use the selected frame."
-  (let* ((frame (or frame (selected-frame)))
-         (monitor-str (if (eq frame (selected-frame))
-                          "this monitor"
-                        (format "monitor with frame %s" (frame-parameter frame 'name))))
-         (old-id (frame-parameter frame 'dynamic-font-size-monitor-id))
-         (new-id (dynamic-font-size-get-monitor-id frame)))
-    (unless (equal old-id new-id)
-      (dynamic-font-size-list-initialize)
-      (let* ((saved-size (map-elt dynamic-font-size-list new-id))
-             (current-size (dynamic-font-size-get-font-size frame)))
-        (if saved-size
-            (progn
-              (dynamic-font-size-set-font-size frame saved-size)
-              (message "Restored saved font size %d for %s" saved-size monitor-str))
-          (if dynamic-font-size-prompt-to-save
-              (when (yes-or-no-p
-                     (format "No font size saved for this monitor. Save current size (%d) as default? "
-                             current-size))
-                (dynamic-font-size-save frame))
-            (message "No saved font size for %s" monitor-str)))))))
+  (unless (equal (dynamic-font-size-get-monitor-id frame)
+                 (frame-parameter frame 'dynamic-font-size-monitor-id))
+    (dynamic-font-size-reset frame)))
 
 ;;;###autoload
 (define-minor-mode dynamic-font-size-mode
