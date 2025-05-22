@@ -16,8 +16,8 @@
 (require 'project-root-dir)
 (require 'xml-format)
 
-(defconst np6-bugs-root-directory "~/Documents/bugs/" "Development bugs root directory")
-(defconst np6-env-root-directory "~/Documents/env/" "Development environment root directory")
+(defconst np6-bugs-root-directory "~/OneDrive - Capgemini/Documents/bugs/" "Development bugs root directory")
+(defconst np6-env-root-directory "~/OneDrive - Capgemini/Documents/env/" "Development environment root directory")
 (defconst np6-plugins-src-directory "c:/Dev/NpSharpRoot/Plugins/" "Source code directory for np# plugins")
 (defconst np6-np61-src-directory "c:/Dev/np61/" "Source code directory for np61 core")
 
