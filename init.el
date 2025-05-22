@@ -352,7 +352,7 @@
   ("C-M-o" . ff-find-other-file))
 
 (use-package ffap
-  :ensure t
+  :demand t
   :config
   (setopt ffap-file-name-with-spaces t)
   (ffap-bindings))
