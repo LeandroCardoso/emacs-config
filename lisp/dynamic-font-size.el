@@ -23,7 +23,7 @@
 (require 'faces)
 (require 'files)
 (require 'frame)
-(require 'map)
+(require 'gv)
 
 ;;; Customization
 
@@ -124,9 +124,7 @@ If FRAME is nil, use the selected frame."
                         (format "monitor with frame %s" (frame-parameter frame 'name))))
          (monitor-id (dynamic-font-size-get-monitor-id frame))
          (current-size (dynamic-font-size-get-font-size frame)))
-    (if dynamic-font-size-list
-        (map-put! dynamic-font-size-list monitor-id current-size)
-      (setq dynamic-font-size-list (list (cons monitor-id current-size))))
+    (setf (alist-get monitor-id dynamic-font-size-list nil nil 'equal) current-size)
     (dynamic-font-size-write-file)
     (message "Saved font size %d for %s" current-size monitor-str)))
 
@@ -157,7 +155,7 @@ If FRAME is nil, use the selected frame."
                           "this monitor"
                         (format "monitor with frame %s" (frame-parameter frame 'name))))
          (monitor-id (dynamic-font-size-get-monitor-id frame))
-         (saved-size (map-elt dynamic-font-size-list monitor-id))
+         (saved-size (alist-get monitor-id dynamic-font-size-list nil nil 'equal))
          (current-size (dynamic-font-size-get-font-size frame)))
     (if (not saved-size)
         (message "No saved font size for %s" monitor-str)
