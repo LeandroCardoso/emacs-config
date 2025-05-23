@@ -367,15 +367,14 @@
   (setopt grep-save-buffers nil)
   (setopt grep-use-headings t)
 
-  (let ((cc "*.cc *.cxx *.cpp *.[Cc] *.CC *.c++")
-        (hh "*.hxx *.hpp *.[Hh] *.HH *.h++")
-        (cext "*.def *.rc"))
-    (setq grep-files-aliases (assoc-delete-all "cc" grep-files-aliases))
-    (setq grep-files-aliases (assoc-delete-all "cchh" grep-files-aliases))
-    (setq grep-files-aliases (assoc-delete-all "cx" grep-files-aliases))
-    (push `("cc" . ,cc) grep-files-aliases)
-    (push `("cchh" . ,(concat cc " " hh)) grep-files-aliases)
-    (push `("cx" . ,(concat cc " " hh " " cext)) grep-files-aliases))
+  ;; These aliases are also used by xref
+  (let ((cc (string-replace "*.C" "*.[Cc]" (alist-get "cc" grep-files-aliases nil nil 'equal)))
+        (hh (alist-get "hh" grep-files-aliases nil nil 'equal))
+        (extra "*.def *.rc"))
+    ;; Original cc and cchh lacks *.c
+    (setf (alist-get "cc" grep-files-aliases nil nil 'equal) cc)
+    (setf (alist-get "cchh" grep-files-aliases nil nil 'equal) (concat cc " " hh))
+    (add-to-list 'grep-files-aliases `("cx" . ,(concat cc " " hh " " extra))))
 
   (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
   (add-to-list 'grep-files-aliases '("web" . "*.css *.htm[l] *.js *.json *.ts"))
