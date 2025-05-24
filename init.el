@@ -784,7 +784,8 @@ See `kill-new' for details."
 
 (use-package window
   :config
-  (setopt display-buffer-alist '((".*" (display-buffer-reuse-window display-buffer-use-some-window))))
+  (setopt display-buffer-alist '(("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+                                  (display-buffer-reuse-window display-buffer-use-some-window)))))
   (setopt split-height-threshold nil)
   (setopt split-width-threshold 180)
 
