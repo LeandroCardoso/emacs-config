@@ -13,6 +13,14 @@
 (require 'window)
 
 ;;;###autoload
+(defun display-frame-window-information ()
+  "Display current frame and window width and height."
+  (interactive)
+  (message "Frame width:%d height:%d. Window width:%d height:%d."
+           (frame-width) (frame-height)
+           (window-width) (window-height)))
+
+;;;###autoload
 (defun split-window-sensibly-horizontally (&optional window)
   "Split WINDOW in a way suitable for `display-buffer'.
 
