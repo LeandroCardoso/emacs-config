@@ -1558,15 +1558,18 @@ See `byte-recompile-and-cleanup-directory'."
   :defer t
   :config
   (setopt rotate-text-words
-          '(("height" "width")
-            ("left" "right" "top" "bottom")
-            ("active" "inactive")
+          '(("active" "inactive")
             ("enable" "disable")
             ("enabled" "disabled")
+            ("height" "width")
+            ("left" "right" "top" "bottom")
+            ("january" "february" "march" "april" "may" "june" "july" "august" "september" "october" "november" "december")
+            ("monday" "tuesday" "wednesday" "thursday" "friday" "saturday" "sunday")
             ("true" "false")
             ("yes" "no")))
   (setopt rotate-text-symbols
-          '(("private" "protected" "public")
+          '(("and" "or")
+            ("private" "protected" "public")
             ("on" "off")
             ("t" "nil")))
 
