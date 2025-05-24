@@ -1415,12 +1415,15 @@ See `tide-tsserver-executable'."
 
   :hook
   ((text-mode prog-mode conf-mode) . infer-indentation-style)
+  (prog-mode . font-lock-todo-setup)
 
   :bind
   ("M-#" . base64-encode-dwim)
   ([remap delete-blank-lines] . delete-all-blank-lines)
   ("C-h" . mark-line) ; original is help prefix, but we have f1 for it
-  ("C-c S" . sort-words))
+  ("C-c S" . sort-words)
+  (:map prog-mode-map
+        ("C-;" . smart-semicolon)))
 
 (use-package files-extra
   :config
@@ -1516,16 +1519,6 @@ See `byte-recompile-and-cleanup-directory'."
   :bind
   (:map nxml-mode-map
         ("C-c C-c" . xml-context-tree)))
-
-(use-package prog-mode-extra
-  :defer t
-  :after prog-mode
-  :hook
-  (prog-mode . font-lock-todo-setup)
-
-  :bind
-  (:map prog-mode-map
-        ("C-;" . smart-semicolon)))
 
 (use-package project-extra
   :demand t

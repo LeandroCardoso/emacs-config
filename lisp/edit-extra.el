@@ -8,9 +8,75 @@
 
 ;;; Code:
 
-(require 'replace)
 (require 'simple)
 
+;;; Customization
+
+(defcustom infer-indentation-style-region-max 100000
+  "The maximum region size for examining indentation style information with `infer-indentation-style'.
+
+nil means no limit."
+  :type 'integer
+  :group 'indent)
+
+
+;;; Utility functions
+
+;;;###autoload
+(defun font-lock-todo-setup ()
+  "Fontify \"BUG\", \"FIXME\" and \"TODO\" keywords.
+
+Add this function to `prog-mode-hook' to enable it:
+  (add-hook 'prog-mode-hook 'font-lock-todo-setup)"
+  (require 'font-lock)
+  (font-lock-add-keywords
+   nil
+   '(("\\<\\(BUG\\|FIXME\\|TODO\\)\\>" 1 font-lock-warning-face t))))
+
+
+;; Adapted from: https://www.emacswiki.org/emacs/NoTabs
+;;;###autoload
+(defun infer-indentation-style ()
+  "Guess the indentation style and install it.
+
+If our source file uses tabs, we use tabs, if spaces spaces, and if
+neither, we use the current `indent-tabs-mode'.
+
+Examines in the region up to `infer-indentation-style-region-max'.
+
+This function can be used in hooks to automatically setup:
+
+  (add-hook \='prog-mode-hook \='infer-indentation-style)"
+  (interactive)
+  (let* ((point-max (min (or infer-indentation-style-region-max (point-max)) (point-max)))
+         (space-count (how-many "^  " (point-min) point-max))
+         (tab-count (how-many "^\t" (point-min) point-max)))
+    (if (> space-count tab-count) (setq indent-tabs-mode nil))
+    (if (> tab-count space-count) (setq indent-tabs-mode t))))
+
+
+;;;###autoload
+(defun set-auto-mode+ ()
+  "Select major mode appropriate for current buffer.
+
+Differently from `set-auto-mode' this function works on non file
+visiting buffers too.
+
+This function may be used as the default value for `major-mode' to
+select the major mode appropriate for new buffers not visiting a file:
+
+  (setq-default major-mode \='set-auto-mode-for-major-mode)
+
+See `set-auto-mode'."
+  (if buffer-file-name
+      (fundamental-mode)
+    (let ((buffer-file-name (buffer-name)))
+      (set-auto-mode))))
+
+
+;;; Interactive Commands
+
+;;;###autoload
 (defun base64-decode-dwim ()
   "Decode region or whole buffer as base64.
 
@@ -24,6 +90,7 @@ See `base64-encode-dwim' for details."
   (base64-encode-dwim t))
 
 
+;;;###autoload
 (defun base64-encode-dwim (&optional arg)
   "Encode region or whole buffer to base64.
 
@@ -43,17 +110,20 @@ See `base64-decode-dwim'."
       (base64-encode-region min max t))))
 
 
+;;;###autoload
 (defun delete-all-blank-lines ()
   "Delete all blank lines in the buffer.
 
 When region is active delete all blank lines in the region."
   (interactive "*")
+  (require 'replace)
   (save-excursion
     (let ((min (if (use-region-p) (region-beginning) (point-min)))
           (max (if (use-region-p) (region-end) (point-max))))
       (flush-lines "^\\s-*$" min max))))
 
 
+;;;###autoload
 (defun indent-buffer (&optional column)
   "Indent the currently visited buffer.
 
@@ -79,32 +149,7 @@ See `indent-region'."
   (indent-region (point-min) (point-max) column))
 
 
-(defcustom infer-indentation-style-region-max 100000
-  "The maximum region size for examining indentation style information with
-`infer-indentation-style'.  nil means no limit."
-  :type 'integer
-  :group 'indent)
-
-;; Adapted from: https://www.emacswiki.org/emacs/NoTabs
-(defun infer-indentation-style ()
-  "Guess the indentation style and install it.
-
-If our source file uses tabs, we use tabs, if spaces spaces, and if
-neither, we use the current `indent-tabs-mode'.
-
-Examines in the region up to `infer-indentation-style-region-max'.
-
-This function can be used in hooks to automatically setup:
-
-  (add-hook \='prog-mode-hook \='infer-indentation-style)"
-  (interactive)
-  (let* ((point-max (min (or infer-indentation-style-region-max (point-max)) (point-max)))
-         (space-count (how-many "^  " (point-min) point-max))
-         (tab-count (how-many "^\t" (point-min) point-max)))
-    (if (> space-count tab-count) (setq indent-tabs-mode nil))
-    (if (> tab-count space-count) (setq indent-tabs-mode t))))
-
-
+;;;###autoload
 (defun mark-line (&optional n)
   "Put point at beginning of the current line and mark at end.
 
@@ -122,25 +167,20 @@ marked."
     (end-of-line n)))
 
 
-(defun set-auto-mode+ ()
-  "Select major mode appropriate for current buffer.
+;;;###autoload
+(defun smart-semicolon ()
+  "Go to end of line, delete trailing whitespace and insert a \";\".
 
-Differently from `set-auto-mode' this function works on non file
-visiting buffers too.
-
-This function may be used as the default value for `major-mode' to
-select the major mode appropriate for new buffers not visiting a file:
-
-  (setq-default major-mode \='set-auto-mode-for-major-mode)
-
-See `set-auto-mode'."
-  (interactive)
-  (if buffer-file-name
-      (fundamental-mode)
-    (let ((buffer-file-name (buffer-name)))
-      (set-auto-mode))))
+A \";\" is not inserted when one already exists at end of line."
+  (interactive "*")
+  (require 'simple)
+  (move-end-of-line nil)
+  (delete-horizontal-space)
+  (unless (char-equal (preceding-char) (string-to-char ";"))
+    (insert ";")))
 
 
+;;;###autoload
 ;; Adapted from: https://www.emacswiki.org/emacs/SortWords
 (defun sort-words (reverse beg end)
   "Sort words in region between BEG and END alphabetically.
