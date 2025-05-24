@@ -407,6 +407,7 @@
 
   :bind
   (:map help-map
+        ("B" . describe-personal-keybindings)
         ("M-x" . which-key-show-top-level)
         ("M-X" . which-key-show-major-mode)))
 
