@@ -1446,7 +1446,7 @@ See `byte-recompile-and-cleanup-directory'."
   :defer t)
 
 (use-package frame-window-extra
-  :defer t
+  :after window
   :config
   (setopt split-window-preferred-function 'split-window-sensibly-horizontally)
 
