@@ -685,6 +685,7 @@ See `kill-new' for details."
   :bind
   ("C-M-|" . delete-indentation)
   ("C-c <tab>" . indent-tabs-mode)
+  ([remap kill-buffer] . kill-current-buffer)
   ;; special mode like occur and xref
   (:map special-mode-map
         ("f" . flush-lines)
@@ -794,7 +795,9 @@ See `kill-new' for details."
   ("S-<up>" . scroll-down-line)
   ("C-S-p" . scroll-down-line)
   ("S-<down>" . scroll-up-line)
-  ("C-S-n" . scroll-up-line))
+  ("C-S-n" . scroll-up-line)
+  (:map ctl-x-map
+        ("K" . kill-buffer-and-window)))
 
 (use-package whitespace
   :defer t
@@ -1452,7 +1455,8 @@ See `byte-recompile-and-cleanup-directory'."
   ("M-O" . other-window-backward)
   ([remap toggle-frame-fullscreen] . toggle-frame-fullscreen+)
   (:map ctl-x-map
-        ("o" . other-frame)) ; original is other-window
+        ("o" . other-frame) ; original is other-window
+        ("M-k" . kill-other-buffer-and-window))
   (:map ctl-x-4-map
         ("k" . kill-other-buffer-and-window)))
 
