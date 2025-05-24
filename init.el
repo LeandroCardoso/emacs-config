@@ -104,6 +104,7 @@
   (setopt ring-bell-function 'ignore)
   (setopt save-some-buffers-default-predicate 'save-some-buffers-root)
   (setopt use-short-answers t)
+  (setopt window-combination-resize t)
   (setopt x-underline-at-descent-line t)
   (setq inhibit-compacting-font-caches t)
   (setq-default cursor-type 'bar)
@@ -783,8 +784,9 @@ See `kill-new' for details."
 
 (use-package window
   :config
+  (setopt display-buffer-alist '((".*" (display-buffer-reuse-window display-buffer-use-some-window))))
   (setopt split-height-threshold nil)
-  (setopt split-width-threshold 200)
+  (setopt split-width-threshold 180)
 
   :bind
   ("S-<up>" . scroll-down-line)
