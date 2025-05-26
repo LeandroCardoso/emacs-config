@@ -27,7 +27,7 @@ nil means no limit."
   "Fontify \"BUG\", \"FIXME\" and \"TODO\" keywords.
 
 Add this function to `prog-mode-hook' to enable it:
-  (add-hook 'prog-mode-hook 'font-lock-todo-setup)"
+  (add-hook \='prog-mode-hook \='font-lock-todo-setup)"
   (require 'font-lock)
   (font-lock-add-keywords
    nil
