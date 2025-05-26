@@ -103,6 +103,7 @@
   (setopt initial-scratch-message nil)
   (setopt ring-bell-function 'ignore)
   (setopt save-some-buffers-default-predicate 'save-some-buffers-root)
+  (setopt truncate-partial-width-windows nil)
   (setopt use-short-answers t)
   (setopt window-combination-resize t)
   (setopt x-underline-at-descent-line t)
