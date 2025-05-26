@@ -47,6 +47,26 @@ Replacement for `split-window-sensibly', but prefers
            (split-window-below))))))))
 
 ;;;###autoload
+(defun window-split-dynamic-threshold-advice (func &rest args)
+  "Thresholds used to check if the window may be split are set dynamically.
+
+Set the value of `split-height-threshold' and `split-width-threshold'
+dynamically considering the `frame-height' and `frame-width' when the
+`window-combination-resize' is t.
+
+Usage - advise `window-splittable-p' function:
+  (advice-add \='window-splittable-p :around \='window-split-dynamic-threshold-advice)"
+  (let ((split-height-threshold
+         (if (and split-height-threshold window-combination-resize)
+             (1+ (/ (frame-height) (/ (frame-height) (/ split-height-threshold 2))))
+           split-height-threshold))
+        (split-width-threshold
+         (if (and split-width-threshold window-combination-resize)
+             (1+ (/ (frame-width) (/ (frame-width) (/ split-width-threshold 2))))
+           split-width-threshold)))
+    (apply func args)))
+
+;;;###autoload
 (defun other-window-backward (count &optional all-frames)
   "Select another window in backward cyclic ordering of windows.
 

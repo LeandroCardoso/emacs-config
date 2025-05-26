@@ -1453,6 +1453,7 @@ See `byte-recompile-and-cleanup-directory'."
   :after window
   :config
   (setopt split-window-preferred-function 'split-window-sensibly-horizontally)
+  (advice-add 'window-splittable-p :around 'window-split-dynamic-threshold-advice)
 
   :bind
   ("M-o" . other-window)
