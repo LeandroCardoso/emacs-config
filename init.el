@@ -1451,6 +1451,7 @@ See `byte-recompile-and-cleanup-directory'."
 
 (use-package frame-window-extra
   :after window
+  :demand t
   :config
   (setopt split-window-preferred-function 'split-window-sensibly-horizontally)
   (advice-add 'window-splittable-p :around 'window-split-dynamic-threshold-advice)
@@ -1536,7 +1537,8 @@ See `byte-recompile-and-cleanup-directory'."
   :after project)
 
 (use-package rdi
-  :if (eq system-type 'windows-nt))
+  :if (eq system-type 'windows-nt)
+  :demand t)
 
 (use-package recentf-extra
   :defer t
