@@ -1284,7 +1284,7 @@ the plist used as a communication channel."
 
 (use-package rotate-text
   :ensure t
-  :vc (:url "https://github.com/nschum/rotate-text.el.git")
+  :vc (:url "https://github.com/emacsmirror/rotate-text.git")
   :defer t
   :config
   (setopt rotate-text-words
