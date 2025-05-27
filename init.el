@@ -789,8 +789,8 @@ See `kill-new' for details."
   :config
   (setopt display-buffer-alist '(("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
                                   (display-buffer-reuse-window display-buffer-use-some-window))))
-  (setopt split-height-threshold nil)
-  (setopt split-width-threshold 180)
+  (setopt split-height-threshold 90)
+  (setopt split-width-threshold 200)
 
   :bind
   ("S-<up>" . scroll-down-line)
