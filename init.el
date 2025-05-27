@@ -1372,13 +1372,13 @@ See `tide-tsserver-executable'."
 
   (defun ws-butler-mode-on ()
     "Enable `ws-butler-mode'.  Provided for use in hooks."
-    (when (and ws-butler-global-mode
-               (not (derived-mode-p ws-butler-global-exempt-modes)))
-      (ws-butler-mode 1)))
+    (message "ws-butler-global-mode enabled")
+    (ws-butler-global-mode 1))
 
   (defun ws-butler-mode-off ()
     "Disable `ws-butler-mode'.  Provided for use in hooks."
-    (ws-butler-mode -1))
+    (message "ws-butler-global-mode disabled")
+    (ws-butler-global-mode -1))
 
   (ws-butler-global-mode)
 
