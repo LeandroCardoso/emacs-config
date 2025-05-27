@@ -27,6 +27,7 @@
   (setopt use-package-compute-statistics t) ; view the statistical report using `use-package-report'
   (setopt use-package-enable-imenu-support t)
   (setopt use-package-verbose t)
+  (setopt use-package-vc-prefer-newest t)
   ;; Workaround for signature error when managing elpa packages
   (setopt package-check-signature (if (eq system-type 'windows-nt)
                                       nil
@@ -1026,6 +1027,13 @@ See `kill-new' for details."
   (load (expand-file-name "engine-mode/config" user-emacs-directory))
   (load (expand-file-name "engine-mode/config-rdi" user-emacs-directory)))
 
+(use-package framemove
+  :ensure t
+  :vc (:url "https://github.com/emacsmirror/framemove.git")
+  :after windmove
+  :config
+  (setq framemove-hook-into-windmove t))
+
 (use-package flycheck
   :ensure t
   :config
@@ -1067,6 +1075,13 @@ See `kill-new' for details."
         ("l" . git-link)
         ("c" . git-link-commit)
         ("h" . git-link-homepage)))
+
+(use-package goto-chg
+  :ensure t
+  :defer t
+  :bind
+  ("C-." . goto-last-change)
+  ("C-," . goto-last-change-reverse))
 
 (use-package gtags-mode
   :ensure t
@@ -1267,6 +1282,31 @@ the plist used as a communication channel."
   :ensure t
   :defer t)
 
+(use-package rotate-text
+  :ensure t
+  :vc (:url "https://github.com/nschum/rotate-text.el.git")
+  :defer t
+  :config
+  (setopt rotate-text-words
+          '(("active" "inactive")
+            ("enable" "disable")
+            ("enabled" "disabled")
+            ("height" "width")
+            ("left" "right" "top" "bottom")
+            ("january" "february" "march" "april" "may" "june" "july" "august" "september" "october" "november" "december")
+            ("monday" "tuesday" "wednesday" "thursday" "friday" "saturday" "sunday")
+            ("true" "false")
+            ("yes" "no")))
+  (setopt rotate-text-symbols
+          '(("and" "or")
+            ("private" "protected" "public")
+            ("on" "off")
+            ("t" "nil")))
+
+  :bind
+  ("C-=" . rotate-text)
+  ("C-+" . rotate-text-backward))
+
 (use-package symbol-overlay
   :ensure t
   :defer t
@@ -1466,17 +1506,6 @@ See `byte-recompile-and-cleanup-directory'."
   (:map ctl-x-4-map
         ("k" . kill-other-buffer-and-window)))
 
-(use-package framemove
-  :after windmove
-  :config
-  (setq framemove-hook-into-windmove t))
-
-(use-package goto-chg
-  :defer t
-  :bind
-  ("C-." . goto-last-change)
-  ("C-," . goto-last-change-reverse))
-
 (use-package gtags-mode-extra
   :defer t
   :after gtags-mode
@@ -1558,29 +1587,6 @@ See `byte-recompile-and-cleanup-directory'."
   ("C-}" . shrink-window+)
   ("C-M-]" . enlarge-window-horizontally+)
   ("C-M-}" . shrink-window-horizontally+))
-
-(use-package rotate-text
-  :defer t
-  :config
-  (setopt rotate-text-words
-          '(("active" "inactive")
-            ("enable" "disable")
-            ("enabled" "disabled")
-            ("height" "width")
-            ("left" "right" "top" "bottom")
-            ("january" "february" "march" "april" "may" "june" "july" "august" "september" "october" "november" "december")
-            ("monday" "tuesday" "wednesday" "thursday" "friday" "saturday" "sunday")
-            ("true" "false")
-            ("yes" "no")))
-  (setopt rotate-text-symbols
-          '(("and" "or")
-            ("private" "protected" "public")
-            ("on" "off")
-            ("t" "nil")))
-
-  :bind
-  ("C-=" . rotate-text)
-  ("C-+" . rotate-text-backward))
 
 (use-package teamcity)
 
