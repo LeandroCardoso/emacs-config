@@ -986,7 +986,7 @@ See `kill-new' for details."
 
   (defun dashboard-move-to-first-item ()
     "Move to the first item on dashboard."
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (widget-forward 1))
 
   :hook
