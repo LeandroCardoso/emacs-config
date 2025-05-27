@@ -790,7 +790,7 @@ See `kill-new' for details."
   :config
   (setopt display-buffer-alist '(("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
                                   (display-buffer-reuse-window display-buffer-use-some-window))))
-  (setopt split-height-threshold 90)
+  (setopt split-height-threshold 80)
   (setopt split-width-threshold 200)
 
   :bind
