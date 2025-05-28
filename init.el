@@ -1002,8 +1002,8 @@ See `kill-new' for details."
   (setopt enlight-center-vertically t)
   (setopt enlight-content
           (concat
-           (propertize " " 'face '(:foreground "#6c71c4" :height 2.0))
-           (propertize (format "Emacs version %s\n" emacs-version) 'face '(:inherit font-lock-type-face :weight bold))
+           (nerd-icons-sucicon "nf-custom-emacs" :height 2.0 :v-adjust 0 :face '(:inherit nerd-icons-purple))
+           (propertize (format " Emacs version %s\n" emacs-version) 'face '(:inherit font-lock-type-face :weight bold))
            (propertize (format "started in %s\n" (emacs-init-time)) 'face 'italic)
            (enlight-menu
             '(("\nAction"
@@ -1015,7 +1015,7 @@ See `kill-new' for details."
                ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
               ("\nEmacs User Directory"
                ("Edit init file" (find-file user-init-file) "i")
-               ("Dired" (dired user-emacs-directory) "d")
+               ("Dired" (dired user-emacs-directory) "D")
                ("Magit" (magit-status user-emacs-directory) "m")))))))
 
 (use-package framemove
