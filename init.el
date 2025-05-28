@@ -997,7 +997,6 @@ See `kill-new' for details."
   :demand t
   :config
   (setopt initial-buffer-choice #'enlight)
-
   (setopt enlight-center-horizontally t)
   (setopt enlight-center-vertically t)
   (setopt enlight-content
@@ -1016,7 +1015,10 @@ See `kill-new' for details."
               ("\nEmacs User Directory"
                ("Edit init file" (find-file user-init-file) "i")
                ("Dired" (dired user-emacs-directory) "D")
-               ("Magit" (magit-status user-emacs-directory) "m")))))))
+               ("Magit" (magit-status user-emacs-directory) "m"))))))
+
+  :bind
+  ("<f12>" . enlight-open))
 
 (use-package framemove
   :ensure t
