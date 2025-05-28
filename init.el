@@ -1024,8 +1024,7 @@ See `kill-new' for details."
   :ensure t
   :config
   (engine-mode)
-  (load (expand-file-name "engine-mode/config" user-emacs-directory))
-  (load (expand-file-name "engine-mode/config-rdi" user-emacs-directory)))
+  (load (expand-file-name "engine-mode-config" user-emacs-directory)))
 
 (use-package framemove
   :ensure t
