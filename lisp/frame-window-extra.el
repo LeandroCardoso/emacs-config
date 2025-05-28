@@ -143,13 +143,32 @@ forwards.  If COUNT is negative, skip -COUNT windows backwards.  COUNT
 zero means do not skip any window, so select the selected window.  In an
 interactive call, COUNT is the numeric prefix argument.
 
-See `kill-buffer' and `other-window'"
+See `kill-buffer' and `other-window'."
   (interactive "p")
   (save-selected-window
     (let ((curbuf (current-buffer)))
       (other-window count)
       (when (not (eq curbuf (current-buffer)))
         (kill-buffer-and-window)))))
+
+;;;###autoload
+(defun delete-other-window (count)
+  "Delete other window.
+
+Select another window in cyclic ordering of windows.  COUNT specifies
+the number of windows to skip, starting with the selected window, before
+making the selection.  If COUNT is positive, skip COUNT windows
+forwards.  If COUNT is negative, skip -COUNT windows backwards.  COUNT
+zero means do not skip any window, so select the selected window.  In an
+interactive call, COUNT is the numeric prefix argument.
+
+See `delete-window' and `other-window'"
+  (interactive "p")
+  (save-selected-window
+    (let ((curbuf (current-buffer)))
+      (other-window count)
+      (when (not (eq curbuf (current-buffer)))
+        (delete-window)))))
 
 ;;;###autoload
 (defun toggle-frame-fullscreen+ (arg)

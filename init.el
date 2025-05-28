@@ -1489,9 +1489,11 @@ See `byte-recompile-and-cleanup-directory'."
   ([remap toggle-frame-fullscreen] . toggle-frame-fullscreen+)
   (:map ctl-x-map
         ("o" . other-frame) ; original is other-window
-        ("M-k" . kill-other-buffer-and-window))
+        ("M-k" . kill-other-buffer-and-window)
+        ("M-q" . delete-other-window))
   (:map ctl-x-4-map
-        ("k" . kill-other-buffer-and-window)))
+        ("k" . kill-other-buffer-and-window)
+        ("q" . delete-other-window)))
 
 (use-package gtags-mode-extra
   :defer t
