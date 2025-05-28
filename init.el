@@ -424,7 +424,6 @@
 
   :hook
   ((archive-mode
-    dashboard-mode
     dired-mode
     grep-mode
     ibuffer-mode
@@ -966,39 +965,6 @@ See `kill-new' for details."
         ("D" . crux-delete-file-and-buffer)
         ("s" . crux-sudo-edit)))
 
-(use-package dashboard
-  :ensure t
-  :demand t
-  :init
-  (setopt dashboard-icon-type (if (eq system-type 'windows-nt)
-                                  nil
-                                'nerd-icons))
-
-  :config
-  (setopt dashboard-items '((recents . 5)
-                            (bookmarks . 5)
-                            (projects . 5)
-                            (agenda . 5)))
-  (setopt dashboard-set-file-icons t)
-  (setopt dashboard-set-heading-icons t)
-  (setopt dashboard-startup-banner 'logo)
-  (dashboard-setup-startup-hook)
-
-  (defun dashboard-move-to-first-item ()
-    "Move to the first item on dashboard."
-    (goto-char (point-min))
-    (widget-forward 1))
-
-  :hook
-  ;; Move to the first item on initialization
-  (dashboard-after-initialize . dashboard-move-to-first-item)
-
-  :bind
-  (:map dashboard-mode-map
-        ("C-<tab>" . dashboard-next-section)
-        ("C-<iso-lefttab>" . dashboard-previous-section)
-        ("C-S-<tab>" . dashboard-previous-section)))
-
 (use-package doom-modeline
   :ensure t
   :demand t
@@ -1025,6 +991,32 @@ See `kill-new' for details."
   :config
   (engine-mode)
   (load (expand-file-name "engine-mode-config" user-emacs-directory)))
+
+(use-package enlight
+  :ensure t
+  :demand t
+  :config
+  (setopt initial-buffer-choice #'enlight)
+
+  (setopt enlight-center-horizontally t)
+  (setopt enlight-center-vertically t)
+  (setopt enlight-content
+          (concat
+           (propertize " " 'face '(:foreground "#6c71c4" :height 2.0))
+           (propertize (format "Emacs version %s\n" emacs-version) 'face '(:inherit font-lock-type-face :weight bold))
+           (propertize (format "started in %s\n" (emacs-init-time)) 'face 'italic)
+           (enlight-menu
+            '(("\nAction"
+               ("Desktop Read" (desktop-read) "d")
+               ("Edit File" find-file "f")
+               ("Edit Recent File" (recentf-find-file) "r")
+               ("Select Project" project-switch-project "p")
+               ("eshell" (eshell) "e")
+               ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
+              ("\nEmacs User Directory"
+               ("Edit init file" (find-file user-init-file) "i")
+               ("Dired" (dired user-emacs-directory) "d")
+               ("Magit" (magit-status user-emacs-directory) "m")))))))
 
 (use-package framemove
   :ensure t
@@ -1415,12 +1407,6 @@ See `tide-tsserver-executable'."
   :bind
   (:map archive-mode-map
         ([remap back-to-indentation] . archive-move-to-filename)))
-
-(use-package dashboard-desktop
-  :demand t
-  :after dashboard
-  :config
-  (add-to-list 'dashboard-items '(desktop . 5)))
 
 (use-package dynamic-font-size
   :demand t
