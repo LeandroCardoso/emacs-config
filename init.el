@@ -810,14 +810,14 @@ See `kill-new' for details."
   (setopt whitespace-line-column nil) ; use `fill-column' value
 
   :bind
-  (("C-c w" . whitespace-keymap)
-   (:map whitespace-keymap
-         ("c" . whitespace-cleanup)
-         ("n" . whitespace-newline-mode)
-         ("o" . whitespace-toggle-options)
-         ("r" . delete-whitespace-rectangle) ; rect.el
-         ("t" . delete-trailing-whitespace)  ; simple.el
-         ("w" . whitespace-mode))))
+  ("C-c w" . whitespace-keymap)
+  (:map whitespace-keymap
+        ("c" . whitespace-cleanup)
+        ("n" . whitespace-newline-mode)
+        ("o" . whitespace-toggle-options)
+        ("r" . delete-whitespace-rectangle) ; rect.el
+        ("t" . delete-trailing-whitespace)  ; simple.el
+        ("w" . whitespace-mode)))
 
 (use-package windmove
   ;; See `framemove' for frame related functionality
