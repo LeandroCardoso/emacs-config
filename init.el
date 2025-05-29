@@ -561,15 +561,15 @@
                                    ("BLOCKED" . (:foreground ,(face-foreground 'warning) :weight bold))))
 
   :bind
-  (:map org-mode-map
-        ("C-c M-t" . org-toggle-link-display)
-        ;; workaround to avoid override by a global key
-        ("M-<return>" . org-meta-return))
   ("C-c o" . org-out-keymap)
   (:map org-out-keymap
         ("l" . org-store-link)
         ("t" . orgtbl-mode)
-        ("s" . orgalist-mode)))
+        ("s" . orgalist-mode))
+  (:map org-mode-map
+        ("C-c M-t" . org-toggle-link-display)
+        ;; workaround to avoid override by a global key
+        ("M-<return>" . org-meta-return)))
 
 (use-package ox ; org export
   :defer t
