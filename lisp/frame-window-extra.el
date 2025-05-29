@@ -58,11 +58,11 @@ Usage - advise `window-splittable-p' function:
   (advice-add \='window-splittable-p :around \='window-split-dynamic-threshold-advice)"
   (let ((split-height-threshold
          (if (and split-height-threshold window-combination-resize)
-             (1+ (/ (frame-height) (/ (frame-height) (/ split-height-threshold 2))))
+             (+ 2 (/ (frame-height) (/ (frame-height) (/ split-height-threshold 2))))
            split-height-threshold))
         (split-width-threshold
          (if (and split-width-threshold window-combination-resize)
-             (1+ (/ (frame-width) (/ (frame-width) (/ split-width-threshold 2))))
+             (+ 2 (/ (frame-width) (/ (frame-width) (/ split-width-threshold 2))))
            split-width-threshold)))
     (apply func args)))
 
