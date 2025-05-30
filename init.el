@@ -26,7 +26,7 @@
   :config
   (setopt use-package-compute-statistics t) ; view the statistical report using `use-package-report'
   (setopt use-package-enable-imenu-support t)
-  (setopt use-package-verbose t)
+  ;; (setopt use-package-verbose t)
   (setopt use-package-vc-prefer-newest t)
   ;; Workaround for signature error when managing elpa packages
   (setopt package-check-signature (if (eq system-type 'windows-nt)
