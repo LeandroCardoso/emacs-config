@@ -18,7 +18,6 @@
   "Directory where user's Emacs *.el and *.elc Lisp files are installed.")
 
 (add-to-list 'load-path user-lisp-directory)
-(add-to-list 'load-path (expand-file-name "packages" user-lisp-directory))
 
 ;; We must config use-package at the beginning, so the `use-package-compute-statistics' and
 ;; `use-package-verbose' works properly
