@@ -999,23 +999,35 @@ See `kill-new' for details."
   (setopt initial-buffer-choice #'enlight)
   (setopt enlight-center-horizontally t)
   (setopt enlight-center-vertically t)
-  (setopt enlight-content
-          (concat
-           (nerd-icons-sucicon "nf-custom-emacs" :height 2.0 :v-adjust 0 :face '(:inherit nerd-icons-purple))
-           (propertize (format " Emacs version %s\n" emacs-version) 'face '(:inherit font-lock-type-face :weight bold))
-           (propertize (format "started in %s\n" (emacs-init-time)) 'face 'italic)
-           (enlight-menu
-            '(("\nAction"
-               ("Desktop Read" (desktop-read) "d")
-               ("Edit File" find-file "f")
-               ("Edit Recent File" (recentf-find-file) "r")
-               ("Select Project" project-switch-project "p")
-               ("eshell" (eshell) "e")
-               ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
-              ("\nEmacs User Directory"
-               ("Edit init file" (find-file user-init-file) "i")
-               ("Dired" (dired user-emacs-directory) "D")
-               ("Magit" (magit-status user-emacs-directory) "m"))))))
+
+  (defun update-enlight-content-advice ()
+    "Upate `enlight-content'."
+    (let* ((uptime (time-convert (time-since before-init-time) 'integer))
+           (subtitle (if (< uptime 300)
+                         (format "started in %s\n" (emacs-init-time))
+                       (format "%s up\n" (emacs-uptime "%D, %z%h:%.2m")))))
+      (setopt enlight-content
+              (concat
+               (nerd-icons-sucicon "nf-custom-emacs"
+                                   :height 2.0 :v-adjust 0
+                                   :face '(:inherit nerd-icons-purple))
+               (propertize (format " Emacs version %s\n" emacs-version)
+                           'face '(:inherit font-lock-type-face :weight bold))
+               (propertize subtitle 'face '(:slant italic))
+               (enlight-menu
+                '(("\nAction"
+                   ("Desktop Read" (desktop-read) "d")
+                   ("Edit File" find-file "f")
+                   ("Edit Recent File" (recentf-find-file) "r")
+                   ("Select Project" project-switch-project "p")
+                   ("eshell" (eshell) "e")
+                   ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
+                  ("\nEmacs User Directory"
+                   ("Edit init file" (find-file user-init-file) "i")
+                   ("Dired" (dired user-emacs-directory) "D")
+                   ("Magit" (magit-status user-emacs-directory) "m"))))))))
+
+  (advice-add 'enlight :before 'update-enlight-content-advice)
 
   :bind
   ("<f12>" . enlight-open))
