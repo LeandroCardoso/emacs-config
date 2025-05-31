@@ -1004,7 +1004,7 @@ See `kill-new' for details."
     (let* ((uptime (time-convert (time-since before-init-time) 'integer))
            (subtitle (if (< uptime 300)
                          (format "started in %s\n" (emacs-init-time "%.2f seconds"))
-                       (format "%s up\n" (emacs-uptime "%D, %z%h:%.2m")))))
+                       (format "%s up\n" (emacs-uptime "%D, %z%.2h:%.2m")))))
       (setopt enlight-content
               (concat
                (nerd-icons-sucicon "nf-custom-emacs"
