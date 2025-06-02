@@ -292,6 +292,7 @@
   (ediff-meta-buffer-keymap-setup . ediff-meta-buffer-map-setup))
 
 (use-package eglot
+  :defer t
   :hook
   (csharp-mode . eglot-ensure))
 
@@ -354,7 +355,6 @@
   ("C-M-o" . ff-find-other-file))
 
 (use-package ffap
-  :demand t
   :config
   (setopt ffap-file-name-with-spaces t)
   (ffap-bindings))
@@ -416,7 +416,7 @@
   :config
   (global-hi-lock-mode))
 
-(use-package hi-line
+(use-package hl-line
   :config
   ;; hl-line-mode causes slowness when scrolling down repeatedly, this is a workaround for it
   (setq auto-window-vscroll nil)
@@ -935,6 +935,7 @@ See `kill-new' for details."
 
 (use-package company-flx
   :ensure t
+  :after company
   :config
   (company-flx-mode +1))
 
@@ -966,7 +967,6 @@ See `kill-new' for details."
 
 (use-package doom-modeline
   :ensure t
-  :demand t
   :config
   (setopt doom-modeline-buffer-file-name-style 'file-name-with-project)
   (setopt doom-modeline-height 30)
@@ -1116,7 +1116,7 @@ See `kill-new' for details."
 
 (use-package imenu-anywhere
   :ensure t
-  :defer t
+  :demand t
   :after imenu
   :config
   (add-to-list 'imenu-anywhere-friendly-modes '(c-mode c++-mode)))
@@ -1485,7 +1485,8 @@ See `byte-recompile-and-cleanup-directory'."
         ("C-c C-u" . recompile-user-lisp-files)))
 
 (use-package fragment
-  :defer t)
+  :defer t
+  :after nxml-mode)
 
 (use-package frame-window-extra
   :after window
@@ -1523,7 +1524,7 @@ See `byte-recompile-and-cleanup-directory'."
   :after ibuffer)
 
 (use-package imenu-anywhere-extra
-  :defer t
+  :demand t
   :after imenu-anywhere
   :bind
   ([remap imenu] . imenu-anywhere-dwim))
@@ -1554,7 +1555,6 @@ See `byte-recompile-and-cleanup-directory'."
 
 (use-package project-extra
   :demand t
-  :config
   :bind
   ("C-M-g" . project-query-regexp)
   (:map project-prefix-map
@@ -1562,7 +1562,7 @@ See `byte-recompile-and-cleanup-directory'."
         ("q" . project-query-regexp)))
 
 (use-package project-root-dir
-  :defer t
+  :demand t
   :after project)
 
 (use-package rdi
