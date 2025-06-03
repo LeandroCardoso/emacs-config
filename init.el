@@ -1514,6 +1514,15 @@ See `byte-recompile-and-cleanup-directory'."
   (:map project-prefix-map
         ("t" . gtags-mode-project-create)))
 
+(use-package horizontal-split-control
+  :demand t
+  :config
+  (disable-horizontal-split)
+
+  :bind
+  (:map ctl-x-map
+        ("_" . toggle-horizontal-split)))
+
 (use-package ibuffer-extra
   :after ibuffer
   :config
