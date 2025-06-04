@@ -1161,6 +1161,7 @@ See `kill-new' for details."
 
   (setopt magit-diff-extra-stat-arguments 'magit-diff-extra-stat-arguments-setup)
   (setopt magit-ediff-dwim-show-on-hunks t)
+  (setopt magit-format-file-function 'magit-format-file-nerd-icons)
   (setopt magit-update-other-window-delay 1)
 
   ;; Windows specific settings
