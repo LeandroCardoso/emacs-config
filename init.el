@@ -1065,19 +1065,11 @@ See `kill-new' for details."
 (use-package git-link
   :ensure t
   :defer t
-  :init
-  (defvar git-link-keymap (make-sparse-keymap) "Keymap for git-link commands")
-  (defalias 'git-link-keymap git-link-keymap)
-
   :config
   (setopt git-link-use-commit t)
 
   :bind
-  ("C-c l" . git-link-keymap)
-  (:map git-link-keymap
-        ("l" . git-link)
-        ("c" . git-link-commit)
-        ("h" . git-link-homepage)))
+  ("C-c l" . git-link-dispatch))
 
 (use-package goto-chg
   :ensure t
