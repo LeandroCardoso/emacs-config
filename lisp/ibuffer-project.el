@@ -81,10 +81,6 @@ FILE and WILDCARDS are here only for compatibility with
            t)))
   (find-file file wildcards))
 
-;;; hooks
-
-(add-hook 'ibuffer-hook #'ibuffer-set-filter-groups-by-project)
-
 ;;; key bidings
 
 (define-key ibuffer-mode-map [remap ibuffer-find-file] 'ibuffer-find-file+)

@@ -1531,7 +1531,9 @@ See `byte-recompile-and-cleanup-directory'."
 
 (use-package ibuffer-project
   :demand t
-  :after ibuffer)
+  :after ibuffer
+  :hook
+  (ibuffer . ibuffer-set-filter-groups-by-project))
 
 (use-package imenu-anywhere-extra
   :demand t
