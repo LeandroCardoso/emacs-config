@@ -56,14 +56,23 @@ dynamically considering the `frame-height' and `frame-width' when the
 
 Usage - advise `window-splittable-p' function:
   (advice-add \='window-splittable-p :around \='window-split-dynamic-threshold-advice)"
-  (let ((split-height-threshold
-         (if (and split-height-threshold window-combination-resize)
-             (+ 2 (/ (frame-height) (/ (frame-height) (/ split-height-threshold 2))))
-           split-height-threshold))
-        (split-width-threshold
-         (if (and split-width-threshold window-combination-resize)
-             (+ 2 (/ (frame-width) (/ (frame-width) (/ split-width-threshold 2))))
-           split-width-threshold)))
+  (let* ((split-width-threshold
+          (if (and split-width-threshold window-combination-resize)
+              (+ 2 (/ (frame-width) (/ (frame-width) (/ split-width-threshold 2))))
+            split-width-threshold))
+         ;; force spliting horizontally when vertically is not possible
+         (forced-split-height-threshold (when (> split-width-threshold (frame-width))
+                                          (frame-height)))
+         (split-height-threshold
+          (if (and (or split-height-threshold forced-split-height-threshold)
+                   window-combination-resize)
+              (+ 2 (/ (frame-height)
+                      (/ (frame-height)
+                         (/ (or split-height-threshold forced-split-height-threshold) 2))))
+            split-height-threshold)))
+    ;; DEBUG
+    ;; (message "window-split-dynamic-threshold-advice width:%s height:%s"
+    ;;          split-width-threshold split-height-threshold)
     (apply func args)))
 
 ;;;###autoload
