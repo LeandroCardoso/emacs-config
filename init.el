@@ -1530,7 +1530,7 @@ See `byte-recompile-and-cleanup-directory'."
   (ibuffer-remove-title-underline-setup))
 
 (use-package ibuffer-project
-  :defer t
+  :demand t
   :after ibuffer)
 
 (use-package imenu-anywhere-extra
