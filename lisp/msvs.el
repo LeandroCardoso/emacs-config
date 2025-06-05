@@ -162,7 +162,7 @@ to give nuget as arguments."
   "Download and install nuget."
   (interactive)
   (let ((url "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe")
-        (default-directory (expand-file-name "windows_bin/" user-emacs-directory)))
+        (default-directory (expand-file-name "windows/bin/" user-emacs-directory)))
     (message "Downloading nuget")
     (unless (executable-find "curl")
       (error "Curl executable not found"))

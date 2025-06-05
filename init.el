@@ -1601,12 +1601,12 @@ See `byte-recompile-and-cleanup-directory'."
   ;; Root directories are added in the beginning
   (w32-add-unix-root-dir "c:/msys64/ucrt64")
   (w32-add-unix-root-dir "c:/msys64")
+  (w32-add-unix-root-dir (expand-file-name "windows/" user-emacs-directory))
 
   ;; Add external utilities to PATH and exec-path
   (dolist (path (list "C:/Program Files/Git/cmd/"
                       "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
-                      (expand-file-name "omnisharp/" user-emacs-directory)
-                      (expand-file-name "windows_bin/" user-emacs-directory)))
+                      (expand-file-name "omnisharp/" user-emacs-directory)))
     (w32-add-to-path path))
 
   ;; Required to enter password for git

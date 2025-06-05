@@ -26,4 +26,5 @@ tramp
 transient/
 tree-sitter/
 url/
-windows_bin/nuget.exe
+windows/bin/nuget.exe
+windows/share/man/

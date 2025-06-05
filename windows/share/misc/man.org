@@ -1,0 +1,1 @@
+- git man pages downloaded from http://http.us.debian.org/debian/pool/main/g/git/
