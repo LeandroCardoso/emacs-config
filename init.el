@@ -1601,7 +1601,7 @@ See `byte-recompile-and-cleanup-directory'."
   ;; Root directories are added in the beginning
   (w32-add-unix-root-dir "c:/msys64/ucrt64")
   (w32-add-unix-root-dir "c:/msys64")
-  (w32-add-unix-root-dir (expand-file-name "windows/" user-emacs-directory))
+  (w32-add-unix-root-dir (expand-file-name "windows" user-emacs-directory))
 
   ;; Add external utilities to PATH and exec-path
   (dolist (path (list "C:/Program Files/Git/cmd/"

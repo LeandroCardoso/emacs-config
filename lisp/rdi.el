@@ -16,10 +16,18 @@
 (require 'project-root-dir)
 (require 'xml-format)
 
-(defconst np6-bugs-root-directory "~/OneDrive - Capgemini/Documents/bugs/" "Development bugs root directory")
-(defconst np6-env-root-directory "~/OneDrive - Capgemini/Documents/env/" "Development environment root directory")
-(defconst np6-plugins-src-directory "c:/Dev/NpSharpRoot/Plugins/" "Source code directory for np# plugins")
-(defconst np6-np61-src-directory "c:/Dev/np61/" "Source code directory for np61 core")
+(defconst np6-bugs-root-directory
+  "~/OneDrive - Capgemini/Documents/bugs/"
+  "Development bugs root directory")
+(defconst np6-env-root-directory
+  "~/OneDrive - Capgemini/Documents/env/"
+  "Development environment root directory")
+(defconst np6-plugins-src-directory
+  "c:/Dev/NpSharpRoot/Plugins/"
+  "Source code directory for np# plugins")
+(defconst np6-np61-src-directory
+  "c:/Dev/np61/"
+  "Source code directory for np61 core")
 
 ;; Project
 (add-to-list 'project-root-up-directory-list np6-bugs-root-directory)
@@ -188,10 +196,10 @@
   (defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
 
   (defun np6-np61-dest-directory ()
-    (let ((poscore-dir (concat np6-env-directory "NpSharpBin/Plugins/Np6PosCore")))
+    (let ((poscore-dir (expand-file-name "NpSharpBin/Plugins/Np6PosCore" np6-env-directory)))
       (if (file-directory-p poscore-dir)
           poscore-dir
-        (concat np6-env-directory "bin"))))
+        (expand-file-name "bin" np6-env-directory))))
 
   (defun np6-config ()
     (interactive)
@@ -211,7 +219,8 @@
                          ((np6-np61-project-p) "np61")
                          (t nil))
                    (when plugin-name
-                     (file-directory-p (concat np6-plugins-src-directory plugin-name "/core/")))))
+                     (file-directory-p (expand-file-name (concat plugin-name "/core")
+                                                         np6-plugins-src-directory)))))
       (message "Np6 config no set")))
 
   (defun np6-execute-script ()
@@ -219,7 +228,7 @@
     (np6-config)
     (let* ((cmd (completing-read (concat "Script [" np6-env-directory "]: ")
                                  (directory-files np6-env-directory nil "\\.bat") nil t nil))
-           (full-cmd (concat np6-env-directory cmd))
+           (full-cmd (expand-file-name cmd np6-env-directory))
            (default-directory (file-name-directory full-cmd)))
       (when (and cmd (not (string-empty-p cmd)))
         (start-process cmd "*np6*" full-cmd)
@@ -231,26 +240,29 @@
     (let ((plugin-name (np6-plugin-name)))
       (cond (plugin-name
              ;; copy plugin
-             (let ((src-dir (concat np6-plugins-src-directory plugin-name
-                                    "/src/NpSharp.Plugin." plugin-name
-                                     (if np6-debug "/bin/Debug" "/bin/Release")))
-                   (dest-dir (concat np6-env-directory "NpSharpBin/Plugins/" plugin-name)))
+             (let ((src-dir (expand-file-name (concat plugin-name
+                                                      "/src/NpSharp.Plugin." plugin-name
+                                                      (if np6-debug "/bin/Debug" "/bin/Release"))
+                                              np6-plugins-src-directory))
+                   (dest-dir (expand-file-name (concat "NpSharpBin/Plugins/" plugin-name)
+                                               np6-env-directory)))
                (sync-directories src-dir dest-dir ignore-timestamp))
              ;; copy core submodule
-             (let* ((core-dir (concat np6-plugins-src-directory plugin-name "/core/"))
-                    (src-dir (concat core-dir (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13")))
-                    (dest-dir (concat np6-env-directory "NpSharpBin/Plugins/" plugin-name
-                                       ;; Sale uses a different destination directory
-                                      (when (eq (compare-strings plugin-name nil nil
-                                                                 "sale" nil nil
-                                                                 t) t)
-                                         "/accountingServiceBin"))))
+             (let* ((core-dir (expand-file-name (concat plugin-name "/core")
+                                                np6-plugins-src-directory))
+                    (src-dir (expand-file-name (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13")
+                                               core-dir))
+                    (dest-dir (expand-file-name (concat "NpSharpBin/Plugins/" plugin-name
+                                                        ;; Sale uses a different destination directory
+                                                        (when (string-equal-ignore-case plugin-name "sale")
+                                                          "/accountingServiceBin"))
+                                                np6-env-directory)))
                (when (file-directory-p core-dir)
                  (sync-directories src-dir dest-dir ignore-timestamp))))
             ;; copy np61
             ((np6-np61-project-p)
-             (let ((src-dir (concat np6-np61-src-directory
-                                     (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13")))
+             (let ((src-dir (expand-file-name (if np6-debug "bin/Debug-Win32-VS13" "bin/Release-Win32-VS13")
+                                              np6-np61-src-directory))
                    (dest-dir (np6-np61-dest-directory)))
                (sync-directories src-dir dest-dir ignore-timestamp)))
             (t (error "No NP6 project detected")))))
@@ -281,8 +293,8 @@
         (message "Updating np61-update-include-path-list...")
         (let ((start-time (current-time))
               (pr np6-np61-src-directory))
-          (dolist (dir (nconc (list-directories (concat pr "src/") t t)
-                              (list-directories (concat pr "extSrc/") t t)))
+          (dolist (dir (nconc (list-directories (expand-file-name "src/" pr) t t)
+                              (list-directories (expand-file-name "extSrc/" pr) t t)))
             ;; Skip directories that do not have header files
             (when (directory-files dir nil "\\.h.*" t)
               (push dir np61-include-path-list)))

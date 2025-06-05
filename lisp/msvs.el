@@ -48,11 +48,11 @@ option `msvs-msbuild-default-parameters'.")
 
 (defconst msvs-program-files
   (when (getenv "ProgramFiles(x86)")
-    (concat (expand-file-name (getenv "ProgramFiles(x86)")) "/")))
+    (expand-file-name (getenv "ProgramFiles(x86)"))))
 
 (defconst msvs-vswhere
   (when msvs-program-files
-    (concat msvs-program-files "Microsoft Visual Studio/Installer/vswhere.exe")))
+    (expand-file-name "Microsoft Visual Studio/Installer/vswhere.exe" msvs-program-files)))
 
 (defconst msvs-root-directory
   (if (and msvs-vswhere (file-readable-p msvs-vswhere))
@@ -72,12 +72,12 @@ option `msvs-msbuild-default-parameters'.")
 ;; TODO support to multiple visual studios
 (defconst msvs-include-directory
   (when msvs-program-files
-    (concat msvs-program-files "Microsoft Visual Studio 12.0/VC/include")))
+    (expand-file-name "Microsoft Visual Studio 12.0/VC/include" msvs-program-files)))
 
 ;; TODO support to multiple sdks. Find Windows.h @ "Microsoft SDKs/Windows/" and "Windows Kits/"
 (defconst msvs-platform-sdk
   (when msvs-program-files
-    (concat msvs-program-files "Windows Kits/8.1/Include/um")))
+    (expand-file-name "Windows Kits/8.1/Include/um" msvs-program-files)))
 
 (defconst msvs-nuget-buffer "*nuget*")
 
@@ -190,7 +190,7 @@ to give nuget as arguments."
 ;; Add Visual Studio to PATH
 (when msvs-root-directory
   ;; Add Visual Studio binary directories to PATH
-  (w32-add-to-path (concat msvs-root-directory "/Common7/Tools")))
+  (w32-add-to-path (expand-file-name "Common7/Tools" msvs-root-directory)))
 
 ;; c/c++ fast header/implementation switch
 (with-eval-after-load "find-file"
