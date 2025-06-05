@@ -163,13 +163,6 @@ See `backup-buffer'."
       (when buffer-backed-up
         (message "Created backup for buffer %s" (file-name-nondirectory buffer-file-name))))))
 
-(defun create-dir-local-file (directory)
-  "Create a `dir-locals-file' in the DIRECTORY if it does not exist yet."
-  (let ((full-dir-locals-file (concat directory dir-locals-file)))
-    (when (not (file-exists-p full-dir-locals-file))
-      ;;(with-temp-file full-dir-locals-file)))
-      (write-region "" nil full-dir-locals-file))))
-
 (defun directory-parent (directory &optional number)
   "Return the parent directory of DIRECTORY.
 With NUMBER, return the NUMBER parent directory of DIRECTORY."
@@ -240,23 +233,6 @@ If NOSORT is non-nil, the list is not sorted--its order is unpredictable.
                      (setq directory (file-name-directory (directory-file-name directory))))
             (setq directory nil))))
     try))
-
-;;;###autoload
-(defun copy-last-message ()
-  "Copy the last non nil message in \"*Messages*\" buffer to the kill ring."
-  (interactive)
-  (with-current-buffer (messages-buffer)
-    (save-excursion
-      (goto-char (point-max))
-      (while (and (string-empty-p (buffer-substring-no-properties (line-beginning-position)
-                                                                  (line-end-position)))
-                  (= 0 (forward-line -1)))) ; end case if buffer is empty
-      (kill-new (buffer-substring (line-beginning-position) (line-end-position))))))
-
-(defun standard-value (symbol)
-  "Return SYMBOL's standard value.
-This is the global default value."
-  (eval (car (get symbol 'standard-value))))
 
 (provide 'files-extra)
 
