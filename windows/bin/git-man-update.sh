@@ -1,29 +1,35 @@
-#!/usr/bin/sh
-mandir=~/.emacs.d/windows/share/man/
-giturl=http://http.us.debian.org/debian/pool/main/g/git/
-file=$(wget -q -O - $giturl | grep -oP 'href="\K[^"]+' | grep 'git-man.*\.deb' | sort | tail -n 1)
-datafile=data.tar.xz
+#!/usr/bin/env bash
 
-if [ ! -d $mandir ]; then
-    echo Error: $mandir does not exist
+mandir="$HOME/.emacs.d/windows/share/man"
+giturl="http://http.us.debian.org/debian/pool/main/g/git"
+datafile="data.tar.xz"
+
+# Ensure man directory exists
+if [ ! -d "$mandir" ]; then
+    echo "Error: directory '$mandir' does not exist." >&2
     exit 1
 fi
 
-if [ -z $file ]; then
-    echo $Error: git man page not found in $giturl
+# Find the latest git-man .deb file
+file=$(wget -q -O - "$giturl/" | grep -oP 'href="\K[^"]+' | grep 'git-man.*\.deb' | sort | tail -n 1)
+
+if [ -z "$file" ]; then
+    echo "Error: could not find git-man .deb in $giturl." >&2
     exit 2
 fi
 
-cd $mandir
+cd "$mandir" || exit 3
 
-echo Downloading: $file from $giturl to $mandir
-wget --continue --no-verbose $giturl/$file
+echo "Downloading: $file from $giturl to $mandir"
+wget --continue --no-verbose "$giturl/$file"
 
-echo Extracting $file
-ar x $file $datafile
+echo "Extracting $datafile from $file"
+ar x "$file" "$datafile"
 
-echo Extracing $datafile
-tar --extract --xz --verbose --wildcards --transform 's|^./usr/share/man/|./|' --file $datafile './usr/share/man/*.gz'
+echo "Extracting man pages from $datafile"
+tar --extract --xz --verbose --wildcards \
+    --transform='s|^./usr/share/man/|./|' \
+    --file="$datafile" './usr/share/man/*.gz'
 
-echo Removing $file and $datafile
-rm $file $datafile
+echo "Cleaning up: $file and $datafile"
+rm -f "$file" "$datafile"
