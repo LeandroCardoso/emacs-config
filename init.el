@@ -785,6 +785,8 @@ See `kill-new' for details."
 
 (use-package window
   :config
+  ;; display-buffer-alist guide:
+  ;;   https://www.masteringemacs.org/article/demystifying-emacs-window-manager
   (setopt display-buffer-alist '(("\\`\\*\\(Warnings\\|Compile-Log\\|Backtrace\\)\\*\\'"
                                   (display-buffer-reuse-window display-buffer-use-some-window))))
   (setopt split-height-threshold 80)
