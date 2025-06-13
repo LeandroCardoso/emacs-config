@@ -68,7 +68,7 @@ buffer is this big or bigger.")
   :global t
   (require 'timer)
   (when (timerp xml-where-tree-update-timer)
-    (cancel-timer 'xml-where-tree-update-timer))
+    (cancel-timer xml-where-tree-update-timer))
   (setq xml-where-tree-update-timer nil)
   (when xml-where-mode
     (setq xml-where-tree-update-timer
@@ -79,7 +79,7 @@ buffer is this big or bigger.")
 (defun xml-where-which-func-setup ()
   (require 'which-func)
   (when (< (buffer-size) xml-where-maxout)
-    (add-hook 'which-func-functions 'xml-where-path t t)))
+    (add-hook 'which-func-functions 'xml-where-path 0 t)))
 
 (provide 'xml-where)
 

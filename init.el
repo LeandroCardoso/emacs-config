@@ -1568,7 +1568,7 @@ See `byte-recompile-and-cleanup-directory'."
   :defer t
   :after nxml-mode
   :hook
-  (nxml . xml-where-which-func-setup)
+  (nxml-mode . xml-where-which-func-setup)
 
   :bind
   (:map nxml-mode-map
