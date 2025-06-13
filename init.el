@@ -1532,7 +1532,7 @@ See `byte-recompile-and-cleanup-directory'."
         ("C-M-k" . kill-buffer)
         ("k" . kill-current-buffer) ; original is kill-buffer
         ("M-k" . kill-other-buffer-and-window)
-        ("M-q" . delete-other-window))
+        ("M-0" . delete-other-window))
   (:map ctl-x-4-map
         ("k" . kill-other-buffer-and-window)
         ("q" . delete-other-window)))
