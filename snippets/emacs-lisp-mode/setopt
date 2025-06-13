@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: setopt
+# key: setopt
+# key: so
+# --
+(setopt $0)
