@@ -1550,15 +1550,15 @@ See `byte-recompile-and-cleanup-directory'."
 (use-package msvs
   :if (eq system-type 'windows-nt))
 
-(use-package nxml-context
+(use-package xml-where
   :defer t
   :after nxml-mode
   :hook
-  (nxml . nxml-which-func-setup)
+  (nxml . xml-where-which-func-setup)
 
   :bind
   (:map nxml-mode-map
-        ("C-c C-c" . xml-context-tree)))
+        ("C-c C-c" . xml-where-tree)))
 
 (use-package project-extra
   :demand t
