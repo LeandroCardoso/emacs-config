@@ -246,6 +246,16 @@
   (setopt compilation-scroll-output 'first-error)
   (setopt compilation-error-screen-columns nil))
 
+(use-package completion-preview
+  :config
+  (setopt completion-preview-idle-delay 0.3)
+  (global-completion-preview-mode)
+
+  :bind
+  (:map completion-preview-active-mode-map
+        ("M-n" . completion-preview-next-candidate)
+        ("M-p" . completion-preview-prev-candidate)))
+
 (use-package desktop
   :defer t
   :config
@@ -626,7 +636,8 @@
   :bind
   (:map prog-mode-map
         ("<f9>" . compile)
-        ("C-<tab>" . company-indent-or-complete-common)))
+        ;; ("C-<tab>" . company-indent-or-complete-common)
+        ))
 
 (use-package project
   :defer t
@@ -746,7 +757,8 @@ See `kill-new' for details."
   :defer t
   :bind
   (:map text-mode-map
-        ("C-<tab>" . company-indent-or-complete-common)))
+        ;; ("C-<tab>" . company-indent-or-complete-common)
+        ))
 
 (use-package time
   :defer t
@@ -925,6 +937,7 @@ See `kill-new' for details."
   (add-hook 'shell-dynamic-complete-functions 'bash-completion-dynamic-complete))
 
 (use-package company
+  :disabled
   :ensure t
   :config
   (global-company-mode)
@@ -950,12 +963,14 @@ See `kill-new' for details."
         ("<escape>" . company-search-abort)))
 
 (use-package company-flx
+  :disabled
   :ensure t
   :after company
   :config
   (company-flx-mode +1))
 
 (use-package company-c-headers
+  :disabled
   :ensure t
   :config
   (add-to-list 'company-backends 'company-c-headers))
