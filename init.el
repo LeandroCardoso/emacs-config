@@ -188,6 +188,12 @@
         ("<tab>" . archive-next-line)
         ("<backtab>" . archive-previous-line)))
 
+(use-package c-ts-mode
+  :defer t
+  :config
+  (setopt c-ts-mode-indent-offset 4)
+  (setopt c-ts-mode-indent-style 'bsd))
+
 (use-package calc
   :defer t
   :config
