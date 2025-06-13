@@ -846,7 +846,12 @@ See `kill-new' for details."
   :config
   ;; display-buffer-alist guide:
   ;;   https://www.masteringemacs.org/article/demystifying-emacs-window-manager
-  (setopt display-buffer-alist '(("\\`\\*\\(Backtrace\\|Compile-Log\\|Help\\|Warnings\\)\\*\\'"
+  (setopt display-buffer-alist `((,(concat "\\`\\*\\("
+                                           (string-join '("Backtrace"
+                                                          "Compile-Log"
+                                                          "Help"
+                                                          "Warnings") "\\|")
+                                           "\\)\\*\\'")
                                   (display-buffer-reuse-window display-buffer-pop-up-window))))
   (setopt split-height-threshold 80)
   (setopt split-width-threshold 200)
