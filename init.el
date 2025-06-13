@@ -267,6 +267,7 @@
   (setopt dired-isearch-filenames 'dwim)
   (setopt dired-kill-when-opening-new-dired-buffer t)
   (setopt dired-maybe-use-globstar t)
+  (setopt dired-movement-style 'bounded)
 
   :bind
   (:map dired-mode-map
@@ -468,6 +469,10 @@
   :bind
   ("C-z" . imenu)) ; original is suspend-frame
 
+(use-package indent-aux
+  :config
+  (kill-ring-deindent-mode))
+
 (use-package isearch
   :defer t
   :config
@@ -503,6 +508,11 @@
   :config
   (setopt clean-buffer-list-delay-general 2)
   (midnight-mode))
+
+(use-package misc
+  :config
+  (setopt duplicate-line-final-position 1)
+  (setopt duplicate-region-final-position 1))
 
 (use-package mule
   :config
@@ -753,7 +763,12 @@ See `kill-new' for details."
 (use-package tramp
   :defer t
   :config
-  (setopt tramp-verbose 2))
+  (setopt tramp-verbose 2)
+  (setopt tramp-use-connection-share t)
+
+  :bind
+  (:map ctl-x-x-map
+        ("s" . tramp-revert-buffer-with-sudo)))
 
 (use-package transient
   :defer t
@@ -789,23 +804,6 @@ See `kill-new' for details."
   (setopt which-key-idle-secondary-delay 0.0)
   (which-key-mode))
 
-(use-package window
-  :config
-  ;; display-buffer-alist guide:
-  ;;   https://www.masteringemacs.org/article/demystifying-emacs-window-manager
-  (setopt display-buffer-alist '(("\\`\\*\\(Warnings\\|Compile-Log\\|Backtrace\\)\\*\\'"
-                                  (display-buffer-reuse-window display-buffer-use-some-window))))
-  (setopt split-height-threshold 80)
-  (setopt split-width-threshold 200)
-
-  :bind
-  ("S-<up>" . scroll-down-line)
-  ("C-S-p" . scroll-down-line)
-  ("S-<down>" . scroll-up-line)
-  ("C-S-n" . scroll-up-line)
-  (:map ctl-x-map
-        ("K" . kill-buffer-and-window)))
-
 (use-package whitespace
   :defer t
   :init
@@ -831,6 +829,23 @@ See `kill-new' for details."
   ;; Enable windmove - CTRL was chosen because it is the only modifier not used by org-mode
   (windmove-default-keybindings 'ctrl)
   (windmove-swap-states-default-keybindings '(ctrl shift)))
+
+(use-package window
+  :config
+  ;; display-buffer-alist guide:
+  ;;   https://www.masteringemacs.org/article/demystifying-emacs-window-manager
+  (setopt display-buffer-alist '(("\\`\\*\\(Backtrace\\|Compile-Log\\|Help\\|Warnings\\)\\*\\'"
+                                  (display-buffer-reuse-window display-buffer-pop-up-window))))
+  (setopt split-height-threshold 80)
+  (setopt split-width-threshold 200)
+
+  :bind
+  ("S-<up>" . scroll-down-line)
+  ("C-S-p" . scroll-down-line)
+  ("S-<down>" . scroll-up-line)
+  ("C-S-n" . scroll-up-line)
+  (:map ctl-x-map
+        ("K" . kill-buffer-and-window)))
 
 (use-package winner
   :demand t
@@ -963,8 +978,7 @@ See `kill-new' for details."
   (:map ctl-x-map
         ("I" . crux-find-user-init-file))
   (:map ctl-x-x-map
-        ("D" . crux-delete-file-and-buffer)
-        ("s" . crux-sudo-edit)))
+        ("D" . crux-delete-file-and-buffer)))
 
 (use-package doom-modeline
   :ensure t
