@@ -882,12 +882,6 @@ See `kill-new' for details."
 ;; External packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package amx
-  :ensure t
-  :config
-  (setopt amx-prompt-string "> ")
-  (amx-mode))
-
 (use-package avy
   :ensure t
   :defer t
