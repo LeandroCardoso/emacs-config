@@ -661,9 +661,7 @@
   :defer t
   :bind
   (:map prog-mode-map
-        ("<f9>" . compile)
-        ;; ("C-<tab>" . company-indent-or-complete-common)
-        ))
+        ("<f9>" . compile)))
 
 (use-package project
   :defer t
@@ -778,13 +776,6 @@ See `kill-new' for details."
 (use-package subword
   :config
   (global-subword-mode))
-
-(use-package text-mode
-  :defer t
-  :bind
-  (:map text-mode-map
-        ;; ("C-<tab>" . company-indent-or-complete-common)
-        ))
 
 (use-package time
   :defer t
@@ -966,45 +957,6 @@ See `kill-new' for details."
   :after shell
   :config
   (add-hook 'shell-dynamic-complete-functions 'bash-completion-dynamic-complete))
-
-(use-package company
-  :disabled
-  :ensure t
-  :config
-  (global-company-mode)
-  (company-tng-mode)
-
-  (setopt company-format-margin-function 'company-text-icons-margin)
-
-  ;; dabbrev
-  (setopt company-dabbrev-char-regexp "\\sw\\|_\\|-")
-  (setopt company-dabbrev-downcase nil)
-
-  ;; dabbrev code
-  (setopt company-dabbrev-code-everywhere t)
-
-  :bind
-  (:map company-active-map
-        ("<escape>" . company-abort)
-        ("<next>" . company-next-page)
-        ("C-v" . company-next-page)
-        ("<prior>" . company-previous-page)
-        ("M-v" . company-previous-page))
-  (:map company-search-map
-        ("<escape>" . company-search-abort)))
-
-(use-package company-flx
-  :disabled
-  :ensure t
-  :after company
-  :config
-  (company-flx-mode +1))
-
-(use-package company-c-headers
-  :disabled
-  :ensure t
-  :config
-  (add-to-list 'company-backends 'company-c-headers))
 
 (use-package crux
   :ensure t
