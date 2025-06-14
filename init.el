@@ -885,7 +885,8 @@ See `kill-new' for details."
                                                           "Help"
                                                           "Warnings") "\\|")
                                            "\\)\\*\\'")
-                                  (display-buffer-reuse-window display-buffer-use-some-window))))
+                                  (display-buffer-reuse-window display-buffer-use-some-window)
+                                  (inhibit-same-window . t))))
   (setopt split-height-threshold 80)
   (setopt split-width-threshold 200)
 
