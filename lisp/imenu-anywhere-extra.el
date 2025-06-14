@@ -21,9 +21,7 @@ See `imenu-anywhere' for details."
   (let ((imenu-anywhere-buffer-list-function (if multi-buffers
                                                  imenu-anywhere-buffer-list-function
                                                '(lambda () (list (current-buffer))))))
-    (if ivy-mode
-        (ivy-imenu-anywhere)
-      (imenu-anywhere))))
+      (imenu-anywhere)))
 
 (provide 'imenu-anywhere-extra)
 

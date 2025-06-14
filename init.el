@@ -1133,11 +1133,6 @@ See `kill-new' for details."
   (:map isearch-mode-map
         ("<tab>" . isearch-dabbrev-expand)))
 
-(use-package ivy
-  :ensure t
-  :config
-  (ivy-mode))
-
 ;; TODO review js2 and typescript modes
 (use-package js2-mode
   :disabled t
