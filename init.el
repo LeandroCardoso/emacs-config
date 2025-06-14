@@ -994,13 +994,14 @@ See `kill-new' for details."
   :ensure t
   :config
   (setopt corfu-auto t)
-  (setopt corfu-auto-delay 1.0)
+  (setopt corfu-auto-delay 2.0)
   (global-corfu-mode)
   (corfu-echo-mode)
 
   :bind
   (:map corfu-map
-        ;; unbind RET to improve compatibility with completion-preview
+        ;; unbind RET, so I can insert a newline without selecting the first candidate, this is
+        ;; handling when using corfu-auto
         ("RET" . nil)))
 
 (use-package crux
