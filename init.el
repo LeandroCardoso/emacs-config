@@ -419,15 +419,44 @@
 
 (use-package help
   :defer t
+  :init
+  (defvar find-func-map (make-sparse-keymap) "Keymap for find-func.")
+  (defalias 'find-func-map find-func-map)
+
+  (defvar apropos-map (make-sparse-keymap) "Keymap for apropos.")
+  (defalias 'apropos-map apropos-map)
+
   :config
   (setopt describe-bindings-outline t)
   (setopt help-enable-symbol-autoload t)
 
   :bind
   (:map help-map
+        ("," . find-func-map)
+        ("a" . apropos-map)
         ("B" . describe-personal-keybindings)
         ("M-x" . which-key-show-top-level)
-        ("M-X" . which-key-show-major-mode)))
+        ("M-X" . which-key-show-major-mode))
+  (:map find-func-map
+        ("f" . find-function)
+        ("F" . find-function-other-window)
+        ("k" . find-function-on-key)
+        ("K" . find-function-on-key-other-window)
+        ("l" . find-library)
+        ("L" . find-library-other-window)
+        ("v" . find-variable)
+        ("V" . find-variable-other-window))
+  (:map apropos-map
+        ("a" . apropos)
+        ("c" . apropos-command)
+        ("d" . apropos-documentation)
+        ("f" . apropos-function)
+        ("l" . apropos-library)
+        ("u" . apropos-user-option)
+        ("C-v" . apropos-value)
+        ("C-V" . apropos-local-value)
+        ("v" . apropos-variable)
+        ("V" . apropos-local-variable)))
 
 (use-package hi-lock
   :config
