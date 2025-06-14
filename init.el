@@ -251,6 +251,7 @@
 (use-package completion-preview
   :demand t
   :config
+  (add-to-list 'completion-preview-commands 'org-self-insert-command)
   (global-completion-preview-mode)
 
   :bind
