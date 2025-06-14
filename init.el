@@ -992,9 +992,15 @@ See `kill-new' for details."
 (use-package corfu
   :ensure t
   :config
+  (setopt corfu-auto t)
+  (setopt corfu-auto-delay 1.0)
   (global-corfu-mode)
   (corfu-echo-mode)
-  (corfu-history-mode))
+
+  :bind
+  (:map corfu-map
+        ;; unbind RET to improve compatibility with completion-preview
+        ("RET" . nil)))
 
 (use-package crux
   :ensure t
