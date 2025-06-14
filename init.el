@@ -560,8 +560,8 @@
 (use-package org
   :defer t
   :init
-  (defvar org-out-keymap (make-sparse-keymap) "Keymap for org-mode commands outside org-mode")
-  (defalias 'org-out-keymap org-out-keymap)
+  (defvar org-out-map (make-sparse-keymap) "Keymap for org-mode commands outside org-mode")
+  (defalias 'org-out-map org-out-map)
 
   :config
   (setopt org-M-RET-may-split-line '((default . nil)))           ; don't split the line at the cursor position when ALT+ENTER
@@ -586,8 +586,8 @@
                                    ("BLOCKED" . (:foreground ,(face-foreground 'warning) :weight bold))))
 
   :bind
-  ("C-c o" . org-out-keymap)
-  (:map org-out-keymap
+  ("C-c o" . org-out-map)
+  (:map org-out-map
         ("l" . org-store-link)
         ("t" . orgtbl-mode)
         ("s" . orgalist-mode))
@@ -819,15 +819,15 @@ See `kill-new' for details."
 (use-package whitespace
   :defer t
   :init
-  (defvar whitespace-keymap (make-sparse-keymap) "Keymap for whitespace commands")
-  (defalias 'whitespace-keymap whitespace-keymap)
+  (defvar whitespace-map (make-sparse-keymap) "Keymap for whitespace commands")
+  (defalias 'whitespace-map whitespace-map)
 
   :config
   (setopt whitespace-line-column nil) ; use `fill-column' value
 
   :bind
-  ("C-c w" . whitespace-keymap)
-  (:map whitespace-keymap
+  ("C-c w" . whitespace-map)
+  (:map whitespace-map
         ("c" . whitespace-cleanup)
         ("n" . whitespace-newline-mode)
         ("o" . whitespace-toggle-options)

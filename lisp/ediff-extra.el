@@ -130,11 +130,11 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
 ;; Global keymap ;;
 ;;;;;;;;;;;;;;;;;;;
 
-(defvar ediff-keymap nil "Keymap for ediff commands.")
-(defvar ediff-merge-keymap nil "Keymap for ediff merge commands.")
-(defvar ediff-patch-keymap nil "Keymap for ediff patch commands.")
+(defvar ediff-map nil "Keymap for ediff commands.")
+(defvar ediff-merge-map nil "Keymap for ediff merge commands.")
+(defvar ediff-patch-map nil "Keymap for ediff patch commands.")
 
-(setq ediff-merge-keymap
+(setq ediff-merge-map
       (let ((map (make-sparse-keymap)))
         (define-key map "b" 'ediff-merge-buffers)
         (define-key map "B" 'ediff-merge-buffers-with-ancestor)
@@ -147,16 +147,16 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
         (define-key map "v" 'ediff-merge-revisions)
         (define-key map "V" 'ediff-merge-revisions-with-ancestor)
         map))
-(defalias 'ediff-merge-keymap ediff-merge-keymap)
+(defalias 'ediff-merge-map ediff-merge-map)
 
-(setq ediff-patch-keymap
+(setq ediff-patch-map
       (let ((map (make-sparse-keymap)))
         (define-key map "b" 'ediff-patch-buffer)
         (define-key map "f" 'ediff-patch-file)
         map))
-(defalias 'ediff-patch-keymap ediff-patch-keymap)
+(defalias 'ediff-patch-map ediff-patch-map)
 
-(setq ediff-keymap
+(setq ediff-map
       (let ((map (make-sparse-keymap)))
         (define-key map "b" 'ediff-buffers)
         (define-key map "B" 'ediff-buffers3)
@@ -172,14 +172,14 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
         (define-key map "w" 'ediff-regions-wordwise)
         (define-key map "v" 'ediff-revision)
         (define-key map "t" 'ediff-directory-revisions)
-        (define-key map "m" 'ediff-merge-keymap)
-        (define-key map "p" 'ediff-patch-keymap)
+        (define-key map "m" 'ediff-merge-map)
+        (define-key map "p" 'ediff-patch-map)
         map))
-(defalias 'ediff-keymap ediff-keymap)
+(defalias 'ediff-map ediff-map)
 
 (defun ediff-extra-setup-global-keymap ()
-  "Setup a global keymap to ediff commands in \\[ediff-keymap]."
-  (define-key ctl-x-map (kbd "M-e") 'ediff-keymap))
+  "Setup a global keymap to ediff commands in \\[ediff-map]."
+  (define-key ctl-x-map (kbd "M-e") 'ediff-map))
 
 
 (provide 'ediff-extra)
