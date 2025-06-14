@@ -530,18 +530,15 @@
   :defer t
   :config
   (setenv "DICTIONARY" "en_US")
+
+  (setopt ispell-complete-word-dict (expand-file-name "words.txt" user-emacs-directory))
   (setopt ispell-dictionary "en_US")
   (setopt ispell-help-in-bufferp 'electric)
-  (setopt ispell-personal-dictionary
-          (expand-file-name (concat "dict_" ispell-dictionary) user-emacs-directory))
+  (setopt ispell-personal-dictionary (expand-file-name (concat "dict_" ispell-dictionary)
+                                                       user-emacs-directory))
   (setopt ispell-program-name "hunspell")
   (setopt ispell-query-replace-choices t)
-  (setopt ispell-silently-savep t)
-
-  (setopt ispell-complete-word-dict
-          (let ((word-dict (expand-file-name "words.txt" user-emacs-directory)))
-            (when (file-exists-p word-dict)
-              word-dict))))
+  (setopt ispell-silently-savep t))
 
 (use-package midnight
   :config
