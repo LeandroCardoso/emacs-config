@@ -1004,6 +1004,13 @@ See `kill-new' for details."
         ;; handling when using corfu-auto
         ("RET" . nil)))
 
+(use-package corfu-prescient
+  :ensure t
+  :after (corfu prescient)
+  :config
+  (setopt corfu-prescient-override-sorting t)
+  (corfu-prescient-mode))
+
 (use-package crux
   :ensure t
   :defer t
@@ -1299,12 +1306,6 @@ See `kill-new' for details."
   :hook
   (ibuffer-mode . nerd-icons-ibuffer-mode))
 
-(use-package orderless
-  :ensure t
-  :config
-  (setopt completion-styles '(orderless basic))
-  (setopt completion-category-overrides '((file (styles basic partial-completion)))))
-
 (use-package ox-jira ; org export jira
   :ensure t
   :defer t
@@ -1345,6 +1346,14 @@ the plist used as a communication channel."
       (concat plantuml-server-url "/" plantuml-output-type "/~h" encoded-string)))
 
   (advice-add 'plantuml-server-encode-url :override 'plantuml-server-encode-url-override))
+
+(use-package prescient
+  :ensure t
+  :config
+  (setopt completion-styles '(prescient basic))
+  (setopt completion-preview-sort-function 'prescient-completion-sort)
+  (setopt prescient-save-file (expand-file-name "prescient-save.el" user-emacs-directory))
+  (prescient-persist-mode))
 
 (use-package rainbow-mode
   :ensure t
@@ -1427,6 +1436,13 @@ See `tide-tsserver-executable'."
   :ensure t
   :config
   (vertico-mode))
+
+(use-package vertico-prescient
+  :ensure t
+  :after (vertico prescient)
+  :config
+  (setopt vertico-prescient-override-sorting t)
+  (vertico-prescient-mode))
 
 (use-package volatile-highlights
   :ensure t
