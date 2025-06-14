@@ -1236,7 +1236,11 @@ See `kill-new' for details."
 (use-package marginalia
   :ensure t
   :config
-  (marginalia-mode))
+  (marginalia-mode)
+
+  :bind
+  (:map minibuffer-local-map
+        ("M-A" . marginalia-cycle)))
 
 (use-package markdown-mode
   :ensure t
