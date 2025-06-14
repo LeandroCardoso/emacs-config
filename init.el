@@ -111,6 +111,8 @@
   (setq-default cursor-type 'bar)
   (setq-default truncate-lines nil)
 
+  (plist-put minibuffer-prompt-properties 'cursor-intangible t)
+
   ;; auto-save
   (defconst auto-save-dir (expand-file-name "auto-save" user-emacs-directory)
     "Directory to save auto-save files.")
@@ -247,14 +249,19 @@
   (setopt compilation-error-screen-columns nil))
 
 (use-package completion-preview
+  :demand t
   :config
-  (setopt completion-preview-idle-delay 0.3)
   (global-completion-preview-mode)
 
   :bind
   (:map completion-preview-active-mode-map
         ("M-n" . completion-preview-next-candidate)
         ("M-p" . completion-preview-prev-candidate)))
+
+(use-package dabbrev
+  :defer t
+  :config
+  (setopt dabbrev-abbrev-char-regexp "\\sw\\|_\\|-"))
 
 (use-package desktop
   :defer t
@@ -683,6 +690,10 @@
         ("<tab>" . occur-next)
         ("<backtab>" . occur-prev)))
 
+(use-package savehist
+  :config
+  (savehist-mode))
+
 (use-package saveplace
   :config
   (save-place-mode))
@@ -729,6 +740,7 @@ See `kill-new' for details."
   (setopt kill-whole-line t)
   (setopt next-error-message-highlight t)
   (setopt normal-erase-is-backspace nil)
+  (setopt read-extended-command-predicate 'command-completion-default-include-p)
   (setopt shift-select-mode nil)
   (setopt what-cursor-show-names t)
   (setq-default indent-tabs-mode nil)
@@ -869,7 +881,7 @@ See `kill-new' for details."
                                                           "Help"
                                                           "Warnings") "\\|")
                                            "\\)\\*\\'")
-                                  (display-buffer-reuse-window display-buffer-pop-up-window))))
+                                  (display-buffer-reuse-window display-buffer-use-some-window))))
   (setopt split-height-threshold 80)
   (setopt split-width-threshold 200)
 
@@ -957,6 +969,26 @@ See `kill-new' for details."
   :after shell
   :config
   (add-hook 'shell-dynamic-complete-functions 'bash-completion-dynamic-complete))
+
+(use-package cape
+  :ensure t
+  :init
+  (add-hook 'completion-at-point-functions 'cape-dabbrev 50)
+  (add-hook 'completion-at-point-functions 'cape-file 10)
+
+  :config
+  (setopt cape-dabbrev-buffer-function 'cape-text-buffers)
+  (setopt cape-dict-file (expand-file-name "words.txt" user-emacs-directory))
+
+  :bind
+  ("C-c p" . cape-prefix-map))
+
+(use-package corfu
+  :ensure t
+  :config
+  (global-corfu-mode)
+  (corfu-echo-mode)
+  (corfu-history-mode))
 
 (use-package crux
   :ensure t
@@ -1197,6 +1229,11 @@ See `kill-new' for details."
   (:map magit-hunk-section-map
         ("SPC" . magit-diff-visit-file-other-window)))
 
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
 (use-package markdown-mode
   :ensure t
   :defer t)
@@ -1215,9 +1252,10 @@ See `kill-new' for details."
 (use-package nerd-icons-completion
   :ensure t
   :defer t
-  :after nerd-icons
+  :after (marginalia nerd-icons)
   :config
-  (nerd-icons-completion-mode))
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook 'nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-dired
   :ensure t
@@ -1241,6 +1279,12 @@ See `kill-new' for details."
 
   :hook
   (ibuffer-mode . nerd-icons-ibuffer-mode))
+
+(use-package orderless
+  :ensure t
+  :config
+  (setopt completion-styles '(orderless basic))
+  (setopt completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package ox-jira ; org export jira
   :ensure t
@@ -1359,6 +1403,11 @@ See `tide-tsserver-executable'."
   :config
   (setopt treesit-auto-install t)
   (global-treesit-auto-mode))
+
+(use-package vertico
+  :ensure t
+  :config
+  (vertico-mode))
 
 (use-package volatile-highlights
   :ensure t
