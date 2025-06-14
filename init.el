@@ -1235,6 +1235,7 @@ See `kill-new' for details."
 
 (use-package marginalia
   :ensure t
+  :demand t
   :config
   (marginalia-mode)
 
