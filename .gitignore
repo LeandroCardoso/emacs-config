@@ -1,7 +1,6 @@
 *.elc
 .emacs.desktop
 .emacs.desktop.lock
-amx-items
 auto-save-list/
 auto-save/
 bookmarks
@@ -12,7 +11,7 @@ elpa/
 eshell/history
 eshell/lastdir
 flycheck_init.el
-fonts
+fonts/
 omnisharp/
 org-persist/
 places
