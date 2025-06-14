@@ -52,6 +52,7 @@
          `(Info-quoted ((t :foreground ,orange :inherit font-lock-string-face)))
          `(bookmark-face ((t :inherit fringe)))
          `(button ((t :inherit link)))
+         `(completion-preview-exact ((t :underline ,green)))
          `(cursor ((t :background ,yellow)))
          `(custom-button ((t :inherit button)))
          `(diff-error ((t :inherit error)))
