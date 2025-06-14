@@ -570,6 +570,10 @@
   :config
   (setq disabled-command-function nil))
 
+(use-package minibuffer
+  :bind
+  ("C-<tab>" . completion-at-point))
+
 (use-package newcomment
   :config
   (setq-default comment-column 0)
