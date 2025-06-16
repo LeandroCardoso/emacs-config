@@ -9,6 +9,7 @@
 ;;; Code:
 
 (require 'nxml-mode)
+(require 'which-func)
 
 ;; TODO integrate in `header-line-format' usign :eval
 
@@ -66,6 +67,7 @@ buffer is this big or bigger.")
 (define-minor-mode xml-where-mode
   nil
   :global t
+  :group 'nxml
   (require 'timer)
   (when (timerp xml-where-tree-update-timer)
     (cancel-timer xml-where-tree-update-timer))
@@ -77,7 +79,6 @@ buffer is this big or bigger.")
 ;; which-func integration
 ;; See https://www.emacswiki.org/emacs/WhichFuncMode Non-standard languages (TL;DR;)
 (defun xml-where-which-func-setup ()
-  (require 'which-func)
   (when (< (buffer-size) xml-where-maxout)
     (add-hook 'which-func-functions 'xml-where-path 0 t)))
 
