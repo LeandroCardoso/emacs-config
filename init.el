@@ -266,7 +266,8 @@
 (use-package dabbrev
   :defer t
   :config
-  (setopt dabbrev-abbrev-char-regexp "\\sw\\|_\\|-"))
+  (setopt dabbrev-abbrev-char-regexp "\\sw\\|_\\|-")
+  (setopt dabbrev-case-fold-search nil))
 
 (use-package desktop
   :defer t
