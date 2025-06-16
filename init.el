@@ -1641,7 +1641,11 @@ See `byte-recompile-and-cleanup-directory'."
   (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
 
   ;; Don't cleanup the buffer list when Emacs is idle during weekends and holidays
-  (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice))
+  (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice)
+
+  :bind
+  (:map minibuffer-local-map
+        ("M-." . insert-selected-window-thing-at-point)))
 
 (use-package msvs
   :if (eq system-type 'windows-nt))

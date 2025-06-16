@@ -64,6 +64,13 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
           (newline))))
     (display-fonts-mode)))
 
+;;;###autoload
+(defun insert-selected-window-thing-at-point ()
+  "When in minibuffer, insert the thing at point of the selected windows."
+  (interactive)
+  (when-let ((str (with-minibuffer-selected-window (thing-at-point 'symbol))))
+    (insert str)))
+
 (defun set-first-font (font-list)
   "Set the first font from FONT-LIST that is available in all frames."
   (when-let ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
