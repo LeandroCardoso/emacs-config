@@ -1257,6 +1257,7 @@ See `kill-new' for details."
   :ensure t
   :demand t
   :config
+  (setopt marginalia-field-width 120)
   (marginalia-mode)
 
   :bind
