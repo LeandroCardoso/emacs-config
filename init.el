@@ -968,7 +968,10 @@ See `kill-new' for details."
   :bind
   ("C-M-;" . avy-goto-word-1)
   ("C-<dead-acute>" . avy-goto-word-1)
-  ("C-M-:" . avy-goto-char-in-line))
+  ("C-M-:" . avy-goto-char-in-line)
+  (:map isearch-mode-map
+        ("C-M-;" . avy-isearch)
+        ("C-<dead-acute>" . avy-isearch)))
 
 (use-package bash-completion
   :ensure t
