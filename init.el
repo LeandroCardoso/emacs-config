@@ -257,6 +257,7 @@
 
   :bind
   (:map completion-preview-active-mode-map
+        ("C-<tab>" . completion-preview-complete)
         ("M-n" . completion-preview-next-candidate)
         ("M-p" . completion-preview-prev-candidate)))
 
