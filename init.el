@@ -964,9 +964,6 @@ See `kill-new' for details."
   :defer t
   :config
   (setopt avy-all-windows nil)
-  (setopt avy-dispatch-alist nil)
-  (setopt avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?\; ?q ?w ?e ?r ?t ?y ?u ?i ?o ?p ?z ?x ?c ?v ?b ?n ?m ?, ?. ?/))
-  (setopt avy-subword-extra-word-chars nil)
 
   :bind
   ("C-M-;" . avy-goto-word-1)
