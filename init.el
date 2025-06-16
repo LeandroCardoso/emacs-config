@@ -1434,8 +1434,13 @@ See `tide-tsserver-executable'."
 
 (use-package vertico
   :ensure t
+  :demand t
   :config
-  (vertico-mode))
+  (vertico-mode)
+
+  :bind
+  (:map vertico-map
+        ("<escape>" . vertico-exit)))
 
 (use-package vertico-prescient
   :ensure t
