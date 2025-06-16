@@ -1260,6 +1260,11 @@ See `kill-new' for details."
   (setopt marginalia-field-width 120)
   (marginalia-mode)
 
+  ;; recentf-extra integration
+  (add-to-list 'marginalia-command-categories '(recentf-find-file . file))
+  (add-to-list 'marginalia-command-categories '(recentf-find-file-other-window . file))
+  (add-to-list 'marginalia-command-categories '(recentf-find-file-other-frame . file))
+
   :bind
   (:map minibuffer-local-map
         ("M-A" . marginalia-cycle)))
