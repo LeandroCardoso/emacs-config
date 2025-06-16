@@ -13,6 +13,7 @@
 (require 'simple)
 (require 'window)
 
+;;;###autoload
 (defun clean-buffer-list-check-idle-time-advice ()
   "Advice to avoid cleanup the buffer list when Emacs is idle.
 
@@ -66,11 +67,14 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
 
 ;;;###autoload
 (defun insert-selected-window-thing-at-point ()
-  "When in minibuffer, insert the thing at point of the selected windows."
+  "When in minibuffer, insert the thing at point of the selected windows.
+
+Bind this command to a key in `minibuffer-local-map', the recommendation is \"M-.\"."
   (interactive)
   (when-let ((str (with-minibuffer-selected-window (thing-at-point 'symbol))))
     (insert str)))
 
+;;;###autoload
 (defun set-first-font (font-list)
   "Set the first font from FONT-LIST that is available in all frames."
   (when-let ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
@@ -78,6 +82,7 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
     (set-frame-font font-name t t)
     (message "Setting font to %s" font-name)))
 
+;;;###autoload
 (defun smart-display-time-mode ()
   "Display a clock when Emacs is in fullscreen.
 
