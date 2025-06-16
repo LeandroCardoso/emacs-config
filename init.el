@@ -1633,6 +1633,7 @@ See `byte-recompile-and-cleanup-directory'."
   ([remap imenu] . imenu-anywhere-dwim))
 
 (use-package misc-extra
+  :demand t
   :config
   (set-first-font '("Source Code Pro" "Cascadia Mono" "Consolas"))
 
