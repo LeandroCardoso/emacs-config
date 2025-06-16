@@ -252,6 +252,8 @@
 (use-package completion-preview
   :demand t
   :config
+  (when (eq system-type 'windows-nt)
+    (setopt completion-preview-idle-delay 0.05))
   (add-to-list 'completion-preview-commands 'org-self-insert-command)
   (global-completion-preview-mode)
 
