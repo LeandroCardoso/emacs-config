@@ -997,7 +997,7 @@ See `kill-new' for details."
   :ensure t
   :config
   (setopt corfu-auto t)
-  (setopt corfu-auto-delay 2.0)
+  (setopt corfu-auto-delay 3.0)
   (global-corfu-mode)
   (corfu-echo-mode)
 
