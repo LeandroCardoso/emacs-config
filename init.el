@@ -1434,7 +1434,7 @@ See `tide-tsserver-executable'."
 
   :bind
   (:map vertico-map
-        ("<escape>" . vertico-exit)))
+        ("<escape>" . abort-minibuffers)))
 
 (use-package vertico-prescient
   :ensure t
