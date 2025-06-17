@@ -1593,11 +1593,10 @@ See `byte-recompile-and-cleanup-directory'."
   :demand t
   :config
   (setopt split-window-preferred-function 'split-window-sensibly-horizontally)
-  (advice-add 'other-window :before 'other-window-split-if-single)
   (advice-add 'window-splittable-p :around 'window-split-dynamic-threshold-advice)
 
   :bind
-  ("M-o" . other-window)
+  ("M-o" . other-window-split-if-single)
   ("M-O" . other-window-backward)
   ([remap toggle-frame-fullscreen] . toggle-frame-fullscreen+)
   (:map ctl-x-map

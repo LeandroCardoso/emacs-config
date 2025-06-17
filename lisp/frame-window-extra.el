@@ -76,9 +76,15 @@ Usage - advise `window-splittable-p' function:
     (apply func args)))
 
 ;;;###autoload
-(defun other-window-split-if-single (&rest _)
-  "Split the frame if there is a single window."
-  (when (one-window-p) (split-window-sensibly)))
+(defun other-window-split-if-single (count &optional all-frames interactive)
+  "Select another window in cyclic ordering of windows and split the frame
+if there is a single window.
+
+See `other-window'."
+  (interactive "p")
+  (when (one-window-p)
+    (split-window-sensibly))
+  (other-window count all-frames interactive))
 
 ;;;###autoload
 (defun other-window-backward (count &optional all-frames)
