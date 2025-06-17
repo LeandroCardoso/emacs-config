@@ -259,7 +259,6 @@
 
   :bind
   (:map completion-preview-active-mode-map
-        ("C-<tab>" . completion-preview-complete)
         ("M-n" . completion-preview-next-candidate)
         ("M-p" . completion-preview-prev-candidate)))
 
@@ -984,15 +983,16 @@ See `kill-new' for details."
 (use-package cape
   :ensure t
   :init
-  (add-hook 'completion-at-point-functions 'cape-dabbrev 50)
-  (add-hook 'completion-at-point-functions 'cape-file 10)
+  (add-hook 'completion-at-point-functions 'cape-dabbrev 10)
+  (add-hook 'completion-at-point-functions 'cape-file 20)
 
   :config
   (setopt cape-dabbrev-buffer-function 'cape-text-buffers)
   (setopt cape-dict-file (expand-file-name "words.txt" user-emacs-directory))
 
   :bind
-  ("C-c p" . cape-prefix-map))
+  ("C-c p" . cape-prefix-map)
+  ([remap dabbrev-expand] . cape-dabbrev))
 
 (use-package corfu
   :ensure t
