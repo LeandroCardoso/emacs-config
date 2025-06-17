@@ -959,6 +959,13 @@ See `kill-new' for details."
 ;; External packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package atomic-chrome
+  :ensure t
+  :demand t
+  :config
+  (setopt atomic-chrome-default-major-mode 'org-mode)
+  (atomic-chrome-start-server))
+
 (use-package avy
   :ensure t
   :defer t
@@ -1043,17 +1050,6 @@ See `kill-new' for details."
   (setopt doom-modeline-indent-info t)
   (setopt doom-modeline-vcs-max-length 22)
   (doom-modeline-mode))
-
-(use-package edit-server
-  :ensure t
-  :config
-  (setopt edit-server-default-major-mode 'org-mode)
-  (setopt edit-server-new-frame-alist
-          '((name . "Edit Server")
-            (width . 0.5)
-            (height . 0.5)
-            (fullscreen . nil)))
-  (edit-server-start))
 
 (use-package engine-mode
   :ensure t
