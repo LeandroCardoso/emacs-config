@@ -514,8 +514,8 @@
   :defer t
   :config
   (setopt imenu-auto-rescan t)
-  (setopt imenu-flatten 'prefix)
-  (setopt imenu-max-item-length nil) ; don't truncate Imenu entries
+  (setopt imenu-flatten 'group)
+  (setopt imenu-max-item-length nil)
 
   :bind
   ("C-z" . imenu)) ; original is suspend-frame
@@ -1172,13 +1172,6 @@ See `kill-new' for details."
   :hook
   (minibuffer-setup . highlight-parentheses-minibuffer-setup))
 
-(use-package imenu-anywhere
-  :ensure t
-  :demand t
-  :after imenu
-  :config
-  (add-to-list 'imenu-anywhere-friendly-modes '(c-mode c++-mode)))
-
 (use-package isearch-dabbrev
   :ensure t
   :defer t
@@ -1619,12 +1612,6 @@ See `byte-recompile-and-cleanup-directory'."
   :after ibuffer
   :hook
   (ibuffer . ibuffer-set-filter-groups-by-project))
-
-(use-package imenu-anywhere-extra
-  :demand t
-  :after imenu-anywhere
-  :bind
-  ([remap imenu] . imenu-anywhere-dwim))
 
 (use-package misc-extra
   :demand t
