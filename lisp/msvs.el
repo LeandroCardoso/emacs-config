@@ -192,27 +192,6 @@ to give nuget as arguments."
   ;; Add Visual Studio binary directories to PATH
   (w32-add-to-path (expand-file-name "Common7/Tools" msvs-root-directory)))
 
-;; c/c++ fast header/implementation switch
-(with-eval-after-load "find-file"
-  (when msvs-include-directory
-    (add-to-list 'cc-search-directories msvs-include-directory t))
-  (when msvs-platform-sdk
-    (add-to-list 'cc-search-directories msvs-platform-sdk t)))
-
-;; flycheck-clang
-(with-eval-after-load "flycheck-clang"
-  (when msvs-include-directory
-    (add-to-list 'flycheck-clang-include-path msvs-include-directory))
-  (when msvs-platform-sdk
-    (add-to-list 'flycheck-clang-include-path msvs-platform-sdk)))
-
-;; company-c-headers
-(with-eval-after-load "company"
-  (when msvs-include-directory
-    (add-to-list 'company-c-headers-path-system msvs-include-directory))
-  (when msvs-platform-sdk
-    (add-to-list 'company-c-headers-path-system msvs-platform-sdk)))
-
 ;; project
 (with-eval-after-load "project"
   (add-to-list 'project-vc-extra-root-markers "*.sln"))
@@ -227,9 +206,11 @@ to give nuget as arguments."
 ;; compile
 (with-eval-after-load "cc-mode"
   (add-hook 'c-mode-hook 'msvs-set-compile-command)
-  (add-hook 'c++-mode-hook 'msvs-set-compile-command))
+  (add-hook 'c++-mode-hook 'msvs-set-compile-command)
+  (add-hook 'c-ts-base-mode-hook 'msvs-set-compile-command))
 (with-eval-after-load "csharp-mode"
-  (add-hook 'csharp-mode-hook 'msvs-set-compile-command))
+  (add-hook 'csharp-mode-hook 'msvs-set-compile-command)
+  (add-hook 'csharp-ts-mode-hook 'msvs-set-compile-command))
 
 
 ;; Setup Auto-Modes
