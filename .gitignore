@@ -13,7 +13,6 @@ eshell/lastdir
 flycheck_init.el
 fonts/
 history
-omnisharp/
 org-persist/
 places
 plantuml/

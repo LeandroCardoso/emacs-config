@@ -1688,8 +1688,7 @@ See `byte-recompile-and-cleanup-directory'."
 
   ;; Add external utilities to PATH and exec-path
   (dolist (path (list "C:/Program Files/Git/cmd/"
-                      "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
-                      (expand-file-name "omnisharp/" user-emacs-directory)))
+                      "C:/Program Files (x86)/Java/latest/jre-1.8/bin"))
     (w32-add-to-path path))
 
   ;; Required to enter password for git
