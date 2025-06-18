@@ -26,4 +26,5 @@ transient/
 tree-sitter/
 url/
 windows/bin/nuget.exe
+windows/omnisharp/
 windows/share/man/

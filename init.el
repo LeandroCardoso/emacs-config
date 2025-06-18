@@ -322,9 +322,7 @@
   (ediff-meta-buffer-keymap-setup . ediff-meta-buffer-map-setup))
 
 (use-package eglot
-  :defer t
-  :hook
-  (csharp-mode . eglot-ensure))
+  :defer t)
 
 (use-package eldoc
   :config
@@ -1689,7 +1687,8 @@ See `byte-recompile-and-cleanup-directory'."
 
   ;; Add external utilities to PATH and exec-path
   (dolist (path (list "C:/Program Files/Git/cmd/"
-                      "C:/Program Files (x86)/Java/latest/jre-1.8/bin"))
+                      "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
+                      (expand-file-name "windows/omnisharp/" user-emacs-directory)))
     (w32-add-to-path path))
 
   ;; Required to enter password for git
