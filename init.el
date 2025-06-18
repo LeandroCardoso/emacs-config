@@ -1004,6 +1004,7 @@ See `kill-new' for details."
   :config
   (setopt corfu-auto t)
   (setopt corfu-auto-delay 3.0)
+  (setopt corfu-echo-delay 0)
   (global-corfu-mode)
   (corfu-echo-mode)
 
