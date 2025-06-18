@@ -815,11 +815,10 @@ See `kill-new' for details."
   :config
   (setopt tramp-verbose 2)
   (setopt tramp-use-connection-share t)
-  (defalias 'revert-buffer-with-sudo 'tramp-revert-buffer-with-sudo)
 
   :bind
   (:map ctl-x-x-map
-        ("s" . revert-buffer-with-sudo)))
+        ("@" . tramp-revert-buffer-with-sudo)))
 
 (use-package transient
   :defer t
