@@ -995,9 +995,21 @@ See `kill-new' for details."
   (setopt cape-dabbrev-buffer-function 'cape-text-buffers)
   (setopt cape-dict-file (expand-file-name "words.txt" user-emacs-directory))
 
+  (defun cape-setup-elisp-mode ()
+    "Setup `completion-at-point-functions' to use a non-exclusive version of
+`elisp-completion-at-point'.  This allows to fallback to other functions
+when it doesn't return any candidate.  Provided for use in hooks."
+    (defalias 'elisp-completion-at-point-nonexclusive
+      (cape-capf-nonexclusive 'elisp-completion-at-point)
+      "Non-exclusive version of `elisp-completion-at-point'")
+    (setq-local completion-at-point-functions (list 'elisp-completion-at-point-nonexclusive t)))
+
   :bind
   ("C-c p" . cape-prefix-map)
-  ([remap dabbrev-expand] . cape-dabbrev))
+  ([remap dabbrev-expand] . cape-dabbrev)
+
+  :hook
+  (emacs-lisp-mode . cape-setup-elisp-mode))
 
 (use-package corfu
   :ensure t
