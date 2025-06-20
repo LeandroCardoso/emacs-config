@@ -513,8 +513,19 @@
   :defer t
   :config
   (setopt imenu-auto-rescan t)
-  (setopt imenu-flatten 'group)
+  (setopt imenu-flatten 'prefix)
+  (setopt imenu-level-separator (propertize " > " 'face '(:inherit font-lock-type-face :weight bold)))
   (setopt imenu-max-item-length nil)
+  (setopt imenu-space-replacement " ")
+
+  (defun imenu-propertize-prefix-advice (args)
+    "Propertize the PREFIX in `imenu'."
+    (list (nth 0 args) ; index-allist
+          (nth 1 args) ; concat-names
+          (when (stringp (nth 2 args)) ; prefix
+            (propertize (nth 2 args) 'face '(:inherit font-lock-type-face)))))
+
+  (advice-add 'imenu--flatten-index-alist :filter-args 'imenu-propertize-prefix-advice)
 
   :bind
   ("C-z" . imenu)) ; original is suspend-frame
