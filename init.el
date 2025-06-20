@@ -1059,7 +1059,8 @@ when it doesn't return any candidate.  Provided for use in hooks."
   (setopt doom-modeline-buffer-file-name-style 'file-name-with-project)
   (setopt doom-modeline-height 30)
   (setopt doom-modeline-indent-info t)
-  (setopt doom-modeline-vcs-max-length 22)
+  (setopt doom-modeline-vcs-display-function 'ignore)
+
   (doom-modeline-mode))
 
 (use-package engine-mode
