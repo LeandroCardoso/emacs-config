@@ -896,6 +896,8 @@ See `kill-new' for details."
   ;;   https://www.masteringemacs.org/article/demystifying-emacs-window-manager
   (setopt display-buffer-alist `((,(concat "\\`\\*\\("
                                            (string-join '("Backtrace"
+                                           (string-join '("Apropos"
+                                                          "Backtrace"
                                                           "Compile-Log"
                                                           "Help"
                                                           "Warnings") "\\|")
