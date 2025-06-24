@@ -122,21 +122,6 @@
   '("start.*\\.\\(np6\\|npsharp\\)") ; AUTO-MODE-LIST
   nil)                 ; FUNCTION-LIST
 
-
-;; flycheck-clang
-(when (require 'flycheck nil t)
-  (setq flycheck-clang-ms-extensions t)
-  (setq flycheck-clang-warnings '("all" "extra" "no-invalid-token-paste"))
-
-  (setq flycheck-clang-definitions nil)
-  (dolist (def '("_MSC_VER=1800" ; used by windows
-                 "_M_IX86"
-                 "_WIN32"
-                 "NPMODDEF"      ; used by np61
-                 "XP_WIN"        ; used by js180
-                 ))
-    (push def flycheck-clang-definitions)))
-
 ;; git-link
 (defun git-link-bitbucket-rdi (hostname dirname filename _branch commit start end)
   (format "https://%s/%s/browse/%s?%s%s"
@@ -267,45 +252,7 @@
 (defalias 'np6-keymap np6-keymap)
 (global-set-key (kbd "<f5>") 'np6-keymap)
 
-
-;; np61 include path list
-(defvar np61-include-path-list nil
-  "A list of include paths for np61 project.")
-
-(defun np61-update-include-path-list ()
-  "Update the `np61-include-path-list'."
-  (interactive)
-  (if np6-np61-src-directory
-      (progn
-        (setq np61-include-path-list nil)
-        (message "Updating np61-update-include-path-list...")
-        (let ((start-time (current-time))
-              (pr np6-np61-src-directory))
-          (dolist (dir (nconc (list-directories (expand-file-name "src/" pr) t t)
-                              (list-directories (expand-file-name "extSrc/" pr) t t)))
-            ;; Skip directories that do not have header files
-            (when (directory-files dir nil "\\.h.*" t)
-              (push dir np61-include-path-list)))
-          (message "Updating np61-update-include-path-list...done in %g seconds"
-                   (float-time (time-since start-time)))))
-    (error "Np6 core not found")))
-
-(defun np61-c-c++-setup ()
-  "Set `flycheck-clang-include-path' with np61 and msvs compiler
-directories."
-  (interactive)
-  (when (np6-np61-project-p)
-    ;; update np61-include-path-list
-    (when (null np61-include-path-list) (np61-update-include-path-list))
-    (setq-local flycheck-clang-include-path (append (list msvs-include-directory
-                                                          msvs-platform-sdk)
-                                                    np61-include-path-list
-                                                    nil))))
-
-(add-hook 'c-mode-hook 'np61-c-c++-setup)
-(add-hook 'c++-mode-hook 'np61-c-c++-setup)
-(add-hook 'c-ts-base-mode-hook 'np61-c-c++-setup)
-
+;; Compile
 (defun rdi-msvs-generate-compile-command ()
   (cond
    ;; c or c++

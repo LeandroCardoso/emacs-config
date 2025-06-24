@@ -1161,32 +1161,6 @@ when it doesn't return any candidate.  Provided for use in hooks."
   :config
   (setq framemove-hook-into-windmove t))
 
-(use-package flycheck
-  :disabled t
-  :ensure t
-  :config
-  (setopt flycheck-check-syntax-automatically (if (eq system-type 'windows-nt)
-                                                  '(save idle-change idle-buffer-switch)
-                                                '(save idle-change mode-enabled)))
-  (setopt flycheck-checker-error-threshold nil)
-  (setopt flycheck-global-modes '(c-mode
-                                  c++-mode
-                                  csharp-mode
-                                  emacs-lisp-mode
-                                  js-mode
-                                  typescript-mode))
-  (setopt flycheck-idle-buffer-switch-delay (if (eq system-type 'windows-nt) 30 5))
-  (setopt flycheck-idle-change-delay (if (eq system-type 'windows-nt) 30 5))
-
-  ;; clang
-  (flycheck-add-next-checker 'c/c++-clang 'c/c++-cppcheck)
-
-  ;; cppcheck
-  ;; unusedStructMember is annoying in header files
-  (setopt flycheck-cppcheck-suppressions '("unusedStructMember"))
-
-  (global-flycheck-mode))
-
 (use-package git-link
   :ensure t
   :defer t
