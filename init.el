@@ -150,7 +150,7 @@
   (setopt scroll-preserve-screen-position t)
 
   ;; trusted lisp files
-  (add-to-list 'trusted-content (file-name-as-directory user-lisp-directory))
+  (setopt trusted-content :all)
 
   ;; undo
   (setopt undo-limit (* 1 1024 1024))
@@ -322,7 +322,13 @@
   (ediff-meta-buffer-keymap-setup . ediff-meta-buffer-map-setup))
 
 (use-package eglot
-  :defer t)
+  :defer t
+  :config
+  (setopt eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider))
+
+  :hook
+  ((c-mode c-ts-mode c++-mode c++-ts-mode
+    csharp-mode csharp-ts-mode) . eglot-ensure))
 
 (use-package eldoc
   :config
@@ -386,6 +392,32 @@
   :config
   (setopt ffap-file-name-with-spaces t)
   (ffap-bindings))
+
+(use-package flymake
+  :defer t
+  :init
+  (defvar flymake-map (make-sparse-keymap) "Keymap for flymake")
+  (defalias 'flymake-map flymake-map)
+
+  :config
+  (setopt flymake-no-changes-timeout 30)
+
+  :bind
+  (:map prog-mode-map
+        ("C-c !" . flymake-map))
+  (:map flymake-map
+        ("f" . flymake-mode)
+        ("n" . flymake-goto-next-error)
+        ("p" . flymake-goto-prev-error)
+        ("!" . flymake-show-buffer-diagnostics)
+        ("P" . flymake-show-project-diagnostics)
+        ("d" . flymake-disabled-backends)
+        ("B" . flymake-reporting-backends)
+        ("b" . flymake-running-backends)
+        ("l" . flymake-switch-to-log-buffer))
+
+  :hook
+  (prog-mode . flymake-mode))
 
 (use-package goto-addr
   :config
@@ -895,10 +927,10 @@ See `kill-new' for details."
   ;; display-buffer-alist guide:
   ;;   https://www.masteringemacs.org/article/demystifying-emacs-window-manager
   (setopt display-buffer-alist `((,(concat "\\`\\*\\("
-                                           (string-join '("Backtrace"
                                            (string-join '("Apropos"
                                                           "Backtrace"
                                                           "Compile-Log"
+                                                          "Flymake diagnostics.*"
                                                           "Help"
                                                           "Warnings") "\\|")
                                            "\\)\\*\\'")
@@ -1130,6 +1162,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
   (setq framemove-hook-into-windmove t))
 
 (use-package flycheck
+  :disabled t
   :ensure t
   :config
   (setopt flycheck-check-syntax-automatically (if (eq system-type 'windows-nt)
