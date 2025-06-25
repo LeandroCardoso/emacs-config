@@ -323,8 +323,26 @@
 
 (use-package eglot
   :defer t
+  :init
+  (defvar eglot-map (make-sparse-keymap) "Keymap for eglot")
+  (defalias 'eglot-map eglot-map)
+
   :config
   (setopt eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider))
+
+  :bind
+  (:map prog-mode-map
+        ("C-c e" . eglot-map))
+  (:map eglot-map
+        ("e" . eglot)
+        ("a" . eglot-code-actions)
+        ("r" . eglot-rename)
+        ("f" . eglot-format)
+        ("F" . eglot-format-buffer)
+        ("h" . eglot-inlay-hints-mode)
+        ("c" . eglot-list-connections)
+        ("s" . eglot-shutdown)
+        ("S" . eglot-shutdown-all))
 
   :hook
   ((c-mode c-ts-mode c++-mode c++-ts-mode
@@ -407,13 +425,13 @@
         ("C-c !" . flymake-map))
   (:map flymake-map
         ("f" . flymake-mode)
+        ("d" . flymake-disabled-backends)
+        ("B" . flymake-reporting-backends)
+        ("b" . flymake-running-backends)
         ("n" . flymake-goto-next-error)
         ("p" . flymake-goto-prev-error)
         ("!" . flymake-show-buffer-diagnostics)
         ("P" . flymake-show-project-diagnostics)
-        ("d" . flymake-disabled-backends)
-        ("B" . flymake-reporting-backends)
-        ("b" . flymake-running-backends)
         ("l" . flymake-switch-to-log-buffer))
 
   :hook
