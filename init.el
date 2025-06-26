@@ -602,15 +602,31 @@
   :defer t
   :config
   (setenv "DICTIONARY" "en_US")
-
-  (setopt ispell-complete-word-dict (expand-file-name "words.txt" user-emacs-directory))
+  (defconst ispell-words-directory (expand-file-name "words/" user-emacs-directory))
+  (setopt ispell-complete-word-dict (expand-file-name "words-en_US.txt" ispell-words-directory))
   (setopt ispell-dictionary "en_US")
   (setopt ispell-help-in-bufferp 'electric)
   (setopt ispell-personal-dictionary (expand-file-name (concat "dict_" ispell-dictionary)
                                                        user-emacs-directory))
   (setopt ispell-program-name "hunspell")
   (setopt ispell-query-replace-choices t)
-  (setopt ispell-silently-savep t))
+  (setopt ispell-silently-savep t)
+
+  (defun ispell-change-word-dict (local)
+    "Change the word-list dictionary used for word completion.
+
+Prompt user to select a dictionary file from `ispell-words-directory'
+and set `ispell-complete-word-dict' to it.
+
+With parameter LOCAL, set and make the `ispell-complete-word-dict'
+variable buffer-local."
+    (interactive "P")
+    (when-let* ((file (completing-read "Choose dictionary file: "
+                                       (directory-files ispell-words-directory nil "^[^.].*")
+                                       nil t)))
+      (if local
+          (setq-local ispell-complete-word-dict (expand-file-name file ispell-words-directory))
+        (setq ispell-complete-word-dict (expand-file-name file ispell-words-directory))))))
 
 (use-package midnight
   :config
