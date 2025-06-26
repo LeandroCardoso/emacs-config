@@ -952,7 +952,8 @@ See `kill-new' for details."
                                                           "Help"
                                                           "Warnings") "\\|")
                                            "\\)\\*\\'")
-                                  (display-buffer-reuse-window display-buffer-use-least-recent-window))))
+                                  (display-buffer-reuse-window display-buffer-pop-up-window)
+                                  (window-height . shrink-window-if-larger-than-buffer))))
   (setopt split-height-threshold 80)
   (setopt split-width-threshold 200)
 
