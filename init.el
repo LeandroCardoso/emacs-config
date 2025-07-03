@@ -1174,15 +1174,15 @@ when it doesn't return any candidate.  Provided for use in hooks."
                (propertize subtitle 'face '(:slant italic))
                (enlight-menu
                 '(("\nAction"
-                   ("Desktop Read" (desktop-read) "d")
-                   ("Edit File" find-file "f")
-                   ("Edit Recent File" (recentf-find-file) "r")
-                   ("Select Project" project-switch-project "p")
-                   ("eshell" (eshell) "e")
-                   ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
+                   ("Desktop read" (desktop-read) "d")
+                   ("Edit file" find-file "f")
+                   ("Edit recent file" (recentf-find-file) "r")
+                   ("Select project" project-switch-project "p")
+                   ("Start eshell" (eshell) "e")
+                   ("Quit Emacs" (save-buffers-kill-terminal) "q"))
                   ("\nEmacs User Directory"
                    ("Edit init file" (find-file user-init-file) "i")
-                   ("Dired" (dired user-emacs-directory) "D")
+                   ("Dired" (dired user-emacs-directory) "u")
                    ("Magit" (magit-status user-emacs-directory) "m"))))))))
 
   (advice-add 'enlight :before 'update-enlight-content-advice)
