@@ -107,6 +107,7 @@
   (setopt truncate-lines nil)
   (setopt truncate-partial-width-windows nil)
   (setopt use-short-answers t)
+  (setopt window-combination-limit nil)
   (setopt window-combination-resize t)
   (setopt x-underline-at-descent-line t)
   (setq inhibit-compacting-font-caches t)
