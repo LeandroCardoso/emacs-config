@@ -1195,6 +1195,12 @@ when it doesn't return any candidate.  Provided for use in hooks."
   :after flymake
   :hook
   (prog-mode . flymake-codespell-setup-backend))
+
+(use-package flyspell-correct
+  :ensure t
+  :bind
+  ([remap ispell-word] . flyspell-correct-at-point))
+
 (use-package framemove
   :ensure t
   :vc (:url "https://github.com/emacsmirror/framemove.git")
