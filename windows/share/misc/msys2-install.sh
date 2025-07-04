@@ -5,6 +5,7 @@ msys/unzip \
 msys/zip \
 ucrt64/mingw-w64-ucrt-x86_64-clang \
 ucrt64/mingw-w64-ucrt-x86_64-clang-tools-extra \
+ucrt64/mingw-w64-python-codespell \
 ucrt64/mingw-w64-ucrt-x86_64-cppcheck \
 ucrt64/mingw-w64-ucrt-x86_64-diffutils \
 ucrt64/mingw-w64-ucrt-x86_64-emacs \

@@ -1190,6 +1190,11 @@ when it doesn't return any candidate.  Provided for use in hooks."
   :bind
   ("<f12>" . enlight-open))
 
+(use-package flymake-codespell
+  :ensure t
+  :after flymake
+  :hook
+  (prog-mode . flymake-codespell-setup-backend))
 (use-package framemove
   :ensure t
   :vc (:url "https://github.com/emacsmirror/framemove.git")
