@@ -11,7 +11,7 @@
 (require 'nxml-mode)
 (require 'which-func)
 
-;; TODO integrate in `header-line-format' usign :eval
+;; TODO integrate in `header-line-format' using :eval
 
 ;; Adapted from https://www.emacswiki.org/emacs/NxmlMode
 (defun xml-where-path ()

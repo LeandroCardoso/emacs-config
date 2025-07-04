@@ -236,7 +236,7 @@ to give nuget as arguments."
 (add-to-list 'auto-mode-alist '("msbuild[0-9]*\\.log\\'" . compilation-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(vcx\\|cs\\)proj\\'" . vsproj-mode))
 
-;; An ungly hack to idenfity c++ extensionless files as c++ file. Thanks ISO c++, a file without
+;; An ugly hack to identify c++ extensionless files as c++ file. Thanks ISO c++, a file without
 ;; extension was a great idea!
 (add-to-list 'auto-mode-alist '("[Ii]nclude" . c++-mode) t)
 

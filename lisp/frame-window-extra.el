@@ -60,7 +60,7 @@ Usage - advise `window-splittable-p' function:
           (if (and split-width-threshold window-combination-resize)
               (+ 2 (/ (frame-width) (/ (frame-width) (/ split-width-threshold 2))))
             split-width-threshold))
-         ;; force spliting horizontally when vertically is not possible
+         ;; force splitting horizontally when vertically is not possible
          (forced-split-height-threshold (when (> split-width-threshold (frame-width))
                                           (frame-height)))
          (split-height-threshold
