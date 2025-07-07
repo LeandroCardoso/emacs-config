@@ -1179,7 +1179,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
                    ("Edit recent file" (recentf-find-file) "r")
                    ("Select project" project-switch-project "p")
                    ("Start eshell" (eshell) "e")
-                   ("Quit Emacs" (save-buffers-kill-terminal) "q"))
+                   ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
                   ("\nEmacs User Directory"
                    ("Edit init file" (find-file user-init-file) "i")
                    ("Dired" (dired user-emacs-directory) "u")
