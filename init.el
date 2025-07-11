@@ -1081,9 +1081,6 @@ See `kill-new' for details."
   (add-hook 'completion-at-point-functions 'cape-file 20)
 
   :config
-  (setopt cape-dabbrev-buffer-function 'cape-text-buffers)
-  (setopt cape-dict-file (expand-file-name "words.txt" user-emacs-directory))
-
   (defun cape-setup-elisp-mode ()
     "Setup `completion-at-point-functions' to use a non-exclusive version of
 `elisp-completion-at-point'.  This allows to fallback to other functions
@@ -1092,6 +1089,13 @@ when it doesn't return any candidate.  Provided for use in hooks."
       (cape-capf-nonexclusive 'elisp-completion-at-point)
       "Non-exclusive version of `elisp-completion-at-point'")
     (setq-local completion-at-point-functions (list 'elisp-completion-at-point-nonexclusive t)))
+
+  (defun cape-use-ispell-word-dict ()
+  "Returns `ispell-complete-word'.  Provided for use in `cape-dict-file'."
+  ispell-complete-word-dict)
+
+  (setopt cape-dabbrev-buffer-function 'cape-text-buffers)
+  (setopt cape-dict-file 'cape-use-ispell-word-dict)
 
   :bind
   ("C-c p" . cape-prefix-map)
