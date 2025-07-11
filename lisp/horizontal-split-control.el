@@ -37,7 +37,7 @@
   (if (horizontal-split-control--disabled-p)
       (progn
         (setopt split-height-threshold horizontal-split-control--saved-threshold)
-        (message "Horizontal splits enabled, split-height-threshold=%d" split-height-threshold))
+        (message "Horizontal splits enabled with threshold of %d lines" split-height-threshold))
     (message "Horizontal splits are already enabled")))
 
 ;;;###autoload
