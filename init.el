@@ -923,6 +923,11 @@ See `kill-new' for details."
         ("e" . vc-ediff)
         ("R" . vc-rename-file)))
 
+(use-package warnings
+  :defer t
+  :config
+  (setopt warning-display-at-bottom nil))
+
 (use-package which-key
   :demand t
   :config
