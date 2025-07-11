@@ -601,14 +601,16 @@
 
 (use-package ispell
   :defer t
+  :commands ispell-dictionary-info
+  
   :config
   (setenv "DICTIONARY" "en_US")
   (when (eq system-type 'windows-nt)
     (setenv "DICPATH" (expand-file-name "windows/share/hunspell/" user-emacs-directory)))
 
   (defconst ispell-words-directory (expand-file-name "words/" user-emacs-directory))
-  (setopt ispell-complete-word-dict (expand-file-name "words-en_US.txt" ispell-words-directory))
-  (setopt ispell-dictionary "en_US")
+  (setopt ispell-complete-word-dict (expand-file-name "en_US.txt" ispell-words-directory))
+  (setopt ispell-dictionary "american")
   (setopt ispell-help-in-bufferp 'electric)
   (setopt ispell-personal-dictionary (expand-file-name (concat "dict_" ispell-dictionary)
                                                        user-emacs-directory))
@@ -616,21 +618,27 @@
   (setopt ispell-query-replace-choices t)
   (setopt ispell-silently-savep t)
 
-  (defun ispell-change-word-dict (local)
+  (defun ispell-change-word-dict ()
     "Change the word-list dictionary used for word completion.
 
-Prompt user to select a dictionary file from `ispell-words-directory'
-and set `ispell-complete-word-dict' to it.
+Word list files must be available in the `ispell-words-directory' and
+must be named with the locale and \"txt\" extenstion."
+    (let* ((locale (car (alist-get (or ispell-local-dictionary ispell-dictionary)
+                                   ispell-dicts-name2locale-equivs-alist nil nil 'equal)))
+           (file (when locale
+                   (expand-file-name (concat locale ".txt") ispell-words-directory))))
+      (if (and ispell-local-dictionary (not (eq ispell-local-dictionary ispell-dictionary)))
+          (setq-local ispell-complete-word-dict file)
+        (setq ispell-complete-word-dict file))))
 
-With parameter LOCAL, set and make the `ispell-complete-word-dict'
-variable buffer-local."
-    (interactive "P")
-    (when-let* ((file (completing-read "Choose dictionary file: "
-                                       (directory-files ispell-words-directory nil "^[^.].*")
-                                       nil t)))
-      (if local
-          (setq-local ispell-complete-word-dict (expand-file-name file ispell-words-directory))
-        (setq ispell-complete-word-dict (expand-file-name file ispell-words-directory))))))
+  (defun ispell-dictionary-info()
+    "Display information about ispell dictionaries."
+    (interactive)
+    (message "ispell local dictionary: %s, default dictionary: %s, word completion file: %s"
+             ispell-local-dictionary ispell-dictionary ispell-complete-word-dict))
+
+  :hook
+  (ispell-change-dictionary . ispell-change-word-dict))
 
 (use-package midnight
   :config
