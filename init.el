@@ -603,6 +603,9 @@
   :defer t
   :config
   (setenv "DICTIONARY" "en_US")
+  (when (eq system-type 'windows-nt)
+    (setenv "DICPATH" (expand-file-name "windows/share/hunspell/" user-emacs-directory)))
+
   (defconst ispell-words-directory (expand-file-name "words/" user-emacs-directory))
   (setopt ispell-complete-word-dict (expand-file-name "words-en_US.txt" ispell-words-directory))
   (setopt ispell-dictionary "en_US")
