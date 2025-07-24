@@ -95,6 +95,11 @@
 
 (use-package emacs
   :config
+  (setq-default cursor-type 'bar)
+  (setq-default truncate-lines nil)
+
+  (setq inhibit-compacting-font-caches t)
+
   (setopt confirm-kill-emacs 'y-or-n-p)
   (setopt confirm-kill-processes nil)
   (setopt frame-inhibit-implied-resize t) ; never resize the frame
@@ -104,15 +109,11 @@
   (setopt initial-scratch-message nil)
   (setopt ring-bell-function 'ignore)
   (setopt save-some-buffers-default-predicate 'save-some-buffers-root)
-  (setopt truncate-lines nil)
   (setopt truncate-partial-width-windows nil)
   (setopt use-short-answers t)
   (setopt window-combination-limit nil)
   (setopt window-combination-resize t)
   (setopt x-underline-at-descent-line t)
-  (setq inhibit-compacting-font-caches t)
-  (setq-default cursor-type 'bar)
-  (setq-default truncate-lines nil)
 
   (plist-put minibuffer-prompt-properties 'cursor-intangible t)
 
@@ -130,12 +131,13 @@
   (setopt version-control t)
 
   ;; edit
-  (setopt delete-pair-blink-delay 0.25)
-  (setopt sentence-end-double-space nil)
-  (setopt tab-always-indent 'complete)
   (setq-default abbrev-mode t) ; enable abbrev-mode by default
   (setq-default fill-column 100)
   (setq-default tab-width 4)
+  
+  (setopt delete-pair-blink-delay 0.25)
+  (setopt sentence-end-double-space nil)
+  (setopt tab-always-indent 'complete)
 
   ;; fringe
   (setq-default indicate-empty-lines t)
@@ -841,6 +843,8 @@ for compatibility only.
 See `kill-new' for details."
     (kill-new string))
 
+  (setq-default indent-tabs-mode nil)
+  
   (setopt copy-region-blink-delay 0.25)
   (setopt eval-expression-print-length nil)
   (setopt goto-line-history-local t)
@@ -851,7 +855,6 @@ See `kill-new' for details."
   (setopt read-extended-command-predicate 'command-completion-default-include-p)
   (setopt shift-select-mode nil)
   (setopt what-cursor-show-names t)
-  (setq-default indent-tabs-mode nil)
 
   :bind
   ("C-M-|" . delete-indentation)
