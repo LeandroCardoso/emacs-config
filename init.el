@@ -366,6 +366,9 @@
   :config
   (setq-mode-local emacs-lisp-mode sentence-end-double-space t)
 
+  (require 'font-lock)
+  (font-lock-add-keywords 'emacs-lisp-mode '((":\\<\\(disabled\\)\\>" 1 font-lock-warning-face)))
+
   :bind
   (:map emacs-lisp-mode-map
         ;; eval-defun is also in C-M-x)
