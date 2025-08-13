@@ -14,6 +14,41 @@
 (require 'window)
 
 ;;;###autoload
+(defun backward-page-smart (&optional count)
+  "Move backward to page boundary.  With arg, repeat, or go fwd if negative.
+
+After a successful page backward, move cursor to next line and recenter
+it at the top position of the window.
+
+A page boundary is any line whose beginning matches the regexp
+`page-delimiter'.
+
+See `backward-page'."
+  (interactive)
+  (forward-line -1)
+  (backward-page count)
+  (unless (bobp)
+    (forward-line 1)
+    (recenter 0)))
+
+;;;###autoload
+(defun forward-page-smart (&optional count)
+  "Move forward to page boundary.  With arg, repeat, or go back if negative.
+
+After a successful page forward, move cursor to next line and recenter
+it at the top position of the window.
+
+A page boundary is any line whose beginning matches the regexp
+`page-delimiter'.
+
+See `forward-page'."
+  (interactive)
+  (forward-page count)
+  (unless (eobp)
+    (forward-line 1)
+    (recenter 0)))
+
+;;;###autoload
 (defun clean-buffer-list-check-idle-time-advice ()
   "Advice to avoid cleanup the buffer list when Emacs is idle.
 

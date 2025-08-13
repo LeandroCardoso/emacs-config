@@ -1742,6 +1742,8 @@ See `byte-recompile-and-cleanup-directory'."
   (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice)
 
   :bind
+  ([remap backward-page] . backward-page-smart)
+  ([remap forward-page] . forward-page-smart)
   (:map minibuffer-local-map
         ("M-." . insert-selected-window-thing-at-point)))
 
