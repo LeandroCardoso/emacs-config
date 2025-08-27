@@ -955,6 +955,12 @@ See `kill-new' for details."
         ("e" . vc-ediff)
         ("R" . vc-rename-file)))
 
+(use-package vc-dir
+  :defer t
+  :bind
+  (:map vc-dir-mode-map
+        ("e" . vc-ediff)))
+
 (use-package warnings
   :defer t
   :config
