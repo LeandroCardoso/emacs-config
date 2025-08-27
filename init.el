@@ -614,7 +614,9 @@
     (setenv "DICPATH" (expand-file-name "windows/share/hunspell/" user-emacs-directory)))
 
   (defconst ispell-words-directory (expand-file-name "words/" user-emacs-directory))
-  (setopt ispell-complete-word-dict (expand-file-name "en_US.txt" ispell-words-directory))
+  (setopt ispell-complete-word-dict (if (eq system-type 'windows-nt)
+                                        nil
+                                      (expand-file-name "en_US.txt" ispell-words-directory)))
   (setopt ispell-dictionary "american")
   (setopt ispell-help-in-bufferp 'electric)
   (setopt ispell-personal-dictionary (expand-file-name (concat "dict_" ispell-dictionary)
@@ -634,14 +636,16 @@ must be named with the locale and a \"txt\" extenstion."
                    (expand-file-name (concat locale ".txt") ispell-words-directory)))
            (local (and ispell-local-dictionary
                        (not (eq ispell-local-dictionary ispell-dictionary)))))
-      (if local
-          (setq-local ispell-complete-word-dict file)
-        (setq ispell-complete-word-dict file))
-      (message "%s Ispell word-list dictionary set to %s"
-               (if local "Local" "Global")
-               file)
-      (when (not (file-exists-p file))
-        (message "Warning: Ispell word-list dictorary %s does not exist" file))))
+      (if (eq system-type 'windows-nt)
+          (message "Ispell word-list dictionary disabled in Windows")
+        (if local
+            (setq-local ispell-complete-word-dict file)
+          (setq ispell-complete-word-dict file))
+        (message "%s Ispell word-list dictionary set to %s"
+                 (if local "Local" "Global")
+                 file)
+        (when (not (file-exists-p file))
+          (message "Warning: Ispell word-list dictorary %s does not exist" file)))))
 
   (defun ispell-dictionary-info()
     "Display information about ispell dictionaries."
