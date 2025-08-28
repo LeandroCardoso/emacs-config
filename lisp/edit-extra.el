@@ -150,6 +150,19 @@ See `indent-region'."
 
 
 ;;;###autoload
+(defun insert-random-number (min max)
+  "Insert a random number at point.
+
+The random number is selected from the range between MIN and MAX values."
+  (interactive (list
+                (read-number "Enter the minimum value: " 0)
+                (read-number "Enter the maximum value: " most-positive-fixnum)))
+  (unless (> max min)
+    (error "The maximum value must be greater than the minimum value"))
+  (insert (number-to-string (+ min (random (- max min))))))
+
+
+;;;###autoload
 (defun mark-line (&optional n)
   "Put point at beginning of the current line and mark at end.
 
