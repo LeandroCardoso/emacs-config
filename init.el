@@ -1181,6 +1181,9 @@ when it doesn't return any candidate.  Provided for use in hooks."
   (:map ctl-x-x-map
         ("D" . crux-delete-file-and-buffer)))
 
+(use-package csv-mode
+  :ensure t)
+
 (use-package doom-modeline
   :ensure t
   :config
