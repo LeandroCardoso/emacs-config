@@ -14,8 +14,9 @@
 (defun project-info ()
   "Display the project instance of the current buffer."
   (interactive)
-  (let ((pr (flatten-list (project-current))))
-    (message "%s" (mapconcat 'prin1-to-string (nconc (butlast pr) (list ':) (last pr)) " "))))
+  (if-let* ((pr (flatten-list (project-current))))
+      (message "%s" (mapconcat 'prin1-to-string (nconc (butlast pr) (list ':) (last pr)) " "))
+    (message "No projects were found")))
 
 ;; Implementation based on project-find-regexp with universal-argument prefix. This version has a
 ;; workaround to use the default-directory, instead of the caller-dir when the caller-dir is not
