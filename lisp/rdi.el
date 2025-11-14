@@ -124,7 +124,7 @@
 
 ;; git-link
 (defun git-link-bitbucket-rdi (hostname dirname filename _branch commit start end)
-  (format "https://%s/%s/browse/%s?%s%s"
+  (format "%s/%s/browse/%s?%s%s"
           hostname
           (string-replace "scm/np" "projects/NP/repos"                             ;np61
                           (string-replace "scm/npl" "projects/NPL/repos" dirname)) ;np#
@@ -139,7 +139,7 @@
             "")))
 
 (defun git-link-commit-bitbucket-rdi (hostname dirname commit)
-  (format "https://%s/%s/commits/%s"
+  (format "%s/%s/commits/%s"
       hostname
       (string-replace "scm/np" "projects/NP/repos"                             ;np61
                       (string-replace "scm/npl" "projects/NPL/repos" dirname)) ;np#
