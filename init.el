@@ -102,6 +102,7 @@
 
   (setopt confirm-kill-emacs 'y-or-n-p)
   (setopt confirm-kill-processes nil)
+  (setopt enable-local-variables :all)
   (setopt frame-inhibit-implied-resize t) ; never resize the frame
   (setopt frame-resize-pixelwise t)
   (setopt highlight-nonselected-windows t)
