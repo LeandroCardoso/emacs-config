@@ -331,7 +331,7 @@
   (defalias 'eglot-map eglot-map)
 
   :config
-  (setopt eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider))
+  (setopt eglot-ignored-server-capabilities '(:inlayHintProvider))
 
   :bind
   (:map prog-mode-map
