@@ -728,10 +728,14 @@ must be named with the locale and a \"txt\" extenstion."
   (setopt org-special-ctrl-a/e t)                                ; special headline handling
   (setopt org-src-window-setup 'current-window)                  ; show edit buffer in the current window
   (setopt org-startup-truncated nil)                             ; don't set `truncate-lines', this break long tables
-  (setopt org-tag-faces `(("doubt" . ,(face-foreground 'warning))
-                          ("important" . ,(face-foreground 'org-warning))))
+  (setopt org-tag-faces `(("doubt" .         ,(face-foreground 'ansi-color-yellow))
+                          ("important" .     ,(face-foreground 'ansi-color-magenta))
+                          ("low_priority" .  ,(face-foreground 'ansi-color-blue))
+                          ("high_priority" . ,(face-foreground 'ansi-color-red))))
   (setopt org-tag-persistent-alist '(("doubt" . ?d)
-                                     ("important" . ?i)))        ; tags always available in Org files
+                                     ("important" . ?i)
+                                     ("low_priority" . ?l)
+                                     ("high_priority" . ?h)))    ; tags always available in Org files
   (setopt org-tags-column (- fill-column))                       ; align tags at the right margin
   (setopt org-tags-sort-function 'string<)                       ; align tags using alphabetic order
   (setopt org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")))
