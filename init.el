@@ -1215,34 +1215,27 @@ when it doesn't return any candidate.  Provided for use in hooks."
   (setopt enlight-center-horizontally t)
   (setopt enlight-center-vertically t)
 
-  (defun update-enlight-content-advice ()
-    "Upate `enlight-content'."
-    (let* ((uptime (time-convert (time-since before-init-time) 'integer))
-           (subtitle (if (< uptime 300)
-                         (format "started in %s\n" (emacs-init-time "%.2f seconds"))
-                       (format "%s up\n" (emacs-uptime "%D, %z%.2h:%.2m")))))
-      (setopt enlight-content
-              (concat
-               (nerd-icons-sucicon "nf-custom-emacs"
-                                   :height 2.0 :v-adjust 0
-                                   :face '(:inherit nerd-icons-purple))
-               (propertize (format " Welcome to Emacs %s\n" emacs-version)
-                           'face '(:inherit font-lock-type-face :weight bold))
-               (propertize subtitle 'face '(:slant italic))
-               (enlight-menu
-                '(("\nAction"
-                   ("Desktop read" (desktop-read) "d")
-                   ("Edit file" find-file "f")
-                   ("Edit recent file" (recentf-find-file) "r")
-                   ("Select project" project-switch-project "p")
-                   ("Start eshell" (eshell) "e")
-                   ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
-                  ("\nEmacs User Directory"
-                   ("Edit init file" (find-file user-init-file) "i")
-                   ("Dired" (dired user-emacs-directory) "u")
-                   ("Magit" (magit-status user-emacs-directory) "m"))))))))
-
-  (advice-add 'enlight :before 'update-enlight-content-advice)
+  (setopt enlight-content
+          (concat
+           (nerd-icons-sucicon "nf-custom-emacs"
+                               :height 2.0 :v-adjust 0
+                               :face '(:inherit nerd-icons-purple))
+           (propertize (format " Welcome to Emacs %s\n" emacs-version)
+                       'face '(:inherit font-lock-type-face :weight bold))
+           (propertize (format "Started in %s\n" (emacs-init-time "%.2f seconds"))
+                       'face '(:slant italic))
+           (enlight-menu
+            '(("\nAction"
+               ("Desktop read" (desktop-read) "d")
+               ("Edit file" find-file "f")
+               ("Edit recent file" (recentf-find-file) "r")
+               ("Select project" project-switch-project "p")
+               ("Start eshell" (eshell) "e")
+               ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
+              ("\nEmacs User Directory"
+               ("Edit init file" (find-file user-init-file) "i")
+               ("Dired" (dired user-emacs-directory) "u")
+               ("Magit" (magit-status user-emacs-directory) "m"))))))
 
   :bind
   ("<f12>" . enlight-open))
