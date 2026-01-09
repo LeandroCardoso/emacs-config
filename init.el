@@ -1493,6 +1493,7 @@ the plist used as a communication channel."
             ("enabled" "disabled")
             ("height" "width")
             ("left" "right" "top" "bottom")
+            ("low" "high")
             ("january" "february" "march" "april" "may" "june" "july" "august" "september" "october" "november" "december")
             ("monday" "tuesday" "wednesday" "thursday" "friday" "saturday" "sunday")
             ("true" "false")
