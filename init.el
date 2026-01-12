@@ -1231,6 +1231,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
                ("Edit recent file" (recentf-find-file) "r")
                ("Select project" project-switch-project "p")
                ("Start eshell" (eshell) "e")
+               ("Switch to scratch.org" switch-to-scratch-org "o")
                ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
               ("\nEmacs User Directory"
                ("Edit init file" (find-file user-init-file) "i")
@@ -1756,6 +1757,7 @@ See `byte-recompile-and-cleanup-directory'."
   (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice)
 
   :bind
+  ("C-x M-o" . switch-to-scratch-org)
   ([remap backward-page] . backward-page-smart)
   ([remap forward-page] . forward-page-smart)
   (:map minibuffer-local-map

@@ -137,6 +137,14 @@ This function is intended to be used as an advice in
        1 ; enable
      0))) ; disable
 
+(defun switch-to-scratch-org ()
+  "Switch to a buffer named \='scratch.org\='.
+
+If it doesn't exist, create it in `org-mode'."
+  (interactive)
+  (switch-to-buffer (get-buffer-create "scratch.org"))
+  (org-mode))
+
 (provide 'misc-extra)
 
 ;;; misc-extra.el ends here
