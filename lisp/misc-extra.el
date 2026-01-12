@@ -104,7 +104,8 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
 (defun insert-selected-window-thing-at-point ()
   "When in minibuffer, insert the thing at point of the selected windows.
 
-Bind this command to a key in `minibuffer-local-map', the recommendation is \"M-.\"."
+Bind this command to a key in `minibuffer-local-map', the recommendation
+is \"M-.\"."
   (interactive)
   (when-let ((str (with-minibuffer-selected-window (thing-at-point 'symbol))))
     (insert str)))
@@ -138,7 +139,7 @@ This function is intended to be used as an advice in
      0))) ; disable
 
 (defun switch-to-scratch-org ()
-  "Switch to a buffer named \='scratch.org\='.
+  "Switch to the scratch.org buffer.
 
 If it doesn't exist, create it in `org-mode'."
   (interactive)
