@@ -1814,14 +1814,14 @@ See `byte-recompile-and-cleanup-directory'."
 (use-package teamcity)
 
 (use-package woman-reformat
-  :defer t
+  :demand t
   :after woman
   :config
   (woman-reformat-setup)
 
   :bind
   (:map woman-mode-map
-        ("R" . woman-reformat)))
+        ([remap woman-reformat-last-file] . woman-reformat)))
 
 (use-package w32-extra
   :if (eq system-type 'windows-nt)

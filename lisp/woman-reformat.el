@@ -20,11 +20,9 @@
 (require 'nadvice)
 (require 'woman)
 
-;;;###autoload
-(defvar-mode-local woman-mode woman-buffer-file-name nil
+(defvar-local woman-buffer-file-name nil
   "Full pathname of the file being displayed by the current WoMan buffer.")
 
-;;;###autoload
 (defun woman-save-buffer-file-name (file-name &optional reformat)
   "Store `woman-last-file-name' into the buffer-local `woman-buffer-file-name'.
 
@@ -32,7 +30,6 @@ Only runs when the current buffer is in `woman-mode'."
   (when (eq major-mode 'woman-mode)
     (setq-local woman-buffer-file-name woman-last-file-name)))
 
-;;;###autoload
 (defun woman-reformat-setup ()
   "Set up automatic tracking of the underlying file for WoMan buffers.
 
