@@ -1133,8 +1133,8 @@ when it doesn't return any candidate.  Provided for use in hooks."
     (setq-local completion-at-point-functions (list 'elisp-completion-at-point-nonexclusive t)))
 
   (defun cape-use-ispell-word-dict ()
-  "Returns `ispell-complete-word'.  Provided for use in `cape-dict-file'."
-  ispell-complete-word-dict)
+    "Returns `ispell-complete-word-dict'.  Provided for use in `cape-dict-file'."
+    ispell-complete-word-dict)
 
   (setopt cape-dabbrev-buffer-function 'cape-text-buffers)
   (setopt cape-dict-file 'cape-use-ispell-word-dict)
