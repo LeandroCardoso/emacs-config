@@ -1229,14 +1229,17 @@ when it doesn't return any candidate.  Provided for use in hooks."
                ("Desktop read" (desktop-read) "d")
                ("Edit file" find-file "f")
                ("Edit recent file" (recentf-find-file) "r")
-               ("Select project" project-switch-project "p")
-               ("Start eshell" (eshell) "e")
-               ("Switch to scratch.org" (switch-to-scratch-org) "o")
-               ("Quit Emacs" (save-buffers-kill-terminal) "Q"))
+               ("Select project" project-switch-project "p"))
               ("\nEmacs User Directory"
-               ("Edit init file" (find-file user-init-file) "i")
-               ("Dired" (dired user-emacs-directory) "u")
-               ("Magit" (magit-status user-emacs-directory) "m"))))))
+               ("Edit init.el" (find-file user-init-file) "i")
+               ("Edit file" (let ((default-directory user-emacs-directory)) (project-find-file)) "u")
+               ("Dired" (dired user-emacs-directory) "U")
+               ("Magit" (magit-status user-emacs-directory) "g"))
+              ("\nUtil"
+               ("List Packages" (list-packages) "P")
+               ("Eshell" (eshell) "E")
+               ("Scratch.org" (switch-to-scratch-org) "S")
+               ("Quit Emacs" (save-buffers-kill-terminal) "Q"))))))
 
   :bind
   ("<f12>" . enlight-open))
