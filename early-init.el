@@ -6,8 +6,10 @@
 ;; expected effect on initial frame settings.
 (setopt default-frame-alist '((fullscreen . maximized)))
 (setopt initial-frame-alist (nconc default-frame-alist (list '(visibility . nil))))
-(setopt window-system-default-frame-alist '((x . ((alpha . 96)))
-                                            (pgtk . ((alpha . 96)))))
+
+(when (and (eq system-type 'gnu/linux)
+           (not (string-match-p "microsoft" operating-system-release))) ; ignore when WSL
+  (nconc default-frame-alist (list '(alpha . 96))))
 
 ;; No need to waste precious desktop space with useless GUI elements
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
