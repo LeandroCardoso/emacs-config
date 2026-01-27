@@ -196,6 +196,17 @@
         ("<tab>" . archive-next-line)
         ("<backtab>" . archive-previous-line)))
 
+(use-package browse-url
+  :config
+  (when wsl-p
+    ;; Open links in your default Windows browser
+    (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
+          (cmd-args '("/c" "start")))
+      (when (file-exists-p cmd-exe)
+        (setopt browse-url-generic-program cmd-exe)
+        (setopt browse-url-generic-args cmd-args)
+        (setopt browse-url-browser-function 'browse-url-generic)))))
+
 (use-package c-ts-mode
   :defer t
   :config
