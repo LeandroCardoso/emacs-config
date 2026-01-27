@@ -164,6 +164,10 @@
   (setopt user-full-name "Leandro Cardoso")
   (setopt user-mail-address "leandrocardoso@gmail.com")
 
+  ;; Workaround for clipboard integration with Windows
+  (when wsl-p
+    (setq select-active-regions nil))
+
   :hook
   (after-save . executable-make-buffer-file-executable-if-script-p)
 
