@@ -887,6 +887,7 @@ See `kill-new' for details."
   :bind
   ("C-M-|" . delete-indentation)
   ("C-c <tab>" . indent-tabs-mode)
+  ("C-c SPC" . just-one-space) ; M-SPC doesn´t work on WSL
   ;; special mode like occur and xref
   (:map special-mode-map
         ("f" . flush-lines)
