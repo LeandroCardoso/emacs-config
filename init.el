@@ -613,8 +613,7 @@
 
   :config
   (setenv "DICTIONARY" "en_US")
-  (when (eq system-type 'windows-nt)
-    (setenv "DICPATH" (expand-file-name "windows/share/hunspell/" user-emacs-directory)))
+  (setenv "DICPATH" (expand-file-name "hunspell/" user-emacs-directory))
 
   (defconst ispell-words-directory (expand-file-name "words/" user-emacs-directory))
   (setopt ispell-complete-word-dict (if (eq system-type 'windows-nt)
