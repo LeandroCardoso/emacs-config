@@ -1063,15 +1063,15 @@ See `kill-new' for details."
   (setopt xref-search-program (if (executable-find "rg") 'ripgrep 'grep))
   (setopt xref-show-definitions-function 'xref-show-definitions-completing-read)
 
+  ;; Enable saving the latest regexp into the `kill-ring'
+  (advice-add 'xref--find-xrefs :after 'kill-new-advice)
+  (advice-add 'xref-matches-in-files :after 'kill-new-advice)
+
   ;; Use bash shell when calling grep/ripgrep, because it fixes the annoying "^M" that can be
   ;; displayed at end of lines.
   (when (eq system-type 'windows-nt)
     (advice-add 'xref-matches-in-files :around 'with-bash-shell)
     (advice-add 'xref-matches-in-directory :around 'with-bash-shell))
-
-  ;; Enable saving the latest regexp into the `kill-ring'
-  (advice-add 'xref--find-xrefs :after 'kill-new-advice)
-  (advice-add 'xref-matches-in-files :after 'kill-new-advice)
 
   :hook
   (xref--xref-buffer-mode . truncate-lines-on)
@@ -1827,32 +1827,32 @@ See `byte-recompile-and-cleanup-directory'."
         ([remap woman-reformat-last-file] . woman-reformat)))
 
 (use-package w32-extra
-  :if (eq system-type 'windows-nt)
   :config
-  ;; Root directories are added in the beginning
-  (w32-add-unix-root-dir "c:/msys64/ucrt64")
-  (w32-add-unix-root-dir "c:/msys64")
-  (w32-add-unix-root-dir (expand-file-name "windows" user-emacs-directory))
+  (when (eq system-type 'windows-nt)
+    ;; Root directories are added in the beginning
+    (w32-add-unix-root-dir "c:/msys64/ucrt64")
+    (w32-add-unix-root-dir "c:/msys64")
+    (w32-add-unix-root-dir (expand-file-name "windows" user-emacs-directory))
 
-  ;; Add external utilities to PATH and exec-path
-  (dolist (path (list "C:/Program Files/Git/cmd/"
-                      "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
-                      (expand-file-name "windows/omnisharp/" user-emacs-directory)))
-    (w32-add-to-path path))
+    ;; Add external utilities to PATH and exec-path
+    (dolist (path (list "C:/Program Files/Git/cmd/"
+                        "C:/Program Files (x86)/Java/latest/jre-1.8/bin"
+                        (expand-file-name "windows/omnisharp/" user-emacs-directory)))
+      (w32-add-to-path path))
 
-  ;; Required to enter password for git
-  (setenv "SSH_ASKPASS" "c:/Program Files/Git/mingw64/bin/git-askpass.exe")
+    ;; Required to enter password for git
+    (setenv "SSH_ASKPASS" "c:/Program Files/Git/mingw64/bin/git-askpass.exe")
 
-  ;; nodejs
-  (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
-    (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
+    ;; nodejs
+    (when (file-exists-p "c:/Program Files/nodejs/nodevars.bat")
+      (setq explicit-cmdproxy.exe-args '("/k \"\"C:\\Program Files\\nodejs\\nodevars.bat\"\"")))
 
-  ;; map AltGr to Alt using AutoHotKey
-  (if (executable-find "altgr2alt")
-      (progn
-        (message "Starting altgr2alt")
-        (start-process "altgr2alt" (messages-buffer) "altgr2alt"))
-    (message "Error: altgr2alt not found!")))
+    ;; map AltGr to Alt using AutoHotKey
+    (if (executable-find "altgr2alt")
+        (progn
+          (message "Starting altgr2alt")
+          (start-process "altgr2alt" (messages-buffer) "altgr2alt"))
+      (message "Error: altgr2alt not found!"))))
 
 (use-package xml-format
   :defer t
