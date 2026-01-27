@@ -1221,6 +1221,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
                                :face '(:inherit nerd-icons-purple))
            (propertize (format " Welcome to Emacs %s\n" emacs-version)
                        'face '(:inherit font-lock-type-face :weight bold))
+           (format "%s (%s) %s\n" system-type window-system operating-system-release)
            (propertize (format "Started in %s\n" (emacs-init-time "%.2f seconds"))
                        'face '(:slant italic))
            (enlight-menu
