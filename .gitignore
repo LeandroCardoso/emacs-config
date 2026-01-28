@@ -11,6 +11,7 @@ elpa/
 eshell/history
 eshell/lastdir
 history
+local-config.el
 org-persist/
 places
 plantuml/

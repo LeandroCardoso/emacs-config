@@ -14,6 +14,22 @@
 (setopt gc-cons-threshold (* 32 1024 1024)) ; Increase GC threshold for performance
 (setopt load-prefer-newer t)
 
+(defun load-local-config ()
+  "Load `local-config.el' if it exists.
+
+This file stores computer-specific configuration variables as Lisp data."
+  (when-let* ((fn (expand-file-name "local-config.el" user-emacs-directory))
+              (cfg (when (file-readable-p fn)
+                     (with-temp-buffer
+                       (insert-file-contents fn)
+                       (read (current-buffer))))))
+    (dolist (entry cfg)
+      (when (symbolp (car entry))
+        (set (car entry) (cdr entry))))))
+
+(defvar rdi-p nil "Non-nil if the RDI setup should be loaded.")
+(load-local-config)
+
 (defconst user-lisp-directory (expand-file-name "lisp" user-emacs-directory)
   "Directory where user's Emacs *.el and *.elc Lisp files are installed.")
 
@@ -1808,7 +1824,7 @@ See `byte-recompile-and-cleanup-directory'."
   :after project)
 
 (use-package rdi
-  :if (eq system-type 'windows-nt)
+  :if rdi-p
   :demand t)
 
 (use-package recentf-extra
