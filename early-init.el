@@ -7,12 +7,11 @@
 
 ;; Emacs reads your main init file after creating the initial frame, so setting there won’t have the
 ;; expected effect on initial frame settings.
-(setopt default-frame-alist '((fullscreen . maximized)))
-(setopt initial-frame-alist (nconc default-frame-alist (list '(visibility . nil))))
-
-(when (and (eq system-type 'gnu/linux)
-           (not wsl-p))
-  (nconc default-frame-alist (list '(alpha . 96)))) ;
+(setopt default-frame-alist `((fullscreen . maximized)
+                              (visibility . nil)
+                              ,(when (and (eq system-type 'gnu/linux)
+                                         (not wsl-p))
+                                '(alpha . 96))))
 
 ;; No need to waste precious desktop space with useless GUI elements
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
