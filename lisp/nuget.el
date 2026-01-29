@@ -7,18 +7,20 @@
 ;;; Commentary:
 
 ;;; Code:
+(require 'files-extra)
+(require 'view)
 
 (defconst msvs-nuget-buffer "*nuget*")
 
 (defun nuget-execute (&rest program-args)
   "Start a nuget subprocess. The arguments PROGRAM-ARGS are strings
 to give nuget as arguments."
-  (require 'view)
   (unless (executable-find "nuget")
     (error "Nuget executable not found"))
   (apply 'start-process "nuget" msvs-nuget-buffer "nuget" program-args)
   (view-buffer msvs-nuget-buffer))
 
+;;;###autoload
 (defun nuget-install ()
   "Download and install nuget."
   (interactive)
@@ -30,11 +32,7 @@ to give nuget as arguments."
     (unless (start-process "curl" (messages-buffer) "curl" "-s" "-O" url)
       (message "Error: Nuget could not be downloaded"))))
 
-(defun nuget-update ()
-  "Update the installed nuget."
-  (interactive)
-  (nuget-execute "update" "-self"))
-
+;;;###autoload
 (defun nuget-restore()
   "Restore nuget packages for the current solution."
   (interactive)
@@ -44,6 +42,12 @@ to give nuget as arguments."
     (unless solution-file-list
       (error "Solution file not found"))
     (nuget-execute "restore" "-NonInteractive")))
+
+;;;###autoload
+(defun nuget-update ()
+  "Update the installed nuget."
+  (interactive)
+  (nuget-execute "update" "-self"))
 
 (provide 'nuget)
 
