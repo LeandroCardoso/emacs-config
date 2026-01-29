@@ -13,6 +13,7 @@
 (require 'files-extra)
 (require 'fragment)
 (require 'msvs)
+(require 'nuget)
 (require 'project-root-dir)
 (require 'xml-format)
 

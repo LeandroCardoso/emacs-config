@@ -79,8 +79,6 @@ option `msvs-msbuild-default-parameters'.")
   (when msvs-program-files
     (expand-file-name "Windows Kits/8.1/Include/um" msvs-program-files)))
 
-(defconst msvs-nuget-buffer "*nuget*")
-
 
 ;; Functions
 
@@ -147,42 +145,6 @@ used."
         (when project-file
           (add-to-list (make-local-variable 'compilation-search-path)
                        (file-name-directory project-file)))))))
-
-;; NuGet
-(defun nuget-execute (&rest program-args)
-  "Start a nuget subprocess. The arguments PROGRAM-ARGS are strings
-to give nuget as arguments."
-  (require 'view)
-  (unless (executable-find "nuget")
-    (error "Nuget executable not found"))
-  (apply 'start-process "nuget" msvs-nuget-buffer "nuget" program-args)
-  (view-buffer msvs-nuget-buffer))
-
-(defun nuget-install ()
-  "Download and install nuget."
-  (interactive)
-  (let ((url "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe")
-        (default-directory (expand-file-name "windows/bin/" user-emacs-directory)))
-    (message "Downloading nuget")
-    (unless (executable-find "curl")
-      (error "Curl executable not found"))
-    (unless (start-process "curl" (messages-buffer) "curl" "-s" "-O" url)
-      (message "Error: Nuget could not be downloaded"))))
-
-(defun nuget-update ()
-  "Update the installed nuget."
-  (interactive)
-  (nuget-execute "update" "-self"))
-
-(defun nuget-restore()
-  "Restore nuget packages for the current solution."
-  (interactive)
-  (let* ((solution-file-list (locate-dominating-file-match default-directory msvs-solution-regexp))
-         (default-directory (when solution-file-list
-                              (file-name-directory (car solution-file-list)))))
-    (unless solution-file-list
-      (error "Solution file not found"))
-    (nuget-execute "restore" "-NonInteractive")))
 
 
 ;; Setup
