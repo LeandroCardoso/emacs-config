@@ -21,18 +21,6 @@ to give nuget as arguments."
   (view-buffer msvs-nuget-buffer))
 
 ;;;###autoload
-(defun nuget-install ()
-  "Download and install nuget."
-  (interactive)
-  (let ((url "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe")
-        (default-directory (expand-file-name "windows/bin/" user-emacs-directory)))
-    (message "Downloading nuget")
-    (unless (executable-find "curl")
-      (error "Curl executable not found"))
-    (unless (start-process "curl" (messages-buffer) "curl" "-s" "-O" url)
-      (message "Error: Nuget could not be downloaded"))))
-
-;;;###autoload
 (defun nuget-restore()
   "Restore nuget packages for the current solution."
   (interactive)
@@ -43,11 +31,28 @@ to give nuget as arguments."
       (error "Solution file not found"))
     (nuget-execute "restore" "-NonInteractive")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Windows exclusive functions and commands ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(when (eq system-type 'windows-nt)
 ;;;###autoload
-(defun nuget-update ()
-  "Update the installed nuget."
-  (interactive)
-  (nuget-execute "update" "-self"))
+  (defun nuget-install () ;
+    "Download and install nuget."
+    (interactive)
+    (let ((url "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe")
+          (default-directory (expand-file-name "windows/bin/" user-emacs-directory)))
+      (message "Downloading nuget")
+      (unless (executable-find "curl")
+        (error "Curl executable not found"))
+      (unless (start-process "curl" (messages-buffer) "curl" "-s" "-O" url)
+        (message "Error: Nuget could not be downloaded"))))
+
+;;;###autoload
+  (defun nuget-update ()
+    "Update the installed nuget."
+    (interactive)
+    (nuget-execute "update" "-self")))
 
 (provide 'nuget)
 
