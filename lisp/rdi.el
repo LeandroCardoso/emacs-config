@@ -275,18 +275,15 @@
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
 
-
+;TODO
 ;; RDI Nuget
 (defconst nuget-rdi-source-name "RDI")
-(defconst nuget-rdi-username "lcardoso")
+(defconst nuget-rdi-user-name "lcardoso")
 
-(defun nuget-rdi-update-password ()
-  "Update the RDI nuget password"
+(defun nuget-update-password-rdi ()
+  "Update the RDI nuget password."
   (interactive)
-  (nuget-execute "sources" "update"
-                 "-Name" nuget-rdi-source-name
-                 "-User" nuget-rdi-username
-                 "-pass" (read-passwd "Enter the new password for RDI Nuget source: ")))
+  (nuget-update-password nuget-rdi-source-name nuget-rdi-user-name))
 
 
 ;; np6 view

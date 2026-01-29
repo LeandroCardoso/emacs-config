@@ -13,8 +13,9 @@
 (defconst msvs-nuget-buffer "*nuget*")
 
 (defun nuget-execute (&rest program-args)
-  "Start a nuget subprocess. The arguments PROGRAM-ARGS are strings
-to give nuget as arguments."
+  "Start a nuget subprocess.
+
+The arguments PROGRAM-ARGS are strings to give nuget as arguments."
   (unless (executable-find "nuget")
     (error "Nuget executable not found"))
   (apply 'start-process "nuget" msvs-nuget-buffer "nuget" program-args)
@@ -24,12 +25,24 @@ to give nuget as arguments."
 (defun nuget-restore()
   "Restore nuget packages for the current solution."
   (interactive)
-  (let* ((solution-file-list (locate-dominating-file-match default-directory msvs-solution-regexp))
+  (let* ((solution-file-list (locate-dominating-file-match default-directory msvs-solution-regexp)) ;FIXME
          (default-directory (when solution-file-list
                               (file-name-directory (car solution-file-list)))))
     (unless solution-file-list
       (error "Solution file not found"))
     (nuget-execute "restore" "-NonInteractive")))
+
+;;;###autoload
+(defun nuget-update-password (&optional source-name user-name password)
+  "Update the nuget password.
+
+TODO"
+  (interactive)
+  ;; (read-passwd "Enter the new password for RDI Nuget source: ")
+  (nuget-execute "sources" "update"
+                 "-Name" source-name
+                 "-User" user-name
+                 "-pass" password))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Windows exclusive functions and commands ;;
@@ -49,7 +62,7 @@ to give nuget as arguments."
         (message "Error: Nuget could not be downloaded"))))
 
 ;;;###autoload
-  (defun nuget-update ()
+  (defun nuget-install-update ()
     "Update the installed nuget."
     (interactive)
     (nuget-execute "update" "-self")))
