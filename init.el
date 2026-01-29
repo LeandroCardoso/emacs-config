@@ -1807,6 +1807,9 @@ See `byte-recompile-and-cleanup-directory'."
   (:map nxml-mode-map
         ("C-c C-c" . xml-where-tree)))
 
+(use-package nuget
+  :defer t)
+
 (use-package project-extra
   :demand t
   :bind
