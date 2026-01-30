@@ -107,6 +107,19 @@ This file stores computer-specific configuration variables as Lisp data."
 
 (use-package emacs
   :config
+  (defun display-system-information ()
+    "Display system information."
+    (interactive)
+    (message "Emacs started in %s\nSystem: %s (%s)\nHostname: %s\nWSL: %s\nRDI: %s"
+             (emacs-init-time "%.2f seconds")
+             system-type window-system
+             (system-name)
+             (if wsl-p "yes" "no")
+             (if rdi-p "yes" "no")))
+
+  ;; Ensure this hook runs last to prevent its message from being overwritten
+  (add-hook 'emacs-startup-hook 'display-system-information 100)
+  
   (setq-default cursor-type 'bar)
   (setq-default truncate-lines nil)
 
@@ -1249,9 +1262,6 @@ when it doesn't return any candidate.  Provided for use in hooks."
                                :face '(:inherit nerd-icons-purple))
            (propertize (format " Welcome to Emacs %s\n" emacs-version)
                        'face '(:inherit font-lock-type-face :weight bold))
-           (format "%s (%s) %s\n" system-type window-system operating-system-release)
-           (propertize (format "Started in %s\n" (emacs-init-time "%.2f seconds"))
-                       'face '(:slant italic))
            (enlight-menu
             '(("\nAction"
                ("Desktop read" (desktop-read) "d")
@@ -1899,6 +1909,5 @@ See `byte-recompile-and-cleanup-directory'."
 ;;;;;;;;;;;;;;;;;;
 
 (setopt gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value)))
-(message "Emacs %s started in %s" emacs-version (emacs-init-time))
 
 ;;; init.el ends here
