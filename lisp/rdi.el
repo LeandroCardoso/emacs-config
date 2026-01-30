@@ -281,7 +281,9 @@
 (defconst nuget-rdi-user-name "lcardoso")
 
 (defun nuget-update-password-rdi ()
-  "Update the RDI nuget password."
+  "Update the RDI nuget password.
+
+See `nuget-update-password'."
   (interactive)
   (nuget-update-password nuget-rdi-source-name nuget-rdi-user-name))
 

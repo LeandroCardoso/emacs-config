@@ -21,6 +21,19 @@
 (defconst nuget-solution-regexp ".*\\.sln\\'"
   "Regexp matching solution files for NuGet operations.")
 
+;; User Options
+
+(defgroup nuget nil
+  "NuGet support for Emacs."
+  :group 'tools)
+
+(defcustom nuget-config-file nil
+  "The NuGet configuration file path.
+
+When nil the default configuration will be used."
+  :type 'file
+  :group 'nuget)
+
 ;; Internal helpers
 
 (defun nuget--ensure-executable ()
@@ -46,11 +59,13 @@
 
 (defun nuget--list-sources ()
   "Return a list of configured NuGet source names."
-  (let* ((output (nuget--call "sources" "list" "--format" "short"))
+  (let* ((output (apply #'nuget--call
+                        (append '("sources" "list" "-format" "short" "-noninteractive")
+                                (when nuget-config-file (list "-configfile" nuget-config-file)))))
          (lines (split-string output "\n" t)))
     (mapcar (lambda (line)
-              ;; remove leading numbers and dots if present
-              (string-trim (replace-regexp-in-string "^[0-9]+\\.\\s-*" "" line)))
+              ;; Remove leading letters if present
+              (replace-regexp-in-string "^[A-Z]+ +" "" line))
             lines)))
 
 ;; Commands
@@ -65,7 +80,9 @@
              (file-name-directory (car solutions)))))
     (unless solutions
       (error "Solution file not found"))
-    (nuget--start "restore" "-NonInteractive")))
+    (apply #'nuget--start
+           (append '("restore" "-noninteractive")
+                   (when nuget-config-file (list "-configfile" nuget-config-file))))))
 
 ;;;###autoload
 (defun nuget-update-password (&optional source-name user-name password)
@@ -84,10 +101,13 @@ When SOURCE-NAME, USER-NAME, or PASSWORD are nil, prompt for them."
          (password
           (or password
               (read-passwd "NuGet password: "))))
-    (nuget--start "sources" "update"
-                  "-Name" source-name
-                  "-User" user-name
-                  "-Pass" password)))
+    (apply #'nuget--call
+           (append (list "sources" "update"
+                         "-name" source-name
+                         "-user" user-name
+                         "-pass" password
+                         "-noninteractive")
+                   (when nuget-config-file (list "-configfile" nuget-config-file))))))
 
 ;; Windows-only commands
 
@@ -110,7 +130,7 @@ When SOURCE-NAME, USER-NAME, or PASSWORD are nil, prompt for them."
   (defun nuget-install-update ()
     "Update the installed NuGet executable."
     (interactive)
-    (nuget--start "update" "-self")))
+    (nuget--start "update" "-self" "-noninteractive")))
 
 (provide 'nuget)
 
