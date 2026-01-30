@@ -1808,7 +1808,7 @@ See `byte-recompile-and-cleanup-directory'."
         ("C-c C-c" . xml-where-tree)))
 
 (use-package nuget
-  :defer t)
+  :demand t)
 
 (use-package project-extra
   :demand t
