@@ -550,8 +550,8 @@ This file stores computer-specific configuration variables as Lisp data."
         ("f" . apropos-function)
         ("l" . apropos-library)
         ("u" . apropos-user-option)
-        ("C-v" . apropos-value)
-        ("C-V" . apropos-local-value)
+        ("M-v" . apropos-value)
+        ("M-V" . apropos-local-value)
         ("v" . apropos-variable)
         ("V" . apropos-local-variable)))
 
