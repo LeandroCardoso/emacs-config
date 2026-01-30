@@ -4,11 +4,6 @@
 
 ;;; Commentary:
 
-;; TODO how to run a script (msbuild) in windows (use "/mnt/c/Windows/System32/cmd.exe")
-;; TODO how to execute nuget
-;; TODO review msvs.el
-;; TODO review rdi.el
-
 ;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;
