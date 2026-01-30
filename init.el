@@ -1051,16 +1051,17 @@ See `kill-new' for details."
   :config
   ;; display-buffer-alist guide:
   ;;   https://www.masteringemacs.org/article/demystifying-emacs-window-manager
-  (setopt display-buffer-alist `((,(concat "\\`\\*\\("
-                                           (string-join '("Apropos"
-                                                          "Backtrace"
-                                                          "Compile-Log"
-                                                          "Flymake diagnostics.*"
-                                                          "Help"
-                                                          "Warnings") "\\|")
-                                           "\\)\\*\\'")
-                                  (display-buffer-reuse-window display-buffer-pop-up-window)
-                                  (window-height . shrink-window-if-larger-than-buffer))))
+  (setopt display-buffer-alist
+          `((,(concat "\\`\\*\\("
+                      (string-join '("Apropos"
+                                     "Backtrace"
+                                     "Compile-Log"
+                                     "Flymake diagnostics.*"
+                                     "Help"
+                                     "Warnings") "\\|")
+                      "\\)\\*\\'")
+             (display-buffer-reuse-window display-buffer-pop-up-window display-buffer-use-least-recent-window)
+             (window-height . shrink-window-if-larger-than-buffer))))
   (setopt split-height-threshold 80)
   (setopt split-width-threshold 200)
 
