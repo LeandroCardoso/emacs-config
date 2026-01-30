@@ -110,14 +110,15 @@ This file stores computer-specific configuration variables as Lisp data."
   (defun display-system-information ()
     "Display system information."
     (interactive)
-    (message "Emacs started in %s\nSystem: %s (%s)\nHostname: %s\nWSL: %s\nRDI: %s"
-             (emacs-init-time "%.2f seconds")
-             system-type window-system
-             (system-name)
-             (if wsl-p "yes" "no")
-             (if rdi-p "yes" "no")))
+    (message "Emacs %s\nSystem: %s (%s)\nHostname: %s\nWSL: %s\nRDI: %s\nStarted in %s"
+         emacs-version
+         system-type window-system
+         (system-name)
+         (if wsl-p "yes" "no")
+         (if rdi-p "yes" "no")
+         (emacs-init-time "%.2f seconds")))
 
-  ;; Ensure this hook runs last to prevent its message from being overwritten
+  ;; Ensure the display-system-information runs last to prevent its message from being overwritten
   (add-hook 'emacs-startup-hook 'display-system-information 100)
 
   (setq-default cursor-type 'bar)
