@@ -4,6 +4,11 @@
 
 ;;; Commentary:
 
+;; TODO how to run a script (msbuild) in windows (use "/mnt/c/Windows/System32/cmd.exe")
+;; TODO how to execute nuget
+;; TODO review msvs.el
+;; TODO review rdi.el
+
 ;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -119,7 +124,7 @@ This file stores computer-specific configuration variables as Lisp data."
 
   ;; Ensure this hook runs last to prevent its message from being overwritten
   (add-hook 'emacs-startup-hook 'display-system-information 100)
-  
+
   (setq-default cursor-type 'bar)
   (setq-default truncate-lines nil)
 
@@ -160,7 +165,7 @@ This file stores computer-specific configuration variables as Lisp data."
   (setq-default abbrev-mode t) ; enable abbrev-mode by default
   (setq-default fill-column 100)
   (setq-default tab-width 4)
-  
+
   (setopt delete-pair-blink-delay 0.25)
   (setopt sentence-end-double-space nil)
   (setopt tab-always-indent 'complete)
@@ -897,7 +902,7 @@ See `kill-new' for details."
     (kill-new string))
 
   (setq-default indent-tabs-mode nil)
-  
+
   (setopt copy-region-blink-delay 0.25)
   (setopt eval-expression-print-length nil)
   (setopt goto-line-history-local t)
