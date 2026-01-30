@@ -2,8 +2,9 @@
 
 ;;; Code:
 
-(defconst wsl-p (numberp (string-match-p "microsoft" operating-system-release))
-  "Non-nil if emacs is running on Windows Subsystem for Linux (WSL).")
+(defconst wsl-p (and (eq system-type 'gnu/linux)
+                     (getenv "WSLENV"))
+  "Non-nil if Emacs is running on Windows Subsystem for Linux (WSL).")
 
 ;; Emacs reads your main init file after creating the initial frame, so setting there won’t have the
 ;; expected effect on initial frame settings.
