@@ -8,10 +8,13 @@
 
 ;;; Code:
 
-(defun w32-convert-filename (file-name)
-  "Converted slash characters in FILE-NAME into backslashes."
+(defun w32-convert-filename (file-name);
+  "Convert the FILE-NAME to something suitable for Windows.
+
+This function converts slash characters into backslashes."
   (let ((file-name (convert-standard-filename (expand-file-name file-name)))
         (start 0))
+    ;; destructively replace slash characters with backslash
     (while (string-match "/" file-name start)
       (aset file-name (match-beginning 0) ?\\)
       (setq start (match-end 0)))
