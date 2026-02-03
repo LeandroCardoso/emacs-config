@@ -27,16 +27,18 @@
 (defcustom msvs-msbuild-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
   "Default parameters for msbuild used by `msvs-generate-compile-command'.
 
-See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022.")
+See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022."
+  :type '(repeat (string :tag "Parameter"))
+  :group 'msvs)
 
-(defcustom msvs-compile-command-function nil
+(defcustom msvs-compile-command-function 'msvs-compile-command-default-function
   "Function called to generate a compilation command for msvs
-solution, project or file.  When unset or the return of the
-called function is nil, then
-`msvs-compile-command-default-function' is used.
+solution, project or file.
 
 See the helper function `msvs-generate-compile-command' and user
-option `msvs-msbuild-default-parameters'.")
+option `msvs-msbuild-default-parameters'."
+  :type 'function
+  :group 'msvs)
 
 
 ;; Constants
@@ -123,21 +125,19 @@ option `msvs-msbuild-default-parameters'.")
 
 (defun msvs-compile-command-default-function ()
   "Default function to generate a compilation command for msvs
-solution, project or file."
+solution, project or file.
+
+See `msvs-compile-command-function'."
   (msvs-generate-compile-command t "\"Mixed Platforms\"" "Debug" "Build"))
 
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs solution, project or file.
 
-The function defined in `msvs-compile-command-function' is used
-to generate a compilation command. If it is not defined, or it
-returs nil, then the `msvs-compile-command-default-function' is
-used."
+The function defined in `msvs-compile-command-function' is used to
+generate a compilation command."
   (interactive)
   (when msvs-root-directory
-    (when-let ((command (or (when msvs-compile-command-function
-                              (funcall msvs-compile-command-function))
-                            (msvs-compile-command-default-function))))
+    (when-let ((command (funcall msvs-compile-command-function)))
       (setq-local compile-command command)
       ;; If the project directory is different than the default-directory then
       ;; compilation-search-path needs to be set.
