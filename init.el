@@ -1796,14 +1796,13 @@ See `byte-recompile-and-cleanup-directory'."
   :if rdi-p
   :demand t
   :config
-  (declare-function w32-convert-filename "w32-extra.el" (file-name))
-  (declare-function wsl-convert-filename-to-windows "wsl-extra.el" (file-name))
+  (when (eq system-type 'windos-nt)
+    (require 'w32-extra)
+    (setopt msvs-convert-filename-function 'w32-convert-filename))
 
-  (setopt msvs-convert-filename-function
-          (cond
-           ((eq system-type 'windows-nt) 'w32-convert-filename)
-           (wsl-p 'wsl-convert-filename-to-windows)
-           (t nil))))
+  (when wsl-p
+    (require 'wsl-extra)
+    (setopt msvs-convert-filename-function 'wsl-convert-filename-to-windows)))
 
 (use-package xml-where
   :defer t
