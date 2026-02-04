@@ -34,6 +34,16 @@ When nil the default configuration will be used."
   :type 'file
   :group 'nuget)
 
+(defcustom nuget-default-source-name-list nil
+  "Default souce name for NuGet sources."
+  :type '(repeat (string :tag "Source name"))
+  :group 'nuget)
+
+(defcustom nuget-default-user-name nil
+  "Default user name for NuGet sources."
+  :type 'string
+  :group 'nuget)
+
 ;; Internal helpers
 
 (defun nuget--ensure-executable ()
@@ -57,17 +67,6 @@ When nil the default configuration will be used."
     (view-buffer nuget-output-buffer)
     proc))
 
-(defun nuget--list-sources ()
-  "Return a list of configured NuGet source names."
-  (let* ((output (apply #'nuget--call
-                        (append '("sources" "list" "-format" "short" "-noninteractive")
-                                (when nuget-config-file (list "-configfile" nuget-config-file)))))
-         (lines (split-string output "\n" t)))
-    (mapcar (lambda (line)
-              ;; Remove leading letters if present
-              (replace-regexp-in-string "^[A-Z]+ +" "" line))
-            lines)))
-
 ;; Commands
 
 ;;;###autoload
@@ -88,19 +87,24 @@ When nil the default configuration will be used."
 (defun nuget-update-password (&optional source-name user-name password)
   "Update the password for a NuGet source.
 
-When SOURCE-NAME, USER-NAME, or PASSWORD are nil, prompt for them."
+When SOURCE-NAME, USER-NAME, or PASSWORD are nil, prompt for them.
+
+The user options `nuget-default-source-name-list' and
+`nuget-default-user-name' are offered as default values for SOURCE-NAME
+and USER-NAME respectively."
   (interactive)
   (let* ((source-name
           (or source-name
-              (completing-read "NuGet source: "
-                               (nuget--list-sources)
-                               nil t)))
+              (completing-read "NuGet source: " nuget-default-source-name-list nil nil)))
          (user-name
           (or user-name
-              (read-string "NuGet user name: ")))
+              (read-string (format "NuGet user name [%s]: " nuget-default-user-name)
+                           nil nil nuget-default-user-name)))
          (password
           (or password
               (read-passwd "NuGet password: "))))
+    (message "Updating password for NuGet Source:%s Username:%s Config:%s"
+             source-name user-name nuget-config-file)
     (apply #'nuget--call
            (append (list "sources" "update"
                          "-name" source-name

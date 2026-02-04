@@ -1825,7 +1825,7 @@ See `byte-recompile-and-cleanup-directory'."
 (use-package rdi
   :if rdi-p
   :demand t
-  :after project-root-dir
+  :after (nuget project-root-dir)
   :config
   (cond (system-windows-p
          (setopt np6-bugs-root-directory (expand-file-name "~/OneDrive - Capgemini/Documents/bugs/"))
@@ -1839,8 +1839,8 @@ See `byte-recompile-and-cleanup-directory'."
          (setopt np6-plugins-src-directory (expand-file-name "~/Dev/NpSharpRoot/Plugins/"))
          (setopt np6-np61-src-directory (expand-file-name "~/Dev/np61/"))))
 
-  (setopt rdi-nuget-source-name "RDI")
-  (setopt rdi-nuget-user-name "lcardoso")
+  (setopt nuget-default-source-name-list '("RDI"))
+  (setopt nuget-default-user-name "lcardoso")
 
   (add-to-list 'project-root-up-directory-list np6-bugs-root-directory)
   (add-to-list 'project-root-up-directory-list np6-env-root-directory))
