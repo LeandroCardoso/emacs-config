@@ -1796,13 +1796,12 @@ See `byte-recompile-and-cleanup-directory'."
   :if rdi-p
   :demand t
   :config
-  (when (eq system-type 'windos-nt)
-    (require 'w32-extra)
-    (setopt msvs-convert-filename-function 'w32-convert-filename))
-
-  (when wsl-p
-    (require 'wsl-extra)
-    (setopt msvs-convert-filename-function 'wsl-convert-filename-to-windows)))
+  (cond ((eq system-type 'windos-nt)
+         (require 'w32-extra)
+         (setopt msvs-convert-filename-function 'w32-convert-filename))
+        (wsl-p
+         (require 'wsl-extra)
+         (setopt msvs-convert-filename-function 'wsl-convert-filename-to-windows))))
 
 (use-package xml-where
   :defer t
@@ -1831,7 +1830,17 @@ See `byte-recompile-and-cleanup-directory'."
 
 (use-package rdi
   :if rdi-p
-  :demand t)
+  :demand t
+  :config
+  (cond ((eq system-type 'windos-nt)
+         (setopt np6-bugs-root-directory "~/OneDrive - Capgemini/Documents/bugs/")
+         (setopt np6-env-root-directory "~/OneDrive - Capgemini/Documents/env/")
+         (setopt np6-plugins-src-directory "c:/Dev/NpSharpRoot/Plugins/")
+         (setopt np6-np61-src-directory "c:/Dev/np61/"))
+        (wsl-p))
+
+  (setopt nuget-rdi-source-name "RDI")
+  (setopt nuget-rdi-user-name "lcardoso"))
 
 (use-package recentf-extra
   :defer t

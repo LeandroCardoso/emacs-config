@@ -17,18 +17,10 @@
 (require 'project-root-dir)
 (require 'xml-format)
 
-(defconst np6-bugs-root-directory
-  "~/OneDrive - Capgemini/Documents/bugs/"
-  "Development bugs root directory")
-(defconst np6-env-root-directory
-  "~/OneDrive - Capgemini/Documents/env/"
-  "Development environment root directory")
-(defconst np6-plugins-src-directory
-  "c:/Dev/NpSharpRoot/Plugins/"
-  "Source code directory for np# plugins")
-(defconst np6-np61-src-directory
-  "c:/Dev/np61/"
-  "Source code directory for np61 core")
+(defvar np6-bugs-root-directory nil "Development bugs root directory.")
+(defvar np6-env-root-directory nil "Development environment root directory.")
+(defvar np6-plugins-src-directory nil "Source code directory for np# plugins.")
+(defvar np6-np61-src-directory nil "Source code directory for np61 core.")
 
 ;; Project
 (add-to-list 'project-root-up-directory-list np6-bugs-root-directory)
@@ -166,8 +158,8 @@
                (expand-file-name (file-name-as-directory (project-root pr)))))))
 
 ;; Environment setup
-(defvar np6-env-directory nil "Development environment directory")
-(defvar np6-debug t "Copy Debug binaries, instead of Release binaries")
+(defvar np6-env-directory nil "Development environment directory.")
+(defvar np6-debug t "Copy Debug binaries, instead of Release binaries.")
 
 (defun np6-np61-dest-directory ()
   (let ((poscore-dir (expand-file-name "NpSharpBin/Plugins/Np6PosCore" np6-env-directory)))
@@ -278,10 +270,10 @@
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
 
-;TODO
+
 ;; RDI Nuget
-(defconst nuget-rdi-source-name "RDI")
-(defconst nuget-rdi-user-name "lcardoso")
+(defvar nuget-rdi-source-name nil "RDI NuGet source name as in the nuget.config.")
+(defvar nuget-rdi-user-name nil "RDI NuGet user name.")
 
 (defun nuget-update-password-rdi ()
   "Update the RDI nuget password.
