@@ -17,14 +17,41 @@
 (require 'project-root-dir)
 (require 'xml-format)
 
-(defvar np6-bugs-root-directory nil "Development bugs root directory.")
-(defvar np6-env-root-directory nil "Development environment root directory.")
-(defvar np6-plugins-src-directory nil "Source code directory for np# plugins.")
-(defvar np6-np61-src-directory nil "Source code directory for np61 core.")
+;; Custom
 
-;; Project
-(add-to-list 'project-root-up-directory-list np6-bugs-root-directory)
-(add-to-list 'project-root-up-directory-list np6-env-root-directory)
+(defgroup rdi nil
+  "RDI support"
+  :group 'tools)
+
+(defcustom np6-bugs-root-directory nil
+  "Development bugs root directory."
+  :type 'directory
+  :group 'rdi)
+
+(defcustom np6-env-root-directory nil
+  "Development environment root directory."
+  :type 'directory
+  :group 'rdi)
+
+(defcustom np6-plugins-src-directory nil
+  "Source code directory for np# plugins."
+  :type 'directory
+  :group 'rdi)
+
+(defcustom np6-np61-src-directory nil
+  "Source code directory for np61 core."
+  :type 'directory
+  :group 'rdi)
+
+(defcustom rdi-nuget-source-name nil
+  "RDI NuGet source name as in the nuget.config."
+  :type 'string
+  :group 'rdi)
+
+(defcustom rdi-nuget-user-name nil
+  "RDI NuGet user name."
+  :type 'string
+  :group 'rdi)
 
 ;; nps
 (when (featurep 'js2-mode)
@@ -270,17 +297,13 @@
 
 (setq msvs-compile-command-function 'rdi-msvs-generate-compile-command)
 
-
 ;; RDI Nuget
-(defvar nuget-rdi-source-name nil "RDI NuGet source name as in the nuget.config.")
-(defvar nuget-rdi-user-name nil "RDI NuGet user name.")
-
 (defun nuget-update-password-rdi ()
   "Update the RDI nuget password.
 
 See `nuget-update-password'."
   (interactive)
-  (nuget-update-password nuget-rdi-source-name nuget-rdi-user-name))
+  (nuget-update-password rdi-nuget-source-name rdi-nuget-user-name))
 
 
 ;; np6 view
