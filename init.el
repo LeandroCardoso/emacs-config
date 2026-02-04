@@ -15,6 +15,7 @@
 (setopt load-prefer-newer t)
 
 (defconst rdi-p (string= (system-name) "LBR-20CRXW3") "Non-nil if the RDI setup should be loaded.")
+(defconst system-windows-p (eq system-type 'windows-nt) "Non-nil if `system-type' is windows-nt.")
 
 (defconst user-lisp-directory (expand-file-name "lisp" user-emacs-directory)
   "Directory where user's Emacs *.el and *.elc Lisp files are installed.")
@@ -284,7 +285,7 @@
 (use-package completion-preview
   :demand t
   :config
-  (when (eq system-type 'windows-nt)
+  (when system-windows-p
     (setopt completion-preview-idle-delay 0.2))
   (add-to-list 'completion-preview-commands 'org-self-insert-command)
   (global-completion-preview-mode)
@@ -643,7 +644,7 @@
   (setenv "DICPATH" (expand-file-name "hunspell/" user-emacs-directory))
 
   (defconst ispell-words-directory (expand-file-name "words/" user-emacs-directory))
-  (setopt ispell-complete-word-dict (if (eq system-type 'windows-nt)
+  (setopt ispell-complete-word-dict (if system-windows-p
                                         nil
                                       (expand-file-name "en_US.txt" ispell-words-directory)))
   (setopt ispell-dictionary "american")
@@ -665,7 +666,7 @@ must be named with the locale and a \"txt\" extenstion."
                    (expand-file-name (concat locale ".txt") ispell-words-directory)))
            (local (and ispell-local-dictionary
                        (not (eq ispell-local-dictionary ispell-dictionary)))))
-      (if (eq system-type 'windows-nt)
+      (if system-windows-p
           (message "Ispell word-list dictionary disabled in Windows")
         (if local
             (setq-local ispell-complete-word-dict file)
@@ -1368,7 +1369,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
   (setopt magit-update-other-window-delay 1)
 
   ;; Windows specific settings
-  (when (eq system-type 'windows-nt)
+  (when system-windows-p
     (setopt magit-process-connection-type nil)
     (setopt magit-refresh-status-buffer nil)
 
@@ -1785,7 +1786,7 @@ See `byte-recompile-and-cleanup-directory'."
   :if rdi-p
   :demand t
   :config
-  (cond ((eq system-type 'windos-nt)
+  (cond (system-windows-p
          (require 'w32-extra)
          (setopt msvs-convert-filename-function 'w32-convert-filename))
         (wsl-p
@@ -1825,9 +1826,9 @@ See `byte-recompile-and-cleanup-directory'."
   :if rdi-p
   :demand t
   :config
-  (cond ((eq system-type 'windos-nt)
          (setopt np6-bugs-root-directory "~/OneDrive - Capgemini/Documents/bugs/")
          (setopt np6-env-root-directory "~/OneDrive - Capgemini/Documents/env/")
+  (cond (system-windows-p
          (setopt np6-plugins-src-directory "c:/Dev/NpSharpRoot/Plugins/")
          (setopt np6-np61-src-directory "c:/Dev/np61/"))
         (wsl-p))
@@ -1867,7 +1868,7 @@ See `byte-recompile-and-cleanup-directory'."
         ([remap woman-reformat-last-file] . woman-reformat)))
 
 (use-package w32-extra
-  :if (eq system-type 'windows-nt)
+  :if system-windows-p
   :demand t
   :config
   ;; Root directories are added in the beginning
