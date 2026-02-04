@@ -70,6 +70,15 @@ When nil the default configuration will be used."
 ;; Commands
 
 ;;;###autoload
+(defun nuget-list-sources ()
+  "Display a list of configured NuGet sources."
+  (interactive)
+  (message "%s"
+           (apply #'nuget--start
+                  (append '("sources" "list" "-noninteractive")
+                          (when nuget-config-file (list "-configfile" nuget-config-file))))))
+
+;;;###autoload
 (defun nuget-restore ()
   "Restore NuGet packages for the current solution."
   (interactive)
