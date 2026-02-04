@@ -110,12 +110,12 @@ This file stores computer-specific configuration variables as Lisp data."
   (defun display-system-information ()
     "Display system information."
     (interactive)
-    (message "Emacs %s\nSystem: %s (%s)\nHostname: %s\nWSL: %s\nRDI: %s\nStarted in %s"
+    (message "Emacs %s\nSystem: %s (%s)\nHostname: %s\nRDI: %s\nWSL: %s\nStarted in %s"
          emacs-version
          system-type window-system
          (system-name)
-         (if wsl-p "yes" "no")
          (if rdi-p "yes" "no")
+         (if wsl-p "yes" "no")
          (emacs-init-time "%.2f seconds")))
 
   ;; Ensure the display-system-information runs last to prevent its message from being overwritten

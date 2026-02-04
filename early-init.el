@@ -2,9 +2,9 @@
 
 ;;; Code:
 
-(defconst wsl-p (stringp (and (eq system-type 'gnu/linux)
-                              (or (getenv "WSLENV")
-                                  (getenv "WSL_INTEROP"))))
+(defvar wsl-p (stringp (and (eq system-type 'gnu/linux)
+                            (or (getenv "WSLENV")
+                                (getenv "WSL_INTEROP"))))
   "Non-nil if Emacs is running on Windows Subsystem for Linux (WSL).")
 
 ;; Emacs reads your main init file after creating the initial frame, so setting there won’t have the
@@ -12,8 +12,8 @@
 (setopt default-frame-alist `((fullscreen . maximized)
                               (visibility . nil)
                               ,(when (and (eq system-type 'gnu/linux)
-                                         (not wsl-p))
-                                '(alpha . 96))))
+                                          (not wsl-p))
+                                 '(alpha . 96))))
 
 ;; No need to waste precious desktop space with useless GUI elements
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
