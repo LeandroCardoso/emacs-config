@@ -258,12 +258,15 @@
   (cond
    ;; c or c++
    ((or (eq major-mode 'c-mode)
+        (eq major-mode 'c-ts-mode)
         (eq major-mode 'c++-mode)
+        (eq major-mode 'c++-ts-mode)
         ;; c or c++ project
         (string-match-p msvs-cpp-project-regexp (or buffer-file-name "")))
     (msvs-generate-compile-command t "win32" "Debug" "Build" "/p:PostBuildEventUseInBuild=false"))
    ;; c#
    ((or (eq major-mode 'csharp-mode)
+        (eq major-mode 'csharp-ts-mode)
         (string-match-p msvs-cs-project-regexp (or buffer-file-name "")))
     ;; c# project
     (msvs-generate-compile-command nil "\"Any CPU\"" "Debug" "Build"))
