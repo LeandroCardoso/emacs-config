@@ -16,7 +16,6 @@
 ;; TODO use Common7\Tools\vsdevcmd.bat to compile
 
 (require 'files-extra)
-(require 'w32-extra)
 
 ;; Custom
 
@@ -24,7 +23,7 @@
   "Ms Visual Studio integration"
   :group 'tools)
 
-(defcustom msvs-msbuild-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
+(defcustom msvs-compile-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
   "Default parameters for msbuild used by `msvs-generate-compile-command'.
 
 See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022."
@@ -32,11 +31,16 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
   :group 'msvs)
 
 (defcustom msvs-compile-command-function 'msvs-compile-command-default-function
-  "Function called to generate a compilation command for msvs
+  "Function called to generate a compilation command for MSVS
 solution, project or file.
 
-See the helper function `msvs-generate-compile-command' and user
-option `msvs-msbuild-default-parameters'."
+See the helper function `msvs-generate-compile-command' and user option
+`msvs-compile-default-parameters'."
+  :type 'function
+  :group 'msvs)
+
+(defcustom msvs-convert-filename-function 'msvs-convert-filename-default-function
+  "Function called to convert a filename to something suitable for msbuild."
   :type 'function
   :group 'msvs)
 
@@ -48,45 +52,27 @@ option `msvs-msbuild-default-parameters'."
 (defconst msvs-all-projects-regexp ".*\\(vcx\\|cs\\)proj$")
 (defconst msvs-solution-regexp ".*sln$")
 
-(defconst msvs-program-files
-  (when (getenv "ProgramFiles(x86)")
-    (expand-file-name (getenv "ProgramFiles(x86)"))))
-
-(defconst msvs-vswhere
-  (when msvs-program-files
-    (expand-file-name "Microsoft Visual Studio/Installer/vswhere.exe" msvs-program-files)))
-
-(defconst msvs-root-directory
-  (if (and msvs-vswhere (file-readable-p msvs-vswhere))
-      (expand-file-name
-       (car (process-lines msvs-vswhere "-legacy" "-latest" "-property" "installationPath")))
-    (let ((vscomntools (seq-some (lambda (ENV_VAR) (getenv ENV_VAR))
-                                 '("VS140COMNTOOLS"    ; Visual Studio 2015
-                                   ;; There is no VS130COMNTOOLS.
-                                   "VS120COMNTOOLS"    ; Visual Studio 2013
-                                   "VS110COMNTOOLS"    ; Visual Studio 2012
-                                   "VS100COMNTOOLS"    ; Visual Studio 2010
-                                   "VS90COMNTOOLS"     ; Visual Studio 2008
-                                   "VS80COMNTOOLS")))) ; Visual Studio 2005
-      (when vscomntools
-        (directory-parent (expand-file-name vscomntools) 2)))))
-
-;; TODO support to multiple visual studios
-(defconst msvs-include-directory
-  (when msvs-program-files
-    (expand-file-name "Microsoft Visual Studio 12.0/VC/include" msvs-program-files)))
-
-;; TODO support to multiple sdks. Find Windows.h @ "Microsoft SDKs/Windows/" and "Windows Kits/"
-(defconst msvs-platform-sdk
-  (when msvs-program-files
-    (expand-file-name "Windows Kits/8.1/Include/um" msvs-program-files)))
-
 
 ;; Functions
 
+(defun msvs-compile-command-default-function ()
+  "Default function to generate a compilation command for msvs
+solution, project or file.
+
+See `msvs-compile-command-function'."
+  (msvs-generate-compile-command t "\"Mixed Platforms\"" "Debug" "Build"))
+
+(defun msvs-convert-filename-default-function (file-name)
+  "Default function to convert FILE-NAME to something suitable for msbuild.
+
+This default implementation returns FILE-NAME unmodified.
+
+See `msvs-convert-filename-function'."
+  file-name)
+
 (defun msvs-generate-compile-command (useProjectFile platform configuration target &rest rest-parameters)
   "Return a string for compile a msvs solution, project or file."
-  (require 'subr-x)  
+  (require 'subr-x)
   (let* (
          ;; Ignore useProjectFile parameter when the current buffer is a solution file.
          (useProjectFile (and useProjectFile
@@ -110,25 +96,18 @@ option `msvs-msbuild-default-parameters'."
                             (file-relative-name project-file))
                         solution-file)))
     (concat "msbuild.cmd"
-            (when msvs-msbuild-default-parameters
-              (concat " " (string-join msvs-msbuild-default-parameters " ")))
+            (when msvs-compile-default-parameters
+              (concat " " (string-join msvs-compile-default-parameters " ")))
             (when rest-parameters
               (concat " " (string-join rest-parameters " ")))
             (when (and useProjectFile solution-directory)
-              (concat " /p:SolutionDir=" (w32-convert-filename solution-directory)))
+              (concat " /p:SolutionDir=" (funcall msvs-convert-filename-function solution-directory)))
             (when platform
               (concat " /p:Platform=" platform))
             " /p:Configuration=" configuration
             " /t:" target
             (when comp-object
-              (concat " " (w32-convert-filename comp-object))))))
-
-(defun msvs-compile-command-default-function ()
-  "Default function to generate a compilation command for msvs
-solution, project or file.
-
-See `msvs-compile-command-function'."
-  (msvs-generate-compile-command t "\"Mixed Platforms\"" "Debug" "Build"))
+              (concat " " (funcall msvs-convert-filename-function comp-object))))))
 
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs solution, project or file.
@@ -136,23 +115,17 @@ See `msvs-compile-command-function'."
 The function defined in `msvs-compile-command-function' is used to
 generate a compilation command."
   (interactive)
-  (when msvs-root-directory
-    (when-let ((command (funcall msvs-compile-command-function)))
-      (setq-local compile-command command)
-      ;; If the project directory is different than the default-directory then
-      ;; compilation-search-path needs to be set.
-      (let ((project-file (car (locate-dominating-file-match default-directory msvs-all-projects-regexp))))
-        (when project-file
-          (add-to-list (make-local-variable 'compilation-search-path)
-                       (file-name-directory project-file)))))))
+  (when-let ((command (funcall msvs-compile-command-function)))
+    (setq-local compile-command command)
+    ;; If the project directory is different than the default-directory then
+    ;; compilation-search-path needs to be set.
+    (let ((project-file (car (locate-dominating-file-match default-directory msvs-all-projects-regexp))))
+      (when project-file
+        (add-to-list (make-local-variable 'compilation-search-path)
+                     (file-name-directory project-file))))))
 
 
-;; Setup
-
-;; Add Visual Studio to PATH
-(when msvs-root-directory
-  ;; Add Visual Studio binary directories to PATH
-  (w32-add-to-path (expand-file-name "Common7/Tools" msvs-root-directory)))
+;; Integration
 
 ;; project
 (with-eval-after-load "project"
@@ -175,7 +148,7 @@ generate a compilation command."
   (add-hook 'csharp-ts-mode-hook 'msvs-set-compile-command))
 
 
-;; Setup Auto-Modes
+;; Modes
 (require 'derived)
 (require 'generic)
 
@@ -204,4 +177,4 @@ generate a compilation command."
 
 (provide 'msvs)
 
-;; msvs.el ends here
+;;; msvs.el ends here

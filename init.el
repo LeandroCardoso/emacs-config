@@ -1793,7 +1793,17 @@ See `byte-recompile-and-cleanup-directory'."
         ("M-." . insert-selected-window-thing-at-point)))
 
 (use-package msvs
-  :if (eq system-type 'windows-nt))
+  :if rdi-p
+  :demand t
+  :config
+  (declare-function w32-convert-filename "w32-extra.el" (file-name))
+  (declare-function wsl-convert-filename-to-windows "wsl-extra.el" (file-name))
+
+  (setopt msvs-convert-filename-function
+          (cond
+           ((eq system-type 'windows-nt) 'w32-convert-filename)
+           (wsl-p 'wsl-convert-filename-to-windows)
+           (t nil))))
 
 (use-package xml-where
   :defer t
@@ -1892,6 +1902,10 @@ See `byte-recompile-and-cleanup-directory'."
         (message "Starting altgr2alt")
         (start-process "altgr2alt" (messages-buffer) "altgr2alt"))
     (message "Error: altgr2alt not found!")))
+
+(use-package wsl-extra
+  :if wsl-p
+  :demand t)
 
 (use-package xml-format
   :defer t
