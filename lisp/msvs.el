@@ -31,8 +31,8 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
   :group 'msvs)
 
 (defcustom msvs-compile-command-function 'msvs-compile-command-default-function
-  "Function called to generate a compilation command for MSVS
-solution, project or file.
+  "Function called to generate a compilation command for MSVS solution,
+project or file.
 
 See the helper function `msvs-generate-compile-command' and user option
 `msvs-compile-default-parameters'."
