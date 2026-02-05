@@ -34,14 +34,9 @@ When nil the default configuration will be used."
   :type 'file
   :group 'nuget)
 
-(defcustom nuget-default-source-name-list nil
-  "Default souce name for NuGet sources."
-  :type '(repeat (string :tag "Source name"))
-  :group 'nuget)
-
-(defcustom nuget-default-user-name nil
-  "Default user name for NuGet sources."
-  :type 'string
+(defcustom nuget-default-source-list nil
+  "Default list with NuGet (source-name . user-name)."
+  :type '(repeat (cons (string :tag "Source name") (string :tag "User name")))
   :group 'nuget)
 
 ;; Internal helpers
@@ -98,17 +93,17 @@ When nil the default configuration will be used."
 
 When SOURCE-NAME, USER-NAME, or PASSWORD are nil, prompt for them.
 
-The user options `nuget-default-source-name-list' and
-`nuget-default-user-name' are offered as default values for SOURCE-NAME
-and USER-NAME respectively."
+The user options `nuget-default-source-list' and is offered as default
+values for SOURCE-NAME and USER-NAME."
   (interactive)
   (let* ((source-name
           (or source-name
-              (completing-read "NuGet source: " nuget-default-source-name-list nil nil)))
+              (completing-read "NuGet source: " (mapcar #'car nuget-default-source-list) nil nil)))
          (user-name
           (or user-name
-              (read-string (format "NuGet user name [%s]: " nuget-default-user-name)
-                           nil nil nuget-default-user-name)))
+              (let* ((def-user (cdr (assoc source-name nuget-default-source-list)))
+                     (def-user-str (if def-user (format " [%s]" def-user) "")))
+                (read-string (format "NuGet user name%s: " def-user-str) nil nil def-user))))
          (password
           (or password
               (read-passwd "NuGet password: "))))

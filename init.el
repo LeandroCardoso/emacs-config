@@ -1839,8 +1839,7 @@ See `byte-recompile-and-cleanup-directory'."
          (setopt np6-plugins-src-directory (expand-file-name "~/Dev/NpSharpRoot/Plugins/"))
          (setopt np6-np61-src-directory (expand-file-name "~/Dev/np61/"))))
 
-  (setopt nuget-default-source-name-list '("RDI"))
-  (setopt nuget-default-user-name "lcardoso")
+  (setopt nuget-default-source-list '(("RDI" . "lcardoso")))
 
   (add-to-list 'project-root-up-directory-list np6-bugs-root-directory)
   (add-to-list 'project-root-up-directory-list np6-env-root-directory))
