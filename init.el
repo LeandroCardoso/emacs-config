@@ -504,9 +504,6 @@
   (advice-add 'rgrep :after 'kill-new-advice)
   (advice-add 'zrgrep :after 'kill-new-advice)
 
-  :hook
-  (grep-setup . truncate-lines-on)
-
   :bind
   ("M-s g" . rgrep)
   ("M-s G" . zrgrep)
@@ -836,9 +833,6 @@ must be named with the locale and a \"txt\" extenstion."
 
 (use-package replace ; occur
   :defer t
-  :hook
-  (occur-mode . truncate-lines-on)
-
   :bind
   (:map occur-mode-map
         ("<tab>" . occur-next)
@@ -872,10 +866,12 @@ must be named with the locale and a \"txt\" extenstion."
 (use-package simple
   :config
   (defun truncate-lines-on ()
-    "Enable `truncate-lines' in the current buffer.  Provided for use in hooks.
+    "Enable `truncate-lines' in the current buffer.
 
 This function enables `truncate-lines', unless `visual-line-mode' is
-turned on, as it could produce confusing results."
+turned on, as it could produce confusing results.
+
+Provided for use in hooks."
     (setopt truncate-lines (not visual-line-mode)))
 
   (defun kill-new-advice (string &rest r)
@@ -899,6 +895,9 @@ See `kill-new' for details."
   (setopt read-extended-command-predicate 'command-completion-default-include-p)
   (setopt shift-select-mode nil)
   (setopt what-cursor-show-names t)
+
+  :hook
+  ((grep-setup occur-mode xref--xref-buffer-mode) . truncate-lines-on)
 
   :bind
   ("C-M-|" . delete-indentation)
@@ -1098,9 +1097,6 @@ See `kill-new' for details."
   ;; Enable saving the latest regexp into the `kill-ring'
   (advice-add 'xref--find-xrefs :after 'kill-new-advice)
   (advice-add 'xref-matches-in-files :after 'kill-new-advice)
-
-  :hook
-  (xref--xref-buffer-mode . truncate-lines-on)
 
   :bind
   (:map xref--xref-buffer-mode-map
