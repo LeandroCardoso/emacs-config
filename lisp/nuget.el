@@ -87,6 +87,7 @@ When more than one solution file is found, ask the user to choose one."
          (default-directory (when solution (file-name-directory solution))))
     (unless solution
       (error "Solution file not found"))
+    (message "Restoring NuGet packages for Solution:%s Config:%s" solution nuget-config-file)
     (apply #'nuget--start
            (append `("restore" ,solution "-noninteractive")
                    (when nuget-config-file (list "-configfile" nuget-config-file))))))
@@ -111,8 +112,6 @@ for SOURCE-NAME and USER-NAME."
          (password
           (or password
               (read-passwd "NuGet password: "))))
-    (when (and source-name user-name password)
-      (error "Invalid parameters"))
     (message "Updating password for NuGet Source:%s Username:%s Config:%s"
              source-name user-name nuget-config-file)
     (apply #'nuget--call
@@ -144,6 +143,7 @@ for SOURCE-NAME and USER-NAME."
   (defun nuget-install-update ()
     "Update the installed NuGet executable."
     (interactive)
+    (message "Updating NuGet installation")
     (nuget--start "update" "-self" "-noninteractive")))
 
 (provide 'nuget)
