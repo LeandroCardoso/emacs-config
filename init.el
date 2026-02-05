@@ -1878,6 +1878,7 @@ See `byte-recompile-and-cleanup-directory'."
 (use-package w32-extra
   :if system-windows-p
   :demand t
+  :after (xref gtags-mode)
   :config
   ;; Root directories are added in the beginning
   (w32-add-unix-root-dir "c:/msys64/ucrt64")
@@ -1899,10 +1900,8 @@ See `byte-recompile-and-cleanup-directory'."
 
   ;; Use bash shell when calling grep/ripgrep (xref) and global (gtags-mode), because it fixes the
   ;; annoying "^M" that can be displayed at end of lines.
-  (require 'xref)
   (advice-add 'xref-matches-in-files :around 'with-bash-shell)
   (advice-add 'xref-matches-in-directory :around 'with-bash-shell)
-  (require 'gtags-mode)
   (advice-add 'gtags-mode--exec-sync :around 'with-bash-shell)
   (advice-add 'gtags-mode--exec-async :around 'with-bash-shell)
 
