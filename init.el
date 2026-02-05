@@ -1503,18 +1503,19 @@ the plist used as a communication channel."
   (setopt rotate-text-words
           '(("active" "inactive")
             ("enable" "disable")
+            ("enables" "disables")
             ("enabled" "disabled")
             ("height" "width")
+            ("high" "low")
             ("left" "right" "top" "bottom")
-            ("low" "high")
             ("january" "february" "march" "april" "may" "june" "july" "august" "september" "october" "november" "december")
             ("monday" "tuesday" "wednesday" "thursday" "friday" "saturday" "sunday")
+            ("on" "off")
             ("true" "false")
             ("yes" "no")))
   (setopt rotate-text-symbols
           '(("and" "or")
             ("private" "protected" "public")
-            ("on" "off")
             ("t" "nil")))
 
   :bind
