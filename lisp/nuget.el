@@ -75,16 +75,20 @@ When nil the default configuration will be used."
 
 ;;;###autoload
 (defun nuget-restore ()
-  "Restore NuGet packages for the current solution."
+  "Restore NuGet packages for the current solution.
+
+When more than one solution file is found, ask the user to choose one."
   (interactive)
-  (let* ((solutions (locate-dominating-file-match default-directory nuget-solution-regexp))
-         (default-directory
-           (when solutions
-             (file-name-directory (car solutions)))))
-    (unless solutions
+  (let* ((solution-list (locate-dominating-file-match default-directory nuget-solution-regexp))
+         (solution (if (cdr solution-list)
+                       ;; if more than one solution was found - ask the user to choose one
+                       (completing-read "Select solution file: " solution-list nil t)
+                     (car solution-list)))
+         (default-directory (when solution (file-name-directory solution))))
+    (unless solution
       (error "Solution file not found"))
     (apply #'nuget--start
-           (append '("restore" "-noninteractive")
+           (append `("restore" ,solution "-noninteractive")
                    (when nuget-config-file (list "-configfile" nuget-config-file))))))
 
 ;;;###autoload
