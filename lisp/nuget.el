@@ -93,8 +93,8 @@ When nil the default configuration will be used."
 
 When SOURCE-NAME, USER-NAME, or PASSWORD are nil, prompt for them.
 
-The user options `nuget-default-source-list' and is offered as default
-values for SOURCE-NAME and USER-NAME."
+The user option `nuget-default-source-list' is offered as default values
+for SOURCE-NAME and USER-NAME."
   (interactive)
   (let* ((source-name
           (or source-name
@@ -107,6 +107,8 @@ values for SOURCE-NAME and USER-NAME."
          (password
           (or password
               (read-passwd "NuGet password: "))))
+    (when (and source-name user-name password)
+      (error "Invalid parameters"))
     (message "Updating password for NuGet Source:%s Username:%s Config:%s"
              source-name user-name nuget-config-file)
     (apply #'nuget--call
