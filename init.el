@@ -177,7 +177,7 @@
   (setopt user-full-name "Leandro Cardoso")
   (setopt user-mail-address "leandrocardoso@gmail.com")
 
-  ;; Workaround for clipboard integration with Windows
+  ;; WORKAROUND for clipboard integration with Windows
   (when wsl-p
     (setq select-active-regions nil))
 
@@ -562,7 +562,7 @@
 
 (use-package hl-line
   :config
-  ;; hl-line-mode causes slowness when scrolling down repeatedly, this is a workaround for it
+  ;; WORKAROUND hl-line-mode causes slowness when scrolling down repeatedly
   (setq auto-window-vscroll nil)
 
   :hook
@@ -726,8 +726,7 @@ must be named with the locale and a \"txt\" extenstion."
     (setq comment-column (default-value 'comment-column)))
 
   :hook
-  ;; Some modes (like emacs-lisp-mode) have the bad habit of overwriting comment-column. This
-  ;; workaround this behavior.
+  ;; WORKAROUND Some modes (like emacs-lisp-mode) have the bad habit of overwriting comment-column
   (prog-mode . comment-column-setup))
 
 (use-package nxml-mode
@@ -777,7 +776,7 @@ must be named with the locale and a \"txt\" extenstion."
         ("s" . orgalist-mode))
   (:map org-mode-map
         ("C-c M-t" . org-toggle-link-display)
-        ;; workaround to avoid override by a global key
+        ;; WORKAROUND avoid it to be override by a global key
         ("M-<return>" . org-meta-return)))
 
 (use-package ox ; org export
@@ -810,6 +809,7 @@ must be named with the locale and a \"txt\" extenstion."
             ("gnu"          . 1)
             ("melpa stable" . 0)))
 
+  ;; WORKAROUND to avoid issues updating packages due to network restrictions
   (when (and system-windows-p rdi-p)
     (setopt package-check-signature nil))
 
@@ -1373,7 +1373,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
     (setopt magit-process-connection-type nil)
     (setopt magit-refresh-status-buffer nil)
 
-    ;; experimental performance settings
+    ;; EXPERIMENTAL performance settings
     (setopt magit-diff-highlight-indentation nil)
     (setopt magit-diff-highlight-trailing nil)
     (setopt magit-diff-paint-whitespace nil)

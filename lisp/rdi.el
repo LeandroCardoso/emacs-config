@@ -90,8 +90,7 @@
   '("[0-9]\\{8\\}\\(_DEBUG\\)?-[0-9]\\{3\\}\\.log$")   ; AUTO-MODE-LIST
   '(np6-log-mode-setup))                               ; FUNCTION-LIST
 
-;; Ugly hack to disable automatic string highlight. This is disabled due to several malformed
-;; strings.
+;; HACK to disable automatic string highlight. This is disabled due to several malformed strings
 (require 'mode-local)
 (setq-mode-local np6-log-mode font-lock-keywords-only t)
 
