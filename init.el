@@ -877,6 +877,12 @@ turned on, as it could produce confusing results.
 Provided for use in hooks."
     (setopt truncate-lines (not visual-line-mode)))
 
+  (defun truncate-lines-off ()
+    "Disable `truncate-lines' in the current buffer.
+
+Provided for use in hooks."
+    (setopt truncate-lines nil))
+
   (defun kill-new-advice (string &rest r)
     "Make STRING the latest kill in the kill ring.
 
@@ -901,6 +907,8 @@ See `kill-new' for details."
 
   :hook
   ((grep-setup occur-mode xref--xref-buffer-mode) . truncate-lines-on)
+  ;; WORKAROUND force truncate-lines to nil because setting it on initialization is unreliable
+  ((prog-mode text-mode) . truncate-lines-off)
 
   :bind
   ("C-M-|" . delete-indentation)
