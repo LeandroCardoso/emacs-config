@@ -26,16 +26,17 @@ nil means no limit."
 (defun font-lock-todo-setup ()
   "Fontify some keywords.
 
-Current words that will be fontified: \"BUG\", \"EXPERIMENTAL\",
-\"FIXME\", \"HACK\", \"NOTE\", \"TODO\", \"WARNING\", \"WIP\",
-\"WORKAROUND\".
+Current words that will be fontified: \"BUG\", \"DEBUG\",
+\"EXPERIMENTAL\", \"FIXME\", \"HACK\", \"NOTE\", \"TODO\", \"WARNING\",
+\"WIP\", \"WORKAROUND\".
 
 Add this function to `prog-mode-hook' to enable it:
   (add-hook \='prog-mode-hook \='font-lock-todo-setup)"
   (require 'font-lock)
   (font-lock-add-keywords
    nil
-   '(("\\<\\(BUG\\|EXPERIMENTAL\\|FIXME\\|HACK\\|NOTE\\|TODO\\|WARNING\\|WIP\\|WORKAROUND\\)\\>" 1 font-lock-warning-face t))))
+   '(("\\<\\(BUG\\|DEBUG\\|EXPERIMENTAL\\|FIXME\\|HACK\\|NOTE\\|TODO\\|WARNING\\|WIP\\|WORKAROUND\\)\\>"
+      1 font-lock-warning-face t))))
 
 
 ;; Adapted from: https://www.emacswiki.org/emacs/NoTabs

@@ -28,8 +28,11 @@
   :config
   (setopt use-package-compute-statistics t) ; view the statistical report using `use-package-report'
   (setopt use-package-enable-imenu-support t)
+  (setopt use-package-vc-prefer-newest t)
+
+  ;; DEBUG
   ;; (setopt use-package-verbose t)
-  (setopt use-package-vc-prefer-newest t))
+  )
 
 (use-package solarized
   :ensure solarized-theme
