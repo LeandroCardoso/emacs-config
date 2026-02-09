@@ -1815,7 +1815,7 @@ See `byte-recompile-and-cleanup-directory'."
   :if rdi-p
   :demand t
   :config
-  (when wsl-p
+  (when (and wsl-p rdi-p)
     (setopt nuget-config-file "/mnt/c/Users/lecardos/AppData/Roaming/NuGet/NuGet.Config")))
 
 (use-package project-extra
@@ -1842,8 +1842,8 @@ See `byte-recompile-and-cleanup-directory'."
          (setopt np6-np61-src-directory "c:/Dev/np61/"))
         (wsl-p
          (require 'wsl-extra)
-         (setopt np6-bugs-root-directory (expand-file-name "~/rdi/bugs/"))
-         (setopt np6-env-root-directory (wsl-convert-filename-to-windows "~/OneDrive - Capgemini/Documents/env/"))
+         (setopt np6-bugs-root-directory (expand-file-name "~/Documents/bugs/"))
+         (setopt np6-env-root-directory (expand-file-name "~/Documents/env/"))
          (setopt np6-plugins-src-directory (expand-file-name "~/Dev/NpSharpRoot/Plugins/"))
          (setopt np6-np61-src-directory (expand-file-name "~/Dev/np61/"))))
 
