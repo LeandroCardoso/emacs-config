@@ -827,6 +827,7 @@ must be named with the locale and a \"txt\" extenstion."
 (use-package project
   :defer t
   :config
+  (setopt project-kill-buffers-display-buffer-list t)
   (setopt project-vc-merge-submodules nil))
 
 (use-package recentf
