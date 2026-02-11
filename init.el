@@ -101,12 +101,12 @@
     "Display system information."
     (interactive)
     (message "Emacs %s\nSystem: %s (%s)\nHostname: %s\nRDI: %s\nWSL: %s\nStarted in %s"
-         emacs-version
-         system-type window-system
-         (system-name)
-         (if rdi-p "yes" "no")
-         (if wsl-p "yes" "no")
-         (emacs-init-time "%.2f seconds")))
+             emacs-version
+             system-type window-system
+             (system-name)
+             (if rdi-p "yes" "no")
+             (if wsl-p "yes" "no")
+             (emacs-init-time "%.2f seconds")))
 
   ;; Ensure the display-system-information runs last to prevent its message from being overwritten
   (add-hook 'emacs-startup-hook 'display-system-information 100)
@@ -183,6 +183,15 @@
   ;; WORKAROUND for clipboard integration with Windows
   (when wsl-p
     (setq select-active-regions nil))
+
+  (defvar files-ignore
+    '("*.dic""abbrev_defs""words/*"                               ; emacs
+      "GPATH" "GRTAGS" "GTAGS" "TAGS*"                            ; tags
+      "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css") ; minified
+    "List of files that need to be ignored by grep, project and xref.
+
+Updating this variable has no effect until reevaluation of the other
+packages.")
 
   :hook
   (after-save . executable-make-buffer-file-executable-if-script-p)
@@ -497,9 +506,7 @@
   (add-to-list 'grep-files-aliases '("cs" . "*.cs"))
   (add-to-list 'grep-files-aliases '("web" . "*.css *.htm[l] *.js *.json *.ts"))
 
-  (dolist (file '("TAGS*" "GPATH" "GRTAGS" "GTAGS"                           ; tags
-                  "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css" ; minified
-                  "*.cache" "*.exe" "*.nupkg" "*.so" "*.zip"))               ; misc
+  (dolist (file (append '("*.cache" "*.exe" "*.nupkg" "*.so" "*.zip") files-ignore))
     (add-to-list 'grep-find-ignored-files file))
 
   ;; Enable saving the latest regexp into the `kill-ring'
@@ -828,6 +835,7 @@ must be named with the locale and a \"txt\" extenstion."
   :defer t
   :config
   (setopt project-kill-buffers-display-buffer-list t)
+  (setopt project-vc-ignores files-ignore)
   (setopt project-vc-merge-submodules nil))
 
 (use-package recentf
