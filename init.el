@@ -1273,11 +1273,12 @@ when it doesn't return any candidate.  Provided for use in hooks."
                ("Edit init.el" (find-file user-init-file) "i")
                ("Edit file" (let ((default-directory user-emacs-directory)) (project-find-file)) "u")
                ("Dired" (dired user-emacs-directory) "U")
-               ("Magit" (magit-status user-emacs-directory) "g"))
+               ("Magit" (magit-status user-emacs-directory) "m"))
               ("\nUtil"
                ("List Packages" (list-packages) "P")
-               ("Eshell" (eshell) "E")
                ("Scratch.org" (switch-to-scratch-org) "S")
+               ("Eshell" (eshell) "E")
+               ("Shell" (shell) "$")
                ("Quit Emacs" (save-buffers-kill-terminal) "Q"))))))
 
   :bind
