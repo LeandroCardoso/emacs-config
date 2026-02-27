@@ -1803,7 +1803,7 @@ See `byte-recompile-and-cleanup-directory'."
         ("M-." . insert-selected-window-thing-at-point)))
 
 (use-package msvs
-  :if rdi-p
+  :if (or system-windows-p wsl-p)
   :demand t
   :config
   (cond (system-windows-p
@@ -1824,7 +1824,7 @@ See `byte-recompile-and-cleanup-directory'."
         ("C-c C-c" . xml-where-tree)))
 
 (use-package nuget
-  :if rdi-p
+  :if (or system-windows-p wsl-p)
   :demand t
   :config
   (when (and wsl-p rdi-p)
