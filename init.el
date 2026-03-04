@@ -1609,6 +1609,21 @@ See `tide-tsserver-executable'."
 (use-package volatile-highlights
   :ensure t
   :config
+  (vhl/define-extension 'transpose 'transpose-chars 'transpose-words
+                        'transpose-lines 'transpose-sexps
+                        'transpose-sentences 'transpose-paragraphs
+                        'transpose-regions)
+  (vhl/install-extension 'transpose)
+
+  (vhl/define-extension 'duplicate 'duplicate-line 'duplicate-dwim)
+  (vhl/install-extension 'duplicate)
+
+  (with-eval-after-load "move-dup"
+    (vhl/define-extension 'move-dup 'move-dup-duplicate-down 'move-dup-duplicate-up
+                          'move-dup-move-line 'move-dup-move-lines-down 'move-dup-move-lines-up
+                          'move-dup-move-region)
+    (vhl/install-extension 'move-dup))
+
   (volatile-highlights-mode))
 
 (use-package wgrep
