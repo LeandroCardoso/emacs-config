@@ -1527,11 +1527,17 @@ the plist used as a communication channel."
             ("height" "width")
             ("high" "low")
             ("left" "right" "top" "bottom")
-            ("january" "february" "march" "april" "may" "june" "july" "august" "september" "october" "november" "december")
+            ("january" "february" "march" "april" "may" "june" "july"
+             "august" "september" "october" "november" "december")
             ("monday" "tuesday" "wednesday" "thursday" "friday" "saturday" "sunday")
             ("on" "off")
             ("true" "false")
-            ("yes" "no")))
+            ("yes" "no")
+            ("zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"
+             "ten" "eleven" "twelve" "thirteen" "fourteen" "fifteen"
+             "sixteen" "seventeen" "eighteen" "nineteen"
+             "twenty" "thirty" "forty" "fifty" "sixty" "seventy" "eighty" "ninety"
+             "hundred" "thousand")))
   (setopt rotate-text-symbols
           '(("and" "or")
             ("private" "protected" "public")
