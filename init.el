@@ -1537,7 +1537,7 @@ the plist used as a communication channel."
              "ten" "eleven" "twelve" "thirteen" "fourteen" "fifteen"
              "sixteen" "seventeen" "eighteen" "nineteen"
              "twenty" "thirty" "forty" "fifty" "sixty" "seventy" "eighty" "ninety"
-             "hundred" "thousand")))
+             "hundred" "thousand" "million" "billion")))
   (setopt rotate-text-symbols
           '(("and" "or")
             ("private" "protected" "public")
