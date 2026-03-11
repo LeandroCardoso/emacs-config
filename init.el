@@ -1279,6 +1279,9 @@ when it doesn't return any candidate.  Provided for use in hooks."
   :bind
   ("<f12>" . enlight-open))
 
+(use-package fish-mode
+  :ensure t)
+
 (use-package flymake-codespell
   :ensure t
   :after flymake
