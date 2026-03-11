@@ -1152,13 +1152,6 @@ See `kill-new' for details."
         ("C-M-;" . avy-isearch)
         ("C-<dead-acute>" . avy-isearch)))
 
-(use-package bash-completion
-  :ensure t
-  :defer t
-  :after shell
-  :config
-  (add-hook 'shell-dynamic-complete-functions 'bash-completion-dynamic-complete))
-
 (use-package cape
   :ensure t
   :init
