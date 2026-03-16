@@ -1610,7 +1610,6 @@ See `tide-tsserver-executable'."
 
 (use-package volatile-highlights
   :ensure t
-  :vc (:url "git@github.com:LeandroCardoso/volatile-highlights.el.git")
   :config
   (with-eval-after-load "move-dup"
     (vhl/define-extension 'move-dup 'move-dup-duplicate-down 'move-dup-duplicate-up
