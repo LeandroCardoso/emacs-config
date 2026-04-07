@@ -925,15 +925,15 @@ See `kill-new' for details."
   ("C-M-|" . delete-indentation)
   ("C-c <tab>" . indent-tabs-mode)
   ("C-c SPC" . cycle-spacing) ; M-SPC doesn´t work on WSL
+  ;; capitalize keys
+  ([remap capitalize-word] . capitalize-dwim)
+  ([remap downcase-word] . downcase-dwim)
+  ([remap upcase-word] . upcase-dwim)
   ;; special mode like occur and xref
   (:map special-mode-map
         ("f" . flush-lines)
         ("k" . keep-lines)
-        ("u" . rename-uniquely))
-  ;; capitalize keys
-  ([remap capitalize-word] . capitalize-dwim)
-  ([remap downcase-word] . downcase-dwim)
-  ([remap upcase-word] . upcase-dwim))
+        ("u" . rename-uniquely)))
 
 (use-package select
   :config
