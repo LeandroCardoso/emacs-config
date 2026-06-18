@@ -1,0 +1,10 @@
+* TODO how to run a script (msbuild) in windows (use "/mnt/c/Windows/System32/cmd.exe")
+* TODO omnisharp
+- https://github.com/OmniSharp/omnisharp-roslyn
+* TODO treesit
+** TODO indentation in c files
+* TODO eglot
+* TODO Fix highlight in .c files
+* TODO compile_commands.json
+* TODO nuget-restore not working
+- disable ssl
