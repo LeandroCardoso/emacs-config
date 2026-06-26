@@ -9,18 +9,23 @@ sudo pacman -S adobe-source-code-pro-fonts \
                cppcheck \
                diffutils \
                emacs-wayland \
+               fish \
                fzf \
                global \
                grep \
                hunspell \
                hunspell-en_us \
                keyd \
+               man-pages \ bat \
+               openssh \
                openssh \
                ripgrep \
                tldr \
                ttf-nerd-fonts-symbols \
                unzip \
                zip
+
+sudo pacman -S --asdeps less mandoc pkgfile python wl-clipboard xdg-utils
 
 # locale
 sudo localectl set-keymap us-acentos
