@@ -7,7 +7,6 @@ bookmarks
 custom-variables.el
 dynamic-font-size-data.el
 eln-cache
-elpa/
 eshell/history
 eshell/lastdir
 history
