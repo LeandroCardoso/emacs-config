@@ -22,6 +22,7 @@ sudo pacman -S adobe-source-code-pro-fonts \
                ripgrep \
                tldr \
                ttf-nerd-fonts-symbols \
+               ttf-nerd-fonts-symbols-mono \
                unzip \
                zip
 
