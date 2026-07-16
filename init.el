@@ -1864,8 +1864,8 @@ See `byte-recompile-and-cleanup-directory'."
          (require 'wsl-extra)
          (setopt np6-bugs-root-directory (expand-file-name "~/Documents/bugs/"))
          (setopt np6-env-root-directory (expand-file-name "~/Documents/env/"))
-         (setopt np6-plugins-src-directory (expand-file-name "~/Dev/NpSharpRoot/Plugins/"))
-         (setopt np6-np61-src-directory (expand-file-name "~/Dev/np61/"))))
+         (setopt np6-plugins-src-directory (expand-file-name "~/Dev/rdi/NpSharpRoot/Plugins/"))
+         (setopt np6-np61-src-directory (expand-file-name "~/Dev/rdi/np61/"))))
 
   (setopt nuget-default-source-list '(("RDI" . "lcardoso")))
 
