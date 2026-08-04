@@ -1943,7 +1943,18 @@ See `byte-recompile-and-cleanup-directory'."
 
 (use-package wsl-extra
   :if wsl-p
-  :demand t)
+  :demand t
+  :config
+  (let ((windows-bin-path (expand-file-name "windows/bin" user-emacs-directory)))
+    (when (file-directory-p windows-bin-path)
+      (add-to-list 'exec-path windows-bin-path)))
+
+  ;; map AltGr to Alt using AutoHotKey
+  (if (executable-find "altgr2alt.exe")
+      (progn
+        (message "Starting altgr2alt")
+        (start-process "altgr2alt" (messages-buffer) "altgr2alt.exe"))
+    (message "Error: altgr2alt not found!")))
 
 (use-package xml-format
   :defer t
