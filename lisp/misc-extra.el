@@ -101,13 +101,23 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
     (display-fonts-mode)))
 
 ;;;###autoload
-(defun insert-selected-window-thing-at-point ()
-  "When in minibuffer, insert the thing at point of the selected windows.
+(defun yank-symbol-at-point-into-minibuffer ()
+  "Pull next symbol from buffer into minibuffer..
 
 Bind this command to a key in `minibuffer-local-map', the recommendation
-is \"M-.\"."
+is \"C-M-w\"."
   (interactive)
-  (when-let ((str (with-minibuffer-selected-window (thing-at-point 'symbol))))
+  (when-let ((str (with-minibuffer-selected-window (thing-at-point 'symbol t))))
+    (insert str)))
+
+;;;###autoload
+(defun yank-word-at-point-into-minibuffer ()
+  "Pull next word from buffer into minibuffer..
+
+Bind this command to a key in `minibuffer-local-map', the recommendation
+is \"C-w\"."
+  (interactive)
+  (when-let ((str (with-minibuffer-selected-window (thing-at-point 'word t))))
     (insert str)))
 
 ;;;###autoload

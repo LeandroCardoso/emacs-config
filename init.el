@@ -1808,7 +1808,8 @@ See `byte-recompile-and-cleanup-directory'."
   ([remap backward-page] . backward-page-smart)
   ([remap forward-page] . forward-page-smart)
   (:map minibuffer-local-map
-        ("M-." . insert-selected-window-thing-at-point)))
+        ("C-w" . yank-word-at-point-into-minibuffer)
+        ("C-M-w" . yank-symbol-at-point-into-minibuffer)))
 
 (use-package msvs
   :if (or system-windows-p wsl-p)
