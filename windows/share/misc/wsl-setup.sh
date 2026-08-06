@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # install emacs and tools
-sudo pacman -S adobe-source-code-pro-fonts \
-               bash-completion \
+sudo pacman -S 7zip \
+               adobe-source-code-pro-fonts \
+               bat \
                clang \
                clang-tools-extra \
                codespell \
@@ -16,8 +17,7 @@ sudo pacman -S adobe-source-code-pro-fonts \
                hunspell \
                hunspell-en_us \
                keyd \
-               man-pages \ bat \
-               openssh \
+               man-pages \
                openssh \
                ripgrep \
                tldr \
