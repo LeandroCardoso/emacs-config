@@ -49,6 +49,7 @@ Result is saved in `ibuffer-project-root-alist'."
             (cdr (assoc (buffer-name) ibuffer-project-root-alist))))
     (equal qualifier it)))
 
+;;;###autoload
 (defun ibuffer-set-filter-groups-by-project ()
   "Set the current filter groups to filter by project root directory."
   (interactive)
@@ -60,6 +61,7 @@ Result is saved in `ibuffer-project-root-alist'."
                  ibuffer-project-root-alist)))
   (ibuffer-update nil t))
 
+;;;###autoload
 (defun ibuffer-find-file+ (file &optional wildcards)
   "Find file in project.
 Like `ibuffer-find-file', but default to the directory of the buffer at

@@ -29,6 +29,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Adapted from https://stackoverflow.com/a/29757750
+;;;###autoload
 (defun ediff-copy-AB-to-C (reverse)
   "Copy current difference region from buffers A and B to buffer C.
 
@@ -51,6 +52,7 @@ to buffer C."
 (defun add-d-to-ediff-mode-map ()
   (define-key ediff-mode-map (kbd "d") 'ediff-copy-AB-to-C))
 
+;;;###autoload
 (defun ediff-extra-setup-copy-AB-to-C ()
   "Setup a new action in ediff mode to copy current difference region from
 buffers A and B to buffer C."
@@ -61,6 +63,7 @@ buffers A and B to buffer C."
 ;; Text scale ;;
 ;;;;;;;;;;;;;;;;
 
+;;;###autoload
 (defun ediff-text-scale-increase (inc)
   "Increase the font size of the current ediff session temporarily.
 
@@ -77,6 +80,7 @@ See `ediff-text-scale-decrease' and `ediff-text-scale-reset'."
       (with-current-buffer buf
         (text-scale-increase inc)))))
 
+;;;###autoload
 (defun ediff-text-scale-decrease (dec)
     "Decrease the font size of the current ediff session temporarily.
 
@@ -88,6 +92,7 @@ See `ediff-text-scale-increase' and `ediff-text-scale-reset'."
   (interactive "p")
   (ediff-text-scale-increase (- dec)))
 
+;;;###autoload
 (defun ediff-text-scale-reset ()
   "Reset the font size of the current ediff session.
 
@@ -100,6 +105,7 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
   (define-key ediff-mode-map (kbd "C--") 'ediff-text-scale-decrease)
   (define-key ediff-mode-map (kbd "C-0") 'ediff-text-scale-reset))
 
+;;;###autoload
 (defun ediff-extra-setup-text-scale ()
   "Setup a new action in ediff session to change the current font size temporarily."
   (add-hook 'ediff-keymap-setup-hook 'add-text-scale-to-ediff-mode-map)
@@ -119,6 +125,7 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
 (defun ediff-restore-window-configuration ()
   (set-window-configuration ediff-window-configuration))
 
+;;;###autoload
 (defun ediff-extra-setup-window-configuration ()
   "Setup to auto restore the window configuration after exiting an ediff session."
   (add-hook 'ediff-before-setup-hook #'ediff-save-window-configuration)
@@ -177,6 +184,7 @@ See `ediff-text-scale-increase' and`ediff-text-scale-decrease'."
         map))
 (defalias 'ediff-map ediff-map)
 
+;;;###autoload
 (defun ediff-extra-setup-global-keymap ()
   "Setup a global keymap to ediff commands in \\[ediff-map]."
   (define-key ctl-x-map (kbd "M-e") 'ediff-map))

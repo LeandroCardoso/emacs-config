@@ -79,6 +79,7 @@
 ;; np6 log mode
 (require 'generic)
 
+;;;###autoload
 (define-generic-mode np6-log-mode                      ; MODE
   nil                                                  ; COMMENT-LIST
   nil                                                  ; KEYWORD-LIST
@@ -95,6 +96,7 @@
 (setq-mode-local np6-log-mode font-lock-keywords-only t)
 
 ;; np6 production log mode
+;;;###autoload
 (define-generic-mode np6-prod-log-mode                    ; MODE
   nil                                                     ; COMMENT-LIST
   nil                                                     ; KEYWORD-LIST
@@ -107,6 +109,7 @@
   '(np6-log-mode-setup))                                  ; FUNCTION-LIST
 
 ;; np6 kiosk log mode
+;;;###autoload
 (define-generic-mode np6-kiosk-log-mode                                 ; MODE
   nil                                                                   ; COMMENT-LIST
   nil                                                                   ; KEYWORD-LIST
@@ -123,6 +126,7 @@
 (add-to-list 'global-auto-revert-ignore-modes 'np6-prod-log-mode)
 (add-to-list 'global-auto-revert-ignore-modes 'np6-kiosk-log-mode)
 
+;;;###autoload
 (define-generic-mode np6-mode        ; MODE
   '(";")                             ; COMMENT-LIST
   '("|")                             ; KEYWORD-LIST
@@ -131,6 +135,7 @@
   nil)                 ; FUNCTION-LIST
 
 ;; git-link
+;;;###autoload
 (defun git-link-bitbucket-rdi (hostname dirname filename _branch commit start end)
   (format "%s/%s/browse/%s?%s%s"
           hostname
@@ -146,6 +151,7 @@
               (format "#%s" start))
             "")))
 
+;;;###autoload
 (defun git-link-commit-bitbucket-rdi (hostname dirname commit)
   (format "%s/%s/commits/%s"
       hostname
@@ -182,6 +188,7 @@
         poscore-dir
       (expand-file-name "bin" np6-env-directory))))
 
+;;;###autoload
 (defun np6-config ()
   (interactive)
   (when (or (called-interactively-p t)
@@ -190,6 +197,7 @@
           (read-directory-name "NP6 environment directory: " np6-env-root-directory nil t))
     (setq np6-debug (yes-or-no-p "Copy Debug binaries? "))))
 
+;;;###autoload
 (defun np6-config-info()
   (interactive)
   (if np6-env-directory
@@ -204,6 +212,7 @@
                                                        np6-plugins-src-directory)))))
     (message "Np6 config no set")))
 
+;;;###autoload
 (defun np6-execute-script ()
   (interactive)
   (np6-config)
@@ -215,6 +224,7 @@
       (start-process cmd "*np6*" full-cmd)
       (view-buffer "*np6*"))))
 
+;;;###autoload
 (defun np6-copy-bin (&optional ignore-timestamp)
   (interactive "P")
   (np6-config)
@@ -302,6 +312,7 @@ See `xml-format'"
       (with-silent-modifications
         (xml-format)))))
 
+;;;###autoload
 (defun np6-view-revert ()
   "Revert the current np6 view buffer without auto-formatting it.
 
@@ -311,6 +322,7 @@ See `np6-view-auto-format'"
     (setq-local np6-view-ignore-auto-format (not (bound-and-true-p np6-view-ignore-auto-format)))
     (revert-buffer-with-fine-grain t t)))
 
+;;;###autoload
 (defun np6-view-fragment-display-other-window ()
   "Search for a visible np6 view in the current buffer and display
 it in a temporary buffer in another window.
@@ -321,6 +333,7 @@ See `fragment-xml-display-other-window'."
     (unless (fragment-xml-display-other-window "view")
       (error "No view found in current buffer"))))
 
+;;;###autoload
 (defun np6-prodinfo-fragment-display-other-window ()
   "Search for a visible np6 prodinfo in the current buffer and
 display it in a temporary buffer in another window.

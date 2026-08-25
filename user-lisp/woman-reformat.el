@@ -30,6 +30,7 @@ Only runs when the current buffer is in `woman-mode'."
   (when (eq major-mode 'woman-mode)
     (setq-local woman-buffer-file-name woman-last-file-name)))
 
+;;;###autoload
 (defun woman-reformat-setup ()
   "Set up automatic tracking of the underlying file for WoMan buffers.
 

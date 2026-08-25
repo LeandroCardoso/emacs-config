@@ -10,6 +10,7 @@
 
 (require 'arc-mode)
 
+;;;###autoload
 (defun archive-move-to-filename ()
   "Move to the beginning of the filename on the current line.
 

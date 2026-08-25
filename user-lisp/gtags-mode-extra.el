@@ -10,6 +10,7 @@
 
 (require 'gtags-mode)
 
+;;;###autoload
 (defun gtags-mode-project-create ()
   "Create a GLOBAL GTAGS file in the root directory of the current project asynchronously.
 

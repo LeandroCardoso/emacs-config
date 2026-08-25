@@ -84,6 +84,7 @@ See `backup-buffer'."
       (when buffer-backed-up
         (message "Created backup for buffer %s" (file-name-nondirectory buffer-file-name))))))
 
+;;;###autoload
 (defun directory-parent (directory &optional number)
   "Return the parent directory of DIRECTORY.
 With NUMBER, return the NUMBER parent directory of DIRECTORY."
@@ -123,6 +124,7 @@ copy all files that exist in both directories."
           (setq files-copied (1+ files-copied)))))
     (message "%d files copied from %s to %s." files-copied source destination)))
 
+;;;###autoload
 (defun locate-dominating-file-match (file match)
   "Starting at FILE, look up directory hierarchy for file names that
 match the regexp MATCH. FILE can be a file or a directory. If it's a

@@ -17,6 +17,7 @@
 (require 'generic)
 (require 'mode-local)
 
+;;;###autoload
 (define-generic-mode teamcity-log-mode
   nil ;; No comment delimiters
   nil ;; No keywords

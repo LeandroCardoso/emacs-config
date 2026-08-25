@@ -21,6 +21,7 @@ exists for compatibility."
     (forward-line 1)
     (delete-region (pos-bol) (+ (pos-eol) 1))))
 
+;;;###autoload
 (defun ibuffer-remove-title-underline-setup ()
   "Enable Removing the underline from title in ibuffer buffers."
   (require 'nadvice)

@@ -22,6 +22,7 @@
   :type '(repeat (string :tag "Directory"))
   :group 'project)
 
+;;;###autoload
 (defun project-try-custom-root (filename)
   (let* ((exfilename (expand-file-name filename))
          (dir-regexp-list

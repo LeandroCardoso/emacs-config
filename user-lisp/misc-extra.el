@@ -148,6 +148,7 @@ This function is intended to be used as an advice in
        1 ; enable
      0))) ; disable
 
+;;;###autoload
 (defun switch-to-scratch-org ()
   "Switch to the scratch.org buffer.
 

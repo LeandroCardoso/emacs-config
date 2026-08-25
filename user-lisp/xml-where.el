@@ -14,6 +14,7 @@
 ;; TODO integrate in `header-line-format' using :eval
 
 ;; Adapted from https://www.emacswiki.org/emacs/NxmlMode
+;;;###autoload
 (defun xml-where-path ()
   "Display the hierarchy of XML elements the point is on as a path."
   (interactive)
@@ -37,6 +38,7 @@ buffer is this big or bigger.")
 (defvar xml-where-tree-show-on-screen nil) ;TODO wip
 (defvar xml-where-tree-update-timer nil)
 
+;;;###autoload
 (defun xml-where-tree ()
   "Display the where tree of XML elements the point is on in the echo area."
   (interactive)
@@ -64,6 +66,7 @@ buffer is this big or bigger.")
              (< (buffer-size) xml-where-maxout))
     (xml-where-tree)))
 
+;;;###autoload
 (define-minor-mode xml-where-mode
   nil
   :global t
@@ -78,6 +81,7 @@ buffer is this big or bigger.")
 
 ;; which-func integration
 ;; See https://www.emacswiki.org/emacs/WhichFuncMode Non-standard languages (TL;DR;)
+;;;###autoload
 (defun xml-where-which-func-setup ()
   (when (< (buffer-size) xml-where-maxout)
     (add-hook 'which-func-functions 'xml-where-path 0 t)))

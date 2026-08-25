@@ -24,10 +24,12 @@ parameter TO-WINDOWS is non nil, convert a WSL path to a Windows path."
     (goto-char (point-min))
     (buffer-substring (pos-bol) (pos-eol))))
 
+;;;###autoload
 (defun wsl-convert-filename-to-linux (file-name)
   "Convert the FILE-NAME from a Windows path to a WSL path."
   (wsl-convert-filename file-name))
 
+;;;###autoload
 (defun wsl-convert-filename-to-windows (file-name)
   "Convert the FILE-NAME from a WSL path to a Windows path."
   (wsl-convert-filename file-name t))

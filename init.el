@@ -537,7 +537,7 @@ packages.")
         ("B" . describe-personal-keybindings)
         ("M-x" . which-key-show-top-level)
         ("M-X" . which-key-show-major-mode))
-  (:map find-func-map
+  (:map find-func-map ;This is better than find-function-mode
         ("f" . find-function)
         ("F" . find-function-other-window)
         ("k" . find-function-on-key)

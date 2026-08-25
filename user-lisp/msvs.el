@@ -109,6 +109,7 @@ See `msvs-convert-filename-function'."
             (when comp-object
               (concat " " (funcall msvs-convert-filename-function comp-object))))))
 
+;;;###autoload
 (defun msvs-set-compile-command ()
   "Set a `compile-command' for compile a msvs solution, project or file.
 
@@ -153,6 +154,7 @@ generate a compilation command."
 (require 'generic)
 
 ;; Create modes for solution and project files, so we can set the compile command
+;;;###autoload
 (define-generic-mode sln-mode                      ; MODE
   '("#")                                           ; COMMENT-LIST
   nil                                              ; KEYWORD-LIST
@@ -162,6 +164,7 @@ generate a compilation command."
         (lambda ()
           (local-set-key (kbd "<f9>") 'compile)))) ; FUNCTION-LIST
 
+;;;###autoload
 (define-derived-mode vsproj-mode nxml-mode "VS-proj" nil
   (msvs-set-compile-command)
   (local-set-key (kbd "<f9>") 'compile))

@@ -8,6 +8,7 @@
 
 ;;; Code:
 
+;;;###autoload
 (defun w32-convert-filename (file-name);
   "Convert the FILE-NAME to something suitable for Windows.
 
@@ -20,6 +21,7 @@ This function converts slash characters into backslashes."
       (setq start (match-end 0)))
     file-name))
 
+;;;###autoload
 (defun w32-add-to-path (directory)
   "Add DIRECTORY to the path of the system.
 
@@ -31,6 +33,7 @@ Add DIRECTORY to the environment variable \"PATH\" and to the variable
       (setenv "PATH" (concat w32-dir path-separator current-path))))
   (add-to-list 'exec-path directory))
 
+;;;###autoload
 (defun w32-add-unix-root-dir (directory)
   "Set Emacs to use an additional custom Unix root DIRECTORY."
   (require 'woman)
@@ -46,6 +49,7 @@ Add DIRECTORY to the environment variable \"PATH\" and to the variable
       (when (file-directory-p (concat directory info-dir))
         (add-to-list 'Info-additional-directory-list (concat directory info-dir))))))
 
+;;;###autoload
 (defun with-bash-shell (func &rest args)
   "Execute the function FUNC with arguments ARGS using bash.
 
@@ -63,6 +67,7 @@ See `advice-add'."
         (explicit-bash.exe-args nil))
     (apply func args)))
 
+;;;###autoload
 (defun shell-bash ()
   "Run `shell' with bash."
   (interactive)
