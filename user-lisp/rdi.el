@@ -50,8 +50,8 @@
       (setq-local js2-include-browser-externs nil)
       (setq-local js2-language-version 180)))
 
-  (add-hook 'js2-mode-hook #'nps-setup-hook)
-  (add-hook 'js2-minor-mode-hook #'nps-setup-hook))
+  (add-hook 'js2-mode-hook 'nps-setup-hook)
+  (add-hook 'js2-minor-mode-hook 'nps-setup-hook))
 
 (add-to-list 'auto-mode-alist '("\\.nps\\'" . js-mode))
 

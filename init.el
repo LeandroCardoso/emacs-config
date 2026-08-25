@@ -17,11 +17,6 @@
 (defconst rdi-p (string= (system-name) "LBR-20CRXW3") "Non-nil if the RDI setup should be loaded.")
 (defconst system-windows-p (eq system-type 'windows-nt) "Non-nil if `system-type' is windows-nt.")
 
-(defconst user-lisp-directory (expand-file-name "lisp" user-emacs-directory)
-  "Directory where user's Emacs *.el and *.elc Lisp files are installed.")
-
-(add-to-list 'load-path user-lisp-directory)
-
 ;; We must config use-package at the beginning, so the `use-package-compute-statistics' and
 ;; `use-package-verbose' works properly
 (use-package use-package
@@ -1720,16 +1715,9 @@ See `tide-tsserver-executable'."
         ("C-;" . smart-semicolon)))
 
 (use-package files-extra
-  :config
-  (defun recompile-user-lisp-files ()
-    "Recompile and clean up eslip files in `user-lisp-directory'.
-
-See `byte-recompile-and-cleanup-directory'."
-    (interactive)
-    (byte-recompile-and-cleanup-directory user-lisp-directory))
-
-  :hook
-  (emacs-startup . recompile-user-lisp-files)
+  :init
+  (cleanup-user-compiled-lisp)
+  (advice-add 'prepare-user-lisp :after 'cleanup-user-compiled-lisp)
 
   :bind
   (:map ctl-x-x-map
@@ -1737,7 +1725,7 @@ See `byte-recompile-and-cleanup-directory'."
         ("W" . copy-file-or-buffer-name-directory-as-kill)
         ("k" . make-backup-buffer))
   (:map emacs-lisp-mode-map
-        ("C-c C-u" . recompile-user-lisp-files)))
+        ("C-c C-u" . prepare-user-lisp)))
 
 (use-package fragment
   :defer t

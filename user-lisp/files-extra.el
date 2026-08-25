@@ -10,107 +10,28 @@
 
 (require 'simple)
 
-(defun cleanup-compiled-elisp (directory &optional follow-symlinks)
-  "Clean up compiled elisp files in DIRECTORY.
+;;;###autoload
+(defun cleanup-user-compiled-lisp ()
+  "Clean up compiled lisp files in `user-lisp-directory'.
 
 Delete old '.elc' files that don't have a corresponding '.el' associated
-file.  Files in subdirectories of DIRECTORY are processed also.
-
-This command will normally not follow symlinks when deleting files.  If
-FOLLOW-SYMLINKS is non-nil, symlinked directories will also be followed."
-  (let* ((directories (nconc (list directory) (list-directories directory t t follow-symlinks)))
-         (delete-count 0)
-         (skip-count 0)
-         (dir-count 0)
-         last-dir)
-    (while directories
-      (setq directory (expand-file-name (car directories)))
-      (message "Checking %s..." directory)
-      (dolist (f (directory-files directory t ".*\\.elc$"))
-        (unless noninteractive
-          (message "Checking %s..." directory))
-        (let ((file (expand-file-name f directory)))
-          (unless (file-exists-p (file-name-with-extension file ".el"))
-            (message "Deleting file: %s" file)
-            (delete-file file))
-          (if (file-exists-p file)
-              (setq skip-count (1+ skip-count))
-            (setq delete-count (1+ delete-count)))
-          (if (not (eq last-dir directory))
-              (setq last-dir directory
-                    dir-count (1+ dir-count)))))
-      (setq directories (cdr directories)))
-    (message "Done (Total of %d file%s deleted%s%s)"
-	         delete-count (if (= delete-count 1) "" "s")
-	         (if (> skip-count 0) (format ", %d skipped" skip-count) "")
-	         (if (> dir-count 1)
-                 (format " in %d directories" dir-count) ""))))
-
-(defun byte-recompile-and-cleanup-directory (directory &optional force follow-symlinks)
-  "Recompile and clean up eslip files in DIRECTORY.
-
-Recompile every ‘.el’ file in DIRECTORY that needs recompilation.  This
-happens when a '.elc' file doesn't exist, or it exists but is older than
-the '.el' file.  Files in subdirectories of DIRECTORY are processed
-also.
-
-After recompilation, delete old '.elc' files that don't have a
-corresponding '.el' associated file.
-
-If the argument FORCE is non-nil, recompile every '.el'.
-
-This command will normally not follow symlinks.  If FOLLOW-SYMLINKS is
-non-nil, symlinked directories will also be followed."
-  (interactive "DRecompile and clean up eslip files in directory: \nP")
-  (require 'bytecomp)
-  ;; Compile all elisp files
-  (message "Compiling elisp files in %s..." directory)
-  (byte-recompile-directory directory 0 force follow-symlinks)
-
-  ;; Delete old elisp compiled files (.elc) that doesn't have a eslisp source file (.el) associated
-  (message "Cleaning up elisp compiled files in %s..." directory)
-  (cleanup-compiled-elisp directory follow-symlinks))
-
-(defun list-directories-fast (directory &optional follow-symlinks)
-  "Return a list of subdirectories in DIRECTORY.
-
-This function works recursively and it uses the external `find-program'
-to list subdirectories.
-
-If FOLLOW-SYMLINKS is non-nil, symbolic links that point to directories
-are followed.  Note that this can lead to infinite recursion."
-  (require 'grep)
-  (when (file-directory-p directory)
-    (let ((program-args (list (expand-file-name directory) "-type" "d")))
-      (when follow-symlinks
-        (push "-L" program-args))
-      (apply 'process-lines find-program program-args))))
-
-(defun list-directories (directory &optional full recursive follow-symlinks)
-  "Return a list of subdirectories in DIRECTORY.
-
-The list returned is sorted with ‘string-lessp’.
-
-If FULL is non-nil, return absolute file names.  Otherwise return names
-that are relative to the specified directory.
-
-If RECURSIVE is non-nil, this function works recursively.  Directories
-are returned in \"depth first\" order with absolute file names
-regardless of the value of FULL.
-
-If FOLLOW-SYMLINKS is non-nil, symbolic links that point to directories
-are followed.  Note that this can lead to infinite recursion."
-  (let ((dir (expand-file-name directory))
-        result)
-    (dolist (f (directory-files dir (or full recursive)))
-      (when (and (file-directory-p (expand-file-name f dir))
-                 (not (member (file-name-nondirectory f) '("." ".."))))
-        (setq result (nconc result (list f)))
-        (when (and recursive
-                   (or follow-symlinks
-		               (not (file-symlink-p f))))
-          (setq result (nconc result (list-directories f full recursive follow-symlinks))))))
-    result))
+file."
+  (interactive)
+  (message "Cleaning up compiled user lisp files")
+  (unless (file-directory-p user-lisp-directory)
+    (error "No such directory: %S" user-lisp-directory))
+  (let* ((ignored
+          (concat "\\`" (regexp-opt user-lisp-ignored-directories) "\\'"))
+         (pred
+          (lambda (dir)
+            (not (string-match-p ignored (file-name-nondirectory dir)))))
+         (dir (expand-file-name user-lisp-directory)))
+    (dolist (file (directory-files-recursively dir "" t pred t))
+      (when (and (file-regular-p file)
+                 (string-suffix-p ".elc" file)
+                 (not (file-regular-p (file-name-with-extension file ".el"))))
+        (message "Deleting file: %s" file)
+        (delete-file file)))))
 
 ;;;###autoload
 (defun copy-file-or-buffer-name-as-kill (&optional arg)

@@ -24,6 +24,7 @@ tramp
 transient/
 tree-sitter/
 url/
+user-lisp/.user-lisp-autoloads.el
 windows/bin/nuget.exe
 windows/omnisharp/
 windows/share/man/
