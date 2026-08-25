@@ -44,9 +44,9 @@ Result is saved in `ibuffer-project-root-alist'."
     "Limit current view to buffers with project root directory matching QUALIFIER."
   (:description "project root directory"
                 :reader (read-from-minibuffer "Filter by project root directory: "))
-  (when-let
-      (it (with-current-buffer buf
-            (cdr (assoc (buffer-name) ibuffer-project-root-alist))))
+  (when-let*
+      ((it (with-current-buffer buf
+             (cdr (assoc (buffer-name) ibuffer-project-root-alist)))))
     (equal qualifier it)))
 
 ;;;###autoload

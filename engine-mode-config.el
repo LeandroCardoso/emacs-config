@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defengine cppreference
   "https://en.cppreference.com/mwiki/index.php?search=%s"
   :keybinding "c")

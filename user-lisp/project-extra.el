@@ -9,6 +9,7 @@
 ;;; Code:
 
 (require 'project)
+(require 'grep)
 
 ;;;###autoload
 (defun project-info ()
@@ -28,7 +29,6 @@
 
 See `project-find-regexp'."
   (interactive (list (project--read-regexp)))
-  (require 'grep)
   (require 'xref)
   (let* ((caller-dir default-directory)
          (pr (project-current t))

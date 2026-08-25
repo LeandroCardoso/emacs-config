@@ -116,7 +116,7 @@ See `msvs-convert-filename-function'."
 The function defined in `msvs-compile-command-function' is used to
 generate a compilation command."
   (interactive)
-  (when-let ((command (funcall msvs-compile-command-function)))
+  (when-let* ((command (funcall msvs-compile-command-function)))
     (setq-local compile-command command)
     ;; If the project directory is different than the default-directory then
     ;; compilation-search-path needs to be set.
@@ -130,7 +130,7 @@ generate a compilation command."
 
 ;; project
 (with-eval-after-load "project"
-  (add-to-list 'project-vc-extra-root-markers "*.sln"))
+  (add-to-list 'nproject-vc-extra-root-markers "*.sln"))
 
 ;; grep
 (with-eval-after-load "grep"

@@ -107,7 +107,7 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
 Bind this command to a key in `minibuffer-local-map', the recommendation
 is \"C-M-w\"."
   (interactive)
-  (when-let ((str (with-minibuffer-selected-window (thing-at-point 'symbol t))))
+  (when-let* ((str (with-minibuffer-selected-window (thing-at-point 'symbol t))))
     (insert str)))
 
 ;;;###autoload
@@ -117,13 +117,13 @@ is \"C-M-w\"."
 Bind this command to a key in `minibuffer-local-map', the recommendation
 is \"C-w\"."
   (interactive)
-  (when-let ((str (with-minibuffer-selected-window (thing-at-point 'word t))))
+  (when-let* ((str (with-minibuffer-selected-window (thing-at-point 'word t))))
     (insert str)))
 
 ;;;###autoload
 (defun set-first-font (font-list)
   "Set the first font from FONT-LIST that is available in all frames."
-  (when-let ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
+  (when-let* ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
                                   font-list)))
     (set-frame-font font-name t t)
     (message "Setting font to %s" font-name)))
