@@ -1572,14 +1572,6 @@ See `tide-tsserver-executable'."
   :config
   (setopt tldr-enabled-categories '("common" "linux")))
 
-(use-package transpose-frame
-  :ensure t
-  :defer t
-  :bind
-  (:map ctl-x-map
-        ("|" . rotate-frame-clockwise)
-        ("\\" . rotate-frame)))
-
 (use-package treesit-auto
   :ensure t
   :config
