@@ -50,6 +50,17 @@ Usage - advise `window-splittable-p' function:
     (apply func args)))
 
 ;;;###autoload
+(defun split-window-dwim ()
+  "Split the largest window in the current frame in two."
+  (interactive)
+  (let* ((window (car (sort (window-list)
+                           (lambda (a b)
+                             (> (* (window-width a) (window-height a))
+                                (* (window-width b) (window-height b)))))))
+         (new-window (split-window-sensibly window)))
+    (when new-window (select-window new-window))))
+
+;;;###autoload
 (defun other-window-split-if-single (count &optional all-frames interactive)
   "Select another window in cyclic ordering of windows and split the frame
 if there is a single window.

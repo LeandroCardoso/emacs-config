@@ -1735,6 +1735,7 @@ See `tide-tsserver-executable'."
   ([remap toggle-frame-fullscreen] . toggle-frame-fullscreen+)
   (:map ctl-x-map
         ("o" . other-frame) ; original is other-window
+        ("M-o" . split-window-dwim)
         ("C-M-k" . kill-buffer)
         ("k" . kill-current-buffer) ; original is kill-buffer
         ("M-k" . kill-other-buffer-and-window)
@@ -1783,12 +1784,13 @@ See `tide-tsserver-executable'."
   (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice)
 
   :bind
-  ("C-x M-o" . switch-to-scratch-org)
   ([remap backward-page] . backward-page-smart)
   ([remap forward-page] . forward-page-smart)
   (:map minibuffer-local-map
         ("C-w" . yank-word-at-point-into-minibuffer)
-        ("C-M-w" . yank-symbol-at-point-into-minibuffer)))
+        ("C-M-w" . yank-symbol-at-point-into-minibuffer))
+  (:map ctl-x-map
+          ("C-M-o" . switch-to-scratch-org)))
 
 (use-package msvs
   :if (or system-windows-p wsl-p)
