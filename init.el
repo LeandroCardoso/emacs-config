@@ -1727,7 +1727,6 @@ See `tide-tsserver-executable'."
   :after window
   :demand t
   :config
-  (setopt split-window-preferred-function 'split-window-sensibly-horizontally)
   (advice-add 'window-splittable-p :around 'window-split-dynamic-threshold-advice)
 
   :bind
