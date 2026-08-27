@@ -18,6 +18,8 @@ sudo pacman -S 7zip \
                hunspell-en_us \
                keyd \
                man-pages \
+               noto-fonts \
+               noto-fonts-emoji \
                openssh \
                ripgrep \
                tldr \
