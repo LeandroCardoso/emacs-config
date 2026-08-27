@@ -1370,7 +1370,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
   :config
   (defun magit-diff-extra-stat-arguments-setup ()
     "Setup `magit-diff-extra-stat-arguments'."
-    (when-let ((window (get-buffer-window (current-buffer) 'visible)))
+    (when-let* ((window (get-buffer-window (current-buffer) 'visible)))
       (list (format "--stat-width=%d" (window-width))
             (format "--stat-graph-width=%d" (/ (window-width) 5))
             "--compact-summary")))
