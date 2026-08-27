@@ -72,23 +72,6 @@ See `other-window'."
   (other-window count all-frames interactive))
 
 ;;;###autoload
-(defun other-window-backward (count &optional all-frames)
-  "Select another window in backward cyclic ordering of windows.
-
-COUNT specifies the number of windows to skip, starting with the
-selected window, before making the selection.  If COUNT is positive,
-skip COUNT windows backwards.  If COUNT is negative, skip -COUNT windows
-forwards.  COUNT zero means do not skip any window, so select the
-selected window.  In an interactive call, COUNT is the numeric prefix
-argument.  Return nil.
-
-If the `other-window' parameter of the selected window is a function and
-`ignore-window-parameters' is nil, call that function with the arguments
-COUNT and ALL-FRAMES."
-  (interactive "p")
-  (other-window (if (numberp count) (- count) count) all-frames))
-
-;;;###autoload
 (defun other-window-all-frames (count)
   "Select another window in cyclic ordering of windows in all frames.
 

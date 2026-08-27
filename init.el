@@ -1737,6 +1737,7 @@ See `tide-tsserver-executable'."
   ([remap toggle-frame-fullscreen] . toggle-frame-fullscreen+)
   (:map ctl-x-map
         ("o" . other-frame) ; original is other-window
+        ("O" . other-frame) ; original is other-window-backward
         ("M-o" . split-window-dwim)
         ("C-M-k" . kill-buffer)
         ("k" . kill-current-buffer) ; original is kill-buffer
