@@ -598,7 +598,7 @@ packages.")
   (setopt ibuffer-marked-char ?*)
   (setopt ibuffer-modified-char ?M)
   (setopt ibuffer-read-only-char ?R)
-
+  (setopt ibuffer-use-header-line 'title)
 
   :bind
   ([remap list-buffers] . ibuffer)
@@ -1772,11 +1772,6 @@ See `tide-tsserver-executable'."
   :bind
   (:map ctl-x-map
         ("_" . toggle-horizontal-split)))
-
-(use-package ibuffer-extra
-  :after ibuffer
-  :config
-  (ibuffer-remove-title-underline-setup))
 
 (use-package ibuffer-project
   :demand t
