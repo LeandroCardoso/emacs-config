@@ -830,6 +830,10 @@ must be named with the locale and a \"txt\" extenstion."
   (setopt recentf-max-saved-items 200)
   (recentf-mode))
 
+(use-package register
+  :config
+  (setopt register-use-preview t))
+
 (use-package replace ; occur
   :defer t
   :bind
