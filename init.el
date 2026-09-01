@@ -554,6 +554,20 @@ packages.")
   :config
   (global-hi-lock-mode))
 
+(use-package hideshow
+  :defer t
+  :config
+  (setopt hs-isearch-open t)
+  (setopt hs-show-indicators t)
+  (setopt hs-display-lines-hidden t)
+
+  :hook
+  (prog-mode . hs-minor-mode)
+
+  :bind
+  (:map hs-prefix-map
+        ("@" . 'hs-toggle-hiding)))
+
 (use-package hl-line
   :config
   ;; WORKAROUND hl-line-mode causes slowness when scrolling down repeatedly
