@@ -1057,7 +1057,7 @@ See `kill-new' for details."
                   (or "Apropos"
                       "Backtrace"
                       "Compile-Log"
-                      (seq "Flymake diagnostics" (* any))
+                      (seq "Flymake diagnostics" (* not-newline))
                       "Help"
                       "Warnings")
                   "*" string-end)
