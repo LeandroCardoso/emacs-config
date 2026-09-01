@@ -823,9 +823,7 @@ must be named with the locale and a \"txt\" extenstion."
   :config
   (setopt project-kill-buffers-display-buffer-list t)
   (setopt project-vc-ignores files-ignore)
-  (setopt project-vc-merge-submodules nil)
-
-  (project-forget-zombie-projects))
+  (setopt project-vc-merge-submodules nil))
 
 (use-package recentf
   :config
