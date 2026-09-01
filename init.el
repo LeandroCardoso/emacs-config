@@ -252,29 +252,14 @@ packages.")
   :config
   (setopt c-guess-region-max 100000)
 
-  (c-add-style "c++-custom" '("stroustrup" (c-offsets-alist (inlambda . 0) (inline-open . 0))))
-  (add-to-list 'c-default-style '(c++-mode . "c++-custom"))
-  (add-to-list 'c-default-style '(c-mode . "c++-custom"))
+  (require 'regexp-opt)
+  (dolist (mode '(c-mode c++-mode))
+    (add-to-list 'c-default-style `(,mode . "c++-custom"))
+    (font-lock-add-keywords mode
+                            `((,(regexp-opt '("TRUE" "FALSE") 'words) . font-lock-constant-face))))
 
-  (add-to-list 'c-font-lock-extra-types "BOOL")
-  (add-to-list 'c++-font-lock-extra-types "BOOL")
-
-  (defun c-setup ()
-    "Setup `c-mode'.  Provided for use in hooks."
-    (c-toggle-comment-style -1))
-
-  (defun c++-setup ()
-    "Setup `c++-mode'.  Provided for use in hooks.")
-
-  (defun c-c++-setup ()
-    "Setup `c-mode' and `c++-mode'.  Provided for use in hooks."
-    (font-lock-add-keywords nil '(("\\<\\(TRUE\\|FALSE\\)\\>" . 'font-lock-constant-face))))
-
-  :hook
-  (c-mode . c-setup)
-  (c-mode . c-c++-setup)
-  (c++-mode . c++-setup)
-  (c++-mode . c-c++-setup))
+  (dolist (var '(c-font-lock-extra-types c++-font-lock-extra-types))
+    (add-to-list var "BOOL")))
 
 (use-package comint
   :defer t

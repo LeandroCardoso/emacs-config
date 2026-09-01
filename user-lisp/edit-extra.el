@@ -33,9 +33,12 @@ Current words that will be fontified: \"BUG\", \"DEBUG\",
 Add this function to `prog-mode-hook' to enable it:
   (add-hook \='prog-mode-hook \='font-lock-todo-setup)"
   (require 'font-lock)
+  (require 'regexp-opt)
   (font-lock-add-keywords
    nil
-   '(("\\<\\(BUG\\|DEBUG\\|EXPERIMENTAL\\|FIXME\\|HACK\\|NOTE\\|TODO\\|WARNING\\|WIP\\|WORKAROUND\\)\\>"
+   `((,(regexp-opt
+        '("BUG" "DEBUG" "EXPERIMENTAL" "FIXME" "HACK" "NOTE" "TODO" "WARNING" "WIP" "WORKAROUND")
+        'words)
       1 font-lock-warning-face t))))
 
 
