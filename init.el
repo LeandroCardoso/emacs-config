@@ -148,6 +148,7 @@
   (setq-default tab-width 4)
 
   (setopt delete-pair-blink-delay 0.25)
+  (setopt delete-pair-push-mark t)
   (setopt sentence-end-double-space nil)
   (setopt tab-always-indent 'complete)
 
@@ -196,6 +197,8 @@ packages.")
   ("C-<backspace>" . backward-kill-sexp)
   ("C-c D" . delete-pair)
   ("C-c d" . duplicate-dwim)
+  ("C-c M-q" . unfill-paragraph)
+  ("C-c C-M-u" . raise-sexp)
   ([remap zap-to-char] . zap-up-to-char)
   (:map ctl-x-x-map
         ("G" . revert-buffer-with-fine-grain)))
@@ -377,14 +380,18 @@ packages.")
   (setopt eldoc-echo-area-use-multiline-p t)
   (global-eldoc-mode))
 
+(use-package electric
+  :config
+  (setopt electric-indent-actions '(yank)))
+
 (use-package elec-pair
   :config
   (electric-pair-mode))
 
 (use-package elisp-mode
   :defer t
-  :after mode-local
   :config
+  (require 'mode-local)
   (setq-mode-local emacs-lisp-mode sentence-end-double-space t)
 
   (require 'font-lock)
