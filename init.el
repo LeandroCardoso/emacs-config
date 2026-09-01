@@ -831,6 +831,7 @@ must be named with the locale and a \"txt\" extenstion."
   (recentf-mode))
 
 (use-package register
+  :defer t
   :config
   (setopt register-use-preview t))
 
@@ -981,6 +982,12 @@ See `kill-new' for details."
   :defer t
   :config
   (setopt transient-default-level 7))
+
+(use-package treesit
+  :defer t
+  :config
+  (setopt treesit-auto-install-grammar 'always)
+  (setopt treesit-enabled-modes t))
 
 (use-package uniquify
   :config
@@ -1567,12 +1574,6 @@ See `tide-tsserver-executable'."
   :defer t
   :config
   (setopt tldr-enabled-categories '("common" "linux")))
-
-(use-package treesit-auto
-  :ensure t
-  :config
-  (setopt treesit-auto-install t)
-  (global-treesit-auto-mode))
 
 (use-package vertico
   :ensure t
