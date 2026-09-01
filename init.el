@@ -237,8 +237,9 @@ packages.")
 (use-package c-ts-mode
   :defer t
   :config
-  (setopt c-ts-mode-indent-offset 4)
-  (setopt c-ts-mode-indent-style 'bsd))
+  (setopt c-ts-mode-enable-doxygen t)
+  (setopt c-ts-mode-indent-style 'bsd)
+  (setopt c-ts-mode-indent-offset 4))
 
 (use-package calc
   :defer t
