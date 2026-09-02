@@ -40,6 +40,7 @@ order they appear in this list."
            ,(get 'whitespace-style 'custom-type)))
   :group 'whitespace)
 
+;;;###autoload
 (defun whitespace-cycle-style ()
   "Cycle `whitespace-style' through `whitespace-cycle-styles'.
 
