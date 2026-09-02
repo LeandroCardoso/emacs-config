@@ -1793,6 +1793,12 @@ See `tide-tsserver-executable'."
   :hook
   (ibuffer . ibuffer-set-filter-groups-by-project))
 
+(use-package markdown-mode-extra
+  :after markdown-mode
+  :bind
+  (:map markdown-mode-map
+        ("C-c C-g" . markdown-guide)))
+
 (use-package misc-extra
   :demand t
   :config
