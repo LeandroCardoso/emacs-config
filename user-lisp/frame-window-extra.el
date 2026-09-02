@@ -28,25 +28,28 @@ Set the value of `split-height-threshold' and `split-width-threshold'
 dynamically considering the `frame-height' and `frame-width' when the
 `window-combination-resize' is t.
 
+FUNC and ARGS are the function to be advised and their arguments
+respectively.
+
 Usage - advise `window-splittable-p' function:
   (advice-add \='window-splittable-p :around \='window-split-dynamic-threshold-advice)"
-  (let* ((split-width-threshold
-          (if (and split-width-threshold window-combination-resize)
-              (+ 2 (/ (frame-width) (/ (frame-width) (/ split-width-threshold 2))))
-            split-width-threshold))
-         ;; force splitting horizontally when vertically is not possible
-         (forced-split-height-threshold (when (> split-width-threshold (frame-width))
-                                          (frame-height)))
-         (split-height-threshold
-          (if (and (or split-height-threshold forced-split-height-threshold)
-                   window-combination-resize)
-              (+ 2 (/ (frame-height)
-                      (/ (frame-height)
-                         (/ (or split-height-threshold forced-split-height-threshold) 2))))
-            split-height-threshold)))
+  (let* ((max-h-windows (if split-width-threshold
+                            (/ (frame-width) (/ split-width-threshold 2))
+                          1))
+         (max-v-windows (max (if split-height-threshold
+                                 (/ (1- (frame-height)) (/ split-height-threshold 2))
+                               1)
+                             ;; force splitting horizontally when vertically is not possible
+                             (if (= max-h-windows 1) 2 1)))
+         (split-width-threshold (if (and split-width-threshold window-combination-resize)
+                                    (1+ (/ (frame-width) max-h-windows))
+                                  split-width-threshold))
+         (split-height-threshold (if (and split-height-threshold window-combination-resize)
+                                     (1+ (/ (frame-height) max-v-windows))
+                                   split-height-threshold)))
     ;; DEBUG
-    ;; (message "window-split-dynamic-threshold-advice width:%s height:%s"
-    ;;          split-width-threshold split-height-threshold)
+    ;; (message "window-split-dynamic-threshold-advice width:%s height:%s max-h:%s max-v:%s"
+    ;;          split-width-threshold split-height-threshold max-h-windows max-v-windows)
     (apply func args)))
 
 ;;;###autoload
