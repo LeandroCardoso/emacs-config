@@ -69,15 +69,23 @@ With parameter FORCE, ignores the `split-width-threshold' and
     (when new-window (select-window new-window))))
 
 ;;;###autoload
-(defun other-window-split-if-single (count &optional all-frames interactive)
-  "Select another window in cyclic ordering of windows and split the frame
-if there is a single window.
+(defun other-window-split-if-single (count)
+  "Select another window and split the window optionally.
+
+Split the current window when it is the only window.
+
+COUNT specifies the number of windows to skip, starting with the
+selected window, before making the selection.  If COUNT is positive,
+skip COUNT windows forwards.  If COUNT is negative, skip -COUNT windows
+backwards.  COUNT zero means do not skip any window, so select the
+selected window.  In an interactive call, COUNT is the numeric prefix
+argument.
 
 See `other-window'."
   (interactive "p")
   (when (one-window-p)
     (split-window-sensibly))
-  (other-window count all-frames interactive))
+  (other-window count))
 
 ;;;###autoload
 (defun other-window-all-frames (count)
