@@ -865,6 +865,7 @@ must be named with the locale and a \"txt\" extenstion."
 
 (use-package saveplace
   :config
+  (setopt save-place-autosave-interval 300)
   (save-place-mode))
 
 (use-package shell
