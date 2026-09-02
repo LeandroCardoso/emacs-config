@@ -1061,11 +1061,11 @@ See `kill-new' for details."
   :init
   (defvar whitespace-map (make-sparse-keymap) "Keymap for whitespace commands")
   (defalias 'whitespace-map whitespace-map)
+  (global-whitespace-mode)
 
   :config
   (setopt whitespace-line-column nil) ; use `fill-column' value
   (setopt whitespace-style '(face page-delimiters))
-  (global-whitespace-mode)
 
   :bind
   ("C-c w" . whitespace-map)
