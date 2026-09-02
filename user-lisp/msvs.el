@@ -6,8 +6,6 @@
 
 ;;; Commentary:
 
-;;; Code:
-
 ;; References:
 
 ;; - https://walbourn.github.io/a-brief-history-of-windows-sdks/
@@ -15,12 +13,14 @@
 ;; - https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
 ;; TODO use Common7\Tools\vsdevcmd.bat to compile
 
+;;; Code:
+
 (require 'files-extra)
 
 ;; Custom
 
 (defgroup msvs nil
-  "Ms Visual Studio integration"
+  "Ms Visual Studio integration."
   :group 'tools)
 
 (defcustom msvs-compile-default-parameters '("/m" "/v:minimal" "/fl" "/flp:verbosity=minimal")
@@ -31,8 +31,9 @@ See https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-r
   :group 'msvs)
 
 (defcustom msvs-compile-command-function 'msvs-compile-command-default-function
-  "Function called to generate a compilation command for MSVS solution,
-project or file.
+  "Function called to generate a compilation command for MSVS.
+
+Can be used with a solution, project or source code file.
 
 See the helper function `msvs-generate-compile-command' and user option
 `msvs-compile-default-parameters'."
@@ -56,8 +57,9 @@ See the helper function `msvs-generate-compile-command' and user option
 ;; Functions
 
 (defun msvs-compile-command-default-function ()
-  "Default function to generate a compilation command for msvs
-solution, project or file.
+  "Default function to generate a compilation command for msvs.
+
+Can be used with a solution, project or source code file.
 
 See `msvs-compile-command-function'."
   (msvs-generate-compile-command t "\"Mixed Platforms\"" "Debug" "Build"))
@@ -72,7 +74,6 @@ See `msvs-convert-filename-function'."
 
 (defun msvs-generate-compile-command (useProjectFile platform configuration target &rest rest-parameters)
   "Return a string for compile a msvs solution, project or file."
-  (require 'subr-x)
   (let* (
          ;; Ignore useProjectFile parameter when the current buffer is a solution file.
          (useProjectFile (and useProjectFile
@@ -82,8 +83,6 @@ See `msvs-convert-filename-function'."
          (project-file (if (string-match-p msvs-all-projects-regexp (or buffer-file-name ""))
                            (file-local-name buffer-file-name)
                          (car (locate-dominating-file-match default-directory msvs-all-projects-regexp))))
-         (project-directory (when project-file
-                              (file-name-directory project-file)))
          ;; If the current buffer is a solution file, then use it as solution-file, else look up in
          ;; the directory hierarchy for a directory containing a solution file.
          (solution-file (if (string-match-p msvs-solution-regexp (or buffer-file-name ""))
@@ -129,10 +128,16 @@ generate a compilation command."
 ;; Integration
 
 ;; project
+(eval-when-compile
+  (require 'project))
+
 (with-eval-after-load "project"
-  (add-to-list 'nproject-vc-extra-root-markers "*.sln"))
+  (add-to-list 'project-vc-extra-root-markers "*.sln"))
 
 ;; grep
+(eval-when-compile
+  (require 'grep))
+
 (with-eval-after-load "grep"
   (add-to-list 'grep-files-aliases
                '("msvs" . "*.nuspec *.props *.sln *.targets *proj *proj.filters app.config packages.config"))
@@ -150,8 +155,6 @@ generate a compilation command."
 
 
 ;; Modes
-(require 'derived)
-(require 'generic)
 
 ;; Create modes for solution and project files, so we can set the compile command
 ;;;###autoload

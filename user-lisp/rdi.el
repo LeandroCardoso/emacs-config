@@ -8,18 +8,18 @@
 
 ;;; Code:
 
+(require 'mode-local)
 (require 'project)
 
 (require 'files-extra)
 (require 'fragment)
 (require 'msvs)
-(require 'project-root-dir)
 (require 'xml-format)
 
 ;; Custom
 
 (defgroup rdi nil
-  "RDI support"
+  "RDI support."
   :group 'tools)
 
 (defcustom np6-bugs-root-directory nil
@@ -74,10 +74,10 @@
 (define-key np6-log-mode-map (kbd "C-c C-p") 'np6-prodinfo-fragment-display-other-window)
 
 (defun np6-log-mode-setup ()
+  "Setup for all np6 log modes."
   (use-local-map np6-log-mode-map))
 
 ;; np6 log mode
-(require 'generic)
 
 ;;;###autoload
 (define-generic-mode np6-log-mode                      ; MODE
@@ -92,7 +92,6 @@
   '(np6-log-mode-setup))                               ; FUNCTION-LIST
 
 ;; HACK to disable automatic string highlight. This is disabled due to several malformed strings
-(require 'mode-local)
 (setq-mode-local np6-log-mode font-lock-keywords-only t)
 
 ;; np6 production log mode
@@ -122,9 +121,13 @@
 
 (setq-mode-local np6-kiosk-log-mode font-lock-keywords-only t)
 
-(add-to-list 'global-auto-revert-ignore-modes 'np6-log-mode)
-(add-to-list 'global-auto-revert-ignore-modes 'np6-prod-log-mode)
-(add-to-list 'global-auto-revert-ignore-modes 'np6-kiosk-log-mode)
+(eval-when-compile
+  (require 'autorevert))
+
+(with-eval-after-load "autorever"
+  (add-to-list 'global-auto-revert-ignore-modes 'np6-log-mode)
+  (add-to-list 'global-auto-revert-ignore-modes 'np6-prod-log-mode)
+  (add-to-list 'global-auto-revert-ignore-modes 'np6-kiosk-log-mode))
 
 ;;;###autoload
 (define-generic-mode np6-mode        ; MODE
@@ -136,14 +139,15 @@
 
 ;; git-link
 ;;;###autoload
-(defun git-link-bitbucket-rdi (hostname dirname filename _branch commit start end)
+(defun git-link-bitbucket-rdi (hostname dirname filename branch commit start end)
+  "Entry for RDI Bibucket for `git-link-remote-alist'."
   (format "%s/%s/browse/%s?%s%s"
           hostname
           (string-replace "scm/np" "projects/NP/repos"                             ;np61
                           (string-replace "scm/npl" "projects/NPL/repos" dirname)) ;np#
           filename
-          (if _branch
-              (concat "at=refs%2Fheads%2F" _branch)
+          (if branch
+              (concat "at=refs%2Fheads%2F" branch)
             (concat "at=" commit))
           (if start
             (if end
@@ -153,6 +157,7 @@
 
 ;;;###autoload
 (defun git-link-commit-bitbucket-rdi (hostname dirname commit)
+  "Entry for RDI Bibucket for `git-link-commit-remote-alist'."
   (format "%s/%s/commits/%s"
       hostname
       (string-replace "scm/np" "projects/NP/repos"                             ;np61
@@ -166,6 +171,11 @@
 
 ;; newpos
 (defun np6-plugin-name (&optional directory)
+  "Return the np6 plugin name of DIRECTORY.
+
+When DIRECTORY is not provided, uses `default-directory'.
+
+The directory must be inside the `np6-plugins-src-directory'."
   (let ((dir (or directory default-directory)))
     (when (and np6-plugins-src-directory
                (string-match (concat (expand-file-name np6-plugins-src-directory) "\\([^/]+\\)")
@@ -173,6 +183,11 @@
       (match-string-no-properties 1 dir))))
 
 (defun np6-np61-project-p (&optional directory)
+  "Return if DIRECTORY is a np61 project.
+
+When DIRECTORY is not provided, uses `default-directory'.
+
+The directory must be inside the `np6-np61-src-directory'."
   (let ((pr (project-current nil (or directory default-directory))))
     (when (and np6-np61-src-directory pr)
       (string= (expand-file-name (file-name-as-directory np6-np61-src-directory))
@@ -183,6 +198,11 @@
 (defvar np6-debug t "Copy Debug binaries, instead of Release binaries.")
 
 (defun np6-np61-dest-directory ()
+  "Return the core directory for np6 environment.
+
+When Np6PosCore exists in the `np6-env-directory', returns the core
+directory inside the Np6PosCore, otherwise returns the bin directory
+inside the np6 environment."
   (let ((poscore-dir (expand-file-name "NpSharpBin/Plugins/Np6PosCore" np6-env-directory)))
     (if (file-directory-p poscore-dir)
         poscore-dir
@@ -190,6 +210,7 @@
 
 ;;;###autoload
 (defun np6-config ()
+  "Setup np6 environment."
   (interactive)
   (when (or (called-interactively-p t)
             (not np6-env-directory))
@@ -199,6 +220,7 @@
 
 ;;;###autoload
 (defun np6-config-info()
+  "Display the current np6 environment information."
   (interactive)
   (if np6-env-directory
       (let ((plugin-name (np6-plugin-name)))
@@ -214,6 +236,7 @@
 
 ;;;###autoload
 (defun np6-execute-script ()
+  "Run a script in the `np6-env-directory'."
   (interactive)
   (np6-config)
   (let* ((cmd (completing-read (concat "Script [" np6-env-directory "]: ")
@@ -226,6 +249,17 @@
 
 ;;;###autoload
 (defun np6-copy-bin (&optional ignore-timestamp)
+  "Copy the compiled files to a np6 environment.
+
+Compiled files are copied from a Np6 Plugin or core module to a
+`np6-env-directory'.
+
+The `default-directory' is used to determine the Np6 Plugin or core
+module.
+
+When IGNORE-TIMESTAMP is non-nil, timestamp is ignored during copy,
+otherwise copy only happens when the compiled file is newer than the np6
+environment file."
   (interactive "P")
   (np6-config)
   (let ((plugin-name (np6-plugin-name)))
@@ -259,7 +293,7 @@
           (t (error "No NP6 project detected")))))
 
 ;; keymap
-(defvar np6-keymap nil "Keymap for global NP6 commands")
+(defvar np6-keymap nil "Keymap for global NP6 commands.")
 (setq np6-keymap
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "<f5>") 'np6-config)
@@ -272,6 +306,7 @@
 
 ;; Compile
 (defun rdi-msvs-generate-compile-command ()
+  "Return a string for compile a msvs solution, project or file."
   (cond
    ;; c or c++
    ((or (eq major-mode 'c-mode)
@@ -324,8 +359,10 @@ See `np6-view-auto-format'"
 
 ;;;###autoload
 (defun np6-view-fragment-display-other-window ()
-  "Search for a visible np6 view in the current buffer and display
-it in a temporary buffer in another window.
+  "Display the np6 view from current buffer in another buffer.
+
+Search for a visible np6 view in the current buffer and display it in a
+temporary buffer in another window.
 
 See `fragment-xml-display-other-window'."
   (interactive)
@@ -335,8 +372,10 @@ See `fragment-xml-display-other-window'."
 
 ;;;###autoload
 (defun np6-prodinfo-fragment-display-other-window ()
-  "Search for a visible np6 prodinfo in the current buffer and
-display it in a temporary buffer in another window.
+  "Display the np6 prodinfo from current buffer in another buffer.
+
+Search for a visible np6 prodinfo in the current buffer and display it
+in a temporary buffer in another window.
 
 See `fragment-xml-display-other-window'."
   (interactive)

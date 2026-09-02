@@ -8,10 +8,7 @@
 
 ;;; Code:
 
-(require 'frame)
-(require 'seq)
-(require 'simple)
-(require 'window)
+(require 'midnight)
 
 ;;;###autoload
 (defun backward-page-smart (&optional count)

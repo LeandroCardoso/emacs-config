@@ -8,6 +8,10 @@
 
 ;;; Code:
 
+(require 'woman)
+(require 'info)
+(require 'shell)
+
 ;;;###autoload
 (defun w32-convert-filename (file-name);
   "Convert the FILE-NAME to something suitable for Windows.
@@ -36,8 +40,6 @@ Add DIRECTORY to the environment variable \"PATH\" and to the variable
 ;;;###autoload
 (defun w32-add-unix-root-dir (directory)
   "Set Emacs to use an additional custom Unix root DIRECTORY."
-  (require 'woman)
-  (require 'info)
   (when (file-directory-p directory)
     (dolist (bin-dir '("/usr/bin" "/bin"))
       (when (file-directory-p (concat directory bin-dir))
@@ -61,17 +63,14 @@ Advising existing function usage:
   (advice-add symbol :around #\\='with-bash-shell)
 
 See `advice-add'."
-  (require 'shell)
   (let ((shell-file-name (executable-find "bash"))
-        (explicit-bash-args nil)
-        (explicit-bash.exe-args nil))
+        (explicit-bash-args nil))
     (apply func args)))
 
 ;;;###autoload
 (defun shell-bash ()
   "Run `shell' with bash."
   (interactive)
-  (require 'shell)
   (let ((explicit-shell-file-name (executable-find "bash")))
     (setenv "EMACS" "t")
     (call-interactively 'shell)))

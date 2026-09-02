@@ -17,13 +17,12 @@
 
 ;;; Code:
 
-(require 'nadvice)
 (require 'woman)
 
 (defvar-local woman-buffer-file-name nil
   "Full pathname of the file being displayed by the current WoMan buffer.")
 
-(defun woman-save-buffer-file-name (file-name &optional reformat)
+(defun woman-save-buffer-file-name (&rest _args)
   "Store `woman-last-file-name' into the buffer-local `woman-buffer-file-name'.
 
 Only runs when the current buffer is in `woman-mode'."
@@ -34,7 +33,8 @@ Only runs when the current buffer is in `woman-mode'."
 (defun woman-reformat-setup ()
   "Set up automatic tracking of the underlying file for WoMan buffers.
 
-Installs advice around `woman-find-file' so `woman-buffer-file-name' stays updated."
+Installs advice around `woman-find-file' so `woman-buffer-file-name'
+stays updated."
   (advice-add 'woman-find-file :after #'woman-save-buffer-file-name))
 
 ;;;###autoload

@@ -1,5 +1,7 @@
 ;;; early-init.el --- Emacs early init configuration -*- lexical-binding:t -*-
 
+;;; Commentary:
+
 ;;; Code:
 
 (defconst wsl-p (stringp (and (eq system-type 'gnu/linux)
@@ -9,11 +11,10 @@
 
 ;; Emacs reads your main init file after creating the initial frame, so setting there won’t have the
 ;; expected effect on initial frame settings.
-(setopt default-frame-alist `((fullscreen . maximized)
-                              (visibility . nil)
-                              ,(when (and (eq system-type 'gnu/linux)
-                                          (not wsl-p))
-                                 '(alpha . 96))))
+(setopt default-frame-alist '((fullscreen . maximized) (visibility . nil)))
+(when (and (eq system-type 'gnu/linux)
+           (not wsl-p))
+  (push '(alpha . 96) default-frame-alist))
 
 ;; No need to waste precious desktop space with useless GUI elements
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))

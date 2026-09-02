@@ -13,9 +13,11 @@
 ;;; Customization
 
 (defcustom infer-indentation-style-region-max 100000
-  "The maximum region size for examining indentation style information with `infer-indentation-style'.
+  "The maximum region size for examining indentation style information.
 
-nil means no limit."
+Value nil means no limit.
+
+See `infer-indentation-style'."
   :type 'integer
   :group 'indent)
 
