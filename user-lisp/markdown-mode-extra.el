@@ -9,6 +9,7 @@
 ;;; Code:
 
 (require 'markdown-mode)
+(require 'browse-url)
 
 ;;;###autoload
 (defun markdown-guide (&optional arg)
