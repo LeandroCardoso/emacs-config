@@ -257,6 +257,8 @@ packages.")
   :config
   (setopt c-guess-region-max 100000)
 
+  (c-add-style "c++-custom" '("stroustrup" (c-offsets-alist (inlambda . 0) (inline-open . 0))))
+
   (require 'regexp-opt)
   (dolist (mode '(c-mode c++-mode))
     (add-to-list 'c-default-style `(,mode . "c++-custom"))
@@ -264,7 +266,14 @@ packages.")
                             `((,(regexp-opt '("TRUE" "FALSE") 'words) . font-lock-constant-face))))
 
   (dolist (var '(c-font-lock-extra-types c++-font-lock-extra-types))
-    (add-to-list var "BOOL")))
+    (add-to-list var "BOOL"))
+
+  (defun c-setup ()
+    "Setup `c-mode'.  Provided for use in hooks."
+    (c-toggle-comment-style -1)) ; Set the comment style to line
+
+  :hook
+  (c-mode . c-setup))
 
 (use-package comint
   :defer t
