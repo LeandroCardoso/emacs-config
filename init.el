@@ -74,7 +74,8 @@
          `(tldr-description ((t :inherit info-title-2)))
          `(tldr-command-itself ((t :foreground ,blue :slant italic :weight bold)))
          `(tldr-command-argument ((t :foreground ,blue)))
-         `(tldr-code-block ((t :foreground ,blue :weight bold))))
+         `(tldr-code-block ((t :foreground ,blue :weight bold)))
+         `(whitespace-page-delimiter ((t :height 0.1 :underline (:color ,base01 :style wave)))))
         (custom-theme-set-variables
          theme-name
          `(ibuffer-filter-group-name-face 'link)
@@ -1052,16 +1053,22 @@ See `kill-new' for details."
 
   :config
   (setopt whitespace-line-column nil) ; use `fill-column' value
+  (setopt whitespace-style '(face page-delimiters))
+  (global-whitespace-mode)
 
   :bind
   ("C-c w" . whitespace-map)
   (:map whitespace-map
         ("c" . whitespace-cleanup)
-        ("n" . whitespace-newline-mode)
+        ("C" . whitespace-cleanup-region)
         ("o" . whitespace-toggle-options)
-        ("r" . delete-whitespace-rectangle) ; rect.el
-        ("t" . delete-trailing-whitespace)  ; simple.el
-        ("w" . whitespace-mode)))
+        ("O" . global-whitespace-toggle-options)
+        ("r" . whitespace-report)
+        ("R" . whitespace-report-region)
+        ("m" . whitespace-mode)
+        ("M" . global-whitespace-mode)
+        ("C-r" . delete-whitespace-rectangle) ; rect.el
+        ("t" . delete-trailing-whitespace)))  ; simple.el
 
 (use-package windmove
   ;; See `framemove' for frame related functionality
@@ -1496,11 +1503,6 @@ the plist used as a communication channel."
 
   (advice-add 'ox-jira-paragraph :override 'ox-jira-paragraph-override))
 
-(use-package page-break-lines
-  :ensure t
-  :config
-  (global-page-break-lines-mode))
-
 (use-package plantuml-mode
   :ensure t
   :defer t
@@ -1930,6 +1932,19 @@ See `tide-tsserver-executable'."
         (message "Starting altgr2alt")
         (start-process "altgr2alt" (messages-buffer) "altgr2alt"))
     (message "Error: altgr2alt not found!")))
+
+(use-package whitespace-cycle-style
+  :after whitespace
+  :demand t
+  :config
+  (setopt whitespace-cycle-styles
+          (list `("Default" ,(append (eval (car (get 'whitespace-style 'standard-value)))
+                                     '(page-delimiters)))
+                '("Page delimiters" (face page-delimiters))))
+
+  :bind
+  (:map whitespace-map
+        ("w" . whitespace-cycle-style)))
 
 (use-package wsl-extra
   :if wsl-p
