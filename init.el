@@ -1618,6 +1618,7 @@ See `tide-tsserver-executable'."
                           'move-dup-move-region)
     (vhl/install-extension 'move-dup))
 
+  (vhl/ext/hideshow/off)
   (volatile-highlights-mode))
 
 (use-package wgrep
