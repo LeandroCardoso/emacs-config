@@ -20,7 +20,6 @@
            (frame-width) (frame-height)
            (window-width) (window-height)))
 
-;;;###autoload
 (defun window-split-dynamic-threshold-advice (func &rest args)
   "Dynamically adjust window-splitting thresholds for `window-splittable-p'.
 
@@ -29,12 +28,7 @@ When `window-combination-resize' is non-nil, temporarily adjust
 current frame dimensions before calling `window-splittable-p'.
 
 FUNC must be `window-splittable-p', ARGS are the arguments passed to
-FUNC.
-
-Add this function as an around advice for `window-splittable-p':
-
-    (advice-add #'window-splittable-p :around
-                #'window-split-dynamic-threshold-advice)"
+FUNC."
   (let* (;; Maximum number of windows that the configured width threshold would allow side by side.
          (max-horizontal-windows (if split-width-threshold
                                      (max 1
@@ -64,6 +58,13 @@ Add this function as an around advice for `window-splittable-p':
     ;; (message "window-split-dynamic-threshold-advice width:%s height:%s max-h:%s max-v:%s"
     ;;          split-width-threshold split-height-threshold max-h-windows max-v-windows)
     (apply func args)))
+
+;;;###autoload
+(defun window-split-dynamic-threshold-setup ()
+  "Setup to adjust window-splitting thresholds for `window-splittable-p'.
+
+See `window-split-dynamic-threshold-advice'."
+ (advice-add #'window-splittable-p :around #'window-split-dynamic-threshold-advice))
 
 ;;;###autoload
 (defun split-window-dwim ()

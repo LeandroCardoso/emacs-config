@@ -1754,7 +1754,7 @@ See `tide-tsserver-executable'."
   :after window
   :demand t
   :config
-  (advice-add 'window-splittable-p :around 'window-split-dynamic-threshold-advice)
+  (window-split-dynamic-threshold-setup)
 
   :bind
   ("M-o" . other-window-split-if-single)
