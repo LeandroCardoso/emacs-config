@@ -56,7 +56,8 @@ FUNC."
                                    split-height-threshold)))
     ;; DEBUG
     ;; (message "window-split-dynamic-threshold-advice width:%s height:%s max-h:%s max-v:%s"
-    ;;          split-width-threshold split-height-threshold max-h-windows max-v-windows)
+    ;;          split-width-threshold split-height-threshold
+    ;;          max-horizontal-windows max-vertical-windows)
     (apply func args)))
 
 ;;;###autoload
