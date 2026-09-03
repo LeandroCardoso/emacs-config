@@ -854,6 +854,7 @@ must be named with the locale and a \"txt\" extenstion."
   :config
   (setopt recentf-autosave-interval 300)
   (setopt recentf-max-saved-items 200)
+  (setopt recentf-show-messages nil)
   (recentf-mode))
 
 (use-package register
