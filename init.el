@@ -1630,8 +1630,9 @@ See `tide-tsserver-executable'."
                           'move-dup-move-region)
     (vhl/install-extension 'move-dup))
 
-  (vhl/ext/hideshow/off)
-  (volatile-highlights-mode))
+  (volatile-highlights-mode)
+  ;; Modes must be disabled only after the global setting is enabled.
+  (vhl/ext/hideshow/off))
 
 (use-package wgrep
   :ensure t
