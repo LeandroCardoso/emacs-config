@@ -22,30 +22,43 @@
 
 ;;;###autoload
 (defun window-split-dynamic-threshold-advice (func &rest args)
-  "Thresholds used to check if the window may be split are set dynamically.
+  "Dynamically adjust window-splitting thresholds for `window-splittable-p'.
 
-Set the value of `split-height-threshold' and `split-width-threshold'
-dynamically considering the `frame-height' and `frame-width' when the
-`window-combination-resize' is t.
+When `window-combination-resize' is non-nil, temporarily adjust
+`split-width-threshold' and `split-height-threshold' based on the
+current frame dimensions before calling `window-splittable-p'.
 
-FUNC and ARGS are the function to be advised and their arguments
-respectively.
+FUNC must be `window-splittable-p', ARGS are the arguments passed to
+FUNC.
 
-Usage - advise `window-splittable-p' function:
-  (advice-add \='window-splittable-p :around \='window-split-dynamic-threshold-advice)"
-  (let* ((max-h-windows (if split-width-threshold
-                            (/ (frame-width) (/ split-width-threshold 2))
-                          1))
-         (max-v-windows (max (if split-height-threshold
-                                 (/ (1- (frame-height)) (/ split-height-threshold 2))
-                               1)
-                             ;; force splitting horizontally when vertically is not possible
-                             (if (= max-h-windows 1) 2 1)))
+Add this function as an around advice for `window-splittable-p':
+
+    (advice-add #'window-splittable-p :around
+                #'window-split-dynamic-threshold-advice)"
+  (let* (;; Maximum number of windows that the configured width threshold would allow side by side.
+         (max-horizontal-windows (if split-width-threshold
+                                     (max 1
+                                          (/ (frame-width)
+                                             (/ split-width-threshold 2)))
+                                   1))
+         ;; Maximum number of windows that the configured height threshold would allow vertically
+         ;; stacked.
+         (max-vertical-windows (max (if split-height-threshold
+                                        (/ (1- (frame-height))
+                                           (/ split-height-threshold 2))
+                                      1)
+                                    ;; Ensure at least two vertical windows are possible when
+                                    ;; horizontal splitting is not possible.
+                                    (if (= max-horizontal-windows 1)
+                                        2
+                                      1)))
          (split-width-threshold (if (and split-width-threshold window-combination-resize)
-                                    (- (/ (frame-width) (- max-h-windows 1)) 1)
+                                    (1- (/ (frame-width)
+                                           (max 1 (1- max-horizontal-windows))))
                                   split-width-threshold))
          (split-height-threshold (if (and split-height-threshold window-combination-resize)
-                                     (- (/ (frame-height) (- max-v-windows 1)) 1)
+                                     (1- (/ (frame-height)
+                                            (max 1 (1- max-vertical-windows))))
                                    split-height-threshold)))
     ;; DEBUG
     ;; (message "window-split-dynamic-threshold-advice width:%s height:%s max-h:%s max-v:%s"
