@@ -53,14 +53,12 @@ Usage - advise `window-splittable-p' function:
     (apply func args)))
 
 ;;;###autoload
-(defun split-window-dwim (force)
+(defun split-window-dwim ()
   "Split the largest window in the current frame in two.
 
-With parameter FORCE, ignores the `split-width-threshold' and
-`split-height-threshold'."
-  (interactive "P")
-  (let* ((split-width-threshold (if force (* 2 window-min-width) split-width-threshold))
-         (split-height-threshold (if force (* 2 window-min-height) split-height-threshold))
+When splitting, it ignores the `split-height-threshold'."
+  (interactive)
+  (let* ((split-height-threshold (* 2 window-min-height))
          (window (car (sort (window-list)
                            (lambda (a b)
                              (> (* (window-width a) (window-height a))
