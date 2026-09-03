@@ -42,10 +42,10 @@ Usage - advise `window-splittable-p' function:
                              ;; force splitting horizontally when vertically is not possible
                              (if (= max-h-windows 1) 2 1)))
          (split-width-threshold (if (and split-width-threshold window-combination-resize)
-                                    (1+ (/ (frame-width) max-h-windows))
+                                    (- (/ (frame-width) (- max-h-windows 1)) 1)
                                   split-width-threshold))
          (split-height-threshold (if (and split-height-threshold window-combination-resize)
-                                     (1+ (/ (frame-height) max-v-windows))
+                                     (- (/ (frame-height) (- max-v-windows 1)) 1)
                                    split-height-threshold)))
     ;; DEBUG
     ;; (message "window-split-dynamic-threshold-advice width:%s height:%s max-h:%s max-v:%s"
