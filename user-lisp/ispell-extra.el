@@ -20,24 +20,29 @@ See `ispell-complete-word-dict' and `ispell-change-word-dict'."
 (defun ispell-change-word-dict ()
   "Change the word-list dictionary used for word completion.
 
-Word-list files must be available in the `ispell-words-directory' and
-must be named with the locale and a \"txt\" extenstion."
-  (let* ((locale (car (alist-get (or ispell-local-dictionary ispell-dictionary)
-                                 ispell-dicts-name2locale-equivs-alist nil nil 'equal)))
-         (file (when locale
-                 (expand-file-name (concat locale ".txt") ispell-words-directory)))
+Word-list files must be available in `ispell-words-directory' and
+must be named after the locale with a \".txt\" extension."
+  (let* ((dict (or ispell-local-dictionary
+                   ispell-dictionary))
+         (locale (or (cadr (assoc dict ispell-dicts-name2locale-equivs-alist))
+                     dict))
+         (file (and locale
+                    (expand-file-name (concat locale ".txt") ispell-words-directory)))
          (local (and ispell-local-dictionary
-                     (not (eq ispell-local-dictionary ispell-dictionary)))))
-    (if (eq system-type 'windows-nt)
-        (message "Ispell word-list dictionary disabled in Windows")
-      (if local
-          (setq-local ispell-complete-word-dict file)
-        (setq ispell-complete-word-dict file))
-      (message "%s Ispell word-list dictionary set to %s"
-               (if local "Local" "Global")
-               file)
-      (when (not (file-exists-p file))
-        (message "Warning: Ispell word-list dictorary %s does not exist" file)))))
+                     (not (equal ispell-local-dictionary
+                                 ispell-dictionary)))))
+
+    (if local
+        (setq-local ispell-complete-word-dict file)
+      (setq ispell-complete-word-dict file))
+
+    (message "%s Ispell word-list dictionary set to %s"
+             (if local "Local" "Global")
+             (abbreviate-file-name file))
+
+    (unless (file-exists-p file)
+      (message "Warning: Ispell word-list dictionary %s does not exist"
+               (abbreviate-file-name file)))))
 
 ;;;###autoload
 (defun ispell-dictionary-info()
@@ -48,7 +53,8 @@ must be named with the locale and a \"txt\" extenstion."
            ispell-dictionary
            (abbreviate-file-name ispell-complete-word-dict)))
 
-(add-hook 'ispell-change-dictionary-hook 'ispell-change-word-dict)
+(unless (eq system-type 'windows-nt)
+  (add-hook 'ispell-change-dictionary-hook 'ispell-change-word-dict))
 
 (provide 'ispell-extra)
 
