@@ -858,7 +858,11 @@ packages.")
 (use-package shortdoc
   :defer t
   :config
-  (add-hook 'help-fns-describe-function-functions 'shortdoc-help-fns-examples-function))
+  (add-hook 'help-fns-describe-function-functions 'shortdoc-help-fns-examples-function)
+
+  :bind
+  (:map help-map
+        ("s" . shortdoc-display-group))) ; original is describe-syntax
 
 (use-package simple
   :config
