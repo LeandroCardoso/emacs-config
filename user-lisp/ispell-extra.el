@@ -43,8 +43,10 @@ must be named with the locale and a \"txt\" extenstion."
 (defun ispell-dictionary-info()
   "Display information about ispell dictionaries."
   (interactive)
-  (message "ispell local dictionary: %s, default dictionary: %s, word-list dictionary: %s"
-           ispell-local-dictionary ispell-dictionary ispell-complete-word-dict))
+  (message "ispell dictionaries, local: %s, default: %s, word-list: %s"
+           ispell-local-dictionary
+           ispell-dictionary
+           (abbreviate-file-name ispell-complete-word-dict)))
 
 (add-hook 'ispell-change-dictionary-hook 'ispell-change-word-dict)
 
