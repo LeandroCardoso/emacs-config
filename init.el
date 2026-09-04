@@ -672,6 +672,7 @@ packages.")
                                                        user-emacs-directory))
   (setopt ispell-program-name "hunspell")
   (setopt ispell-query-replace-choices t)
+  (setopt ispell-save-corrections-as-abbrevs t)
   (setopt ispell-silently-savep t)
 
   (defun ispell-change-word-dict ()
