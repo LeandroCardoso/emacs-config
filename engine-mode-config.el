@@ -20,6 +20,10 @@
   "https://git-scm.com/search/results?search=%s&language=en"
   :keybinding "G")
 
+(defengine github
+  "https://github.com/search?q=%s"
+  :keybinding "h")
+
 (defengine microsoft
   "https://learn.microsoft.com/en-us/search/?category=Documentation&terms=%s"
   :keybinding "m")
