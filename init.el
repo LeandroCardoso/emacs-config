@@ -656,59 +656,23 @@ packages.")
 
 (use-package ispell
   :defer t
-  :commands ispell-dictionary-info
-
   :config
   (setenv "DICTIONARY" "en_US")
   (setenv "DICPATH" (expand-file-name "hunspell/" user-emacs-directory))
 
-  (defconst ispell-words-directory (expand-file-name "words/" user-emacs-directory))
-  (setopt ispell-complete-word-dict (if system-windows-p
-                                        nil
-                                      (expand-file-name "en_US.txt" ispell-words-directory)))
+  (unless system-windows-p
+    (setopt ispell-complete-word-dict (expand-file-name "words/en_US.txt" user-emacs-directory)))
+
   (setopt ispell-dictionary "american")
   (setopt ispell-help-in-bufferp 'electric)
-  (setopt ispell-personal-dictionary (expand-file-name (concat "dict_" ispell-dictionary)
-                                                       user-emacs-directory))
+  (setopt ispell-personal-dictionary (expand-file-name "personal.dic" user-emacs-directory))
   (setopt ispell-program-name "hunspell")
   (setopt ispell-query-replace-choices t)
   (setopt ispell-save-corrections-as-abbrevs t)
   (setopt ispell-silently-savep t)
 
-  (defun ispell-change-word-dict ()
-    "Change the word-list dictionary used for word completion.
-
-Word-list files must be available in the `ispell-words-directory' and
-must be named with the locale and a \"txt\" extenstion."
-    (let* ((locale (car (alist-get (or ispell-local-dictionary ispell-dictionary)
-                                   ispell-dicts-name2locale-equivs-alist nil nil 'equal)))
-           (file (when locale
-                   (expand-file-name (concat locale ".txt") ispell-words-directory)))
-           (local (and ispell-local-dictionary
-                       (not (eq ispell-local-dictionary ispell-dictionary)))))
-      (if system-windows-p
-          (message "Ispell word-list dictionary disabled in Windows")
-        (if local
-            (setq-local ispell-complete-word-dict file)
-          (setq ispell-complete-word-dict file))
-        (message "%s Ispell word-list dictionary set to %s"
-                 (if local "Local" "Global")
-                 file)
-        (when (not (file-exists-p file))
-          (message "Warning: Ispell word-list dictorary %s does not exist" file)))))
-
-  (defun ispell-dictionary-info()
-    "Display information about ispell dictionaries."
-    (interactive)
-    (message "ispell local dictionary: %s, default dictionary: %s, word-list dictionary: %s"
-             ispell-local-dictionary ispell-dictionary ispell-complete-word-dict))
-
-  :hook
-  (ispell-change-dictionary . ispell-change-word-dict)
-
   :bind
-  ("C-x M-$" . ispell-change-dictionary)
-  ("C-x C-M-$" . ispell-dictionary-info))
+  ("C-x M-$" . ispell-change-dictionary))
 
 (use-package midnight
   :config
@@ -1903,6 +1867,14 @@ See `tide-tsserver-executable'."
   ("C-}" . shrink-window+)
   ("C-M-]" . enlarge-window-horizontally+)
   ("C-M-}" . shrink-window-horizontally+))
+
+(use-package ispell-extra
+  :after ispell
+  :config
+  (setopt ispell-words-directory (file-name-directory ispell-complete-word-dict))
+
+  :bind
+  ("C-x C-M-$" . ispell-dictionary-info))
 
 (use-package teamcity)
 
