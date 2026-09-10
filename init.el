@@ -75,7 +75,7 @@
          `(tldr-command-itself ((t :foreground ,blue :slant italic :weight bold)))
          `(tldr-command-argument ((t :foreground ,blue)))
          `(tldr-code-block ((t :foreground ,blue :weight bold)))
-         `(whitespace-page-delimiter ((t :height 0.1 :underline (:color ,base01 :style wave)))))
+         `(whitespace-page-delimiter ((t :height 0.5 :underline (:color ,base01 :style wave)))))
         (custom-theme-set-variables
          theme-name
          `(ibuffer-filter-group-name-face 'link)
