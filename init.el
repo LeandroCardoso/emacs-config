@@ -96,12 +96,16 @@
   (defun display-system-information ()
     "Display system information."
     (interactive)
-    (message "Emacs %s\nSystem: %s (%s)\nHostname: %s\nRDI: %s\nWSL: %s\nStarted in %s"
+    (message "Emacs %s\nSystem: %s (%s)\nHostname: %s\nRDI: %s\nWSL: %s\nUptime: %s\nLoad Average: %.2f %.2f %.2f\nStarted in %s"
              emacs-version
              system-type window-system
              (system-name)
              (if rdi-p "yes" "no")
              (if wsl-p "yes" "no")
+             (emacs-uptime)
+             (nth 0 (load-average t))
+             (nth 1 (load-average t))
+             (nth 2 (load-average t))
              (emacs-init-time "%.2f seconds")))
 
   ;; Ensure the display-system-information runs last to prevent its message from being overwritten
