@@ -665,11 +665,15 @@ packages.")
 
   (setopt ispell-dictionary "american")
   (setopt ispell-help-in-bufferp 'electric)
-  (setopt ispell-personal-dictionary (expand-file-name "personal.dic" user-emacs-directory))
+  (setopt ispell-personal-dictionary (expand-file-name "personal-dictonary" user-emacs-directory))
   (setopt ispell-program-name "hunspell")
   (setopt ispell-query-replace-choices t)
   (setopt ispell-save-corrections-as-abbrevs t)
   (setopt ispell-silently-savep t)
+
+  ;; Hunspell doesn't create a personal dictionary file automatically
+  (unless (file-exists-p ispell-personal-dictionary)
+    (write-region "" nil ispell-personal-dictionary))
 
   :bind
   ("C-x M-$" . ispell-change-dictionary))
