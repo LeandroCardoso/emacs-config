@@ -1244,7 +1244,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
 
   (setopt enlight-content
           (concat
-           (nerd-icons-devicon "nf-dev-emacs"
+           (nerd-icons-sucicon "nf-custom-emacs"
                                :height 2.0 :v-adjust 0
                                :face '(:inherit nerd-icons-purple))
            (propertize (format " Welcome to Emacs %s\n" emacs-version)

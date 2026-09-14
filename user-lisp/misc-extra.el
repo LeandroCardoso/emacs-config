@@ -175,9 +175,10 @@ is \"C-w\"."
       (when (re-search-forward "^ID=\\(.+\\)$" nil t)
         (string-trim (match-string-no-properties 1) "\"")))))
 
-(declare-function nerd-icons-faicon "nerd-icons")
 (declare-function nerd-icons-devicon "nerd-icons")
+(declare-function nerd-icons-faicon "nerd-icons")
 (declare-function nerd-icons-flicon "nerd-icons")
+(declare-function nerd-icons-sucicon "nerd-icons")
 (declare-function nerd-icons-icon-for-os-release-id "nerd-icons-extra")
 
 ;;;###autoload
@@ -190,7 +191,7 @@ With LONG, display a long message, instead of a short one."
          (separator (if long "\n" " | "))
          (version (list "Emacs version:"
                         emacs-version
-                        (nerd-icons-devicon "nf-dev-emacs")))
+                        (nerd-icons-sucicon "nf-custom-emacs")))
          (system (list "System:"
                        (format "%s (%s)" system-type window-system)
                        (or (nerd-icons-icon-for-os-release-id (os-release-id))
