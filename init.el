@@ -1810,6 +1810,8 @@ See `tide-tsserver-executable'."
          (require 'wsl-extra)
          (setopt msvs-convert-filename-function 'wsl-convert-filename-to-windows))))
 
+(use-package nerd-icons-extra)
+
 (use-package xml-where
   :defer t
   :after nxml-mode
