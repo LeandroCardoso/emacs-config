@@ -93,24 +93,6 @@
 
 (use-package emacs
   :config
-  (defun display-system-information ()
-    "Display system information."
-    (interactive)
-    (message "Emacs %s\nSystem: %s (%s)\nHostname: %s\nRDI: %s\nWSL: %s\nUptime: %s\nLoad Average: %.2f %.2f %.2f\nStarted in %s"
-             emacs-version
-             system-type window-system
-             (system-name)
-             (if rdi-p "yes" "no")
-             (if wsl-p "yes" "no")
-             (emacs-uptime)
-             (nth 0 (load-average t))
-             (nth 1 (load-average t))
-             (nth 2 (load-average t))
-             (emacs-init-time "%.2f seconds")))
-
-  ;; Ensure the display-system-information runs last to prevent its message from being overwritten
-  (add-hook 'emacs-startup-hook 'display-system-information 100)
-
   (setq-default cursor-type 'bar)
   (setq-default truncate-lines nil)
 
@@ -1783,12 +1765,15 @@ See `tide-tsserver-executable'."
   :config
   (set-first-font '("Source Code Pro" "Cascadia Mono" "Consolas"))
 
+  ;; Don't cleanup the buffer list when Emacs is idle during weekends and holidays
+  (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice)
+
   ;; Display a clock when Emacs is in fullscreen
   (smart-display-time-mode)
   (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
 
-  ;; Don't cleanup the buffer list when Emacs is idle during weekends and holidays
-  (advice-add 'clean-buffer-list :before-while 'clean-buffer-list-check-idle-time-advice)
+  ;; Ensure the display-system-information runs last to prevent its message from being overwritten
+  (add-hook 'emacs-startup-hook 'display-system-information 100)
 
   :bind
   ([remap backward-page] . backward-page-smart)
