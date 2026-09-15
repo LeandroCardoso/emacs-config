@@ -468,6 +468,22 @@ packages.")
   :hook
   (prog-mode . flymake-mode))
 
+;; EXPERIMENTAL
+(use-package flyspell
+  :defer t
+  :init
+  ;; Redefine flyspell-mode-map, I don't like the default key bindings
+  (setq flyspell-mode-map (make-sparse-keymap))
+
+  :config
+  (setopt flyspell-abbrev-p t)
+  (setopt flyspell-delay-use-timer t)
+  (setopt flyspell-issue-welcome-flag nil)
+
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode))
+
 (use-package goto-addr
   :config
   (global-goto-address-mode))
@@ -1276,6 +1292,9 @@ when it doesn't return any candidate.  Provided for use in hooks."
 
 (use-package flyspell-correct
   :ensure t
+  :hook
+  ((prog-mode text-mode) . flyspell-correct-auto-mode) ;EXPERIMENTAL
+
   :bind
   ([remap ispell-word] . flyspell-correct-at-point))
 
