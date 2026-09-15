@@ -652,6 +652,11 @@ packages.")
   (unless (file-exists-p ispell-personal-dictionary)
     (write-region "" nil ispell-personal-dictionary))
 
+  ;; Add current dictionary to mode-line
+  (add-to-list 'mode-line-misc-info
+               '(:eval (when ispell-current-dictionary
+                         (format "%s" ispell-current-dictionary))))
+
   :bind
   ("C-x M-$" . ispell-change-dictionary))
 
