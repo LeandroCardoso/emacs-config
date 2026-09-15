@@ -640,7 +640,7 @@ packages.")
   (unless system-windows-p
     (setopt ispell-complete-word-dict (expand-file-name "words/en_US.txt" user-emacs-directory)))
 
-  (setopt ispell-dictionary "american")
+  (setopt ispell-dictionary "en_US")
   (setopt ispell-help-in-bufferp 'electric)
   (setopt ispell-personal-dictionary (expand-file-name "personal-dictonary" user-emacs-directory))
   (setopt ispell-program-name "hunspell")
