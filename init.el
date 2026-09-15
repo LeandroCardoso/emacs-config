@@ -1054,8 +1054,7 @@ See `kill-new' for details."
                   "*" string-end)
              (display-buffer-reuse-window
               display-buffer-pop-up-window
-              display-buffer-use-least-recent-window)
-             (window-height . shrink-window-if-larger-than-buffer))))
+              display-buffer-use-least-recent-window))))
   (setopt split-height-threshold 80)
   (setopt split-width-threshold 200)
 
