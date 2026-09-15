@@ -167,13 +167,13 @@ is \"C-w\"."
 ;;; System
 
 ;;;###autoload
-(defun os-release-id ()
-  "Return the operating system release ID."
+(defun os-release-info (parameter)
+  "Return the operating system release (os-release) PARAMETER value."
   (when (file-readable-p "/etc/os-release")
     (with-temp-buffer
       (insert-file-contents "/etc/os-release")
-      (when (re-search-forward "^ID=\\(.+\\)$" nil t)
-        (string-trim (match-string-no-properties 1) "\"")))))
+      (when (re-search-forward (format "^%s=\\(.+\\)$" parameter) nil t)
+        (string-trim (match-string-no-properties 1) "\"" "\"")))))
 
 (declare-function nerd-icons-devicon "nerd-icons")
 (declare-function nerd-icons-faicon "nerd-icons")
@@ -193,8 +193,10 @@ With LONG, display a long message, instead of a short one."
                         emacs-version
                         (nerd-icons-sucicon "nf-custom-emacs")))
          (system (list "System:"
-                       (format "%s (%s)" system-type window-system)
-                       (or (nerd-icons-icon-for-os-release-id (os-release-id))
+                       (format "%s (%s)"
+                               (or (os-release-info "NAME") system-type)
+                               window-system)
+                       (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
                            (pcase system-type
                              ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
                              ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
