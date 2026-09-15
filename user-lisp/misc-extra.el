@@ -201,6 +201,9 @@ With LONG, display a long message, instead of a short one."
                              ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
                              ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
                              ('darwin (nerd-icons-devicon "nf-dev-apple"))))))
+         (user (list "User:"
+                     user-login-name
+                     (nerd-icons-faicon "nf-fa-user")))
          (hostname (list "Hostname:"
                          (system-name)
                          (nerd-icons-faicon "nf-fa-desktop")))
@@ -213,13 +216,13 @@ With LONG, display a long message, instead of a short one."
          (uptime (list "Uptime:"
                        (emacs-uptime (unless long "%D, %z%2h:%.2m"))
                        (nerd-icons-faicon "nf-fa-clock" )))
-         (load-avg (list "Load Average:"
+         (load-avg (list "Load average:"
                          (apply #'format "%.2f %.2f %.2f" (load-average t))
                          (nerd-icons-faicon "nf-fa-microchip")))
          (init-time (list "Started in"
                           (emacs-init-time (if long "%.2f seconds" "%.2fs"))
                           (nerd-icons-faicon "nf-fa-rocket")))
-         (fields (list version system hostname rdi wsl uptime load-avg init-time))
+         (fields (list version system user hostname rdi wsl uptime load-avg init-time))
          (printsi (lambda (field)
                     (let ((label (nth 0 field))
                           (value (nth 1 field))
@@ -227,6 +230,7 @@ With LONG, display a long message, instead of a short one."
                       (format "%s %s"
                               (if (or long (not icons-p)) label icon)
                               value)))))
+    (message "%s" fields)
     (message "%s" (mapconcat printsi fields separator))))
 
 (provide 'misc-extra)
