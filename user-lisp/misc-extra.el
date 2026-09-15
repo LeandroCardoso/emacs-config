@@ -192,15 +192,20 @@ With LONG, display a long message, instead of a short one."
          (version (list "Emacs version:"
                         emacs-version
                         (nerd-icons-sucicon "nf-custom-emacs")))
+         (system-value (format "%s (%s)"
+                               (or (if long
+                                       (os-release-info "PRETTY_NAME")
+                                     (os-release-info "NAME"))
+                                   system-type)
+                               window-system))
+         (system-icon (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
+                          (pcase system-type
+                            ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
+                            ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
+                            ('darwin (nerd-icons-devicon "nf-dev-apple")))))
          (system (list "System:"
-                       (format "%s (%s)"
-                               (or (os-release-info "NAME") system-type)
-                               window-system)
-                       (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
-                           (pcase system-type
-                             ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
-                             ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
-                             ('darwin (nerd-icons-devicon "nf-dev-apple"))))))
+                       system-value
+                       system-icon))
          (user (list "User:"
                      user-login-name
                      (nerd-icons-faicon "nf-fa-user")))
@@ -208,10 +213,10 @@ With LONG, display a long message, instead of a short one."
                          (system-name)
                          (nerd-icons-faicon "nf-fa-desktop")))
          (rdi (list "RDI:"
-                    (if rdi-p "yes" "no")
+                    rdi-p
                     (nerd-icons-faicon "nf-fa-burger")))
          (wsl (list "WSL:"
-                    (if wsl-p "yes" "no")
+                    wsl-p
                     (nerd-icons-devicon "nf-dev-windows")))
          (uptime (list "Uptime:"
                        (emacs-uptime (unless long "%D, %z%2h:%.2m"))
@@ -228,9 +233,12 @@ With LONG, display a long message, instead of a short one."
                           (value (nth 1 field))
                           (icon (nth 2 field)))
                       (format "%s %s"
-                              (if (or long (not icons-p)) label icon)
-                              value)))))
-    (message "%s" fields)
+                              (if (or long (not icons-p))
+                                  label
+                                icon)
+                              (if (stringp value)
+                                  value
+                                (if value "yes" "no")))))))
     (message "%s" (mapconcat printsi fields separator))))
 
 (provide 'misc-extra)
