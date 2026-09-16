@@ -187,7 +187,7 @@ is \"C-w\"."
 
 Each element of FIELDS must be a list of the form:
 
-  (LABEL ICON VALUE)
+  (LABEL VALUE ICON)
 
 When DETAILED is non-nil, labels are displayed and fields are separated
 by newlines.  Otherwise, icons are displayed when available and
@@ -203,7 +203,7 @@ when non-nil and \"no\" when nil."
     (message
      "%s"
      (mapconcat
-      (pcase-lambda (`(,label ,icon ,value))
+      (pcase-lambda (`(,label ,value ,icon))
         (format (if detailed
                     (format "%%-%ds %%s" label-width)
                   "%s %s")
@@ -225,15 +225,12 @@ With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
   (let* ((monitor (list "Monitor:"
-                        nil
                         (format "%dx%d"
                                 (nth 2 (frame-monitor-attribute 'geometry))
                                 (nth 3 (frame-monitor-attribute 'geometry)))))
          (frame-size (list "Frame:"
-                           nil
                            (format "%dx%d" (frame-width) (frame-height))))
          (window-size (list "Window:"
-                            nil
                             (format "%dx%d" (window-width) (window-height))))
          (fields (list monitor frame-size window-size)))
     (message-summary-data fields detailed)))
@@ -260,29 +257,29 @@ brief one."
                             ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
                             ('darwin (nerd-icons-devicon "nf-dev-apple")))))
          (system (list "System:"
-                       system-icon
-                       system-value))
+                       system-value
+                       system-icon))
          (user (list "User:"
-                     (nerd-icons-faicon "nf-fa-user")
-                     user-login-name))
+                     user-login-name
+                     (nerd-icons-faicon "nf-fa-user")))
          (hostname (list "Hostname:"
-                         (nerd-icons-faicon "nf-fa-desktop")
-                         (system-name)))
+                         (system-name)
+                         (nerd-icons-faicon "nf-fa-desktop")))
          (rdi (list "RDI:"
-                    (nerd-icons-faicon "nf-fa-burger")
-                    rdi-p))
+                    rdi-p
+                    (nerd-icons-faicon "nf-fa-burger")))
          (wsl (list "WSL:"
-                    (nerd-icons-devicon "nf-dev-windows")
-                    wsl-p))
+                    wsl-p
+                    (nerd-icons-devicon "nf-dev-windows")))
          (uptime (list "Uptime:"
-                       (nerd-icons-faicon "nf-fa-clock" )
-                       (emacs-uptime (unless detailed "%D, %z%2h:%.2m"))))
+                       (emacs-uptime (unless detailed "%D, %z%2h:%.2m"))
+                       (nerd-icons-faicon "nf-fa-clock" )))
          (load-avg (list "Load average:"
-                         (nerd-icons-faicon "nf-fa-microchip")
-                         (apply #'format "%.2f %.2f %.2f" (load-average t))))
+                         (apply #'format "%.2f %.2f %.2f" (load-average t))
+                         (nerd-icons-faicon "nf-fa-microchip")))
          (init-time (list "Started in:"
-                          (nerd-icons-faicon "nf-fa-rocket")
-                          (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))))
+                          (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))
+                          (nerd-icons-faicon "nf-fa-rocket")))
          (fields (list version system user hostname rdi wsl uptime load-avg init-time)))
     (message-summary-data fields detailed)))
 
