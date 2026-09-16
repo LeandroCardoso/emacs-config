@@ -1771,8 +1771,9 @@ See `tide-tsserver-executable'."
   (smart-display-time-mode)
   (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
 
-  ;; Ensure the display-system-information runs last to prevent its message from being overwritten
-  (add-hook 'emacs-startup-hook 'display-system-information 100)
+  ;; Ensure the display-system-info runs last to prevent its message from being overwritten by other
+  ;; initialization messages
+  (add-hook 'emacs-startup-hook 'display-system-info 100)
 
   :bind
   ([remap backward-page] . backward-page-smart)

@@ -218,23 +218,28 @@ when non-nil and \"no\" when nil."
       separator))))
 
 ;;;###autoload
-(defun display-frame-window-information (&optional detailed)
-  "Display current frame and selected window dimensions.
+(defun display-monitor-layout-info (&optional detailed)
+  "Display current monitor, frame and selected window dimensions.
 
 With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
-  (let* ((frame-size (list "Frame:"
+  (let* ((monitor (list "Monitor:"
+                        nil
+                        (format "%dx%d"
+                                (nth 2 (frame-monitor-attribute 'geometry))
+                                (nth 3 (frame-monitor-attribute 'geometry)))))
+         (frame-size (list "Frame:"
                            nil
                            (format "%dx%d" (frame-width) (frame-height))))
          (window-size (list "Window:"
                             nil
                             (format "%dx%d" (window-width) (window-height))))
-         (fields (list frame-size window-size)))
+         (fields (list monitor frame-size window-size)))
     (message-summary-data fields detailed)))
 
 ;;;###autoload
-(defun display-system-information (&optional detailed)
+(defun display-system-info (&optional detailed)
   "Display system information.
 
 With prefix argument DETAILED, display a detailed message, instead of a
