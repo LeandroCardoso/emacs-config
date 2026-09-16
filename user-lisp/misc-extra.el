@@ -235,6 +235,22 @@ brief one."
          (fields (list monitor frame-size window-size)))
     (message-summary-data fields detailed)))
 
+(defcustom display-system-misc-info nil
+  "Additional information to display with `display-system-info'.
+
+Each element should be a list of the form:
+
+  (LABEL VALUE ICON)
+
+LABEL is the field label, VALUE is the value to display, and ICON is
+the icon displayed in brief mode."
+  :type '(repeat
+          (list
+           (string :tag "Label")
+           (sexp :tag "Value")
+           (sexp :tag "Icon")))
+  :group 'display)
+
 ;;;###autoload
 (defun display-system-info (&optional detailed)
   "Display system information.
@@ -243,8 +259,8 @@ With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
   (let* ((version (list "Emacs version:"
-                        (nerd-icons-sucicon "nf-custom-emacs")
-                        emacs-version))
+                        emacs-version
+                        (nerd-icons-sucicon "nf-custom-emacs")))
          (system-value (format "%s (%s)"
                                (or (if detailed
                                        (os-release-info "PRETTY_NAME")
@@ -265,12 +281,6 @@ brief one."
          (hostname (list "Hostname:"
                          (system-name)
                          (nerd-icons-faicon "nf-fa-desktop")))
-         (rdi (list "RDI:"
-                    rdi-p
-                    (nerd-icons-faicon "nf-fa-burger")))
-         (wsl (list "WSL:"
-                    wsl-p
-                    (nerd-icons-devicon "nf-dev-windows")))
          (uptime (list "Uptime:"
                        (emacs-uptime (unless detailed "%D, %z%2h:%.2m"))
                        (nerd-icons-faicon "nf-fa-clock" )))
@@ -280,7 +290,14 @@ brief one."
          (init-time (list "Started in:"
                           (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))
                           (nerd-icons-faicon "nf-fa-rocket")))
-         (fields (list version system user hostname rdi wsl uptime load-avg init-time)))
+         (fields `(,version
+                   ,system
+                   ,user
+                   ,hostname
+                   ,@display-system-misc-info
+                   ,uptime
+                   ,load-avg
+                   ,init-time)))
     (message-summary-data fields detailed)))
 
 (provide 'misc-extra)

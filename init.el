@@ -1771,6 +1771,15 @@ See `tide-tsserver-executable'."
   (smart-display-time-mode)
   (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
 
+  (setopt display-system-misc-info
+          (list
+           (list "RDI:"
+                 rdi-p
+                 (nerd-icons-faicon "nf-fa-burger"))
+           (list "WSL:"
+                 wsl-p
+                 (nerd-icons-devicon "nf-dev-windows"))))
+
   ;; Ensure the display-system-info runs last to prevent its message from being overwritten by other
   ;; initialization messages
   (add-hook 'emacs-startup-hook 'display-system-info 100)
@@ -1782,7 +1791,7 @@ See `tide-tsserver-executable'."
         ("C-w" . yank-word-at-point-into-minibuffer)
         ("C-M-w" . yank-symbol-at-point-into-minibuffer))
   (:map ctl-x-map
-          ("C-M-o" . switch-to-scratch-org)))
+        ("C-M-o" . switch-to-scratch-org)))
 
 (use-package msvs
   :if (or system-windows-p wsl-p)
