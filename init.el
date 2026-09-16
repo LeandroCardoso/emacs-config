@@ -1580,9 +1580,15 @@ See `tide-tsserver-executable'."
                           'move-dup-move-region)
     (vhl/install-extension 'move-dup))
 
+  ;; EXPERIMENTAL
+  (vhl/define-extension 'replace-match 'replace-match)
+  (vhl/install-extension 'replace-match)
+
   (volatile-highlights-mode)
-  ;; Modes must be disabled only after the global setting is enabled.
-  (vhl/ext/hideshow/off))
+  ;; Modes must be disabled only *after* the global setting is enabled
+  (vhl/ext/hideshow/off)
+  ;; query-replace highlights unrelated text when other commands are executed, which is annoying
+  (vhl/ext/query-replace/off))
 
 (use-package wgrep
   :ensure t
