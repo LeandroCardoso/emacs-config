@@ -197,12 +197,16 @@ If VALUE is a string, it is displayed verbatim next to the label or
 icon.  Otherwise, VALUE is treated as a boolean and rendered as \"yes\"
 when non-nil and \"no\" when nil."
   (let* ((icons-enabled-p (featurep 'nerd-icons))
-         (separator (if detailed "\n" " | ")))
+         (separator (if detailed "\n" " | "))
+         (label-width (when detailed
+                        (apply #'max (mapcar (lambda (field) (string-width (car field))) fields)))))
     (message
      "%s"
      (mapconcat
       (pcase-lambda (`(,label ,icon ,value))
-        (format "%s %s"
+        (format (if detailed
+                    (format "%%-%ds %%s" label-width)
+                  "%s %s")
                 (if (or detailed (not icons-enabled-p) (not icon))
                     label
                   icon)
@@ -271,7 +275,7 @@ brief one."
          (load-avg (list "Load average:"
                          (nerd-icons-faicon "nf-fa-microchip")
                          (apply #'format "%.2f %.2f %.2f" (load-average t))))
-         (init-time (list "Started in"
+         (init-time (list "Started in:"
                           (nerd-icons-faicon "nf-fa-rocket")
                           (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))))
          (fields (list version system user hostname rdi wsl uptime load-avg init-time)))
