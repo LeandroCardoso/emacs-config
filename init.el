@@ -955,11 +955,7 @@ See `kill-new' for details."
   :defer t
   :config
   (setopt tramp-verbose 2)
-  (setopt tramp-use-connection-share t)
-
-  :bind
-  (:map ctl-x-x-map
-        ("@" . tramp-revert-buffer-with-sudo)))
+  (setopt tramp-use-connection-share t))
 
 (use-package transient
   :defer t
