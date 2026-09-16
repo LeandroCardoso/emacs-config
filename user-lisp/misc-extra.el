@@ -214,16 +214,33 @@ when non-nil and \"no\" when nil."
       separator))))
 
 ;;;###autoload
-(defun display-system-information (&optional long)
+(defun display-frame-window-information (&optional detailed)
+  "Display current frame and selected window dimensions.
+
+With prefix argument DETAILED, display a detailed message, instead of a
+brief one."
+  (interactive "P")
+  (let* ((frame-size (list "Frame:"
+                           nil
+                           (format "%dx%d" (frame-width) (frame-height))))
+         (window-size (list "Window:"
+                            nil
+                            (format "%dx%d" (window-width) (window-height))))
+         (fields (list frame-size window-size)))
+    (message-summary-data fields detailed)))
+
+;;;###autoload
+(defun display-system-information (&optional detailed)
   "Display system information.
 
-With LONG, display a long message, instead of a short one."
+With prefix argument DETAILED, display a detailed message, instead of a
+brief one."
   (interactive "P")
   (let* ((version (list "Emacs version:"
                         (nerd-icons-sucicon "nf-custom-emacs")
                         emacs-version))
          (system-value (format "%s (%s)"
-                               (or (if long
+                               (or (if detailed
                                        (os-release-info "PRETTY_NAME")
                                      (os-release-info "NAME"))
                                    system-type)
@@ -250,15 +267,15 @@ With LONG, display a long message, instead of a short one."
                     wsl-p))
          (uptime (list "Uptime:"
                        (nerd-icons-faicon "nf-fa-clock" )
-                       (emacs-uptime (unless long "%D, %z%2h:%.2m"))))
+                       (emacs-uptime (unless detailed "%D, %z%2h:%.2m"))))
          (load-avg (list "Load average:"
                          (nerd-icons-faicon "nf-fa-microchip")
                          (apply #'format "%.2f %.2f %.2f" (load-average t))))
          (init-time (list "Started in"
                           (nerd-icons-faicon "nf-fa-rocket")
-                          (emacs-init-time (if long "%.2f seconds" "%.2fs"))))
+                          (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))))
          (fields (list version system user hostname rdi wsl uptime load-avg init-time)))
-    (message-summary-data fields long)))
+    (message-summary-data fields detailed)))
 
 (provide 'misc-extra)
 

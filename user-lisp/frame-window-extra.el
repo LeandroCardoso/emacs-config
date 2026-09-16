@@ -12,14 +12,6 @@
 (require 'simple)
 (require 'window)
 
-;;;###autoload
-(defun display-frame-window-information ()
-  "Display current frame and window width and height."
-  (interactive)
-  (message "Frame width:%d height:%d. Window width:%d height:%d."
-           (frame-width) (frame-height)
-           (window-width) (window-height)))
-
 (defun window-split-dynamic-threshold-advice (func &rest args)
   "Dynamically adjust window-splitting thresholds for `window-splittable-p'.
 
