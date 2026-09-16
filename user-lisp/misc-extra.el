@@ -182,16 +182,46 @@ is \"C-w\"."
 (declare-function nerd-icons-icon-for-os-release-id "nerd-icons-extra")
 
 ;;;###autoload
+(defun message-summary-data (fields &optional detailed)
+  "Display a summary of data FIELDS in the echo area.
+
+Each element of FIELDS must be a list of the form:
+
+  (LABEL ICON VALUE)
+
+When DETAILED is non-nil, labels are displayed and fields are separated
+by newlines.  Otherwise, icons are displayed when available and
+`nerd-icons' is loaded.
+
+If VALUE is a string, it is displayed verbatim next to the label or
+icon.  Otherwise, VALUE is treated as a boolean and rendered as \"yes\"
+when non-nil and \"no\" when nil."
+  (let* ((icons-enabled-p (featurep 'nerd-icons))
+         (separator (if detailed "\n" " | ")))
+    (message
+     "%s"
+     (mapconcat
+      (pcase-lambda (`(,label ,icon ,value))
+        (format "%s %s"
+                (if (or detailed (not icons-enabled-p) (not icon))
+                    label
+                  icon)
+                (cond
+                 ((stringp value) value)
+                 (value "yes")
+                 (t "no"))))
+      fields
+      separator))))
+
+;;;###autoload
 (defun display-system-information (&optional long)
   "Display system information.
 
 With LONG, display a long message, instead of a short one."
   (interactive "P")
-  (let* ((icons-p (featurep 'nerd-icons))
-         (separator (if long "\n" " | "))
-         (version (list "Emacs version:"
-                        emacs-version
-                        (nerd-icons-sucicon "nf-custom-emacs")))
+  (let* ((version (list "Emacs version:"
+                        (nerd-icons-sucicon "nf-custom-emacs")
+                        emacs-version))
          (system-value (format "%s (%s)"
                                (or (if long
                                        (os-release-info "PRETTY_NAME")
@@ -204,42 +234,31 @@ With LONG, display a long message, instead of a short one."
                             ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
                             ('darwin (nerd-icons-devicon "nf-dev-apple")))))
          (system (list "System:"
-                       system-value
-                       system-icon))
+                       system-icon
+                       system-value))
          (user (list "User:"
-                     user-login-name
-                     (nerd-icons-faicon "nf-fa-user")))
+                     (nerd-icons-faicon "nf-fa-user")
+                     user-login-name))
          (hostname (list "Hostname:"
-                         (system-name)
-                         (nerd-icons-faicon "nf-fa-desktop")))
+                         (nerd-icons-faicon "nf-fa-desktop")
+                         (system-name)))
          (rdi (list "RDI:"
-                    rdi-p
-                    (nerd-icons-faicon "nf-fa-burger")))
+                    (nerd-icons-faicon "nf-fa-burger")
+                    rdi-p))
          (wsl (list "WSL:"
-                    wsl-p
-                    (nerd-icons-devicon "nf-dev-windows")))
+                    (nerd-icons-devicon "nf-dev-windows")
+                    wsl-p))
          (uptime (list "Uptime:"
-                       (emacs-uptime (unless long "%D, %z%2h:%.2m"))
-                       (nerd-icons-faicon "nf-fa-clock" )))
+                       (nerd-icons-faicon "nf-fa-clock" )
+                       (emacs-uptime (unless long "%D, %z%2h:%.2m"))))
          (load-avg (list "Load average:"
-                         (apply #'format "%.2f %.2f %.2f" (load-average t))
-                         (nerd-icons-faicon "nf-fa-microchip")))
+                         (nerd-icons-faicon "nf-fa-microchip")
+                         (apply #'format "%.2f %.2f %.2f" (load-average t))))
          (init-time (list "Started in"
-                          (emacs-init-time (if long "%.2f seconds" "%.2fs"))
-                          (nerd-icons-faicon "nf-fa-rocket")))
-         (fields (list version system user hostname rdi wsl uptime load-avg init-time))
-         (printsi (lambda (field)
-                    (let ((label (nth 0 field))
-                          (value (nth 1 field))
-                          (icon (nth 2 field)))
-                      (format "%s %s"
-                              (if (or long (not icons-p))
-                                  label
-                                icon)
-                              (if (stringp value)
-                                  value
-                                (if value "yes" "no")))))))
-    (message "%s" (mapconcat printsi fields separator))))
+                          (nerd-icons-faicon "nf-fa-rocket")
+                          (emacs-init-time (if long "%.2f seconds" "%.2fs"))))
+         (fields (list version system user hostname rdi wsl uptime load-avg init-time)))
+    (message-summary-data fields long)))
 
 (provide 'misc-extra)
 
