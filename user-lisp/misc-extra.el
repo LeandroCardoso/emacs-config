@@ -65,12 +65,14 @@ the icon displayed in brief mode."
   :group 'display)
 
 ;;;###autoload
-(defun message-summary-data (fields &optional detailed)
-  "Display a summary of data FIELDS in the echo area.
+(defun message-summary-data (detailed &rest fields)
+  "Display a summary of FIELDS in the echo area.
 
 Each element of FIELDS must be a list of the form:
 
   (LABEL VALUE ICON)
+
+or a list of such fields.
 
 When DETAILED is non-nil, labels are displayed and fields are separated
 by newlines.  Otherwise, icons are displayed when available and
@@ -81,24 +83,29 @@ icon.  Otherwise, VALUE is treated as a boolean and rendered as \"yes\"
 when non-nil and \"no\" when nil."
   (let* ((icons-enabled-p (featurep 'nerd-icons))
          (separator (if detailed "\n" " | "))
+         ;; flatten the internal list struct, necessary to use the `display-system-misc-info'
+         (fields (seq-mapcat (lambda (field)
+                               (if (and (listp field)
+                                        (listp (car field)))
+                                   field
+                                 (list field)))
+                             fields))
          (label-width (when detailed
                         (apply #'max (mapcar (lambda (field) (string-width (car field))) fields)))))
-    (message
-     "%s"
-     (mapconcat
-      (pcase-lambda (`(,label ,value ,icon))
-        (format (if detailed
-                    (format "%%-%ds %%s" label-width)
-                  "%s %s")
-                (if (or detailed (not icons-enabled-p) (not icon))
-                    label
-                  icon)
-                (cond
-                 ((stringp value) value)
-                 (value "yes")
-                 (t "no"))))
-      fields
-      separator))))
+    (message "%s"
+             (mapconcat (pcase-lambda (`(,label ,value ,icon))
+                          (format (if detailed
+                                      (format "%%-%ds %%s" label-width)
+                                    "%s %s")
+                                  (if (or detailed (not icons-enabled-p) (not icon))
+                                      label
+                                    icon)
+                                  (cond
+                                   ((stringp value) value)
+                                   (value "yes")
+                                   (t "no"))))
+                        fields
+                        separator))))
 
 ;;;###autoload
 (defun display-monitor-layout-info (&optional detailed)
@@ -107,16 +114,12 @@ when non-nil and \"no\" when nil."
 With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
-  (let* ((monitor (list "Monitor:"
-                        (format "%dx%d"
-                                (nth 2 (frame-monitor-attribute 'geometry))
-                                (nth 3 (frame-monitor-attribute 'geometry)))))
-         (frame-size (list "Frame:"
-                           (format "%dx%d" (frame-width) (frame-height))))
-         (window-size (list "Window:"
-                            (format "%dx%d" (window-width) (window-height))))
-         (fields (list monitor frame-size window-size)))
-    (message-summary-data fields detailed)))
+  (let ((monitor-width (nth 2 (frame-monitor-attribute 'geometry)))
+        (monitor-height (nth 3 (frame-monitor-attribute 'geometry))))
+    (message-summary-data detailed
+                          `("Monitor:" ,(format "%dx%d" monitor-width monitor-height))
+                          `("Frame:" ,(format "%dx%d" (frame-width) (frame-height)))
+                          `("Window:" ,(format "%dx%d" (window-width) (window-height))))))
 
 ;;;###autoload
 (defun display-system-info (&optional detailed)
@@ -125,10 +128,7 @@ brief one."
 With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
-  (let* ((version (list "Emacs version:"
-                        emacs-version
-                        (nerd-icons-sucicon "nf-custom-emacs")))
-         (system-value (format "%s (%s)"
+  (let* ((system-value (format "%s (%s)"
                                (or (if detailed
                                        (os-release-info "PRETTY_NAME")
                                      (os-release-info "NAME"))
@@ -139,33 +139,18 @@ brief one."
                             ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
                             ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
                             ('darwin (nerd-icons-devicon "nf-dev-apple")))))
-         (system (list "System:"
-                       system-value
-                       system-icon))
-         (user (list "User:"
-                     user-login-name
-                     (nerd-icons-faicon "nf-fa-user")))
-         (hostname (list "Hostname:"
-                         (system-name)
-                         (nerd-icons-faicon "nf-fa-desktop")))
-         (uptime (list "Uptime:"
-                       (emacs-uptime (unless detailed "%D, %z%2h:%.2m"))
-                       (nerd-icons-faicon "nf-fa-clock" )))
-         (load-avg (list "Load average:"
-                         (apply #'format "%.2f %.2f %.2f" (load-average t))
-                         (nerd-icons-faicon "nf-fa-microchip")))
-         (init-time (list "Started in:"
-                          (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))
-                          (nerd-icons-faicon "nf-fa-rocket")))
-         (fields `(,version
-                   ,system
-                   ,user
-                   ,hostname
-                   ,@display-system-misc-info
-                   ,uptime
-                   ,load-avg
-                   ,init-time)))
-    (message-summary-data fields detailed)))
+         (uptime (emacs-uptime (unless detailed "%D, %z%2h:%.2m")))
+         (load-avg (apply #'format "%.2f %.2f %.2f" (load-average t)))
+         (init-time (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))))
+    (message-summary-data detailed
+                          `("Emacs version:" ,emacs-version ,(nerd-icons-sucicon "nf-custom-emacs"))
+                          `("System:" ,system-value ,system-icon)
+                          `("User:" ,user-login-name ,(nerd-icons-faicon "nf-fa-user"))
+                          `("Hostname:" ,(system-name) ,(nerd-icons-faicon "nf-fa-desktop"))
+                          display-system-misc-info
+                          `("Uptime:" ,uptime ,(nerd-icons-faicon "nf-fa-clock"))
+                          `("Load average:" ,load-avg ,(nerd-icons-faicon "nf-fa-microchip"))
+                          `("Started in:" ,init-time ,(nerd-icons-faicon "nf-fa-rocket")))))
 
 
 ;;; Navigation
