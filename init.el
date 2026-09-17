@@ -1772,13 +1772,12 @@ See `tide-tsserver-executable'."
   (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
 
   (setopt display-system-misc-info
-          (list
-           (list "RDI:"
-                 rdi-p
-                 (nerd-icons-faicon "nf-fa-burger"))
-           (list "WSL:"
-                 wsl-p
-                 (nerd-icons-devicon "nf-dev-windows"))))
+          (list (list "RDI:"
+                      rdi-p
+                      (nerd-icons-faicon "nf-fa-burger"))
+                (list "WSL:"
+                      wsl-p
+                      (nerd-icons-devicon "nf-dev-windows"))))
 
   ;; Ensure the display-system-info runs last to prevent its message from being overwritten by other
   ;; initialization messages

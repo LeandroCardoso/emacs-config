@@ -75,14 +75,12 @@ Each element of FIELDS must be a list of the form:
 or a list of such fields.
 
 When DETAILED is non-nil, labels are displayed and fields are separated
-by newlines.  Otherwise, icons are displayed when available and
-`nerd-icons' is loaded.
+by newlines.  Otherwise, icons are displayed when available.
 
 If VALUE is a string, it is displayed verbatim next to the label or
 icon.  Otherwise, VALUE is treated as a boolean and rendered as \"yes\"
 when non-nil and \"no\" when nil."
-  (let* ((icons-enabled-p (featurep 'nerd-icons))
-         (separator (if detailed "\n" " | "))
+  (let* ((separator (if detailed "\n" " | "))
          ;; flatten the internal list struct, necessary to use the `display-system-misc-info'
          (fields (seq-mapcat (lambda (field)
                                (if (and (listp field)
@@ -97,9 +95,7 @@ when non-nil and \"no\" when nil."
                           (format (if detailed
                                       (format "%%-%ds %%s" label-width)
                                     "%s %s")
-                                  (if (or detailed (not icons-enabled-p) (not icon))
-                                      label
-                                    icon)
+                                  (or (and (not detailed) icon) label)
                                   (cond
                                    ((stringp value) value)
                                    (value "yes")
