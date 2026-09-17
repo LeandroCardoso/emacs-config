@@ -135,13 +135,16 @@ brief one."
                             ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
                             ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
                             ('darwin (nerd-icons-devicon "nf-dev-apple")))))
+         (user (if detailed
+                   (format "%s | %s" user-login-name user-mail-address)
+               user-login-name))
          (uptime (emacs-uptime (unless detailed "%D, %z%2h:%.2m")))
          (load-avg (apply #'format "%.2f %.2f %.2f" (load-average t)))
          (init-time (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))))
     (message-summary-data detailed
                           `("Emacs version:" ,emacs-version ,(nerd-icons-sucicon "nf-custom-emacs"))
                           `("System:" ,system-value ,system-icon)
-                          `("User:" ,user-login-name ,(nerd-icons-faicon "nf-fa-user"))
+                          `("User:" ,user ,(nerd-icons-faicon "nf-fa-user"))
                           `("Hostname:" ,(system-name) ,(nerd-icons-faicon "nf-fa-desktop"))
                           display-system-misc-info
                           `("Uptime:" ,uptime ,(nerd-icons-faicon "nf-fa-clock"))
