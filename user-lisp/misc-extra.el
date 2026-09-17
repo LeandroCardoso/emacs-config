@@ -49,37 +49,59 @@ When ONLY-MONO parameter is non-nil, only display monospaced fonts."
 ;;; Information
 
 (defcustom display-system-misc-info nil
-  "Additional information to display with `display-system-info'.
+    "Additional information displayed by `display-system-info'.
 
-Each element should be a list of the form:
+Each element is a list of one of the following forms:
 
-  (LABEL VALUE ICON)
+  (LABEL VALUE)
+  (LABEL VALUE SHORT-LABEL)
+  (LABEL VALUE SHORT-LABEL SHORT-VALUE)
 
-LABEL is the field label, VALUE is the value to display, and ICON is
-the icon displayed in brief mode."
-  :type '(repeat
-          (list
-           (string :tag "Label")
-           (sexp :tag "Value")
-           (sexp :tag "Icon")))
+LABEL and VALUE are used in detailed mode.
+
+SHORT-LABEL and SHORT-VALUE customize the display in brief mode.  When
+SHORT-LABEL is omitted, LABEL is used. When SHORT-VALUE is omitted,
+VALUE is used.
+
+If VALUE (or SHORT-VALUE) is a string, it is displayed verbatim.
+Otherwise, it is treated as a boolean value and displayed as \"yes\"
+when non-nil and \"no\" when nil."
+    :type '(repeat
+             (list
+              (string :tag "Label")
+              (sexp :tag "Value")
+              (choice
+               (const :tag "No short label" nil)
+               (string :tag "Short label"))
+              (choice
+               (const :tag "No short label" nil)
+               (sexp :tag "Short value"))))
   :group 'display)
 
 ;;;###autoload
 (defun message-summary-data (detailed &rest fields)
   "Display a summary of FIELDS in the echo area.
 
-Each element of FIELDS must be a list of the form:
+Each element of FIELDS is either a field or a list of fields.
 
-  (LABEL VALUE ICON)
+A field has one of the following forms:
 
-or a list of such fields.
+  (LABEL VALUE)
+  (LABEL VALUE SHORT-LABEL)
+  (LABEL VALUE SHORT-LABEL SHORT-VALUE)
 
-When DETAILED is non-nil, labels are displayed and fields are separated
-by newlines.  Otherwise, icons are displayed when available.
+LABEL and VALUE are used in detailed mode.
 
-If VALUE is a string, it is displayed verbatim next to the label or
-icon.  Otherwise, VALUE is treated as a boolean and rendered as \"yes\"
-when non-nil and \"no\" when nil."
+SHORT-LABEL and SHORT-VALUE customize the display in brief mode.  When
+SHORT-LABEL is omitted, LABEL is used. When SHORT-VALUE is omitted,
+VALUE is used.
+
+If VALUE (or SHORT-VALUE) is a string, it is displayed verbatim.
+Otherwise, it is treated as a boolean value and displayed as \"yes\"
+when non-nil and \"no\" when nil.
+
+When DETAILED is non-nil, labels are shown and fields are separated by
+newlines."
   (let* ((separator (if detailed "\n" " | "))
          ;; flatten the internal list struct, necessary to use the `display-system-misc-info'
          (fields (seq-mapcat (lambda (field)
@@ -91,17 +113,24 @@ when non-nil and \"no\" when nil."
          (label-width (when detailed
                         (apply #'max (mapcar (lambda (field) (string-width (car field))) fields)))))
     (message "%s"
-             (mapconcat (pcase-lambda (`(,label ,value ,icon))
+             (mapconcat (pcase-lambda (`(,label ,value ,short-label, short-value))
                           (format (if detailed
                                       (format "%%-%ds %%s" label-width)
                                     "%s %s")
-                                  (or (and (not detailed) icon) label)
+                                  (or (and (not detailed) short-label) label)
                                   (cond
+                                   ((and (not detailed) (stringp short-value)) short-value)
                                    ((stringp value) value)
-                                   (value "yes")
+                                   ((or short-value value) "yes")
                                    (t "no"))))
                         fields
                         separator))))
+
+(declare-function nerd-icons-devicon "nerd-icons")
+(declare-function nerd-icons-faicon "nerd-icons")
+(declare-function nerd-icons-flicon "nerd-icons")
+(declare-function nerd-icons-sucicon "nerd-icons")
+(declare-function nerd-icons-icon-for-os-release-id "nerd-icons-extra")
 
 ;;;###autoload
 (defun display-monitor-layout-info (&optional detailed)
@@ -124,32 +153,36 @@ brief one."
 With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
-  (let* ((system-value (format "%s (%s)"
-                               (or (if detailed
-                                       (os-release-info "PRETTY_NAME")
-                                     (os-release-info "NAME"))
-                                   system-type)
-                               window-system))
-         (system-icon (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
+  (let* ((system-icon (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
                           (pcase system-type
                             ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
                             ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
-                            ('darwin (nerd-icons-devicon "nf-dev-apple")))))
-         (user (if detailed
-                   (format "%s | %s" user-login-name user-mail-address)
-               user-login-name))
-         (uptime (emacs-uptime (unless detailed "%D, %z%2h:%.2m")))
-         (load-avg (apply #'format "%.2f %.2f %.2f" (load-average t)))
-         (init-time (emacs-init-time (if detailed "%.2f seconds" "%.2fs"))))
+                            ('darwin (nerd-icons-devicon "nf-dev-apple"))))))
     (message-summary-data detailed
-                          `("Emacs version:" ,emacs-version ,(nerd-icons-sucicon "nf-custom-emacs"))
-                          `("System:" ,system-value ,system-icon)
-                          `("User:" ,user ,(nerd-icons-faicon "nf-fa-user"))
+                          `("Emacs version:"
+                            ,emacs-version
+                            ,(nerd-icons-sucicon "nf-custom-emacs"))
+                          `("System:"
+                            ,(format "%s (%s)" (or (os-release-info "PRETTY_NAME") system-type) window-system)
+                            ,system-icon
+                            ,(format "%s (%s)" (or (os-release-info "NAME") system-type) window-system))
+                          `("User:"
+                            ,(format "%s | %s" user-login-name user-mail-address)
+                            ,(nerd-icons-faicon "nf-fa-user")
+                            ,user-login-name)
                           `("Hostname:" ,(system-name) ,(nerd-icons-faicon "nf-fa-desktop"))
                           display-system-misc-info
-                          `("Uptime:" ,uptime ,(nerd-icons-faicon "nf-fa-clock"))
-                          `("Load average:" ,load-avg ,(nerd-icons-faicon "nf-fa-microchip"))
-                          `("Started in:" ,init-time ,(nerd-icons-faicon "nf-fa-rocket")))))
+                          `("Uptime:"
+                            ,(emacs-uptime)
+                            ,(nerd-icons-faicon "nf-fa-clock")
+                            ,(emacs-uptime "%D, %z%2h:%.2m"))
+                          `("Load average:"
+                            ,(apply #'format "%.2f %.2f %.2f" (load-average t))
+                            ,(nerd-icons-faicon "nf-fa-microchip"))
+                          `("Started in:"
+                            ,(emacs-init-time "%.2f seconds")
+                            ,(nerd-icons-faicon "nf-fa-rocket")
+                            ,(emacs-init-time "%.2fs")))))
 
 
 ;;; Navigation
@@ -280,12 +313,6 @@ is \"C-w\"."
       (insert-file-contents "/etc/os-release")
       (when (re-search-forward (format "^%s=\\(.+\\)$" parameter) nil t)
         (string-trim (match-string-no-properties 1) "\"" "\"")))))
-
-(declare-function nerd-icons-devicon "nerd-icons")
-(declare-function nerd-icons-faicon "nerd-icons")
-(declare-function nerd-icons-flicon "nerd-icons")
-(declare-function nerd-icons-sucicon "nerd-icons")
-(declare-function nerd-icons-icon-for-os-release-id "nerd-icons-extra")
 
 (provide 'misc-extra)
 
