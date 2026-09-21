@@ -1751,7 +1751,8 @@ See `tide-tsserver-executable'."
   :hook
   (ibuffer . ibuffer-set-filter-groups-by-project))
 
-(use-package imenu-faces)
+(use-package imenu-faces
+  :after imenu)
 
 (use-package markdown-mode-extra
   :after markdown-mode
@@ -1803,7 +1804,9 @@ See `tide-tsserver-executable'."
          (require 'wsl-extra)
          (setopt msvs-convert-filename-function 'wsl-convert-filename-to-windows))))
 
-(use-package nerd-icons-extra)
+(use-package nerd-icons-extra
+  :defer t
+  :after nerd-icons)
 
 (use-package xml-where
   :defer t
