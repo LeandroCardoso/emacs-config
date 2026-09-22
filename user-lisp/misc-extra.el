@@ -153,7 +153,8 @@ brief one."
 With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
-  (let* ((system-icon (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
+  (let* ((memory-info (mapcar #'(lambda (arg) (/ (float arg) (expt 1024 2))) (memory-info)))
+         (system-icon (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
                           (pcase system-type
                             ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
                             ('windows-nt (nerd-icons-devicon "nf-dev-windows"))
@@ -179,6 +180,10 @@ brief one."
                           `("Load average:"
                             ,(apply #'format "%.2f %.2f %.2f" (load-average t))
                             ,(nerd-icons-faicon "nf-fa-microchip"))
+                          `("Memory:"
+                            ,(format "%.1f/%.1f GiB" (nth 1 memory-info) (nth 0 memory-info))
+                            ,(nerd-icons-faicon "nf-fa-memory")
+                            ,(format "%.1f GiB" (nth 1 memory-info)))
                           `("Started in:"
                             ,(emacs-init-time "%.2f seconds")
                             ,(nerd-icons-faicon "nf-fa-rocket")
