@@ -1230,8 +1230,6 @@ when it doesn't return any candidate.  Provided for use in hooks."
   :demand t
   :config
   (setopt initial-buffer-choice #'enlight)
-  (setopt enlight-center-horizontally t)
-  (setopt enlight-center-vertically t)
 
   (setopt enlight-content
           (concat
