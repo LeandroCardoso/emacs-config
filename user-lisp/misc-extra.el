@@ -11,6 +11,38 @@
 (require 'midnight)
 
 ;;; Fonts
+(defun list-ui-fonts (&optional proportional)
+  "Return available UI font families that support Latin characters.
+
+The returned list is sorted alphabetically and contains no duplicates.
+
+By default, only monospaced font families are returned.  When
+PROPORTIONAL is non-nil, include proportional font families as well."
+  (seq-filter (lambda (font)
+                (when-let* ((font-entity (find-font (font-spec :family font))))
+                  ;; Ensure the font supports Latin characters
+                  (and (font-has-char-p font-entity ?a)
+                       ;; Linux commonly reports :spacing 100, while Windows often reports :adstyle
+                       ;; mono
+                       (or proportional
+                           (eq (font-get font-entity :adstyle) 'mono)
+                           (eq (font-get font-entity :spacing) 100)))))
+              (seq-uniq (sort (font-family-list) #'string<))))
+
+;;;###autoload
+(defun cycle-font (all-frames)
+  "Switch to the next monospaced font that supports Latin characters.
+
+With prefix argument ALL-FRAMES, apply the new font to all existing and
+future frames."
+  (interactive "P")
+  (let* ((fonts (list-ui-fonts))
+         (current-font (format "%s" (font-get (face-attribute 'default :font) :family)))
+         (next-font (or (cadr (member current-font fonts))
+                        (car fonts))))
+    (message "Setting font to %s" next-font)
+    (set-frame-font next-font t all-frames)))
+
 (define-derived-mode display-fonts-mode special-mode "Fonts"
   "Major mode used in the \"*fonts*\" buffer.")
 
@@ -24,17 +56,7 @@ SHOW-ALL, display all fonts that contain Latin characters."
   (with-current-buffer-window "*fonts*" nil nil
     (let* ((sample-text
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 `'\"~!@#$%^&*<>[]{}()_-+=/|\\.,;:")
-           (all-fonts (seq-uniq (sort (font-family-list) #'string<)))
-           (fonts (seq-filter (lambda (font)
-                                (when-let* ((font-entity (find-font (font-spec :family font))))
-                                  ;; Ensure the font supports Latin characters
-                                  (and (font-has-char-p font-entity ?a)
-                                       ;; Linux commonly reports :spacing 100, while Windows often
-                                       ;; reports :adstyle mono
-                                       (or show-all
-                                           (eq (font-get font-entity :adstyle) 'mono)
-                                           (eq (font-get font-entity :spacing) 100)))))
-                              all-fonts))
+           (fonts (list-ui-fonts show-all))
            ;; Compute the label width using the longest font name
            (label-width (if fonts (apply #'max (mapcar #'string-width fonts)) 0))
            (line-format (format "%%-%ds %%s\n" label-width)))
