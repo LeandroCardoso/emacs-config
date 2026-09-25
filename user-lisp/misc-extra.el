@@ -72,6 +72,17 @@ SHOW-ALL, display all fonts that contain Latin characters."
     (set-frame-font font-name t t)
     (message "Setting font to %s" font-name)))
 
+;;;###autoload
+(defun set-frame-font+ (all-frames)
+  "Set the font of the selected frame.
+
+Prompt for a font name and apply it to the selected frame.
+
+With prefix argument ALL-FRAMES, apply the font to all existing frames
+and use it for future frames."
+  (interactive "P")
+  (set-frame-font (completing-read "Font name: " (list-ui-fonts) nil t) t all-frames))
+
 
 ;;; Information
 
