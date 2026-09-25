@@ -29,6 +29,25 @@ PROPORTIONAL is non-nil, include proportional font families as well."
                            (eq (font-get font-entity :spacing) 100)))))
               (seq-uniq (sort (font-family-list) #'string<))))
 
+(defvar swap-fonts-pair nil "Pair of fonts used by `swap-fonts'.")
+
+;;;###autoload
+(defun swap-fonts (&optional reset)
+  "Toggle between two fonts.
+
+With prefix argument RESET, prompt for a new pair of fonts.  Otherwise,
+toggle between the previously configured pair.
+
+If no pair has been configured, prompt for one."
+  (interactive "P")
+  (when (or reset (null swap-fonts-pair))
+    (let ((fonts (list-ui-fonts)))
+      (setq swap-fonts-pair (cons (completing-read "First font: " fonts nil t)
+                                  (completing-read "Second font: " fonts nil t)))))
+  (setq swap-fonts-pair (cons (cdr swap-fonts-pair) (car swap-fonts-pair)))
+  (message "Font: %s" (cdr swap-fonts-pair))
+  (set-frame-font (cdr swap-fonts-pair) t))
+
 ;;;###autoload
 (defun cycle-font (all-frames)
   "Switch to the next monospaced font that supports Latin characters.
