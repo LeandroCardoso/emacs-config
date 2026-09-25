@@ -15,27 +15,32 @@
   "Major mode used in the \"*fonts*\" buffer.")
 
 ;;;###autoload
-(defun display-fonts (&optional only-mono)
-  "Display a buffer with a list of all available fonts.
+(defun display-fonts (&optional show-all)
+  "Display a buffer listing available Latin fonts.
 
-When ONLY-MONO parameter is non-nil, only display monospaced fonts."
+By default, only monospaced fonts are shown.  With prefix argument
+SHOW-ALL, display all fonts that contain Latin characters."
   (interactive "P")
   (with-current-buffer-window "*fonts*" nil nil
-    (let ((text "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 01213456789")
-          (font-name-length 30)
-          (font-name-propertize t))
-      (dolist (font (seq-uniq (seq-sort #'string< (font-family-list))))
-        (when (or (not only-mono)
-                  ;; Linux reports spacing=100 and MS Windows reports adstyle=mono
-                  (eq 'mono (font-get (find-font (font-spec :family font)) :adstyle))
-                  (eq 100 (font-get (find-font (font-spec :family font)) :spacing)))
-          (if font-name-propertize
-              (insert (propertize font 'face `(:family ,font)))
-            (insert (substring font 0 (min (1- font-name-length) (length font)))))
-          (insert (propertize " " 'display `(space :align-to ,font-name-length)))
-          (insert (propertize text 'face `(:family ,font)))
-          (newline))))
-    (display-fonts-mode)))
+    (let* ((sample-text
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 `'\"~!@#$%^&*<>[]{}()_-+=/|\\.,;:")
+           (all-fonts (seq-uniq (sort (font-family-list) #'string<)))
+           (fonts (seq-filter (lambda (font)
+                                (when-let* ((font-entity (find-font (font-spec :family font))))
+                                  ;; Ensure the font supports Latin characters
+                                  (and (font-has-char-p font-entity ?a)
+                                       ;; Linux commonly reports :spacing 100, while Windows often
+                                       ;; reports :adstyle mono
+                                       (or show-all
+                                           (eq (font-get font-entity :adstyle) 'mono)
+                                           (eq (font-get font-entity :spacing) 100)))))
+                              all-fonts))
+           ;; Compute the label width using the longest font name
+           (label-width (if fonts (apply #'max (mapcar #'string-width fonts)) 0))
+           (line-format (format "%%-%ds %%s\n" label-width)))
+      (dolist (font fonts)
+        (insert (format line-format font (propertize sample-text 'face `(:family ,font)))))
+      (display-fonts-mode))))
 
 ;;;###autoload
 (defun set-first-font (font-list)
