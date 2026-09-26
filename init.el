@@ -1588,11 +1588,6 @@ See `tide-tsserver-executable'."
   ;; query-replace highlights unrelated text when other commands are executed, which is annoying
   (vhl/ext/query-replace/off))
 
-(use-package wgrep
-  :ensure t
-  :defer t
-  :after grep)
-
 (use-package ws-butler
   :ensure t
   :config
