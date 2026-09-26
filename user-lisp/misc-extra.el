@@ -183,6 +183,23 @@ newlines."
                         fields
                         separator))))
 
+(defun system-memory-usage ()
+  "Return a list of (USED-RAM TOTAL-RAM).
+
+All values are in Kbytes.  If the system is not supported or memory
+information can’t be obtained, return nil."
+  (let ((meminfo-file "/proc/meminfo"))
+    (when (file-readable-p meminfo-file)
+      (with-temp-buffer
+        (insert-file-contents meminfo-file)
+        (let ((total (progn (goto-char (point-min))
+                            (re-search-forward "^MemTotal:[ \t]+\\([0-9]+\\) kB")
+                            (string-to-number (match-string 1))))
+              (available (progn (goto-char (point-min))
+                                (re-search-forward "^MemAvailable:[ \t]+\\([0-9]+\\) kB")
+                                (string-to-number (match-string 1)))))
+          (list (- total available) total))))))
+
 (declare-function nerd-icons-devicon "nerd-icons")
 (declare-function nerd-icons-faicon "nerd-icons")
 (declare-function nerd-icons-flicon "nerd-icons")
@@ -210,7 +227,8 @@ brief one."
 With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
-  (let* ((memory-info (mapcar #'(lambda (arg) (/ (float arg) (expt 1024 2))) (memory-info)))
+  (let* ((memory-info (when-let* ((memory (system-memory-usage)))
+                        (mapcar #'(lambda (arg) (/ (float arg) (expt 1024 2))) memory)))
          (system-icon (or (nerd-icons-icon-for-os-release-id (os-release-info "ID"))
                           (pcase system-type
                             ('gnu/linux (nerd-icons-flicon "nf-linux-tux"))
@@ -238,9 +256,9 @@ brief one."
                             ,(apply #'format "%.2f %.2f %.2f" (load-average t))
                             ,(nerd-icons-faicon "nf-fa-microchip"))
                           `("Memory:"
-                            ,(format "%.1f/%.1f GiB" (nth 1 memory-info) (nth 0 memory-info))
+                            ,(if memory-info (format "%.1f/%.1f GiB" (car memory-info) (cadr memory-info)) "N/A")
                             ,(nerd-icons-faicon "nf-fa-memory")
-                            ,(format "%.1f GiB" (nth 1 memory-info)))
+                            ,(if memory-info (format "%.1f GiB" (car memory-info)) "N/A"))
                           `("Started in:"
                             ,(emacs-init-time "%.2f seconds")
                             ,(nerd-icons-faicon "nf-fa-rocket")
