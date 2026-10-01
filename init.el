@@ -660,6 +660,22 @@ packages.")
   :bind
   ("C-x M-$" . ispell-change-dictionary))
 
+(use-package man
+  :defer t
+  :init
+  ;; unset compose-mail keys to use it with man
+  (global-unset-key (kbd "C-x m"))   ; compose-mail
+  (global-unset-key (kbd "C-x 4 m")) ; compose-mail-other-window
+  (global-unset-key (kbd "C-x 5 m")) ; compose-mail-other-frame
+
+  :config
+  (setopt Man-notify-method 'thrifty)
+  (setopt Man-width-max nil)
+
+  :bind
+  (:map ctl-x-map
+        ("m" . man)))
+
 (use-package midnight
   :config
   (setopt clean-buffer-list-delay-general 2)
@@ -1076,21 +1092,6 @@ See `kill-new' for details."
   (:map winner-mode-map
         ("C-c [" . winner-undo)
         ("C-c ]" . winner-redo)))
-
-(use-package woman
-  :defer t
-  :init
-  ;; unset compose-mail keys to use it with woman
-  (global-unset-key (kbd "C-x m"))   ; compose-mail
-  (global-unset-key (kbd "C-x 4 m")) ; compose-mail-other-window
-  (global-unset-key (kbd "C-x 5 m")) ; compose-mail-other-frame
-
-  :config
-  (setopt woman-fill-frame t)
-
-  :bind
-  (:map ctl-x-map
-        ("m" . woman)))
 
 (use-package xref
   :defer t
@@ -1880,16 +1881,6 @@ See `tide-tsserver-executable'."
   ("C-x C-M-$" . ispell-dictionary-info))
 
 (use-package teamcity)
-
-(use-package woman-reformat
-  :demand t
-  :after woman
-  :config
-  (woman-reformat-setup)
-
-  :bind
-  (:map woman-mode-map
-        ([remap woman-reformat-last-file] . woman-reformat)))
 
 (use-package w32-extra
   :if system-windows-p
