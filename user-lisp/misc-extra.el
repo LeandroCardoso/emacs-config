@@ -218,7 +218,7 @@ brief one."
     (message-summary-data detailed
                           `("Monitor:" ,(format "%dx%d" monitor-width monitor-height))
                           `("Frame:" ,(format "%dx%d" (frame-width) (frame-height)))
-                          `("Window:" ,(format "%dx%d" (window-width) (window-height))))))
+                          `("Window:" ,(format "%dx%d" (window-body-width) (window-body-height))))))
 
 ;;;###autoload
 (defun display-system-info (&optional detailed)
