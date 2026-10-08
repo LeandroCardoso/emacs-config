@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# WSL
+# wsl --install archlinux
+# pacman -Sy
+# pacman -S git sudo nano
+# nano /etc/sudoers --uncomment WHEEL group
+# useradd -m -G wheel lecardos
+# passwd lecardos
+# wsl --manage archlinux --set-default-user lecardos
+
 # install emacs and tools
 sudo pacman -S 7zip \
                adobe-source-code-pro-fonts \
