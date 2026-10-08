@@ -14,8 +14,10 @@
 (setopt gc-cons-threshold (* 32 1024 1024)) ; Increase GC threshold for performance
 (setopt load-prefer-newer t)
 
-(defconst rdi-p (string= (system-name) "LBR-20CRXW3") "Non-nil if the RDI setup should be loaded.")
-(defconst system-windows-p (eq system-type 'windows-nt) "Non-nil if `system-type' is windows-nt.")
+(defconst rdi-p (string-match-p "^LBR-[A-Z0-9]\\{7\\}$" (system-name))
+  "Non-nil if the RDI setup should be loaded.")
+(defconst system-windows-p (eq system-type 'windows-nt)
+  "Non-nil if `system-type' is windows-nt.")
 
 ;; We must config use-package at the beginning, so the `use-package-compute-statistics' and
 ;; `use-package-verbose' works properly
