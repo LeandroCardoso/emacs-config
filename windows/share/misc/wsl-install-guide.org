@@ -1,0 +1,16 @@
+1. Install archlinux
+   - (powershell) wsl --install archlinux
+2. Start archlinux
+3. Install base tools
+   - pacman -Sy
+   - pacman -S git sudo nano
+4. Add new user
+   - nano /etc/sudoers
+     - uncomment WHEEL group
+   - useradd -m -G wheel <username>
+   - passwd <username>
+   - (powershell) wsl --manage archlinux --set-default-user <username>
+5. Login with new user
+6. Install the private ssh key
+   - copy .ssh from backup
+   - chmod 700 .ssh
