@@ -32,7 +32,7 @@
   :group 'faces)
 
 (defcustom dynamic-font-size-data-file
-  (expand-file-name "dynamic-font-size-data.el" user-emacs-directory)
+  (expand-file-name "dynamic-font-size-data.eld" user-emacs-directory)
   "File where font sizes per monitor are saved."
   :type 'file
   :group 'dynamic-font-size)
