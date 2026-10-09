@@ -1361,6 +1361,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
             (format "--stat-graph-width=%d" (/ (window-width) 5))
             "--compact-summary")))
 
+  (setopt magit-clone-always-transient t)
   (setopt magit-diff-extra-stat-arguments 'magit-diff-extra-stat-arguments-setup)
   (setopt magit-ediff-dwim-show-on-hunks t)
   (setopt magit-format-file-function 'magit-format-file-nerd-icons)
