@@ -1,11 +1,10 @@
 *.elc
+*.eld
 .emacs.desktop
 .emacs.desktop.lock
 auto-save-list/
 auto-save/
-bookmarks
 custom-variables.el
-dynamic-font-size-data.el
 eln-cache
 eshell/history
 eshell/lastdir
@@ -13,11 +12,8 @@ history
 network-security.data
 org-persist/
 personal-dictonary
-places
 plantuml/
 prescient-save.el
-projects
-recentf
 server/
 session.*
 tldr/
