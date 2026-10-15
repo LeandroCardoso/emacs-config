@@ -1701,6 +1701,13 @@ See `tide-tsserver-executable'."
   (:map emacs-lisp-mode-map
         ("C-c C-u" . prepare-user-lisp)))
 
+(use-package flymake-extra
+  :defer t
+  :after flymake
+  :bind
+  (:map flymake-map
+        ("@" . flymake-toggle-show-diagnostics-at-end-of-line)))
+
 (use-package fragment
   :defer t
   :after nxml-mode)
