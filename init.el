@@ -145,13 +145,13 @@
   (setq-default indicate-empty-lines t)
   (setopt next-error-highlight 'fringe-arrow)
 
-  ;; modeline
+  ;; mode-line
   (setopt column-number-mode t)
   (setopt mode-line-default-help-echo nil)
   (setopt mode-line-position-column-line-format '(" %l:%c"))
 
   ;; scroll
-  (setopt scroll-conservatively 10) ; scroll up to this many lines without recentering
+  (setopt scroll-conservatively 10) ; scroll up to this many lines without re-centering
   (setopt scroll-preserve-screen-position t)
 
   ;; trusted lisp files
@@ -170,7 +170,7 @@
     (setq select-active-regions nil))
 
   (defvar files-ignore
-    '("*.dic""abbrev_defs""words/*"                               ; emacs
+    '("*.dic""abbrev_defs""words/*"                               ; Emacs
       "GPATH" "GRTAGS" "GTAGS" "TAGS*"                            ; tags
       "main.*.js" "polyfills.*.js" "runtime.*.js" "styles.*.css") ; minified
     "List of files that need to be ignored by grep, project and xref.
