@@ -447,6 +447,7 @@ packages.")
 (use-package ffap
   :config
   (setopt ffap-file-name-with-spaces t)
+  (setopt ffap-prefer-remote-file t)
   (ffap-bindings))
 
 (use-package flymake
