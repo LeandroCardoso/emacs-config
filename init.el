@@ -891,7 +891,7 @@ Provided for use in hooks."
 Provided for use in hooks."
     (setopt truncate-lines nil))
 
-  (defun kill-new-advice (string &rest r)
+  (defun kill-new-advice (string &rest _r)
     "Make STRING the latest kill in the kill ring.
 
 This function is intended to be used as an advice.  Parameter R exists
@@ -1463,7 +1463,7 @@ when it doesn't return any candidate.  Provided for use in hooks."
   :after ox
   :config
   ;; Override to preserve newlines in paragraphs
-  (defun ox-jira-paragraph-override (paragraph contents info)
+  (defun ox-jira-paragraph-override (_paragraph contents _info)
     "Transcode a PARAGRAPH element from Org to JIRA.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
 the plist used as a communication channel."
