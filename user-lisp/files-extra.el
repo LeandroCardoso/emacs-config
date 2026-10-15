@@ -121,7 +121,7 @@ copy all files that exist in both directories."
                        (file-newer-than-file-p source-file destination-file)))
           (message "Copying %s" (file-name-nondirectory source-file))
           (copy-file source-file (file-name-as-directory destination) t)
-          (setq files-copied (1+ files-copied)))))
+          (incf files-copied))))
     (message "%d files copied from %s to %s." files-copied source destination)))
 
 ;;;###autoload
