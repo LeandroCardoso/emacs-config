@@ -32,4 +32,4 @@
 
 (provide 'recentf-extra)
 
-;;; init-recentf.el ends here
+;;; recentf-extra.el ends here
