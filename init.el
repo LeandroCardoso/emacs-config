@@ -307,6 +307,11 @@ packages.")
   ;; command to avoid loading a desktop session on Emacs initialization
   (desktop-after-read . desktop-save-mode))
 
+(use-package diff-mode
+  :defer t
+  :config
+  (setopt diff-font-lock-prettify t))
+
 (use-package dired
   :defer t
   :config
@@ -993,7 +998,6 @@ See `kill-new' for details."
 (use-package vc
   :defer t
   :config
-  (setopt diff-font-lock-prettify t)
   (setopt vc-command-messages t)
   (setopt vc-find-revision-no-save t)
   (setopt vc-follow-symlinks t)
