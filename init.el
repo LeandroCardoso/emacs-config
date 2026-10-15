@@ -458,6 +458,7 @@ packages.")
 
   :config
   (setopt flymake-no-changes-timeout 30)
+  (setopt flymake-show-diagnostics-at-end-of-line t)
 
   :bind
   (:map prog-mode-map
