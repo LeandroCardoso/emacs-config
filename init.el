@@ -1008,8 +1008,7 @@ See `kill-new' for details."
   :bind
   (:map vc-prefix-map
         ("C-d" . vc-dir-root)
-        ("e" . vc-ediff)
-        ("R" . vc-rename-file)))
+        ("e" . vc-ediff)))
 
 (use-package vc-dir
   :defer t
