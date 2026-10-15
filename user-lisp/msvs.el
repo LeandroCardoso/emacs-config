@@ -116,7 +116,7 @@ The function defined in `msvs-compile-command-function' is used to
 generate a compilation command."
   (interactive)
   (when-let* ((command (funcall msvs-compile-command-function)))
-    (setq-local compile-command command)
+    (setopt-local compile-command command)
     ;; If the project directory is different than the default-directory then
     ;; compilation-search-path needs to be set.
     (let ((project-file (car (locate-dominating-file-match default-directory msvs-all-projects-regexp))))

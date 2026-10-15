@@ -33,7 +33,7 @@ must be named after the locale with a \".txt\" extension."
                                  ispell-dictionary)))))
 
     (if local
-        (setq-local ispell-complete-word-dict file)
+        (setopt-local ispell-complete-word-dict file)
       (setq ispell-complete-word-dict file))
 
     (message "%s Ispell word-list dictionary set to %s"
