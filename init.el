@@ -132,10 +132,10 @@
   (setopt version-control t)
 
   ;; edit
-  (setq-default abbrev-mode t) ; enable abbrev-mode by default
   (setq-default fill-column 100)
   (setq-default tab-width 4)
 
+  (setopt abbrev-mode t)
   (setopt delete-pair-blink-delay 0.25)
   (setopt delete-pair-push-mark t)
   (setopt sentence-end-double-space nil)
