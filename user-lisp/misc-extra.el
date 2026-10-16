@@ -86,7 +86,11 @@ SHOW-ALL, display all fonts that contain Latin characters."
 ;;;###autoload
 (defun set-first-font (font-list)
   "Set the first font from FONT-LIST that is available in all frames."
-  (when-let* ((font-name (seq-find (lambda (font) (find-font (font-spec :name font)))
+  (when-let* ((font-name (seq-find (lambda (font)
+                                     (find-font (font-spec :name font
+                                                           :weight 'normal
+                                                           :slant 'normal
+                                                           :width 'normal)))
                                    font-list)))
     (set-frame-font font-name t t)
     (message "Setting font to %s" font-name)))
