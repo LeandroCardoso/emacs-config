@@ -934,6 +934,8 @@ See `kill-new' for details."
   (setopt next-error-message-highlight t)
   (setopt normal-erase-is-backspace nil)
   (setopt read-extended-command-predicate 'command-completion-default-include-p)
+  (setopt save-interprogram-paste-before-kill t)
+  (setopt shell-command-prompt-show-cwd t)
   (setopt shift-select-mode nil)
   (setopt what-cursor-show-names t)
 
