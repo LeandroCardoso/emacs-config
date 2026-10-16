@@ -18,16 +18,28 @@ The returned list is sorted alphabetically and contains no duplicates.
 
 By default, only monospaced font families are returned.  When
 PROPORTIONAL is non-nil, include proportional font families as well."
-  (seq-filter (lambda (font)
-                (when-let* ((font-entity (find-font (font-spec :family font))))
-                  ;; Ensure the font supports Latin characters
-                  (and (font-has-char-p font-entity ?a)
-                       ;; Linux commonly reports :spacing 100, while Windows often reports :adstyle
-                       ;; mono
-                       (or proportional
-                           (eq (font-get font-entity :adstyle) 'mono)
-                           (eq (font-get font-entity :spacing) 100)))))
-              (seq-uniq (sort (font-family-list) #'string<))))
+  (seq-filter
+   (lambda (family)
+     (when-let* ((font (find-font (font-spec :family family))))
+       (and
+        ;; Basic Latin support
+        (font-has-char-p font ?a)
+        (or proportional
+            ;; Monospace detection
+            (let* ((adstyle (font-get font :adstyle))
+                   (spacing (font-get font :spacing))
+                   (finfo    (font-info family)))
+              (or
+               ;; Common on Windows
+               (eq adstyle 'mono)
+               ;; Common on Linux
+               (eq spacing 100)
+               ;; Fallback for fonts that do not report spacing like 'Noto Fonts', compare
+               ;; average-width with max-width
+               (and finfo
+                    (= (aref finfo 7)
+                       (aref finfo 11)))))))))
+   (seq-uniq (sort (font-family-list) #'string<))))
 
 (defvar swap-fonts-pair nil "Pair of fonts used by `swap-fonts'.")
 
