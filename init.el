@@ -359,6 +359,10 @@ packages.")
   :hook
   (ediff-meta-buffer-keymap-setup . ediff-meta-buffer-map-setup))
 
+(use-package editorconfig
+  :config
+  (editorconfig-mode))
+
 (use-package eglot
   :defer t
   :init
