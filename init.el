@@ -327,6 +327,7 @@ packages.")
   (setopt dired-isearch-filenames 'dwim)
   (setopt dired-kill-when-opening-new-dired-buffer t)
   (setopt dired-maybe-use-globstar t)
+  (setopt dired-mouse-drag-files t)
   (setopt dired-movement-style 'bounded)
 
   :bind
@@ -700,6 +701,14 @@ packages.")
   :config
   (setopt duplicate-line-final-position 1)
   (setopt duplicate-region-final-position 1))
+
+(use-package mouse
+  :config
+  (setopt context-menu-mode t)
+  (setopt mouse-yank-at-point t)
+  (setopt mouse-drag-and-drop-region t)
+  (setopt mouse-drag-and-drop-region-cross-program t)
+  (setopt mouse-drag-mode-line-buffer t))
 
 (use-package mule
   :config
