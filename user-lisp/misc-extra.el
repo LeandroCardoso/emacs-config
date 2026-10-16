@@ -62,9 +62,6 @@ future frames."
     (message "Setting font to %s" next-font)
     (set-frame-font next-font t all-frames)))
 
-(define-derived-mode display-fonts-mode special-mode "Fonts"
-  "Major mode used in the \"*fonts*\" buffer.")
-
 ;;;###autoload
 (defun display-fonts (&optional show-all)
   "Display a buffer listing available Latin fonts.
@@ -72,23 +69,25 @@ future frames."
 By default, only monospaced fonts are shown.  With prefix argument
 SHOW-ALL, display all fonts that contain Latin characters."
   (interactive "P")
-  (with-current-buffer-window "*fonts*" nil nil
-    (let* ((sample-text
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 `'\"~!@#$%^&*<>[]{}()_-+=/|\\.,;:")
-           (fonts (list-ui-fonts show-all))
-           ;; Compute the label width using the longest font name
-           (label-width (if fonts (apply #'max (mapcar #'string-width fonts)) 0))
-           (line-format (format "%%-%ds %%s\n" label-width)))
-      (dolist (font fonts)
-        (insert (format line-format font (propertize sample-text 'face `(:family ,font)))))
-      (display-fonts-mode))))
+  (let* ((help-buffer-under-preparation t)
+         (sample-text
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 `'\"~!@#$%^&*<>[]{}()_-+=/|\\.,;:")
+         (fonts (list-ui-fonts show-all))
+         ;; Compute the label width using the longest font name
+         (label-width (if fonts (apply #'max (mapcar #'string-width fonts)) 0))
+         (line-format (format "%%-%ds %%s\n" label-width)))
+    (help-setup-xref (list #'display-fonts show-all) (called-interactively-p 'interactive))
+    (with-output-to-temp-buffer (help-buffer)
+      (with-current-buffer standard-output
+        (dolist (font fonts)
+          (insert (format line-format font (propertize sample-text 'face `(:family ,font)))))))))
 
 ;;;###autoload
 (defun set-first-font (font-list)
   "Set the first font from FONT-LIST that is available in all frames."
   (when-let* ((font-name (seq-find (lambda (font)
                                      (find-font (font-spec :name font
-                                                           :weight 'normal
+                                                           :weight 'regular
                                                            :slant 'normal
                                                            :width 'normal)))
                                    font-list)))
