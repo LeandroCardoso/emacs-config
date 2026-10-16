@@ -95,26 +95,13 @@
 
 (use-package emacs
   :config
-  (setq-default cursor-type 'bar)
-  (setq-default truncate-lines nil)
-
   (setq inhibit-compacting-font-caches t)
 
   (setopt confirm-kill-emacs 'y-or-n-p)
   (setopt confirm-kill-processes nil)
   (setopt enable-local-variables :all)
-  (setopt frame-inhibit-implied-resize t) ; never resize the frame
-  (setopt frame-resize-pixelwise t)
-  (setopt highlight-nonselected-windows t)
-  (setopt inhibit-startup-screen t)
-  (setopt initial-scratch-message nil)
-  (setopt ring-bell-function 'ignore)
   (setopt save-some-buffers-default-predicate 'save-some-buffers-root)
-  (setopt truncate-partial-width-windows nil)
   (setopt use-short-answers t)
-  (setopt window-combination-limit nil)
-  (setopt window-combination-resize t)
-  (setopt x-underline-at-descent-line t)
 
   (plist-put minibuffer-prompt-properties 'cursor-intangible t)
 
@@ -140,6 +127,7 @@
   (setopt delete-pair-push-mark t)
   (setopt sentence-end-double-space nil)
   (setopt tab-always-indent 'complete)
+  (setopt view-read-only t)
 
   ;; fringe
   (setq-default indicate-empty-lines t)
@@ -154,12 +142,30 @@
   (setopt scroll-conservatively 10) ; scroll up to this many lines without re-centering
   (setopt scroll-preserve-screen-position t)
 
+  ;; start-up
+  (setopt inhibit-startup-screen t)
+  (setopt initial-scratch-message nil)
+
   ;; trusted lisp files
   (setopt trusted-content :all)
 
   ;; undo
   (setopt undo-limit (* 1 1024 1024))
   (setopt undo-strong-limit (truncate (* undo-limit 1.5)))
+
+  ;; UI
+  (setq-default cursor-type 'bar)
+  (setq-default truncate-lines nil)
+
+  (setopt frame-inhibit-implied-resize t) ; never resize the frame
+  (setopt frame-resize-pixelwise t)
+  (setopt highlight-nonselected-windows t)
+  (setopt ring-bell-function 'ignore)
+  (setopt truncate-partial-width-windows nil)
+  (setopt window-combination-limit nil)
+  (setopt window-combination-resize t)
+  (setopt window-resize-pixelwise t)
+  (setopt x-underline-at-descent-line t)
 
   ;; user
   (setopt user-full-name "Leandro Cardoso")
