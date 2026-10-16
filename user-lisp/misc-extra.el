@@ -352,7 +352,7 @@ fullscreen.  Disable it otherwise.
 
 This function is intended to be used as an advice in
 `toggle-frame-fullscreen' function:
-  (advice-add \='toggle-frame-fullscreen :after \='smart-display-time-modegpnpnp)"
+  (advice-add \='toggle-frame-fullscreen :after \='smart-display-time-mode)"
   (require 'time)
   (display-time-mode
    (if (or (not (display-graphic-p))
