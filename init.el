@@ -845,6 +845,10 @@ packages.")
   (setopt project-vc-ignores files-ignore)
   (setopt project-vc-merge-submodules nil))
 
+(use-package repeat
+  :config
+  (repeat-mode))
+
 (use-package recentf
   :config
   (setopt recentf-autosave-interval 300)
