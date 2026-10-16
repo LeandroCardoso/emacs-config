@@ -3,6 +3,8 @@
 # install emacs and tools
 sudo pacman -S 7zip \
                adobe-source-code-pro-fonts \
+               adobe-source-sans-fonts \
+               adobe-source-serif-fonts \
                bat \
                clang \
                clang-tools-extra \
@@ -20,7 +22,9 @@ sudo pacman -S 7zip \
                less \
                man-pages \
                noto-fonts \
+               noto-fonts-cjk \
                noto-fonts-emoji \
+               noto-fonts-extra \
                openssh \
                pkgfile \
                python \
