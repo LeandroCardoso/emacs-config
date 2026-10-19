@@ -197,6 +197,21 @@ information can’t be obtained, return nil."
 ;;; Commands
 
 ;;;###autoload
+(defun display-font-information (&optional detailed)
+  "Display current default font information.
+
+With prefix argument DETAILED, display a detailed message, instead of a
+brief one."
+  (interactive "P")
+  (message-summary-data detailed
+                        `("Font:"
+                          ,(format "%s | %s | %s"
+                                   (face-attribute 'default :family)
+                                   (face-attribute 'default :weight)
+                                   (round (/ (face-attribute 'default :height) 10.0)))
+                          ,(nerd-icons-faicon "nf-fa-font"))))
+
+;;;###autoload
 (defun display-monitor-layout-info (&optional detailed)
   "Display current monitor, frame and selected window dimensions.
 
