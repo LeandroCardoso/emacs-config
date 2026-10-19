@@ -8,7 +8,14 @@
 
 ;;; Code:
 
+(require 'frame)
 (require 'midnight)
+(require 'minibuffer)
+(require 'org)
+(require 'page)
+(require 'seq)
+(require 'time)
+(require 'window)
 
 ;;; Font
 
