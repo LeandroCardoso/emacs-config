@@ -1805,18 +1805,6 @@ See `tide-tsserver-executable'."
   (smart-display-time-mode)
   (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
 
-  (setopt display-system-misc-info
-          (list (list "RDI:"
-                      rdi-p
-                      (nerd-icons-faicon "nf-fa-burger"))
-                (list "WSL:"
-                      wsl-p
-                      (nerd-icons-devicon "nf-dev-windows"))))
-
-  ;; Ensure the display-system-info runs last to prevent its message from being overwritten by other
-  ;; initialization messages
-  (add-hook 'emacs-startup-hook 'display-system-info 100)
-
   :bind
   ([remap backward-page] . backward-page-smart)
   ([remap forward-page] . forward-page-smart)
@@ -1836,10 +1824,6 @@ See `tide-tsserver-executable'."
         (wsl-p
          (require 'wsl-extra)
          (setopt msvs-convert-filename-function 'wsl-convert-filename-to-windows))))
-
-(use-package nerd-icons-extra
-  :defer t
-  :after nerd-icons)
 
 (use-package xml-where
   :defer t
@@ -1910,6 +1894,22 @@ See `tide-tsserver-executable'."
   ("C-}" . shrink-window+)
   ("C-M-]" . enlarge-window-horizontally+)
   ("C-M-}" . shrink-window-horizontally+))
+
+(use-package system-information
+  :defer t
+  :after nerd-icons
+  :config
+  (setopt display-system-misc-info
+          (list (list "RDI:"
+                      rdi-p
+                      (nerd-icons-faicon "nf-fa-burger"))
+                (list "WSL:"
+                      wsl-p
+                      (nerd-icons-devicon "nf-dev-windows"))))
+
+  ;; Ensure the display-system-info runs last to prevent its message from being overwritten by other
+  ;; initialization messages
+  (add-hook 'emacs-startup-hook 'display-system-info 100))
 
 (use-package ispell-extra
   :after ispell
