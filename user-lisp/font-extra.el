@@ -8,6 +8,10 @@
 
 ;;; Code:
 
+(require 'faces)
+(require 'frame)
+(require 'help)
+
 ;; Internal functions
 (defun list-ui-fonts (&optional proportional)
   "Return available UI font families that support Latin characters.
