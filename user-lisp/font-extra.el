@@ -38,7 +38,8 @@ PROPORTIONAL is non-nil, include proportional font families as well."
                (eq spacing 100)
                ;; Fallback for fonts that do not report spacing like 'Noto Fonts', compare
                ;; average-width with max-width
-               (and finfo
+               (and (eq spacing nil)
+                    finfo
                     (= (aref finfo 7)
                        (aref finfo 11)))))))))
    (seq-uniq (sort (font-family-list) #'string<))))
@@ -53,7 +54,7 @@ With prefix argument ALL-FRAMES, apply the new font to all existing and
 future frames."
   (interactive "P")
   (let* ((fonts (list-ui-fonts))
-         (current-font (format "%s" (font-get (face-attribute 'default :font) :family)))
+         (current-font (face-attribute 'default :family))
          (next-font (or (cadr (member current-font fonts))
                         (car fonts))))
     (message "Setting font to %s" next-font)
@@ -106,7 +107,7 @@ If no pair has been configured, prompt for one."
       (setq swap-fonts-pair (cons (completing-read "First font: " fonts nil t)
                                   (completing-read "Second font: " fonts nil t)))))
   (setq swap-fonts-pair (cons (cdr swap-fonts-pair) (car swap-fonts-pair)))
-  (message "Font: %s" (cdr swap-fonts-pair))
+  (message "Setting font to %s" (cdr swap-fonts-pair))
   (set-frame-font (cdr swap-fonts-pair) t))
 
 (provide 'font-extra)
