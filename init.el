@@ -1733,6 +1733,9 @@ See `tide-tsserver-executable'."
   (:map flymake-map
         ("@" . flymake-toggle-show-diagnostics-at-end-of-line)))
 
+(use-package font-extra
+  :defer t)
+
 (use-package fragment
   :defer t
   :after nxml-mode)
