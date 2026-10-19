@@ -701,6 +701,10 @@ packages.")
   (setopt clean-buffer-list-delay-general 2)
   (midnight-mode))
 
+(use-package minibuffer
+  :bind
+  ("C-<tab>" . completion-at-point))
+
 (use-package misc
   :config
   (setopt duplicate-line-final-position 1)
@@ -726,10 +730,6 @@ packages.")
   :defer t
   :config
   (setq disabled-command-function nil))
-
-(use-package minibuffer
-  :bind
-  ("C-<tab>" . completion-at-point))
 
 (use-package newcomment
   :config
@@ -1670,14 +1670,6 @@ See `tide-tsserver-executable'."
   (:map archive-mode-map
         ([remap back-to-indentation] . archive-move-to-filename)))
 
-(use-package dynamic-font-size
-  :demand t
-  :config
-  (dynamic-font-size-mode)
-
-  :bind
-  ("C-M-=" . dynamic-font-size-adjust))
-
 (use-package dired-extra
   :defer t
   :after dired
@@ -1688,6 +1680,14 @@ See `tide-tsserver-executable'."
         ([remap back-to-indentation] . dired-position-at-filename))
   (:map wdired-mode-map
         ([remap back-to-indentation] . dired-position-at-filename)))
+
+(use-package dynamic-font-size
+  :demand t
+  :config
+  (dynamic-font-size-mode)
+
+  :bind
+  ("C-M-=" . dynamic-font-size-adjust))
 
 (use-package ediff-extra
   :demand t
@@ -1787,6 +1787,14 @@ See `tide-tsserver-executable'."
 (use-package imenu-faces
   :after imenu)
 
+(use-package ispell-extra
+  :after ispell
+  :config
+  (setopt ispell-words-directory (file-name-directory ispell-complete-word-dict))
+
+  :bind
+  ("C-x C-M-$" . ispell-dictionary-info))
+
 (use-package markdown-mode-extra
   :after markdown-mode
   :bind
@@ -1824,16 +1832,6 @@ See `tide-tsserver-executable'."
         (wsl-p
          (require 'wsl-extra)
          (setopt msvs-convert-filename-function 'wsl-convert-filename-to-windows))))
-
-(use-package xml-where
-  :defer t
-  :after nxml-mode
-  :hook
-  (nxml-mode . xml-where-which-func-setup)
-
-  :bind
-  (:map nxml-mode-map
-        ("C-c C-c" . xml-where-tree)))
 
 (use-package nuget
   :if (or system-windows-p wsl-p)
@@ -1896,7 +1894,7 @@ See `tide-tsserver-executable'."
   ("C-M-}" . shrink-window-horizontally+))
 
 (use-package system-information
-  :defer t
+  :demand t
   :after nerd-icons
   :config
   (setopt display-system-misc-info
@@ -1910,14 +1908,6 @@ See `tide-tsserver-executable'."
   ;; Ensure the display-system-info runs last to prevent its message from being overwritten by other
   ;; initialization messages
   (add-hook 'emacs-startup-hook 'display-system-info 100))
-
-(use-package ispell-extra
-  :after ispell
-  :config
-  (setopt ispell-words-directory (file-name-directory ispell-complete-word-dict))
-
-  :bind
-  ("C-x C-M-$" . ispell-dictionary-info))
 
 (use-package teamcity)
 
@@ -1994,6 +1984,16 @@ See `tide-tsserver-executable'."
   (:map nxml-mode-map
         ("C-c C-q" . xml-format)
         ("C-c C-M-x" . xml-remove-declaration)))
+
+(use-package xml-where
+  :defer t
+  :after nxml-mode
+  :hook
+  (nxml-mode . xml-where-which-func-setup)
+
+  :bind
+  (:map nxml-mode-map
+        ("C-c C-c" . xml-where-tree)))
 
 
 ;;;;;;;;;;;;;;;;;;
