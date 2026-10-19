@@ -578,6 +578,11 @@ packages.")
   (setopt hs-show-indicators t)
   (setopt hs-display-lines-hidden t)
 
+  (defvar-keymap hideshow-repeat-map
+    :doc "Keymap to repeat `hs-toggle-hiding'.  Used in `repeat-mode'."
+    :repeat t
+    "@" #'hs-toggle-hiding)
+
   :hook
   (prog-mode . hs-minor-mode)
 
@@ -1746,6 +1751,8 @@ See `tide-tsserver-executable'."
   :config
   (window-split-dynamic-threshold-setup)
 
+  (put 'other-window-split-if-single 'repeat-map 'other-window-repeat-map)
+
   :bind
   ("M-o" . other-window-split-if-single)
   ("M-O" . other-window-backward)
@@ -1812,6 +1819,10 @@ See `tide-tsserver-executable'."
   ;; Display a clock when Emacs is in fullscreen
   (smart-display-time-mode)
   (advice-add 'toggle-frame-fullscreen :after 'smart-display-time-mode)
+
+  ;; repeat-map
+  (put 'backward-page-smart 'repeat-map 'page-navigation-repeat-map)
+  (put 'forward-page-smart 'repeat-map 'page-navigation-repeat-map)
 
   :bind
   ([remap backward-page] . backward-page-smart)
@@ -1957,6 +1968,11 @@ See `tide-tsserver-executable'."
           (list `("Default" ,(append (eval (car (get 'whitespace-style 'standard-value)))
                                      '(page-delimiters)))
                 '("Page delimiters" (face page-delimiters))))
+
+  (defvar-keymap whitespace-cycle-style-repeat-map
+    :doc "Keymap to repeat `whitespace-cycle-style'.  Used in `repeat-mode'."
+    :repeat t
+    "w" #'whitespace-cycle-style)
 
   :bind
   (:map whitespace-map
