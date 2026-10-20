@@ -165,9 +165,13 @@ newlines."
                         (apply #'max (mapcar (lambda (field) (string-width (car field))) fields)))))
     (message "%s"
              (mapconcat (pcase-lambda (`(,label ,value ,short-label, short-value))
-                          (format (if detailed
-                                      (format "%%-%ds %%s" label-width)
-                                    "%s %s")
+                          (format (cond
+                                   (detailed (format "%%-%ds %%s" label-width))
+                                   ;; In short mode, when label is an empty string, don't put a
+                                   ;; space between the label and the value, so it can be display
+                                   ;; like in the example: "value1 | value2"
+                                   ((string-empty-p (or (and (not detailed) short-label) label)) "%s%s")
+                                   (t "%s %s"))
                                   (or (and (not detailed) short-label) label)
                                   (cond
                                    ((and (not detailed) (stringp short-value)) short-value)
@@ -204,12 +208,18 @@ With prefix argument DETAILED, display a detailed message, instead of a
 brief one."
   (interactive "P")
   (message-summary-data detailed
-                        `("Font:"
-                          ,(format "%s | %s | %s"
-                                   (face-attribute 'default :family)
-                                   (face-attribute 'default :weight)
-                                   (round (/ (face-attribute 'default :height) 10.0)))
-                          ,(nerd-icons-faicon "nf-fa-font"))))
+                        `("Name:"
+                          ,(face-attribute 'default :family)
+                          ,(nerd-icons-faicon "nf-fa-font"))
+                        `("Weight:"
+                          ,(format "%s" (face-attribute 'default :weight))
+                          "")
+                        `("Width:"
+                          ,(format "%s" (face-attribute 'default :width))
+                          "")
+                        `("Size:"
+                          ,(format "%s" (round (/ (face-attribute 'default :height) 10.0)))
+                          "")))
 
 ;;;###autoload
 (defun display-monitor-layout-info (&optional detailed)
