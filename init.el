@@ -459,7 +459,11 @@ packages.")
   :config
   (setopt ffap-file-name-with-spaces t)
   (setopt ffap-prefer-remote-file t)
-  (ffap-bindings))
+  (ffap-bindings)
+
+  :bind
+  (:map ctl-x-x-map
+        ("l" . ffap-menu)))
 
 (use-package flymake
   :defer t
@@ -1717,6 +1721,10 @@ See `tide-tsserver-executable'."
   ("C-c S" . sort-words)
   (:map prog-mode-map
         ("C-;" . smart-semicolon)))
+
+(use-package ffap-extra
+  :demand t
+  :after ffap)
 
 (use-package files-extra
   :init
