@@ -231,7 +231,9 @@ brief one."
   (let ((monitor-width (nth 2 (frame-monitor-attribute 'geometry)))
         (monitor-height (nth 3 (frame-monitor-attribute 'geometry))))
     (message-summary-data detailed
-                          `("Monitor:" ,(format "%dx%d" monitor-width monitor-height))
+                          `("Monitor:" ,(format "%dx%d %.2f:1"
+                                                monitor-width monitor-height
+                                                (/ (float monitor-width) monitor-height)))
                           `("Frame:" ,(format "%dx%d" (frame-width) (frame-height)))
                           `("Window:" ,(format "%dx%d" (window-body-width) (window-body-height))))))
 
