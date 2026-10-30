@@ -1891,7 +1891,15 @@ See `tide-tsserver-executable'."
   (setopt nuget-default-source-list '(("RDI" . "lcardoso")))
 
   (add-to-list 'project-root-up-directory-list np6-bugs-root-directory)
-  (add-to-list 'project-root-up-directory-list np6-env-root-directory))
+  (add-to-list 'project-root-up-directory-list np6-env-root-directory)
+
+  (dolist (dir (cond (system-windows-p
+                      (list (expand-file-name "~/OneDrive - Capgemini/Documents/admin/")
+                            (expand-file-name "~/OneDrive - Capgemini/Documents/dev/")))
+                     (wsl-p
+                      (list (expand-file-name "~/Documents/admin/")
+                            (expand-file-name "~/Documents/dev/")))))
+    (add-to-list 'project-root-directory-list dir))
 
 (use-package recentf-extra
   :defer t
