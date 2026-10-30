@@ -1899,7 +1899,7 @@ See `tide-tsserver-executable'."
                      (wsl-p
                       (list (expand-file-name "~/Documents/admin/")
                             (expand-file-name "~/Documents/dev/")))))
-    (add-to-list 'project-root-directory-list dir))
+    (add-to-list 'project-root-directory-list dir)))
 
 (use-package recentf-extra
   :defer t
